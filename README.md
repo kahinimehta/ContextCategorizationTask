@@ -1,4 +1,4 @@
-# ContextShape Task
+# Context Shape Task
 
 This repository contains the PsychoPy implementation of the **ContextShape Task**, a multi-phase experiment examining bottom-up shape classification and top-down context incorporation.
 
