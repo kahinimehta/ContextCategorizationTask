@@ -1089,7 +1089,7 @@ def main():
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
 
     # Phase 3
-    instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs. Again, shapes placed closer together are ones you're grouping as more similar. Feel free to use whatever grouping feels intuitive.",
+    instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs. Again, shapes placed closer together are ones you're grouping as more similar. You may find that some shapes remind you of things you saw earlier—use whatever information feels relevant. Feel free to use whatever grouping feels intuitive.",
                                color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, instr_p3, "phase3_instructions"):
         win.close()

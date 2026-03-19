@@ -215,15 +215,15 @@ Full task specs: See README.md. CSV format and TTL trigger mapping: `csv_documen
 
 #### Instructions screen
 
-**Display says:** "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs. Again, shapes placed closer together are ones you're grouping as more similar. Feel free to use whatever grouping feels intuitive."
+**Display says:** "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs. Again, shapes placed closer together are ones you're grouping as more similar. You may find that some shapes remind you of things you saw earlier—use whatever information feels relevant. Feel free to use whatever grouping feels intuitive."
 
 **Display shows:** "Press Enter to continue."
 
-**What to say:** "Same as the very beginning—place each shape where it belongs. Feel free to use whatever grouping feels intuitive. Click to place each shape. Again, shapes placed closer together are ones you're grouping as more similar."
+**What to say:** "Same as the very beginning—place each shape where it belongs. Some shapes might remind you of things you saw earlier; use whatever information feels relevant. Feel free to use whatever grouping feels intuitive. Click to place each shape."
 
-**Simple version:** "Same as the start—put each shape where you think it goes. Put things that go together close. Things that are different, put far apart. Use whatever feels right to you."
+**Simple version:** "Same as the start—put each shape where you think it goes. Some shapes might remind you of pictures you saw before—that's fine, use whatever helps. Put things that go together close. Use whatever feels right to you."
 
-**Experimenter note:** **Emphasize** (as in Phase 1): "Things that go together go close. Things that are different go far apart."
+**Experimenter note:** **Emphasize** (as in Phase 1): "Things that go together go close. Things that are different go far apart." Also convey that shapes may remind them of Phase 2—they can use that if it helps.
 
 **TTL:** Screen onset, Enter press
 
@@ -231,9 +231,9 @@ Full task specs: See README.md. CSV format and TTL trigger mapping: `csv_documen
 
 **Display:** Identical structure to Phase 1. Shape order randomized differently from Phase 1. **Click to place** each shape.
 
-**What to say:** "Place each shape where you think it belongs now. Feel free to use whatever grouping feels intuitive. Click to place each one."
+**What to say:** "Place each shape where you think it belongs now. Feel free to use whatever grouping feels intuitive—including anything from the pictures you saw. Click to place each one."
 
-**Simple version:** "Put each shape where it goes. Same as before—things that go together go close. Click to put each one."
+**Simple version:** "Put each shape where it goes. Same as before—things that go together go close. If some remind you of what you saw earlier, use that. Click to put each one."
 
 **TTL:** Same as Phase 1
 
