@@ -727,6 +727,86 @@ def run_phase2_trials(win, mouse, trials, participant):
 # =========================
 #  Summary CSV
 # =========================
+def run_phase3_debrief(win, mouse, participant):
+    """Two Yes/No questions at end of Phase 3. Returns list of dicts or None if ESC."""
+    questions = [
+        "Did you use the same grouping strategy as the first time you sorted these shapes?",
+        "Did the images associated with each shape you saw influence your grouping the second time around?",
+    ]
+    fieldnames = ['question', 'question_text', 'answer', 'rt', 'onset_ttl', 'response_ttl']
+    csv_path = LOG_DIR / f"debrief_{participant}.csv"
+    if not is_test_participant(participant):
+        f = open(csv_path, 'w', newline='')
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        f.flush()
+    else:
+        f = None
+        writer = None
+
+    results = []
+    for i, qtext in enumerate(questions):
+        q = visual.TextStim(win, text=qtext, color='black', height=0.04, pos=(0, 0.1), wrapWidth=1.3, units='height')
+        btn_yes = visual.Rect(win, width=0.18, height=0.06, fillColor='lightgreen', lineColor='black', pos=(-0.22, -0.25), units='height')
+        btn_no = visual.Rect(win, width=0.18, height=0.06, fillColor='lightcoral', lineColor='black', pos=(0.22, -0.25), units='height')
+        txt_yes = visual.TextStim(win, text="Yes", color='black', height=0.03, pos=(-0.22, -0.25), units='height')
+        txt_no = visual.TextStim(win, text="No", color='black', height=0.03, pos=(0.22, -0.25), units='height')
+
+        _log_ttl_event("phase3_debrief_onset", trial_info=f"question={i+1}")
+        onset_ttl = _last_ttl_timestamp[0]
+        rt_clock = core.Clock()
+        rt_clock.reset()
+        answer = None
+
+        while answer is None:
+            keys = event.getKeys(keyList=['escape'])
+            if keys and 'escape' in keys:
+                if f:
+                    f.close()
+                return None
+            mpos = mouse.getPos()
+            mbuttons = mouse.getPressed()
+            if mbuttons[0]:
+                if -0.31 <= mpos[0] <= -0.13 and -0.28 <= mpos[1] <= -0.22:
+                    answer = "Yes"
+                    break
+                if 0.13 <= mpos[0] <= 0.31 and -0.28 <= mpos[1] <= -0.22:
+                    answer = "No"
+                    break
+            q.draw()
+            btn_yes.draw()
+            btn_no.draw()
+            txt_yes.draw()
+            txt_no.draw()
+            win.flip()
+            core.wait(0.016)
+
+        rt = rt_clock.getTime()
+        _log_ttl_event("phase3_debrief_response", trial_info=f"question={i+1} answer={answer}")
+        response_ttl = _last_ttl_timestamp[0]
+
+        row = {
+            'question': i + 1,
+            'question_text': qtext,
+            'answer': answer,
+            'rt': f"{rt:.4f}",
+            'onset_ttl': f"{onset_ttl:.9f}" if onset_ttl else '',
+            'response_ttl': f"{response_ttl:.9f}" if response_ttl else ''
+        }
+        results.append(row)
+        if writer:
+            writer.writerow(row)
+            f.flush()
+            try:
+                os.fsync(f.fileno())
+            except (AttributeError, OSError):
+                pass
+
+    if f:
+        f.close()
+    return results
+
+
 def _euclidean_distances(positions):
     """positions: list of (x,y). Return list of pairwise distances (i,j) for i<j."""
     n = len(positions)
@@ -899,7 +979,7 @@ def main():
     run_phase2_trials(win, mouse, trials, participant)
 
     # Phase 3
-    instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning.",
+    instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning. Feel free to use whatever grouping feels intuitive.",
                                color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, instr_p3, "phase3_instructions"):
         win.close()
@@ -911,6 +991,12 @@ def main():
         random.shuffle(shapes3)
     phase3_results = run_drag_phase(win, mouse, shapes3, "phase3", 3, participant)
     if phase3_results is None:
+        win.close()
+        return
+
+    # Phase 3 debrief questions
+    debrief_results = run_phase3_debrief(win, mouse, participant)
+    if debrief_results is None:
         win.close()
         return
 

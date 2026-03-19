@@ -13,7 +13,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 | `event_label` | String | Human-readable event name |
 | `trial_info` | String | Optional trial metadata (e.g., trial=3, shape=Shape_0.10_1.70.png) |
 
-**Event types**: welcome, welcome_enter, tutorial_video_onset/offset, tutorial_fallback_onset/offset, tutorial_debrief, tutorial_transition, phase1_instructions, phase1_grid_onset/offset, phase1_fixation_onset/offset, phase1_instruction2, phase1_stimulus_onset/offset, phase1_drag_start, phase1_enter_submit, phase2_instructions, phase2_tutorial_*, phase2_ready, phase2_fixation_onset/offset, phase2_context1_onset/offset, phase2_shape_onset/offset, phase2_reddot_onset/offset, phase2_context2_onset/offset, phase2_shape2_onset/offset, phase2_reddot2_onset/offset, phase2_question_onset, phase2_response, phase2_break_onset, phase3_instructions, phase3_stimulus_onset/offset, phase3_drag_start, phase3_enter_submit. All continue/submit actions use Enter (logged as *_enter).
+**Event types**: welcome, welcome_enter, tutorial_video_onset/offset, tutorial_fallback_onset/offset, tutorial_debrief, tutorial_transition, phase1_instructions, phase1_grid_onset/offset, phase1_fixation_onset/offset, phase1_instruction2, phase1_stimulus_onset/offset, phase1_drag_start, phase1_enter_submit, phase2_instructions, phase2_tutorial_*, phase2_ready, phase2_fixation_onset/offset, phase2_context1_onset/offset, phase2_shape_onset/offset, phase2_reddot_onset/offset, phase2_context2_onset/offset, phase2_shape2_onset/offset, phase2_reddot2_onset/offset, phase2_question_onset, phase2_response, phase2_break_onset, phase3_instructions, phase3_stimulus_onset/offset, phase3_drag_start, phase3_enter_submit, phase3_debrief_onset, phase3_debrief_response. All continue/submit actions use Enter (logged as *_enter).
 
 ---
 
@@ -63,6 +63,25 @@ Per-trial data from the top-down context incorporation phase (48 trials).
 ## Phase 3 CSV (phase3_{participant}.csv)
 
 Same structure as Phase 1. Per-shape data from the post-context shape reclassification phase. Shape order is randomized differently from Phase 1.
+
+---
+
+## Debrief CSV (debrief_{participant}.csv)
+
+Post–Phase 3 questionnaire (2 questions). One row per question.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `question` | Integer | Question number (1 or 2) |
+| `question_text` | String | Full question text |
+| `answer` | String | Participant response: "Yes" or "No" |
+| `rt` | Float | Reaction time from question onset to button click (seconds) |
+| `onset_ttl` | Float | TTL timestamp at question screen onset |
+| `response_ttl` | Float | TTL timestamp at Yes/No button click |
+
+**Questions:**
+1. "Did you use the same grouping strategy as the first time you sorted these shapes?"
+2. "Did the images associated with each shape you saw influence your grouping the second time around?"
 
 ---
 

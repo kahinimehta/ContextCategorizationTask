@@ -43,6 +43,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 | `phase1_{participant}.csv` | Per-shape: shape path, final (x,y), RT, TTL timestamps |
 | `phase2_{participant}.csv` | Per-trial: shape, contexts, variant, response, RT, TTL timestamps |
 | `phase3_{participant}.csv` | Same structure as phase1 |
+| `debrief_{participant}.csv` | Post–Phase 3: 2 Yes/No questions, answers, RT, onset/response TTL |
 | `summary_{participant}.csv` | Total task time, grid dimensions, ground-truth positions |
 | `ttl_log_{participant}.csv` | Every TTL trigger: timestamp, trigger code, event label, trial info |
 

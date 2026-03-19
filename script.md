@@ -170,11 +170,11 @@ Full task specs: See README.md. CSV format: `csv_documentation.md`.
 
 #### Instructions screen
 
-**Display says:** "Let's sort some shapes again, like we did in the VERY beginning."
+**Display says:** "Let's sort some shapes again, like we did in the VERY beginning. Feel free to use whatever grouping feels intuitive."
 
 **Display shows:** "Press Enter to continue."
 
-**What to say:** "Same as the very beginning—place each shape where it belongs. Press Enter to submit each placement."
+**What to say:** "Same as the very beginning—place each shape where it belongs. Feel free to use whatever grouping feels intuitive. Press Enter to submit each placement."
 
 **TTL:** Screen onset, Enter press
 
@@ -182,9 +182,19 @@ Full task specs: See README.md. CSV format: `csv_documentation.md`.
 
 **Display:** Identical structure to Phase 1. Shape order randomized differently from Phase 1. **Press Enter to submit** each placement.
 
-**What to say:** "Place each shape where you think it belongs now. Press Enter to submit."
+**What to say:** "Place each shape where you think it belongs now. Feel free to use whatever grouping feels intuitive. Press Enter to submit."
 
 **TTL:** Same as Phase 1
+
+#### Debrief questions (2)
+
+**Question 1:** "Did you use the same grouping strategy as the first time you sorted these shapes?" — Yes / No
+
+**Question 2:** "Did the images associated with each shape you saw influence your grouping the second time around?" — Yes / No
+
+**What to say:** "Please answer these two questions. Click Yes or No for each."
+
+**TTL:** Onset and response click for each question. Answers, RT, and TTL timestamps saved to `debrief_{participant}.csv`.
 
 ---
 
