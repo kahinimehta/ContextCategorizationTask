@@ -189,7 +189,7 @@ PNG images of final shape placements at the end of Phase 1 and Phase 3. White ca
 
 ## Debrief CSV (debrief_{participant}_{datetime}.csv)
 
-Post–Phase 3 questionnaire (2 questions). One row per question.
+Post–Phase 3 questionnaire (3 questions). One row per question.
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -203,6 +203,7 @@ Post–Phase 3 questionnaire (2 questions). One row per question.
 **Questions:**
 1. "Did you use the same grouping strategy as the first time you sorted these shapes?"
 2. "Did the images associated with each shape you saw influence your grouping the second time around?"
+3. "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?"
 
 ---
 

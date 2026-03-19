@@ -46,7 +46,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 | `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of final shape placements at end of Phase 3 |
-| `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 2 Yes/No questions, answers, RT, onset/response TTL |
+| `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |
 | `summary_{participant}_{datetime}.csv` | Total task time, grid dimensions, ground-truth positions, Euclidean distances (how close shapes are categorically) |
 | `ttl_log_{participant}_{datetime}.csv` | Every TTL trigger: timestamp, trigger code, event label, trial info |
 

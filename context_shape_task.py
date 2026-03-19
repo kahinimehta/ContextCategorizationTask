@@ -876,10 +876,11 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 #  Summary CSV
 # =========================
 def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
-    """Two Yes/No questions at end of Phase 3. Returns list of dicts or None if ESC."""
+    """Three Yes/No questions at end of Phase 3. Returns list of dicts or None if ESC."""
     questions = [
         "Did you use the same grouping strategy as the first time you sorted these shapes?",
         "Did the images associated with each shape you saw influence your grouping the second time around?",
+        "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?",
     ]
     fieldnames = ['question', 'question_text', 'answer', 'rt', 'onset_ttl', 'response_ttl']
     ts = timestamp_str or datetime.now().strftime("%Y%m%d_%H%M%S")

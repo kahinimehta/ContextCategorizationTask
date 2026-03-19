@@ -238,16 +238,17 @@ Identical to Phase 1. Shape order randomized differently. Hint: "Click to place.
 
 **Simple version:** "Same as before. Click to move, Enter when happy."
 
-#### Debrief (2 questions)
+#### Debrief (3 questions)
 
 1. "Did you use the same grouping strategy as the first time you sorted these shapes?" — Yes / No
 2. "Did the images associated with each shape you saw influence your grouping the second time around?" — Yes / No
+3. "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?" — Yes / No
 
 **TTL:** phase3_debrief_onset, phase3_debrief_response (per question)
 
-**What to say:** "Two questions. Click Yes or No for each."
+**What to say:** "Three questions. Click Yes or No for each."
 
-**Simple version:** "Did you put them together the same way? Did the pictures change how you put them together?"
+**Simple version:** "Did you put them together the same way? Did the pictures change how you put them together? Did you see the shapes differently the second time?"
 
 ---
 
