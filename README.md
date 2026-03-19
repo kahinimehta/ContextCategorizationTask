@@ -32,6 +32,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 - **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_X_Y.png) + ShapeGrid_4x4.png
 - **`STIMULI/Context_Images/`** — Context category folders (bark, cloud, coral, etc.) + practice1.png, practice2.png
+- **`STIMULI/tutorial_video.mp4`** — Optional. Video tutorial with text overlay (shapes: red square, red circle, green circle). If missing, a timed fallback sequence plays.
 
 ## Data Output
 
@@ -53,8 +54,9 @@ TTL triggers are sent via Blackrock parallel port (or Cedrus pyxid2 on macOS) fo
 
 1. Ensure PsychoPy and dependencies are installed (Anaconda environment)
 2. Run: `python context_shape_task.py`
-3. Enter participant name when prompted
-4. Follow on-screen instructions
+3. Enter participant name on fullscreen (like Social Recognition Task); press Enter when done
+4. **ESC** exits at any time. **Enter** submits/continues (no buttons)
+5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
 
 ## Paths
 

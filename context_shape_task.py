@@ -28,7 +28,7 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 # Suppress iohub if needed
 os.environ.setdefault('PSYCHOPY_IOHUB', '0')
 
-from psychopy import visual, core, event, gui
+from psychopy import visual, core, event
 
 # =========================
 #  TTL / Parallel Port
@@ -175,102 +175,74 @@ def get_practice_context_paths():
 
 
 # =========================
-#  Button / Wait Helpers
+#  Button / Wait Helpers — Enter only, no buttons, ESC exits
 # =========================
-def wait_for_continue(win, text_stim, button_rect, button_text, mouse, event_label, log_ttl=True):
-    """Wait for CONTINUE click. Return True if clicked, False if ESC."""
-    clicked = False
-    exit_btn = visual.Rect(win, width=0.12, height=0.04, fillColor=[0.95, 0.85, 0.85], lineColor='darkred',
-                           pos=(0.45, 0.47), lineWidth=1, units='height')
-    exit_text = visual.TextStim(win, text="Exit", color='darkred', height=0.025, pos=(0.45, 0.47), units='height')
+def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0):
+    """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted."""
+    hint = visual.TextStim(win, text="Press Enter to continue.", color='gray', height=0.03, pos=(0, -0.35), units='height')
 
     def draw():
         text_stim.draw()
-        button_rect.draw()
-        button_text.draw()
-        exit_btn.draw()
-        exit_text.draw()
+        hint.draw()
 
     if log_ttl:
         _log_ttl_event(event_label)
     draw()
     win.flip()
-
-    while not clicked:
-        keys = event.getKeys(keyList=['escape', 'return'])
-        if keys:
-            if 'escape' in keys:
-                return False
-            if 'return' in keys:
-                if log_ttl:
-                    _log_ttl_event(f"{event_label}_click")
-                clicked = True
-                break
-        mpos = mouse.getPos()
-        mbuttons = mouse.getPressed()
-        # Check CONTINUE button (centered at 0, -0.3)
-        bx, by = 0, -0.3
-        bw, bh = 0.2, 0.06
-        if mbuttons[0] and (bx - bw/2 <= mpos[0] <= bx + bw/2 and by - bh/2 <= mpos[1] <= by + bh/2):
-            if log_ttl:
-                _log_ttl_event(f"{event_label}_click")
-            clicked = True
-            break
-        if mbuttons[0] and (0.39 <= mpos[0] <= 0.51 and 0.43 <= mpos[1] <= 0.49):
-            return False  # Exit
-        draw()
-        win.flip()
-        core.wait(0.02)
-    return True
-
-
-def wait_for_submit(win, draw_func, mouse, event_label):
-    """Wait for SUBMIT click. Returns (True, rt) or (False, None) if ESC."""
-    submit_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black',
-                             pos=(0, -0.35), units='height')
-    submit_text = visual.TextStim(win, text="SUBMIT", color='black', height=0.03, pos=(0, -0.35), units='height')
     clock = core.Clock()
     clock.reset()
-
-    def full_draw():
-        draw_func()
-        submit_btn.draw()
-        submit_text.draw()
-
-    _log_ttl_event(event_label)
-    full_draw()
-    win.flip()
 
     while True:
         keys = event.getKeys(keyList=['escape', 'return'])
         if keys:
             if 'escape' in keys:
-                return False, None
-            if 'return' in keys:
-                rt = clock.getTime()
-                _log_ttl_event(f"{event_label}_submit", trial_info=f"rt={rt:.4f}")
-                return True, rt
-        mpos = mouse.getPos()
-        mbuttons = mouse.getPressed()
-        if mbuttons[0] and (-0.1 <= mpos[0] <= 0.1 and -0.38 <= mpos[1] <= -0.32):
-            rt = clock.getTime()
-            _log_ttl_event(f"{event_label}_submit", trial_info=f"rt={rt:.4f}")
-            return True, rt
-        full_draw()
+                core.quit()
+            if 'return' in keys and clock.getTime() >= min_display_sec:
+                if log_ttl:
+                    _log_ttl_event(f"{event_label}_enter")
+                return True
+        draw()
         win.flip()
-        core.wait(0.02)
+        core.wait(0.016)
+
+
 
 
 # =========================
-#  Phase 0: Participant Login
+#  Phase 0: Participant Login — SRT-style fullscreen
 # =========================
-def get_participant_name():
-    """Text input for participant name. Returns name or None if cancelled. Called before main window."""
-    from psychopy.gui import DlgFromDict
-    dlg = DlgFromDict(dictionary={'name': ''}, title='ContextShape Task', order=['name'])
-    if dlg.OK:
-        return (dlg.data.get('name') or '').strip() or 'anonymous'
-    return None
+def get_participant_name(win):
+    """Fullscreen text input like Social Recognition Task. Returns name or None if ESC."""
+    input_id = ""
+    key_list = ['return', 'backspace'] + [chr(i) for i in range(97, 123)] + [chr(i) for i in range(65, 91)] + [chr(i) for i in range(48, 58)]
+    id_prompt = visual.TextStim(win, text="Enter your first name and last initial with no spaces/capitals:\n\nHit Enter when done.",
+                                color='black', height=0.045, wrapWidth=1.4, pos=(0, 0.25), units='height')
+    input_display = visual.TextStim(win, text="", color='black', height=0.06, pos=(0, 0), units='height')
+
+    def redraw():
+        id_prompt.draw()
+        input_display.text = f"{input_id}_"
+        input_display.draw()
+        win.flip()
+
+    redraw()
+    event.clearEvents()
+
+    while True:
+        keys = event.getKeys(keyList=key_list + ['escape'])
+        if keys:
+            if 'escape' in keys:
+                core.quit()
+            key = keys[0]
+            if key == 'return':
+                if input_id.strip():
+                    return input_id.strip() or 'anonymous'
+            elif key == 'backspace':
+                input_id = input_id[:-1] if input_id else ""
+            elif len(key) == 1:
+                input_id += key
+        redraw()
+        core.wait(0.016)
 
 
 # =========================
@@ -322,15 +294,11 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
                 a.setPos((ax, ay))
                 a.draw()
             stim.draw()
-
-        submit_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black',
-                                 pos=(0, -0.35), units='height')
-        submit_text = visual.TextStim(win, text="SUBMIT", color='black', height=0.03, pos=(0, -0.35), units='height')
+            hint = visual.TextStim(win, text="Press Enter to submit.", color='gray', height=0.028, pos=(0, -0.38), units='height')
+            hint.draw()
 
         def full_draw():
             draw_drag()
-            submit_btn.draw()
-            submit_text.draw()
 
         rt_start = time.time()
         submitted = False
@@ -338,9 +306,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             keys = event.getKeys(keyList=['escape', 'return'])
             if keys:
                 if 'escape' in keys:
-                    if f:
-                        f.close()
-                    return results
+                    core.quit()
                 if 'return' in keys:
                     submitted = True
                     break
@@ -351,15 +317,13 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
                     drag_start_logged[0] = True
                     _log_ttl_event(f"{phase_name}_drag_start", trial_info=f"trial={idx+1}")
                 stim.setPos(mpos)
-            if mbuttons[0] and (-0.1 <= mpos[0] <= 0.1 and -0.38 <= mpos[1] <= -0.32):
-                submitted = True
             full_draw()
             win.flip()
-            core.wait(0.02)
+            core.wait(0.016)
 
         rt = time.time() - rt_start
         fx, fy = stim.pos
-        _log_ttl_event(f"{phase_name}_submit", trial_info=f"trial={idx+1} shape={shape_name}")
+        _log_ttl_event(f"{phase_name}_enter_submit", trial_info=f"trial={idx+1} shape={shape_name}")
 
         row = {
             'shape_path': shape_path,
@@ -389,107 +353,64 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 
 
 # =========================
-#  Tutorial Phase 1 Practice
+#  Tutorial — Video with text overlay (red square, red circle, green circle)
 # =========================
+# Place tutorial video at STIMULI/tutorial_video.mp4. If missing, plays a timed sequence.
+TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
+
+
 def run_tutorial_phase1(win, mouse, participant):
-    """Tutorial: 2 circles + 1 square (red, green, red), then sequential drag practice."""
-    # Step 1: Overview - two circles, 1 square (red, green, red) horizontal, 5 sec
-    circ1 = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None, pos=(-0.3, 0))
-    sq = visual.Rect(win, width=0.16, height=0.16, fillColor='green', lineColor=None, pos=(0, 0))
-    circ2 = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None, pos=(0.3, 0))
-
-    def draw_overview():
-        circ1.draw()
-        sq.draw()
-        circ2.draw()
-
-    _log_ttl_event("tutorial_overview_onset")
-    draw_overview()
-    win.flip()
-    core.wait(5.0)
-    _log_ttl_event("tutorial_overview_offset")
-
-    # Step 2: Instruction 2 sec
-    instr = visual.TextStim(win, text="You will see one of the shapes from before. Group all shapes by dragging "
-                                       "them to where you think it belongs on the screen.", color='black',
-                            height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    _log_ttl_event("tutorial_instruction_onset")
-    instr.draw()
-    win.flip()
-    core.wait(2.0)
-    _log_ttl_event("tutorial_instruction_offset")
-
-    # Step 3: Sequential drag practice - 3 shapes (circle, square, circle). Circles right, square left.
-    practice_specs = [
-        ('circle', 'red'),      # -> right
-        ('square', 'green'),    # -> left
-        ('circle', 'red'),      # -> right
-    ]
-    anchors = []  # list of (shape_type, color, x, y)
-    sub_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.35), units='height')
-    sub_txt = visual.TextStim(win, text="SUBMIT", color='black', height=0.03, pos=(0, -0.35), units='height')
-
-    for i, (shape_type, color) in enumerate(practice_specs):
-        if shape_type == 'circle':
-            stim = visual.Circle(win, radius=0.08, fillColor=color, lineColor=None)
-        else:
-            stim = visual.Rect(win, width=0.16, height=0.16, fillColor=color, lineColor=None)
-        stim.setPos((0, 0))
-        _log_ttl_event("tutorial_practice_stimulus_onset", trial_info=f"trial={i+1}")
-        stim.draw()
-        win.flip()
-        core.wait(1.0)
-        _log_ttl_event("tutorial_practice_stimulus_offset", trial_info=f"trial={i+1}")
-
-        drag_start_logged = [False]
-        submitted = [False]
-        while not submitted[0]:
-            keys = event.getKeys(keyList=['escape', 'return'])
-            if keys:
-                if 'escape' in keys:
-                    return False
-                if 'return' in keys:
-                    submitted[0] = True
-                    break
-            mpos = mouse.getPos()
-            mbuttons = mouse.getPressed()
-            if mbuttons[0]:
-                if not drag_start_logged[0]:
-                    drag_start_logged[0] = True
-                    _log_ttl_event("tutorial_practice_drag_start", trial_info=f"trial={i+1}")
-                stim.setPos(mpos)
-            if mbuttons[0] and (-0.1 <= mpos[0] <= 0.1 and -0.38 <= mpos[1] <= -0.32):
-                submitted[0] = True
-            for st, col, ax, ay in anchors:
-                if st == 'circle':
-                    a = visual.Circle(win, radius=0.06, fillColor=col, lineColor=None)
-                else:
-                    a = visual.Rect(win, width=0.12, height=0.12, fillColor=col, lineColor=None)
-                a.setPos((ax, ay))
-                a.draw()
-            stim.draw()
-            sub_btn.draw()
-            sub_txt.draw()
+    """Tutorial: video + text overlay, or fallback timed sequence. Shapes: red square, red circle, green circle."""
+    if TUTORIAL_VIDEO.exists():
+        try:
+            movie = visual.MovieStim(win, str(TUTORIAL_VIDEO), play=True)
+            text_overlay = visual.TextStim(win, text="", color='black', height=0.035, pos=(0, -0.4),
+                                           wrapWidth=1.3, units='height', alignText='center')
+            _log_ttl_event("tutorial_video_onset")
+            while movie.status != visual.FINISHED:
+                keys = event.getKeys(keyList=['escape'])
+                if keys and 'escape' in keys:
+                    core.quit()
+                movie.draw()
+                text_overlay.draw()
+                win.flip()
+            _log_ttl_event("tutorial_video_offset")
+        except Exception as e:
+            print(f"Video playback failed, using fallback: {e}", file=sys.stderr)
+    else:
+        # Fallback: timed sequence with text explaining each step
+        sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None, pos=(-0.3, 0))
+        circ1 = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None, pos=(0, 0))
+        circ2 = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None, pos=(0.3, 0))
+        texts = [
+            ("Here are the three shapes: a red square, a red circle, and a green circle.", 4.0),
+            ("You will see each shape one at a time. Drag it to where you think it belongs.", 4.0),
+            ("Group similar shapes together. The red shapes go together; the green circle is different.", 4.0),
+            ("When you're happy with the position, press Enter to submit.", 3.0),
+        ]
+        for i, (txt, dur) in enumerate(texts):
+            _log_ttl_event(f"tutorial_fallback_onset", trial_info=f"step={i+1}")
+            if i == 0:
+                sq.draw()
+                circ1.draw()
+                circ2.draw()
+            overlay = visual.TextStim(win, text=txt, color='black', height=0.04, pos=(0, -0.35),
+                                     wrapWidth=1.3, units='height', alignText='center')
+            overlay.draw()
             win.flip()
-            core.wait(0.02)
-        fx, fy = stim.pos
-        anchors.append((shape_type, color, float(fx), float(fy)))
-        _log_ttl_event("tutorial_practice_submit", trial_info=f"trial={i+1}")
+            core.wait(dur)
+            _log_ttl_event(f"tutorial_fallback_offset", trial_info=f"step={i+1}")
 
-    # Step 3.5: Debrief
-    debrief = visual.TextStim(win, text="In this practice, we sorted all objects by shape!", color='black',
-                              height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
-    cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
-    cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
-    if not wait_for_continue(win, debrief, cont_btn, cont_txt, mouse, "tutorial_debrief"):
+    # Debrief
+    debrief = visual.TextStim(win, text="In this practice, we sorted all objects by shape!",
+                              color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
+    if not wait_for_continue(win, debrief, "tutorial_debrief"):
         return False
 
-    # Step 4: Transition
+    # Transition
     trans = visual.TextStim(win, text="Let's get started on your task!", color='black', height=0.04, pos=(0, 0),
-                            wrapWidth=1.2, units='height')
-    cont_btn2 = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
-    cont_txt2 = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
-    return wait_for_continue(win, trans, cont_btn2, cont_txt2, mouse, "tutorial_transition")
+                           wrapWidth=1.2, units='height')
+    return wait_for_continue(win, trans, "tutorial_transition")
 
 
 # =========================
@@ -650,7 +571,7 @@ def run_phase2_tutorial(win, mouse, participant):
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
-    return wait_for_continue(win, ready, cont_btn, cont_txt, mouse, "phase2_ready")
+    return wait_for_continue(win, ready, "phase2_ready")
 
 
 def run_phase2_trials(win, mouse, trials, participant):
@@ -674,15 +595,10 @@ def run_phase2_trials(win, mouse, trials, participant):
 
     for t_idx, trial in enumerate(trials):
         if t_idx > 0 and t_idx % 12 == 0:
-            break_text = visual.TextStim(win, text="Take a break! Click CONTINUE when ready to move on.",
+            break_text = visual.TextStim(win, text="Take a break! Press Enter when ready to move on.",
                                         color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
-            cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
-            cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
             _log_ttl_event("phase2_break_onset", trial_info=f"after_trial={t_idx}")
-            if not wait_for_continue(win, break_text, cont_btn, cont_txt, mouse, "phase2_break"):
-                if f:
-                    f.close()
-                return
+            wait_for_continue(win, break_text, "phase2_break")
 
         # Fixation 500ms
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")
@@ -754,9 +670,7 @@ def run_phase2_trials(win, mouse, trials, participant):
         while response is None:
             keys = event.getKeys(keyList=['escape'])
             if keys and 'escape' in keys:
-                if f:
-                    f.close()
-                return
+                core.quit()
             mpos = mouse.getPos()
             mbuttons = mouse.getPressed()
             if mbuttons[0]:
@@ -893,10 +807,6 @@ def write_summary(participant, experiment_start, experiment_end, phase1_results,
 def main():
     global _ttl_file_ref, _ttl_writer_ref
     event.globalKeys.add(key='escape', func=lambda: core.quit(), modifiers=[])
-    participant = get_participant_name()
-    if not participant:
-        return
-    participant = participant.strip() or 'anonymous'
 
     win = visual.Window(
         size=(1920, 1080),
@@ -907,6 +817,9 @@ def main():
     )
     mouse = event.Mouse(win=win)
     mouse.setVisible(True)
+
+    participant = get_participant_name(win)
+    participant = participant.strip() or 'anonymous'
 
     _probe_ttl()
     if not is_test_participant(participant):
@@ -923,7 +836,7 @@ def main():
                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
-    if not wait_for_continue(win, welcome, cont_btn, cont_txt, mouse, "welcome"):
+    if not wait_for_continue(win, welcome, "welcome"):
         win.close()
         return
 
@@ -932,12 +845,10 @@ def main():
         win.close()
         return
 
-    # Phase 1
-    instr1 = visual.TextStim(win, text="Let's sort some shapes. First you will see all of them. Then you will place them one at a time and group them where you think they belong, as in the practice.",
+    # Phase 1 — instructions much longer after practice
+    instr1 = visual.TextStim(win, text="Let's sort some shapes. First you will see all of them. Then you will place them one at a time and group them where you think they belong, as in the practice.\n\nPress Enter when you're ready.",
                              color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    sub_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
-    sub_txt = visual.TextStim(win, text="SUBMIT", color='black', height=0.03, pos=(0, -0.3), units='height')
-    if not wait_for_continue(win, instr1, sub_btn, sub_txt, mouse, "phase1_instructions"):
+    if not wait_for_continue(win, instr1, "phase1_instructions", min_display_sec=10.0):
         win.close()
         return
 
@@ -958,9 +869,9 @@ def main():
     core.wait(1.0)
     _log_ttl_event("phase1_fixation_offset")
 
-    instr2 = visual.TextStim(win, text="You will now see the shapes from before, one at a time. Group each to where you think it belongs on the screen.",
+    instr2 = visual.TextStim(win, text="You will now see the shapes from before, one at a time. Group each to where you think it belongs on the screen. Press Enter to submit each placement.",
                              color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr2, sub_btn, sub_txt, mouse, "phase1_instruction2"):
+    if not wait_for_continue(win, instr2, "phase1_instruction2"):
         win.close()
         return
 
@@ -976,11 +887,7 @@ def main():
     # Phase 2
     instr_p2 = visual.TextStim(win, text="Now, you will see the shapes again, in conjunction with different contexts. Try to think of what the shape might be in that context and say it out loud.\n\nHere's an example.",
                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    _log_ttl_event("phase2_instructions_onset")
-    instr_p2.draw()
-    win.flip()
-    core.wait(3.0)  # Display for 3 seconds per spec
-    if not wait_for_continue(win, instr_p2, cont_btn, cont_txt, mouse, "phase2_instructions"):
+    if not wait_for_continue(win, instr_p2, "phase2_instructions", min_display_sec=8.0):
         win.close()
         return
 
@@ -994,7 +901,7 @@ def main():
     # Phase 3
     instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning.",
                                color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr_p3, sub_btn, sub_txt, mouse, "phase3_instructions"):
+    if not wait_for_continue(win, instr_p3, "phase3_instructions"):
         win.close()
         return
 
