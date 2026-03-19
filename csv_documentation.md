@@ -19,53 +19,114 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 
 ## TTL Trigger Mapping
 
-Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3 use **click-to-place**; placement is logged as `click_place`.
+Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3: **Click** to move, **Enter** to submit. Each click logged as `click_place` (trial_info: click=N).
 
 | Trigger code | Phase | Description |
 |--------------|-------|-------------|
-| `welcome` | — | Welcome screen onset |
-| `welcome_enter` | — | Participant pressed Enter on welcome |
+| `participant_name_onset` | — | Participant name prompt appeared |
+| `participant_name_offset` | — | Participant pressed Enter on name |
+| `experiment_start` | — | Experiment started (trial_info: participant=…) |
+| `experiment_end` | — | Experiment ended (trial_info: participant=…) |
+| `welcome_onset` | — | Welcome screen appeared |
+| `welcome_offset` | — | Participant pressed Enter on welcome |
 | `tutorial_video_onset` | — | Tutorial video started |
 | `tutorial_video_offset` | — | Tutorial video ended |
-| `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1–6) |
+| `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1, 2, 3, 4, 5a, 5b, 6) |
 | `tutorial_fallback_offset` | — | Animated fallback step ended |
-| `tutorial_debrief` | — | "We sorted by shape" screen |
-| `tutorial_transition` | — | "Let's get started" screen |
-| `phase1_instructions` | 1 | Phase 1 instructions onset |
+| `tutorial_debrief_onset` | — | "We sorted by shape" screen appeared |
+| `tutorial_debrief_offset` | — | Enter pressed on debrief |
+| `tutorial_transition_onset` | — | "Let's get started" screen appeared |
+| `tutorial_transition_offset` | — | Enter pressed on transition |
+| `phase1_instr1_onset` | 1 | Phase 1 instruction screen 1 appeared |
+| `phase1_instr1_offset` | 1 | Enter pressed |
+| `phase1_instr2_onset` | 1 | Phase 1 instruction screen 2 appeared |
+| `phase1_instr2_offset` | 1 | Enter pressed |
+| `phase1_instr3_onset` | 1 | Phase 1 instruction screen 3 appeared |
+| `phase1_instr3_offset` | 1 | Enter pressed |
 | `phase1_grid_onset` | 1 | Shape grid display started |
 | `phase1_grid_offset` | 1 | Shape grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2` | 1 | "Click to place" instruction onset |
+| `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
+| `phase1_instruction2a_offset` | 1 | Enter pressed |
+| `phase1_instruction2b_onset` | 1 | "Click to place" instruction appeared |
+| `phase1_instruction2b_offset` | 1 | Enter pressed |
 | `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N) |
 | `phase1_stimulus_offset` | 1 | Shape display ended, clickable |
-| `phase1_click_place` | 1 | **Participant clicked to place shape** (trial_info: trial=N, shape=…) |
-| `phase2_instructions` | 2 | Phase 2 instructions onset |
-| `phase2_tutorial_*` | 2 | Tutorial: fixation, context1, shape, blank, reddot, context2, shape2, question, response |
-| `phase2_ready` | 2 | "Ready to try" screen |
+| `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
+| `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
+| `phase2_instr1_onset` | 2 | Phase 2 instruction screen 1 appeared |
+| `phase2_instr1_offset` | 2 | Enter pressed |
+| `phase2_instr2_onset` | 2 | Phase 2 instruction screen 2 appeared |
+| `phase2_instr2_offset` | 2 | Enter pressed |
+| `phase2_instr3_onset` | 2 | Phase 2 instruction screen 3 appeared |
+| `phase2_instr3_offset` | 2 | Enter pressed |
+| `phase2_instr4_onset` | 2 | Phase 2 instruction screen 4 ("Here's an example") appeared |
+| `phase2_instr4_offset` | 2 | Enter pressed |
+| `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
+| `phase2_tutorial_intro_offset` | 2 | Enter pressed |
+| `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation |
+| `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 |
+| `phase2_tutorial_shape_onset` | 2 | Tutorial shape |
+| `phase2_tutorial_blank_onset` | 2 | Tutorial blank |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + PLANET |
+| `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 |
+| `phase2_tutorial_shape2_onset` | 2 | Tutorial shape 2 |
+| `phase2_tutorial_reddot2_onset` | 2 | Tutorial red dot + BALL |
+| `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
+| `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
+| `phase2_tutorial_blank2_offset` | 2 | Tutorial blank 2 ended |
+| `phase2_tutorial_question_onset` | 2 | Tutorial question |
+| `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after SPACE demo) |
+| `phase2_tutorial_response` | 2 | Tutorial response (SPACE) |
+| `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
+| `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
+| `phase2_ready_onset` | 2 | "Ready to try" screen appeared |
+| `phase2_ready_offset` | 2 | Enter pressed |
 | `phase2_fixation_onset` | 2 | Fixation before trial |
 | `phase2_fixation_offset` | 2 | Fixation ended |
 | `phase2_context1_onset` | 2 | Context 1 image onset |
 | `phase2_context1_offset` | 2 | Context 1 offset |
 | `phase2_shape_onset` | 2 | Shape onset |
 | `phase2_shape_offset` | 2 | Shape offset |
+| `phase2_blank1_onset` | 2 | Blank between shape and red dot (trial_info: trial=N) |
+| `phase2_blank1_offset` | 2 | Blank 1 ended |
 | `phase2_reddot_onset` | 2 | Red dot + category label onset |
 | `phase2_reddot_offset` | 2 | Red dot offset |
 | `phase2_context2_onset` | 2 | Context 2 image onset |
 | `phase2_context2_offset` | 2 | Context 2 offset |
 | `phase2_shape2_onset` | 2 | Shape (2nd) onset |
 | `phase2_shape2_offset` | 2 | Shape (2nd) offset |
+| `phase2_blank2_onset` | 2 | Blank between shape2 and red dot 2 (trial_info: trial=N) |
+| `phase2_blank2_offset` | 2 | Blank 2 ended |
 | `phase2_reddot2_onset` | 2 | Red dot 2 onset |
 | `phase2_reddot2_offset` | 2 | Red dot 2 offset |
 | `phase2_question_onset` | 2 | "Which context fits better?" onset |
 | `phase2_response` | 2 | Participant clicked category A or B |
-| `phase2_break_onset` | 2 | Break screen (every 12 trials) |
-| `phase3_instructions` | 3 | Phase 3 instructions onset |
+| `phase2_question_offset` | 2 | Question screen ended (after response) |
+| `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
+| `phase2_trial_iti_offset` | 2 | ITI ended |
+| `phase2_break_onset` | 2 | Break screen appeared (every 12 trials) |
+| `phase2_break_offset` | 2 | Enter pressed on break |
+| `phase3_instr1_onset` | 3 | Phase 3 instruction screen 1 appeared |
+| `phase3_instr1_offset` | 3 | Enter pressed |
+| `phase3_instr2_onset` | 3 | Phase 3 instruction screen 2 appeared |
+| `phase3_instr2_offset` | 3 | Enter pressed |
+| `phase3_instr3_onset` | 3 | Phase 3 instruction screen 3 appeared |
+| `phase3_instr3_offset` | 3 | Enter pressed |
+| `phase3_instr4_onset` | 3 | Phase 3 instruction screen 4 appeared |
+| `phase3_instr4_offset` | 3 | Enter pressed |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |
 | `phase3_stimulus_offset` | 3 | Shape display ended, clickable |
-| `phase3_click_place` | 3 | **Participant clicked to place shape** (trial_info: trial=N, shape=…) |
+| `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
+| `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_debrief_onset` | 3 | Debrief question onset |
 | `phase3_debrief_response` | 3 | Participant clicked Yes/No |
+| `phase1_placements_saved` | 1 | Phase 1 placement image saved (trial_info: filename) |
+| `phase3_placements_saved` | 3 | Phase 3 placement image saved (trial_info: filename) |
+| `summary_saved` | — | Summary CSV written (trial_info: filename) |
+| `thanks_onset` | — | Thank-you screen appeared |
+| `thanks_offset` | — | Thank-you screen ended |
 
 ---
 
@@ -78,11 +139,12 @@ Per-shape data from the bottom-up shape classification phase.
 | `shape_path` | String | Full path to the shape image file |
 | `final_x` | Float | Final x position in screen coordinates (height units) |
 | `final_y` | Float | Final y position in screen coordinates (height units) |
-| `rt` | Float | Reaction time from clickable onset to click (seconds) |
+| `rt` | Float | Reaction time from clickable onset to last click (seconds). If no clicks, time to Enter. |
 | `stimulus_onset_ttl` | Float | TTL timestamp at stimulus onset |
 | `stimulus_offset_ttl` | Float | TTL timestamp at stimulus offset |
-| `click_ttl` | Float | TTL timestamp when participant clicked to place |
-| `submit_ttl` | Float | TTL timestamp at placement (same as click_ttl) |
+| `click_ttl` | Float | TTL timestamp at first click to place |
+| `all_click_ttl` | String | Semicolon-separated timestamps of all clicks (Unix) |
+| `submit_ttl` | Float | TTL timestamp when participant pressed Enter to submit |
 
 ---
 
@@ -98,7 +160,7 @@ Per-trial data from the top-down context incorporation phase (48 trials).
 | `shape_path` | String | Full path to the shape image |
 | `context_1_path` | String | Full path to first context image |
 | `context_2_path` | String | Full path to second context image |
-| `trial_variant` | String | original, context_swapped, control_context, control_context_swapped. Control variants use control images (different image from same category), not the exact same context. |
+| `trial_variant` | String | original, context_swapped, control_context, control_context_swapped |
 | `response` | String | Button clicked: category A or B (e.g., BARK, CLOUD) |
 | `rt` | Float | Reaction time from question onset to button click (seconds) |
 | `fixation_onset_ttl` | Float | TTL timestamp at fixation onset |
@@ -157,15 +219,12 @@ Overall experiment summary.
 | `grid_border_coords` | String | Grid border coordinates (if computed) |
 | `per_shape_ground_truth` | String | Per-shape ground-truth: `Shape_X_Y.png:row=R,col=C,center_x=X,center_y=Y` (pipe-separated) |
 | `scaling_factor` | String | Scaling factor used for display |
-| `phase3_euclidean_distances` | String | Pairwise Euclidean distances between all Phase 3 final positions (format: `i-j:dist;...`). In layman terms: smaller distances mean shapes were placed closer together on screen, indicating they were grouped more similarly—i.e., how close the shapes are categorically to each other. |
+| `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = shapes grouped more similarly (closer categorically). |
 
 ---
 
 ## File Saving
 
-- **Location**: `../LOG_FILES/` (relative to task root)
-- **Filenames**: All CSVs and PNGs include date/time: `{basename}_{participant}_{YYYYMMDD_HHMMSS}.csv` or `.png`
-  - Example: `phase1_john_20250318_143022.csv`, `phase1_placements_john_20250318_143022.png`, `ttl_log_john_20250318_143022.csv`
-- **Placement images**: `phase1_placements_*.png` and `phase3_placements_*.png` saved at end of Phase 1 and Phase 3 (white canvas with shapes at final positions)
-- **Incremental writes**: All CSVs are written row-by-row with flush to disk
-- **Test participants**: If participant name contains "test" (case-insensitive), **no files are written**. All phase, debrief, summary, TTL log, and placement PNG files are skipped. Use this for practice runs.
+- **Location**: `../LOG_FILES/`
+- **Filenames**: `{basename}_{participant}_{YYYYMMDD_HHMMSS}.csv` or `.png`
+- **Test participants**: Name contains "test" → no files written (TTL log deleted)

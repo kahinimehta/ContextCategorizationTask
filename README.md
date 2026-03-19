@@ -14,7 +14,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 - **Python**: Anaconda
 - **PsychoPy**: v2025.1.1
-- **Display**: Fullscreen with DPI scaling adjustments
+- **Display**: Fullscreen (or windowed via `PSYCHOPY_WINDOWED=1`)
 - **Exit**: ESC at any time
 
 ## Repository Contents
@@ -41,33 +41,36 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 | File | Description |
 |------|-------------|
-| `phase1_{participant}_{datetime}.csv` | Per-shape: shape path, final (x,y), RT, TTL timestamps |
+| `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of final shape placements at end of Phase 1 |
-| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts (original or control images), variant, response, RT, TTL timestamps |
+| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of final shape placements at end of Phase 3 |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 2 Yes/No questions, answers, RT, onset/response TTL |
 | `summary_{participant}_{datetime}.csv` | Total task time, grid dimensions, ground-truth positions, Euclidean distances (how close shapes are categorically) |
 | `ttl_log_{participant}_{datetime}.csv` | Every TTL trigger: timestamp, trigger code, event label, trial info |
 
-*datetime* = `YYYYMMDD_HHMMSS` (e.g., 20250318_143022). **No files are written** if participant name contains "test" (case-insensitive).
-
-**Phase 2 design:** Each shape is associated with exactly 2 context categories (A and B). Four trials per shape, e.g. for Shape 1 with categories A and B: (1) A then B, (2) B then A, (3) A-control then B-control, (4) B-control then A-control. Control = different image from same category. Different shapes can share the same context category (e.g. BARK with shape 1 and shape 5) but each context *pair* is unique to one shape.
+*datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
 ## TTL Triggers
 
-TTL triggers are sent via Blackrock parallel port (or Cedrus pyxid2 on macOS) for every screen change and response. Phase 1 & 3 placement uses `phase1_click_place` and `phase3_click_place` (click-to-place). See `csv_documentation.md` for the full TTL trigger mapping.
+TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response is logged (onset/offset for instructions, stimulus/click/submit for tasks). See `csv_documentation.md` for full mapping.
 
 ## Quick Start
 
 1. Ensure PsychoPy and dependencies are installed (Anaconda environment)
 2. Run: `python context_shape_task.py`
 3. Enter participant name on fullscreen (like Social Recognition Task); press Enter when done
-4. **ESC** exits at any time. **Click** to place shapes (Phase 1 & 3); **Enter** to continue through instructions
+4. **ESC** exits at any time. **Click** to move shapes, **Enter** to submit (Phase 1 & 3); **Enter** to continue through instructions
 5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
 6. For practice runs: use a name containing "test" to skip all file saving
 
-**Experimenters:** Use `script.md` for the full run-through. It includes "Simple version" (ELI5) scripts for explaining the task in plain language to participants.
+**Experimenters:** See `script.md` for run-through and ELI5 scripts.
+
+## Troubleshooting
+
+- **`zsh: killed` (OOM):** If the process is killed during Phase 2 or 3, try running in windowed mode to reduce memory use: `PSYCHOPY_WINDOWED=1 python context_shape_task.py`
+- **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 
 ## Paths
 

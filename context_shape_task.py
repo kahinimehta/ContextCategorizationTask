@@ -8,6 +8,7 @@ TTL triggers via Blackrock parallel port for every screen change and response.
 
 import os
 import sys
+import gc
 import csv
 import random
 import time
@@ -56,7 +57,7 @@ def _probe_ttl():
             print("TTL: Using Cedrus pyxid2", file=sys.stderr)
     except Exception:
         pass
-    if _ttl_backend is None:
+    if _ttl_backend is None and sys.platform != 'darwin':
         try:
             from psychopy import parallel
             addr = int(os.environ.get('PARALLEL_PORT_ADDRESS', '0x0378'), 16)
@@ -66,6 +67,9 @@ def _probe_ttl():
         except Exception:
             _ttl_backend = False
             print("TTL WARNING: No backend. Triggers will NOT be sent.", file=sys.stderr)
+    elif _ttl_backend is None and sys.platform == 'darwin':
+        _ttl_backend = False
+        print("TTL: Mac—no parallel port. Triggers logged only.", file=sys.stderr)
 
 
 def _send_ttl():
@@ -181,6 +185,7 @@ def get_practice_context_paths():
 # =========================
 def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0):
     """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted."""
+    event.clearEvents()
     hint = visual.TextStim(win, text="Press Enter to continue.", color='gray', height=0.03, pos=(0, -0.35), units='height')
 
     def draw():
@@ -188,7 +193,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
         hint.draw()
 
     if log_ttl:
-        _log_ttl_event(event_label)
+        _log_ttl_event(f"{event_label}_onset")
     draw()
     win.flip()
     clock = core.Clock()
@@ -201,7 +206,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
                 core.quit()
             if 'return' in keys and clock.getTime() >= min_display_sec:
                 if log_ttl:
-                    _log_ttl_event(f"{event_label}_enter")
+                    _log_ttl_event(f"{event_label}_offset")
                 return True
         draw()
         win.flip()
@@ -215,6 +220,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
 # =========================
 def get_participant_name(win):
     """Fullscreen text input like Social Recognition Task. Returns name or None if ESC."""
+    _log_ttl_event("participant_name_onset")
     input_id = ""
     key_list = ['return', 'backspace'] + [chr(i) for i in range(97, 123)] + [chr(i) for i in range(65, 91)] + [chr(i) for i in range(48, 58)]
     id_prompt = visual.TextStim(win, text="Enter your first name and last initial with no spaces/capitals:\n\nHit Enter when done.",
@@ -238,6 +244,7 @@ def get_participant_name(win):
             key = keys[0]
             if key == 'return':
                 if input_id.strip():
+                    _log_ttl_event("participant_name_offset")
                     return input_id.strip() or 'anonymous'
             elif key == 'backspace':
                 input_id = input_id[:-1] if input_id else ""
@@ -290,7 +297,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         anchors = {}
     results = []
     fieldnames = ['shape_path', 'final_x', 'final_y', 'rt', 'stimulus_onset_ttl', 'stimulus_offset_ttl',
-                  'click_ttl', 'submit_ttl']
+                  'click_ttl', 'all_click_ttl', 'submit_ttl']
     ts = timestamp_str or datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_path = LOG_DIR / f"phase{phase_num}_{participant}_{ts}.csv"
     if not is_test_participant(participant):
@@ -317,36 +324,44 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         stim = visual.ImageStim(win, image=shape_path, units='height', size=(0.15, 0.15))
         stim.setPos((0, 0))
 
-        def draw_placement():
-            for p, (ax, ay) in anchors.items():
-                a = visual.ImageStim(win, image=p, units='height', size=(0.1, 0.1))
-                a.setPos((ax, ay))
-                a.draw()
-            stim.draw()
-            hint = visual.TextStim(win, text="Click to place.", color='gray', height=0.028, pos=(0, -0.38), units='height')
-            hint.draw()
+        # Pre-create anchor stims and hint once (avoids per-frame allocation lag)
+        anchor_stims = [(visual.ImageStim(win, image=p, units='height', size=(0.1, 0.1)), ax, ay)
+                       for p, (ax, ay) in anchors.items()]
+        hint = visual.TextStim(win, text="Click to place. Press Enter to submit.", color='gray', height=0.028, pos=(0, -0.38), units='height')
 
         rt_start = time.time()
         submitted = False
         prev_pressed = False
+        click_times = []  # all click timestamps (Unix)
         while not submitted:
-            keys = event.getKeys(keyList=['escape'])
-            if keys and 'escape' in keys:
-                core.quit()
+            keys = event.getKeys(keyList=['escape', 'return'])
+            if keys:
+                if 'escape' in keys:
+                    core.quit()
+                if 'return' in keys:
+                    # RT = time from onset to last click (or Enter if no clicks)
+                    last_click_time = click_times[-1] if click_times else time.time()
+                    rt = last_click_time - rt_start
+                    _log_ttl_event(f"{phase_name}_enter_submit", trial_info=f"trial={idx+1} shape={shape_name}")
+                    submitted = True
             pressed = mouse.getPressed()[0]
             if pressed and not prev_pressed:
                 mpos = mouse.getPos()
                 stim.setPos(mpos)
-                fx, fy = stim.pos
-                rt = time.time() - rt_start
-                _log_ttl_event(f"{phase_name}_click_place", trial_info=f"trial={idx+1} shape={shape_name}")
-                submitted = True
+                click_ts = time.time()
+                click_times.append(click_ts)
+                _log_ttl_event(f"{phase_name}_click_place", trial_info=f"trial={idx+1} shape={shape_name} click={len(click_times)}")
             prev_pressed = pressed
-            draw_placement()
+            for a, ax, ay in anchor_stims:
+                a.setPos((ax, ay))
+                a.draw()
+            stim.draw()
+            hint.draw()
             win.flip()
-            core.wait(0.016)
 
         fx, fy = stim.pos
+        first_click_ttl = click_times[0] if click_times else None
+        all_click_ttl_str = ';'.join(f"{t:.9f}" for t in click_times) if click_times else ''
         row = {
             'shape_path': shape_path,
             'final_x': f"{fx:.6f}",
@@ -354,7 +369,8 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             'rt': f"{rt:.4f}",
             'stimulus_onset_ttl': '',
             'stimulus_offset_ttl': '',
-            'click_ttl': f"{_last_ttl_timestamp[0]:.9f}" if _last_ttl_timestamp[0] else '',
+            'click_ttl': f"{first_click_ttl:.9f}" if first_click_ttl else '',
+            'all_click_ttl': all_click_ttl_str,
             'submit_ttl': f"{_last_ttl_timestamp[0]:.9f}" if _last_ttl_timestamp[0] else ''
         }
         results.append(row)
@@ -377,6 +393,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             win_size = win.size if hasattr(win, 'size') else (1920, 1080)
             png_path = LOG_DIR / f"phase{phase_num}_placements_{participant}_{ts}.png"
             _save_placement_image(results, png_path, win_size)
+            _log_ttl_event(f"phase{phase_num}_placements_saved", trial_info=str(png_path.name))
         except Exception as e:
             print(f"Warning: Could not save placement image: {e}", file=sys.stderr)
 
@@ -392,24 +409,20 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
-def _animate_shape_move(win, shape_stim, start_pos, end_pos, duration, subtitle, clock):
-    """Animate shape from start_pos to end_pos over duration. Subtitle at bottom."""
+def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle):
+    """Show click-to-place: shape at center briefly, then at target (no dragging)."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
-    t0 = clock.getTime()
-    while clock.getTime() - t0 < duration:
-        keys = event.getKeys(keyList=['escape'])
-        if keys and 'escape' in keys:
-            core.quit()
-        t = (clock.getTime() - t0) / duration
-        t = min(1.0, t)
-        x = start_pos[0] + (end_pos[0] - start_pos[0]) * t
-        y = start_pos[1] + (end_pos[1] - start_pos[1]) * t
-        shape_stim.setPos((x, y))
-        shape_stim.draw()
-        sub.draw()
-        win.flip()
-        core.wait(0.016)
+    shape_stim.setPos(start_pos)
+    shape_stim.draw()
+    sub.draw()
+    win.flip()
+    core.wait(0.6)
+    shape_stim.setPos(end_pos)
+    shape_stim.draw()
+    sub.draw()
+    win.flip()
+    core.wait(1.0)
 
 
 def run_tutorial_phase1(win, mouse, participant):
@@ -431,17 +444,21 @@ def run_tutorial_phase1(win, mouse, participant):
             print(f"Video playback failed, using fallback: {e}", file=sys.stderr)
 
     if used_fallback:
-        # Animated sequence showing click-to-place (subtitles describe what's on screen)
-        clock = core.Clock()
+        # Click-to-place sequence (no dragging): shape appears at center, then at target
         sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None)
         circ_red = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None)
         circ_green = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None)
 
+        # Positions: red square and red circle side-by-side on left (spaced apart), green on right
+        sq_pos = (-0.45, 0.08)
+        circ_red_pos = (-0.2, 0.08)
+        circ_green_pos = (0.35, 0)
+
         # Step 1: Three shapes overview
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=1")
-        sq.setPos((-0.3, 0))
+        sq.setPos((-0.35, 0))
         circ_red.setPos((0, 0))
-        circ_green.setPos((0.3, 0))
+        circ_green.setPos((0.35, 0))
         sub1 = visual.TextStim(win, text="Three shapes appear.", color='black', height=0.032, pos=(0, -0.42),
                               wrapWidth=1.3, units='height', alignText='center')
         sq.draw()
@@ -452,47 +469,56 @@ def run_tutorial_phase1(win, mouse, participant):
         core.wait(2.5)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
 
-        # Step 2: Red square appears, clicks left
+        # Step 2: Red square appears at center, clicks to place on left
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        clock.reset()
-        _animate_shape_move(win, sq, (0, 0), (-0.35, 0), 1.5, "Red square appears. Clicking to place on the left.", clock)
+        _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. Clicking to place on the left.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
-        # Step 3: Red circle appears, clicks left
+        # Step 3: Red circle appears at center, clicks to place on left (next to square)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
-        clock.reset()
         circ_red.setPos((0, 0))
-        _animate_shape_move(win, circ_red, (0, 0), (-0.35, 0.08), 1.5, "Red circle appears. Clicking to place on the left.", clock)
+        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the left.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
-        # Step 4: Green circle appears, clicks right
+        # Step 4: Green circle appears at center, clicks to place on right
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
-        clock.reset()
         circ_green.setPos((0, 0))
-        _animate_shape_move(win, circ_green, (0, 0), (0.35, 0), 1.5, "Green circle appears. Clicking to place on the right.", clock)
+        _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green circle appears. Clicking to place on the right.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
-        # Step 5: Final layout + alternative grouping note
-        _log_ttl_event("tutorial_fallback_onset", trial_info="step=5")
-        sq.setPos((-0.35, 0))
-        circ_red.setPos((-0.35, 0.08))
-        circ_green.setPos((0.35, 0))
+        # Step 5a: Shape vs color
+        _log_ttl_event("tutorial_fallback_onset", trial_info="step=5a")
+        sq.setPos(sq_pos)
+        circ_red.setPos(circ_red_pos)
+        circ_green.setPos(circ_green_pos)
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_alt = visual.TextStim(win, text="There were alternative ways of grouping, but this is what we went with.",
-                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
-        sub_alt.draw()
+        sub_5a = visual.TextStim(win, text="We sorted by shapes but could have sorted by color.",
+                                color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
+        sub_5a.draw()
+        win.flip()
+        core.wait(2.5)
+        _log_ttl_event("tutorial_fallback_offset", trial_info="step=5a")
+
+        # Step 5b: Distance denotes group
+        _log_ttl_event("tutorial_fallback_onset", trial_info="step=5b")
+        sq.draw()
+        circ_red.draw()
+        circ_green.draw()
+        sub_5b = visual.TextStim(win, text="Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group.",
+                                color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
+        sub_5b.draw()
         win.flip()
         core.wait(3.0)
-        _log_ttl_event("tutorial_fallback_offset", trial_info="step=5")
+        _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
 
         # Step 6: Press Enter subtitle
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=6")
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_enter = visual.TextStim(win, text="Click to place each shape.",
+        sub_enter = visual.TextStim(win, text="Click to place. Press Enter to submit.",
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_enter.draw()
         win.flip()
@@ -566,7 +592,13 @@ def build_phase2_trials(participant):
 
 
 def run_phase2_tutorial(win, mouse, participant):
-    """Phase 2 tutorial: practice1, practice2, circle, CIRCUS | SPACE."""
+    """Phase 2 tutorial: explicit intro screens, then practice1, practice2, circle, CIRCUS | SPACE."""
+    # Single intro screen (max 2 sentences) — one Enter before demo
+    intro = visual.TextStim(win, text="In this example, you'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.",
+                            color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+    if not wait_for_continue(win, intro, "phase2_tutorial_intro"):
+        return False
+
     p1, p2 = get_practice_context_paths()
     circ = visual.Circle(win, radius=0.2, fillColor='blue', lineColor=None)
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
@@ -627,50 +659,52 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_shape2_offset")
 
     # Blank 1000ms
+    _log_ttl_event("phase2_tutorial_blank2_onset")
     blank.draw()
     win.flip()
     core.wait(1.0)
+    _log_ttl_event("phase2_tutorial_blank2_offset")
 
     # Red dot + "BALL" 2000ms
+    _log_ttl_event("phase2_tutorial_reddot2_onset")
     dot.draw()
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
     txt2.draw()
     win.flip()
     core.wait(2.0)
+    _log_ttl_event("phase2_tutorial_reddot2_offset")
 
-    # Question: CIRCUS | SPACE
+    # Question: CIRCUS | SPACE — demo only (participant watches, no click)
     q = visual.TextStim(win, text="Which context fits the object better?", color='black', height=0.04, pos=(0, 0.1))
     btn_circus = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(-0.2, -0.2), units='height')
     btn_space = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
     txt_c = visual.TextStim(win, text="CIRCUS", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
     txt_s = visual.TextStim(win, text="SPACE", color='black', height=0.03, pos=(0.2, -0.2), units='height')
     _log_ttl_event("phase2_tutorial_question_onset")
+    # Show question + buttons for ~1.5 s
     q.draw()
     btn_circus.draw()
     btn_space.draw()
     txt_c.draw()
     txt_s.draw()
     win.flip()
-    # Wait for SPACE click (example)
-    while True:
-        mpos = mouse.getPos()
-        mbuttons = mouse.getPressed()
-        if mbuttons[0] and 0.1 <= mpos[0] <= 0.3 and -0.23 <= mpos[1] <= -0.17:
-            _log_ttl_event("phase2_tutorial_response", trial_info="SPACE")
-            break
-        keys = event.getKeys(keyList=['escape'])
-        if keys and 'escape' in keys:
-            return False
-        q.draw()
-        btn_circus.draw()
-        btn_space.draw()
-        txt_c.draw()
-        txt_s.draw()
-        win.flip()
-        core.wait(0.02)
+    core.wait(1.5)
+    # Animate SPACE button being pressed (highlight/darken)
+    btn_space_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
+    q.draw()
+    btn_circus.draw()
+    btn_space_pressed.draw()  # darker = "pressed"
+    txt_c.draw()
+    txt_s.draw()
+    win.flip()
+    _log_ttl_event("phase2_tutorial_response", trial_info="SPACE")
+    core.wait(1.0)
+    _log_ttl_event("phase2_tutorial_question_offset")
+    _log_ttl_event("phase2_tutorial_post_blank_onset")
     blank.draw()
     win.flip()
     core.wait(3.0)
+    _log_ttl_event("phase2_tutorial_post_blank_offset")
 
     # Ready screen
     ready = visual.TextStim(win, text="Ready to try this with some actual shapes and images?",
@@ -702,7 +736,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 
     for t_idx, trial in enumerate(trials):
         if t_idx > 0 and t_idx % 12 == 0:
-            break_text = visual.TextStim(win, text="Take a break! Press Enter when ready to move on.",
+            break_text = visual.TextStim(win, text="Take a break!",
                                         color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
             _log_ttl_event("phase2_break_onset", trial_info=f"after_trial={t_idx}")
             wait_for_continue(win, break_text, "phase2_break")
@@ -732,9 +766,11 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         core.wait(1.0)
         _log_ttl_event("phase2_shape_offset", trial_info=f"trial={t_idx+1}")
 
+        _log_ttl_event("phase2_blank1_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
         core.wait(1.0)
+        _log_ttl_event("phase2_blank1_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
@@ -754,9 +790,11 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         core.wait(1.0)
         _log_ttl_event("phase2_shape2_offset", trial_info=f"trial={t_idx+1}")
 
+        _log_ttl_event("phase2_blank2_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
         core.wait(1.0)
+        _log_ttl_event("phase2_blank2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
@@ -796,6 +834,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             core.wait(0.02)
         rt = rt_clock.getTime()
         _log_ttl_event("phase2_response", trial_info=f"trial={t_idx+1} response={response}")
+        _log_ttl_event("phase2_question_offset", trial_info=f"trial={t_idx+1}")
 
         row = {
             'trial': t_idx + 1,
@@ -823,9 +862,11 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             except (AttributeError, OSError):
                 pass
 
+        _log_ttl_event("phase2_trial_iti_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
         core.wait(0.5)
+        _log_ttl_event("phase2_trial_iti_offset", trial_info=f"trial={t_idx+1}")
 
     if f:
         f.close()
@@ -988,6 +1029,7 @@ def write_summary(participant, experiment_start, experiment_end, phase1_results,
             'phase3_euclidean_distances': phase3_dists
         })
         f.flush()
+    _log_ttl_event("summary_saved", trial_info=str(csv_path.name))
 
 
 # =========================
@@ -997,9 +1039,11 @@ def main():
     global _ttl_file_ref, _ttl_writer_ref
     event.globalKeys.add(key='escape', func=lambda: core.quit(), modifiers=[])
 
+    # Use windowed mode on small screens or when PSYCHOPY_WINDOWED=1 (reduces OOM risk)
+    use_windowed = os.environ.get('PSYCHOPY_WINDOWED', '').lower() in ('1', 'true', 'yes')
     win = visual.Window(
         size=(1920, 1080),
-        fullscr=True,
+        fullscr=not use_windowed,
         color='white',
         units='height',
         allowGUI=False
@@ -1007,22 +1051,22 @@ def main():
     mouse = event.Mouse(win=win)
     mouse.setVisible(True)
 
+    _probe_ttl()
+    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    ttl_path = LOG_DIR / f"ttl_log_{timestamp_str}.csv"
+    _ttl_file_ref[0] = open(ttl_path, 'w', newline='')
+    _ttl_writer_ref[0] = csv.DictWriter(_ttl_file_ref[0], fieldnames=['timestamp', 'trigger_code', 'event_label', 'trial_info'])
+    _ttl_writer_ref[0].writeheader()
+    _ttl_file_ref[0].flush()
+
     participant = get_participant_name(win)
     participant = participant.strip() or 'anonymous'
 
-    _probe_ttl()
-    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
-    if not is_test_participant(participant):
-        ttl_path = LOG_DIR / f"ttl_log_{participant}_{timestamp_str}.csv"
-        _ttl_file_ref[0] = open(ttl_path, 'w', newline='')
-        _ttl_writer_ref[0] = csv.DictWriter(_ttl_file_ref[0], fieldnames=['timestamp', 'trigger_code', 'event_label', 'trial_info'])
-        _ttl_writer_ref[0].writeheader()
-        _ttl_file_ref[0].flush()
-
     experiment_start = time.time()
+    _log_ttl_event("experiment_start", trial_info=f"participant={participant}")
 
     # Welcome
-    welcome = visual.TextStim(win, text="Welcome to our task! Let's get started. First, watch this example video of how we work on this task.",
+    welcome = visual.TextStim(win, text="Welcome! Let's get started. First, watch this example video of how we work on this task.",
                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
@@ -1035,12 +1079,17 @@ def main():
         win.close()
         return
 
-    # Phase 1 — instructions much longer after practice
-    instr1 = visual.TextStim(win, text="Let's sort some shapes. First you will see all of them. Then you will place them one at a time by clicking where you want each to go, grouping them where you think they belong, as in the practice. Shapes you place closer together are ones you're grouping as more similar. Use as many groups as you need.\n\nPress Enter when you're ready.",
-                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr1, "phase1_instructions", min_display_sec=10.0):
-        win.close()
-        return
+    # Phase 1 — split instructions (max 2 sentences per screen)
+    p1_screens = [
+        ("Let's sort some shapes. First you will see all of them.", "phase1_instr1", 0),
+        ("Then place them one at a time by clicking where you want each to go, as in the practice.", "phase1_instr2", 0),
+        ("Shapes closer together are ones you're grouping as more similar. Use as many groups as you need.", "phase1_instr3", 8.0),
+    ]
+    for text, label, min_sec in p1_screens:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
+            win.close()
+            return
 
     # Grid 5 sec
     grid_path = get_shape_grid_path()
@@ -1059,11 +1108,15 @@ def main():
     core.wait(1.0)
     _log_ttl_event("phase1_fixation_offset")
 
-    instr2 = visual.TextStim(win, text="You will now see the shapes from before, one at a time. Group each to where you think it belongs on the screen. Remember: shapes placed closer together are ones you're grouping as more similar. Use as many groups as you need. Click to place each shape.",
-                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr2, "phase1_instruction2"):
-        win.close()
-        return
+    p1_instr2_screens = [
+        ("You'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
+        ("Shapes closer together are in the same group. Click to place, press Enter to submit.", "phase1_instruction2b", 0),
+    ]
+    for text, label, _ in p1_instr2_screens:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label):
+            win.close()
+            return
 
     shapes = get_shape_paths()
     random.shuffle(shapes)
@@ -1073,13 +1126,20 @@ def main():
     if phase1_results is None:
         win.close()
         return
+    gc.collect()
 
-    # Phase 2
-    instr_p2 = visual.TextStim(win, text="Now, you will see the shapes again, in conjunction with different contexts. Try to think of what the shape might be in that context and say it out loud.\n\nHere's an example.",
-                              color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr_p2, "phase2_instructions", min_display_sec=8.0):
-        win.close()
-        return
+    # Phase 2 — split instructions (max 2 sentences per screen), explicit explanation
+    p2_screens = [
+        ("Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures.", "phase2_instr1", 0),
+        ("For each picture, say out loud what the shape could be. For example: planet, ball, or cookie.", "phase2_instr2", 0),
+        ("Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr3", 0),
+        ("Here's an example to show you how it works.", "phase2_instr4", 5.0),
+    ]
+    for text, label, min_sec in p2_screens:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
+            win.close()
+            return
 
     if not run_phase2_tutorial(win, mouse, participant):
         win.close()
@@ -1087,19 +1147,27 @@ def main():
 
     trials = build_phase2_trials(participant)
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
+    gc.collect()
 
-    # Phase 3
-    instr_p3 = visual.TextStim(win, text="Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs. Again, shapes placed closer together are ones you're grouping as more similar. You may find that some shapes remind you of things you saw earlier—use whatever information feels relevant. Feel free to use whatever grouping feels intuitive.",
-                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-    if not wait_for_continue(win, instr_p3, "phase3_instructions"):
-        win.close()
-        return
+    # Phase 3 — split instructions (max 2 sentences per screen)
+    p3_screens = [
+        ("Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs.", "phase3_instr1", 0),
+        ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
+        ("You may refer to the Phase 2 associations—the images you saw with each shape—when deciding how to group them.", "phase3_instr3", 0),
+        ("Feel free to use whatever grouping feels intuitive.", "phase3_instr4", 0),
+    ]
+    for text, label, _ in p3_screens:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label):
+            win.close()
+            return
 
     shapes3 = get_shape_paths()
     random.shuffle(shapes3)
     while shapes3 == shapes:
         random.shuffle(shapes3)
     phase3_results = run_drag_phase(win, mouse, shapes3, "phase3", 3, participant, timestamp_str=timestamp_str)
+    gc.collect()
     if phase3_results is None:
         win.close()
         return
@@ -1113,14 +1181,30 @@ def main():
     experiment_end = time.time()
     write_summary(participant, experiment_start, experiment_end, phase1_results, phase3_results, timestamp_str=timestamp_str)
 
+    _log_ttl_event("experiment_end", trial_info=f"participant={participant}")
+
     if _ttl_file_ref[0]:
         _ttl_file_ref[0].close()
         _ttl_file_ref[0] = None
+        if is_test_participant(participant):
+            try:
+                ttl_path.unlink(missing_ok=True)
+            except Exception:
+                pass
+        else:
+            try:
+                new_path = LOG_DIR / f"ttl_log_{participant}_{timestamp_str}.csv"
+                if new_path != ttl_path:
+                    ttl_path.rename(new_path)
+            except Exception:
+                pass
 
     thanks = visual.TextStim(win, text="Thank you! Task complete.", color='black', height=0.05, pos=(0, 0))
+    _log_ttl_event("thanks_onset")
     thanks.draw()
     win.flip()
     core.wait(2.0)
+    _log_ttl_event("thanks_offset")
     win.close()
 
 
