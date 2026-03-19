@@ -353,53 +353,120 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 
 
 # =========================
-#  Tutorial — Video with text overlay (red square, red circle, green circle)
+#  Tutorial — Video with subtitles (red square, red circle, green circle)
 # =========================
-# Place tutorial video at STIMULI/tutorial_video.mp4. If missing, plays a timed sequence.
+# Place tutorial video at STIMULI/tutorial_video.mp4. Video should show dragging in action;
+# subtitles describe what's on screen (not instructions read aloud).
+# If missing, plays animated fallback simulating the drag sequence.
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
+def _animate_shape_move(win, shape_stim, start_pos, end_pos, duration, subtitle, clock):
+    """Animate shape from start_pos to end_pos over duration. Subtitle at bottom."""
+    sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
+                          wrapWidth=1.3, units='height', alignText='center')
+    t0 = clock.getTime()
+    while clock.getTime() - t0 < duration:
+        keys = event.getKeys(keyList=['escape'])
+        if keys and 'escape' in keys:
+            core.quit()
+        t = (clock.getTime() - t0) / duration
+        t = min(1.0, t)
+        x = start_pos[0] + (end_pos[0] - start_pos[0]) * t
+        y = start_pos[1] + (end_pos[1] - start_pos[1]) * t
+        shape_stim.setPos((x, y))
+        shape_stim.draw()
+        sub.draw()
+        win.flip()
+        core.wait(0.016)
+
+
 def run_tutorial_phase1(win, mouse, participant):
-    """Tutorial: video + text overlay, or fallback timed sequence. Shapes: red square, red circle, green circle."""
+    """Tutorial: video with subtitles, or animated fallback showing dragging. Shapes: red square, red circle, green circle."""
+    used_fallback = True
     if TUTORIAL_VIDEO.exists():
         try:
             movie = visual.MovieStim(win, str(TUTORIAL_VIDEO), play=True)
-            text_overlay = visual.TextStim(win, text="", color='black', height=0.035, pos=(0, -0.4),
-                                           wrapWidth=1.3, units='height', alignText='center')
             _log_ttl_event("tutorial_video_onset")
             while movie.status != visual.FINISHED:
                 keys = event.getKeys(keyList=['escape'])
                 if keys and 'escape' in keys:
                     core.quit()
                 movie.draw()
-                text_overlay.draw()
                 win.flip()
             _log_ttl_event("tutorial_video_offset")
+            used_fallback = False
         except Exception as e:
             print(f"Video playback failed, using fallback: {e}", file=sys.stderr)
-    else:
-        # Fallback: timed sequence with text explaining each step
-        sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None, pos=(-0.3, 0))
-        circ1 = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None, pos=(0, 0))
-        circ2 = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None, pos=(0.3, 0))
-        texts = [
-            ("Here are the three shapes: a red square, a red circle, and a green circle.", 4.0),
-            ("You will see each shape one at a time. Drag it to where you think it belongs.", 4.0),
-            ("Group similar shapes together. The red shapes go together; the green circle is different.", 4.0),
-            ("When you're happy with the position, press Enter to submit.", 3.0),
-        ]
-        for i, (txt, dur) in enumerate(texts):
-            _log_ttl_event(f"tutorial_fallback_onset", trial_info=f"step={i+1}")
-            if i == 0:
-                sq.draw()
-                circ1.draw()
-                circ2.draw()
-            overlay = visual.TextStim(win, text=txt, color='black', height=0.04, pos=(0, -0.35),
-                                     wrapWidth=1.3, units='height', alignText='center')
-            overlay.draw()
-            win.flip()
-            core.wait(dur)
-            _log_ttl_event(f"tutorial_fallback_offset", trial_info=f"step={i+1}")
+
+    if used_fallback:
+        # Animated sequence showing dragging (subtitles describe what's on screen)
+    clock = core.Clock()
+    sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None)
+    circ_red = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None)
+    circ_green = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None)
+
+    # Step 1: Three shapes overview
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=1")
+    sq.setPos((-0.3, 0))
+    circ_red.setPos((0, 0))
+    circ_green.setPos((0.3, 0))
+    sub1 = visual.TextStim(win, text="Three shapes appear.", color='black', height=0.032, pos=(0, -0.42),
+                          wrapWidth=1.3, units='height', alignText='center')
+    sq.draw()
+    circ_red.draw()
+    circ_green.draw()
+    sub1.draw()
+    win.flip()
+    core.wait(2.5)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
+
+    # Step 2: Red square appears, drags left
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
+    clock.reset()
+    _animate_shape_move(win, sq, (0, 0), (-0.35, 0), 1.5, "Red square appears. Dragging to the left.", clock)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
+
+    # Step 3: Red circle appears, drags left
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
+    clock.reset()
+    circ_red.setPos((0, 0))
+    _animate_shape_move(win, circ_red, (0, 0), (-0.35, 0.08), 1.5, "Red circle appears. Dragging to the left.", clock)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
+
+    # Step 4: Green circle appears, drags right
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
+    clock.reset()
+    circ_green.setPos((0, 0))
+    _animate_shape_move(win, circ_green, (0, 0), (0.35, 0), 1.5, "Green circle appears. Dragging to the right.", clock)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
+
+    # Step 5: Final layout + alternative grouping note
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=5")
+    sq.setPos((-0.35, 0))
+    circ_red.setPos((-0.35, 0.08))
+    circ_green.setPos((0.35, 0))
+    sq.draw()
+    circ_red.draw()
+    circ_green.draw()
+    sub_alt = visual.TextStim(win, text="There were alternative ways of grouping, but this is what we went with.",
+                              color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
+    sub_alt.draw()
+    win.flip()
+    core.wait(3.0)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=5")
+
+    # Step 6: Press Enter subtitle
+    _log_ttl_event("tutorial_fallback_onset", trial_info="step=6")
+    sq.draw()
+    circ_red.draw()
+    circ_green.draw()
+    sub_enter = visual.TextStim(win, text="Press Enter to submit each placement.",
+                                color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
+    sub_enter.draw()
+    win.flip()
+    core.wait(2.0)
+    _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Debrief
     debrief = visual.TextStim(win, text="In this practice, we sorted all objects by shape!",

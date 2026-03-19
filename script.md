@@ -40,19 +40,21 @@ Full task specs: See README.md. CSV format: `csv_documentation.md`.
 
 ---
 
-### Tutorial — Video with text overlay
+### Tutorial — Video with subtitles
 
 **Shapes:** Red square, red circle, green circle.
 
-**Option A (video):** Place `STIMULI/tutorial_video.mp4` in the stimuli folder. The video plays with text explaining what's happening. ESC exits.
+**Option A (video):** Place `STIMULI/tutorial_video.mp4` in the stimuli folder. The video should show the dragging process—shapes appearing, being dragged, and placed. **Subtitles describe what's on screen** (e.g., "Red square appears. Dragging to the left."), not instructions read aloud. Include a subtitle: "There were alternative ways of grouping, but this is what we went with." ESC exits.
 
-**Option B (fallback):** If no video, a timed sequence shows the three shapes with explanatory text:
-- "Here are the three shapes: a red square, a red circle, and a green circle."
-- "You will see each shape one at a time. Drag it to where you think it belongs."
-- "Group similar shapes together. The red shapes go together; the green circle is different."
-- "When you're happy with the position, press Enter to submit."
+**Option B (fallback):** If no video, an animated sequence simulates the tutorial:
+- "Three shapes appear."
+- Red square appears, animates left: "Red square appears. Dragging to the left."
+- Red circle appears, animates left: "Red circle appears. Dragging to the left."
+- Green circle appears, animates right: "Green circle appears. Dragging to the right."
+- "There were alternative ways of grouping, but this is what we went with."
+- "Press Enter to submit each placement."
 
-**What to say:** "Watch the tutorial. It shows how to drag shapes and press Enter to submit."
+**What to say:** "Watch the tutorial. It shows what dragging and placing looks like."
 
 **TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset
 

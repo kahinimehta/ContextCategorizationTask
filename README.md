@@ -32,7 +32,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 - **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_X_Y.png) + ShapeGrid_4x4.png
 - **`STIMULI/Context_Images/`** — Context category folders (bark, cloud, coral, etc.) + practice1.png, practice2.png
-- **`STIMULI/tutorial_video.mp4`** — Optional. Video tutorial with text overlay (shapes: red square, red circle, green circle). If missing, a timed fallback sequence plays.
+- **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the dragging process (red square, red circle, green circle). Subtitles describe what's on screen; include "There were alternative ways of grouping, but this is what we went with." If missing, an animated fallback simulates the sequence.
 
 ## Data Output
 
