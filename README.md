@@ -15,7 +15,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 - **Python**: Anaconda
 - **PsychoPy**: v2025.1.1
 - **Display**: Fullscreen by default (windowed via `PSYCHOPY_WINDOWED=1` if needed)
-- **Exit**: ESC at any time
+- **Exit**: ESC during interactive screens only (no global escape; like Social Recognition Task)
 
 ## Repository Contents
 
@@ -42,10 +42,10 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 | File | Description |
 |------|-------------|
 | `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), all_click_ttl, submit_ttl |
-| `phase1_placements_{participant}_{datetime}.png` | Image of final shape placements at end of Phase 1 |
+| `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
-| `phase3_placements_{participant}_{datetime}.png` | Image of final shape placements at end of Phase 3 |
+| `phase3_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |
 | `summary_{participant}_{datetime}.csv` | Total task time, grid dimensions, ground-truth positions, Euclidean distances (how close shapes are categorically) |
 | `ttl_log_{participant}_{datetime}.csv` | Every TTL trigger: timestamp, trigger code, event label, trial info |
@@ -61,7 +61,7 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 1. Ensure PsychoPy and dependencies are installed (Anaconda environment)
 2. Run: `python context_shape_task.py`
 3. Enter participant name on fullscreen (like Social Recognition Task); press Enter when done
-4. **ESC** exits at any time. **Click** to move shapes, **Enter** to submit (Phase 1 & 3); **Enter** to continue through instructions
+4. **ESC** exits during interactive screens (instructions, name entry, shape placement, etc.). Not during timed displays (grid, fixation). Like Social Recognition Task, no global escape—reduces accidental quits.
 5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
 6. For practice runs: use a name containing "test" to skip all file saving
 
@@ -69,7 +69,8 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 
 ## Troubleshooting
 
-- **`zsh: killed` (OOM):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen.
+- **Random/accidental quits:** ESC is not a global key (like Social Recognition Task). It only works during interactive screens (instructions, name entry, shape placement, Phase 2 questions, debrief). During timed displays (grid, fixation, stimulus), ESC does nothing—reduces accidental quits from key repeat or stray keypresses.
+- **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 

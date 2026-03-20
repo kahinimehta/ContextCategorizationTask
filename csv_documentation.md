@@ -2,6 +2,8 @@
 
 Complete reference for all CSV outputs from the ContextShape Task. See `script.md` for experimenter instructions (including ELI5/simple versions for explaining to participants).
 
+**Exit:** ESC works only during interactive screens (instructions, name entry, placement, Phase 2 questions, debrief). Not during timed displays. Like Social Recognition Task—no global escape.
+
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
 Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs.
@@ -133,7 +135,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_question_offset` | 2 | Question screen ended (after response) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
-| `phase2_break_onset` | 2 | Break screen appeared (every 12 trials) |
+| `phase2_break_onset` | 2 | Break screen appeared (every 12 trials; shows progress bar with % contextualized) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
 | `phase3_instr1_onset` | 3 | Phase 3 instruction screen 1 appeared |
@@ -142,23 +144,20 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instr2_onset` | 3 | Phase 3 instruction screen 2 appeared |
 | `phase3_instr2_enter` | 3 | Enter pressed |
 | `phase3_instr2_offset` | 3 | Screen transition |
-| `phase3_instr3_onset` | 3 | Phase 3 instruction screen 3 appeared |
+| `phase3_instr3_onset` | 3 | "Feel free to use whatever grouping..." appeared |
 | `phase3_instr3_enter` | 3 | Enter pressed |
 | `phase3_instr3_offset` | 3 | Screen transition |
-| `phase3_instr4_onset` | 3 | Phase 3 instruction screen 4 appeared |
+| `phase3_instr4_onset` | 3 | "Once you've submitted..." instruction appeared |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
-| `phase3_instr5_onset` | 3 | "Once you've submitted..." instruction appeared |
-| `phase3_instr5_enter` | 3 | Enter pressed |
-| `phase3_instr5_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |
 | `phase3_stimulus_offset` | 3 | Shape display ended, clickable |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_debrief_onset` | 3 | Debrief question onset |
 | `phase3_debrief_response` | 3 | Participant clicked Yes/No |
-| `phase1_placements_saved` | 1 | Phase 1 placement image saved (trial_info: filename) |
-| `phase3_placements_saved` | 3 | Phase 3 placement image saved (trial_info: filename) |
+| `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each shape (trial_info: filename trial=N) |
+| `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each shape (trial_info: filename trial=N) |
 | `summary_saved` | — | Summary CSV written (trial_info: filename) |
 | `thanks_onset` | — | Thank-you screen appeared |
 | `thanks_offset` | — | Thank-you screen ended |

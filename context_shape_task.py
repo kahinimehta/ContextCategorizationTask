@@ -183,40 +183,53 @@ def get_practice_context_paths():
 # =========================
 #  Button / Wait Helpers — Enter only, no buttons, ESC exits
 # =========================
-def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0):
-    """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted."""
+def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0, extra_drawables=None):
+    """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted.
+    extra_drawables: optional list of stimuli to draw in addition to text_stim (e.g. progress bar)."""
     event.clearEvents()
     hint = visual.TextStim(win, text="Press Enter to continue.", color='gray', height=0.03, pos=(0, -0.35), units='height')
+    extras = extra_drawables or []
 
     def draw():
         text_stim.draw()
+        for s in extras:
+            s.draw()
         hint.draw()
 
     if log_ttl:
         _log_ttl_event(f"{event_label}_onset")
     draw()
     win.flip()
+    event.clearEvents()  # clear any key from previous screen
+    core.wait(0.08)  # brief debounce so carried-over key isn't registered
+    event.clearEvents()
     clock = core.Clock()
     clock.reset()
     return_pressed = False  # remember early Enter so user only needs to press once
+    enter_keys = ['return', 'enter']  # return = main Enter; enter = numpad on some systems
+
+    def accept_and_exit():
+        if log_ttl:
+            _log_ttl_event(f"{event_label}_enter")
+            _log_ttl_event(f"{event_label}_offset")
+        event.clearEvents()
+        core.wait(0.15)  # debounce before returning to avoid carry-over to next screen
+        return True
 
     while True:
-        keys = event.getKeys(keyList=['escape', 'return'])
+        try:
+            keys = event.getKeys(keyList=['escape'] + enter_keys, timeStamped=False)
+        except (AttributeError, RuntimeError):
+            keys = []
         if keys:
             if 'escape' in keys:
                 core.quit()
-            if 'return' in keys:
+            if any(k in keys for k in enter_keys):
                 if clock.getTime() >= min_display_sec:
-                    if log_ttl:
-                        _log_ttl_event(f"{event_label}_enter")
-                        _log_ttl_event(f"{event_label}_offset")
-                    return True
+                    return accept_and_exit()
                 return_pressed = True  # advance as soon as min time elapses
         if return_pressed and clock.getTime() >= min_display_sec:
-            if log_ttl:
-                _log_ttl_event(f"{event_label}_enter")
-                _log_ttl_event(f"{event_label}_offset")
-            return True
+            return accept_and_exit()
         draw()
         win.flip()
         core.wait(0.016)
@@ -246,7 +259,10 @@ def get_participant_name(win):
     event.clearEvents()
 
     while True:
-        keys = event.getKeys(keyList=key_list + ['escape'])
+        try:
+            keys = event.getKeys(keyList=key_list + ['escape'], timeStamped=False)
+        except (AttributeError, RuntimeError):
+            keys = []
         if keys:
             if 'escape' in keys:
                 core.quit()
@@ -327,6 +343,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         win.flip()
         core.wait(1.0)
         _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1}")
+        del img  # free texture before creating more stims
 
         # Now clickable: click anywhere to place
         shape_name = Path(shape_path).name
@@ -343,7 +360,10 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         prev_pressed = False
         click_times = []  # all click timestamps (Unix)
         while not submitted:
-            keys = event.getKeys(keyList=['escape', 'return'])
+            try:
+                keys = event.getKeys(keyList=['escape', 'return'], timeStamped=False)
+            except (AttributeError, RuntimeError):
+                keys = []
             if keys:
                 if 'escape' in keys:
                     core.quit()
@@ -384,6 +404,11 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         }
         results.append(row)
         anchors[shape_path] = (float(fx), float(fy))
+        del stim
+        del anchor_stims
+
+        if idx > 0 and (idx + 1) % 4 == 0:
+            gc.collect()
 
         if writer:
             writer.writerow(row)
@@ -393,18 +418,18 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             except (AttributeError, OSError):
                 pass
 
+        # Save placement image incrementally (overwrites each time; preserves progress if task crashes)
+        if not is_test_participant(participant) and results:
+            try:
+                win_size = win.size if hasattr(win, 'size') else (1920, 1080)
+                png_path = LOG_DIR / f"phase{phase_num}_placements_{participant}_{ts}.png"
+                _save_placement_image(results, png_path, win_size)
+                _log_ttl_event(f"phase{phase_num}_placements_saved", trial_info=f"{png_path.name} trial={idx+1}")
+            except Exception as e:
+                print(f"Warning: Could not save placement image: {e}", file=sys.stderr)
+
     if f:
         f.close()
-
-    # Save placement image as PNG (skip for test participants)
-    if not is_test_participant(participant) and results:
-        try:
-            win_size = win.size if hasattr(win, 'size') else (1920, 1080)
-            png_path = LOG_DIR / f"phase{phase_num}_placements_{participant}_{ts}.png"
-            _save_placement_image(results, png_path, win_size)
-            _log_ttl_event(f"phase{phase_num}_placements_saved", trial_info=str(png_path.name))
-        except Exception as e:
-            print(f"Warning: Could not save placement image: {e}", file=sys.stderr)
 
     return results
 
@@ -418,18 +443,26 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
-def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle):
-    """Show click-to-place: shape at center briefly, then at target (no dragging). Text on screen at least 2 s."""
+def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None):
+    """Show click-to-place: shape at center briefly, then at target (no dragging). Text on screen at least 2 s.
+    anchors: optional list of (stim, (x,y)) for previously placed shapes to keep visible (like actual task)."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
+    anchor_list = anchors or []
+
+    def draw_all():
+        for a_stim, a_pos in anchor_list:
+            a_stim.setPos(a_pos)
+            a_stim.draw()
+        shape_stim.draw()
+        sub.draw()
+
     shape_stim.setPos(start_pos)
-    shape_stim.draw()
-    sub.draw()
+    draw_all()
     win.flip()
     core.wait(1.0)
     shape_stim.setPos(end_pos)
-    shape_stim.draw()
-    sub.draw()
+    draw_all()
     win.flip()
     core.wait(2.0)
 
@@ -442,7 +475,10 @@ def run_tutorial_phase1(win, mouse, participant):
             movie = visual.MovieStim(win, str(TUTORIAL_VIDEO), play=True)
             _log_ttl_event("tutorial_video_onset")
             while movie.status != visual.FINISHED:
-                keys = event.getKeys(keyList=['escape'])
+                try:
+                    keys = event.getKeys(keyList=['escape'], timeStamped=False)
+                except (AttributeError, RuntimeError):
+                    keys = []
                 if keys and 'escape' in keys:
                     core.quit()
                 movie.draw()
@@ -478,21 +514,23 @@ def run_tutorial_phase1(win, mouse, participant):
         core.wait(2.5)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
 
-        # Step 2: Red square appears at center, clicks to place on left
+        # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
         _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. Clicking to place on the left.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
-        # Step 3: Red circle appears at center, clicks to place on right
+        # Step 3: Red circle appears at center, clicks to place on right (square stays visible)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
         circ_red.setPos((0, 0))
-        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the right.")
+        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the right.",
+                          anchors=[(sq, sq_pos)])
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
-        # Step 4: Green circle appears at center, clicks to place on right (next to red circle)
+        # Step 4: Green circle appears at center, clicks to place on right (square and red circle stay visible)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
         circ_green.setPos((0, 0))
-        _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green circle appears. Clicking to place on the right.")
+        _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green circle appears. Clicking to place on the right.",
+                          anchors=[(sq, sq_pos), (circ_red, circ_red_pos)])
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
         # Step 5a: Shape vs color
@@ -644,13 +682,13 @@ def run_phase2_tutorial(win, mouse, participant):
     core.wait(1.0)
     _log_ttl_event("phase2_tutorial_blank_offset")
 
-    # Red dot + "PLANET" 2000ms
+    # Red dot + "PLANET" 3000ms
     _log_ttl_event("phase2_tutorial_reddot_onset")
     dot.draw()
     txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.2))
     txt1.draw()
     win.flip()
-    core.wait(2.0)
+    core.wait(3.0)
     _log_ttl_event("phase2_tutorial_reddot_offset")
 
     # Practice context 2 - 1000ms
@@ -674,13 +712,13 @@ def run_phase2_tutorial(win, mouse, participant):
     core.wait(1.0)
     _log_ttl_event("phase2_tutorial_blank2_offset")
 
-    # Red dot + "BALL" 2000ms
+    # Red dot + "BALL" 3000ms
     _log_ttl_event("phase2_tutorial_reddot2_onset")
     dot.draw()
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
     txt2.draw()
     win.flip()
-    core.wait(2.0)
+    core.wait(3.0)
     _log_ttl_event("phase2_tutorial_reddot2_offset")
 
     # Question: CIRCUS | SPACE — demo only (participant watches, no click)
@@ -743,12 +781,21 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
     blank = visual.Rect(win, width=3, height=3, fillColor='white', lineColor=None, pos=(0, 0), units='height')
     dot = visual.Circle(win, radius=0.006, fillColor='red', lineColor=None, pos=(0, 0))
 
+    total_trials = len(trials)
     for t_idx, trial in enumerate(trials):
         if t_idx > 0 and t_idx % 12 == 0:
+            pct = int(100 * t_idx / total_trials)
             break_text = visual.TextStim(win, text="Take a break!",
-                                        color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
+                                        color='black', height=0.04, pos=(0, 0.1), wrapWidth=1.2, units='height')
+            bar_w, bar_h = 0.8, 0.04
+            bar_bg = visual.Rect(win, width=bar_w, height=bar_h, fillColor='lightgray', lineColor='gray',
+                                pos=(0, -0.15), units='height')
+            fill_w = (t_idx / total_trials) * bar_w
+            bar_fill = visual.Rect(win, width=max(fill_w, 0.01), height=bar_h * 0.9, fillColor='steelblue', lineColor=None,
+                                  pos=(-bar_w / 2 + max(fill_w, 0.01) / 2, -0.15), units='height')
+            pct_text = visual.TextStim(win, text=f"{pct}%", color='black', height=0.03, pos=(0, -0.25), units='height')
             _log_ttl_event("phase2_break_onset", trial_info=f"after_trial={t_idx}")
-            wait_for_continue(win, break_text, "phase2_break")
+            wait_for_continue(win, break_text, "phase2_break", extra_drawables=[bar_bg, bar_fill, pct_text])
 
         # Fixation 500ms
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")
@@ -784,7 +831,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
         win.flip()
-        core.wait(2.0)
+        core.wait(3.0)
         _log_ttl_event("phase2_reddot_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1}")
@@ -808,7 +855,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
         win.flip()
-        core.wait(2.0)
+        core.wait(3.0)
         _log_ttl_event("phase2_reddot2_offset", trial_info=f"trial={t_idx+1}")
 
         # Question
@@ -822,7 +869,10 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         rt_clock.reset()
         response = None
         while response is None:
-            keys = event.getKeys(keyList=['escape'])
+            try:
+                keys = event.getKeys(keyList=['escape'], timeStamped=False)
+            except (AttributeError, RuntimeError):
+                keys = []
             if keys and 'escape' in keys:
                 core.quit()
             mpos = mouse.getPos()
@@ -877,6 +927,10 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         core.wait(0.5)
         _log_ttl_event("phase2_trial_iti_offset", trial_info=f"trial={t_idx+1}")
 
+        del ctx1, ctx2, shape_img
+        if (t_idx + 1) % 12 == 0:
+            gc.collect()
+
     if f:
         f.close()
 
@@ -918,7 +972,10 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
         answer = None
 
         while answer is None:
-            keys = event.getKeys(keyList=['escape'])
+            try:
+                keys = event.getKeys(keyList=['escape'], timeStamped=False)
+            except (AttributeError, RuntimeError):
+                keys = []
             if keys and 'escape' in keys:
                 if f:
                     f.close()
@@ -1048,7 +1105,9 @@ def write_summary(participant, experiment_start, experiment_end, phase1_results,
 def main():
     global _ttl_file_ref, _ttl_writer_ref
     gc.collect()
-    event.globalKeys.add(key='escape', func=lambda: core.quit(), modifiers=[])
+    # Do NOT use event.globalKeys for escape (like Social Recognition Task).
+    # globalKeys can cause random quits from key repeat or during transitions.
+    # Escape is checked explicitly in each input loop instead.
 
     # Dummy window (helps stability/OOM on some systems, e.g. Social Recognition Task). Disable: PSYCHOPY_DUMMY_WINDOW=0
     use_dummy = os.environ.get('PSYCHOPY_DUMMY_WINDOW', '1').lower() not in ('0', 'false', 'no')
@@ -1197,16 +1256,17 @@ def main():
 
     trials = build_phase2_trials(participant)
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
+    del trials
     gc.collect()
 
     # Phase 3 — split instructions (max 2 sentences per screen)
     p3_screens = [
         ("Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs.", "phase3_instr1", 0),
         ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
-        ("You may refer to the Phase 2 associations—the images you saw with each shape—when deciding how to group them.", "phase3_instr3", 0),
-        ("Feel free to use whatever grouping feels intuitive.", "phase3_instr4", 0),
-        ("Once you've submitted the position of a shape, you can't move it again.", "phase3_instr5", 0),
+        ("Feel free to use whatever grouping feels intuitive.", "phase3_instr3", 0),
+        ("Once you've submitted the position of a shape, you can't move it again.", "phase3_instr4", 0),
     ]
+    gc.collect()  # free Phase 2 memory before Phase 3 task
     for text, label, _ in p3_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label):
