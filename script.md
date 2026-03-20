@@ -28,7 +28,7 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Data saved to**: `../LOG_FILES/` (one level up from task folder). Filenames include date/time (e.g., `phase1_john_20250318_143022.csv`, `phase1_placements_john_20250318_143022.png`). No files written if name contains "test".
 
-**Display:** Mac defaults to windowed (1280×720). Fullscreen: `PSYCHOPY_WINDOWED=0`. On Windows/Linux, windowed: `PSYCHOPY_WINDOWED=1`.
+**Display:** Fullscreen by default. Windowed (1280×720): `PSYCHOPY_WINDOWED=1`.
 
 ---
 
@@ -287,4 +287,4 @@ Identical to Phase 1. Shape order randomized differently. Hint: "Click to place.
 - **Tutorial video:** `STIMULI/tutorial_video.mp4`; spec in `STIMULI/tutorial_video_spec.md`. Fallback if missing.
 - **TTL:** Every screen change and response is logged. See `csv_documentation.md` for full mapping.
 - **Mac:** Parallel port not supported; TTL logged to CSV only. Cedrus pyxid2 works if connected.
-- **OOM:** Mac uses windowed mode (1280×720) by default. Use `PSYCHOPY_WINDOWED=0` for fullscreen. On Windows/Linux, use `PSYCHOPY_WINDOWED=1` for windowed.
+- **OOM:** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen.

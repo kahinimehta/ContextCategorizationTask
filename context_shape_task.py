@@ -198,17 +198,25 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
     win.flip()
     clock = core.Clock()
     clock.reset()
+    return_pressed = False  # remember early Enter so user only needs to press once
 
     while True:
         keys = event.getKeys(keyList=['escape', 'return'])
         if keys:
             if 'escape' in keys:
                 core.quit()
-            if 'return' in keys and clock.getTime() >= min_display_sec:
-                if log_ttl:
-                    _log_ttl_event(f"{event_label}_enter")
-                    _log_ttl_event(f"{event_label}_offset")
-                return True
+            if 'return' in keys:
+                if clock.getTime() >= min_display_sec:
+                    if log_ttl:
+                        _log_ttl_event(f"{event_label}_enter")
+                        _log_ttl_event(f"{event_label}_offset")
+                    return True
+                return_pressed = True  # advance as soon as min time elapses
+        if return_pressed and clock.getTime() >= min_display_sec:
+            if log_ttl:
+                _log_ttl_event(f"{event_label}_enter")
+                _log_ttl_event(f"{event_label}_offset")
+            return True
         draw()
         win.flip()
         core.wait(0.016)
@@ -1051,8 +1059,8 @@ def main():
         except Exception:
             pass
 
-    # Windowed mode reduces OOM risk. Default windowed on Mac (override with PSYCHOPY_WINDOWED=0 for fullscreen).
-    _default_windowed = '1' if sys.platform == 'darwin' else '0'
+    # Fullscreen by default. Override with PSYCHOPY_WINDOWED=1 for windowed mode (1280×720).
+    _default_windowed = '0'
     use_windowed = os.environ.get('PSYCHOPY_WINDOWED', _default_windowed).lower() in ('1', 'true', 'yes')
     win_size = (1280, 720) if use_windowed else (1920, 1080)
     win = visual.Window(
@@ -1117,7 +1125,7 @@ def main():
 
     # Before grid: 16 shapes, no need to memorize
     p1_before_grid = [
-        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them altogether just for context.", "phase1_before_grid", 0),
+        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase1_before_grid", 0),
     ]
     for text, label, _ in p1_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')

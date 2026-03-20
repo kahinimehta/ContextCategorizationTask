@@ -14,7 +14,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 - **Python**: Anaconda
 - **PsychoPy**: v2025.1.1
-- **Display**: Fullscreen (or windowed via `PSYCHOPY_WINDOWED=1`)
+- **Display**: Fullscreen by default (windowed via `PSYCHOPY_WINDOWED=1` if needed)
 - **Exit**: ESC at any time
 
 ## Repository Contents
@@ -69,7 +69,7 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 
 ## Troubleshooting
 
-- **`zsh: killed` (OOM):** Process uses windowed mode (1280×720) on Mac by default to reduce memory. Override with `PSYCHOPY_WINDOWED=0` for fullscreen. On Windows/Linux, use `PSYCHOPY_WINDOWED=1` for windowed mode.
+- **`zsh: killed` (OOM):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen.
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 
