@@ -63,6 +63,9 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2b_onset` | 1 | "Click to place" instruction appeared |
 | `phase1_instruction2b_enter` | 1 | Enter pressed |
 | `phase1_instruction2b_offset` | 1 | Screen transition |
+| `phase1_instruction2c_onset` | 1 | "Once you've submitted..." instruction appeared |
+| `phase1_instruction2c_enter` | 1 | Enter pressed |
+| `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N) |
 | `phase1_stimulus_offset` | 1 | Shape display ended, clickable |
 | `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
@@ -76,9 +79,15 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr3_onset` | 2 | Phase 2 instruction screen 3 appeared |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
-| `phase2_instr4_onset` | 2 | Phase 2 instruction screen 4 ("Here's an example") appeared |
+| `phase2_instr4_onset` | 2 | "Do your best since you will be recorded..." appeared |
 | `phase2_instr4_enter` | 2 | Enter pressed |
 | `phase2_instr4_offset` | 2 | Screen transition |
+| `phase2_instr5_onset` | 2 | "You can also re-use answers" appeared |
+| `phase2_instr5_enter` | 2 | Enter pressed |
+| `phase2_instr5_offset` | 2 | Screen transition |
+| `phase2_instr6_onset` | 2 | "Here's an example" appeared |
+| `phase2_instr6_enter` | 2 | Enter pressed |
+| `phase2_instr6_offset` | 2 | Screen transition |
 | `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
 | `phase2_tutorial_intro_enter` | 2 | Enter pressed |
 | `phase2_tutorial_intro_offset` | 2 | Screen transition |
@@ -139,6 +148,9 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instr4_onset` | 3 | Phase 3 instruction screen 4 appeared |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
+| `phase3_instr5_onset` | 3 | "Once you've submitted..." instruction appeared |
+| `phase3_instr5_enter` | 3 | Enter pressed |
+| `phase3_instr5_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |
 | `phase3_stimulus_offset` | 3 | Shape display ended, clickable |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |

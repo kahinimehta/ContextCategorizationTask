@@ -1146,6 +1146,7 @@ def main():
     p1_instr2_screens = [
         ("You'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
         ("Shapes closer together are in the same group. Click to place, press Enter to submit.", "phase1_instruction2b", 0),
+        ("Once you've submitted the position of a shape, you can't move it again.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1170,7 +1171,9 @@ def main():
         ("Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures.", "phase2_instr1", 0),
         ("For each picture, say out loud what the shape could be. For example: planet, ball, or cookie.", "phase2_instr2", 0),
         ("Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr3", 0),
-        ("Here's an example to show you how it works.", "phase2_instr4", 5.0),
+        ("Do your best since you will be recorded, but don't panic if nothing comes to mind.", "phase2_instr4", 0),
+        ("You can also re-use answers.", "phase2_instr5", 0),
+        ("Here's an example to show you how it works.", "phase2_instr6", 5.0),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1194,6 +1197,7 @@ def main():
         ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
         ("You may refer to the Phase 2 associations—the images you saw with each shape—when deciding how to group them.", "phase3_instr3", 0),
         ("Feel free to use whatever grouping feels intuitive.", "phase3_instr4", 0),
+        ("Once you've submitted the position of a shape, you can't move it again.", "phase3_instr5", 0),
     ]
     for text, label, _ in p3_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')

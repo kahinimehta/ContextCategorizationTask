@@ -138,17 +138,19 @@ Black cross, 1 second
 
 **TTL:** phase1_fixation_onset, phase1_fixation_offset
 
-#### Instruction screens (2 screens)
+#### Instruction screens (3 screens)
 
 **Screen 1:** "You'll see the shapes from before, one at a time. Group each where you think it belongs."
 
 **Screen 2:** "Shapes closer together are in the same group. Click to place, press Enter to submit."
 
-**TTL:** phase1_instruction2a_onset/enter/offset, phase1_instruction2b_onset/enter/offset
+**Screen 3:** "Once you've submitted the position of a shape, you can't move it again."
 
-**What to say:** "Place each shape where it belongs. Click to move, Enter when happy."
+**TTL:** phase1_instruction2a_onset/enter/offset, phase1_instruction2b_onset/enter/offset, phase1_instruction2c_onset/enter/offset
 
-**Simple version:** "Put each shape where it goes. Click to move, Enter when happy. Things that go together go close."
+**What to say:** "Place each shape where it belongs. Click to move, Enter when happy. Once you submit, you can't move it."
+
+**Simple version:** "Put each shape where it goes. Click to move, Enter when happy. Once you press Enter, it's set."
 
 #### Task (16 shapes)
 
@@ -164,7 +166,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 ### Phase 2 — Top-Down Context Incorporation
 
-#### Instructions (4 screens, max 2 sentences each; last screen min 5 s)
+#### Instructions (6 screens, max 2 sentences each; last screen min 5 s)
 
 **Screen 1:** "Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures."
 
@@ -172,9 +174,13 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Screen 3:** "Then click which picture the shape fits better with. We need to hear you say it every time."
 
-**Screen 4:** "Here's an example to show you how it works." *(Enter after 5 s)*
+**Screen 4:** "Do your best since you will be recorded, but don't panic if nothing comes to mind."
 
-**TTL:** phase2_instr1–4_onset/enter/offset
+**Screen 5:** "You can also re-use answers."
+
+**Screen 6:** "Here's an example to show you how it works." *(Enter after 5 s)*
+
+**TTL:** phase2_instr1–6_onset/enter/offset
 
 **What to say:** "Say out loud what the shape could be in each context—e.g. 'planet' or 'ball.' Then click which picture it fits better with."
 
@@ -218,7 +224,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 ### Phase 3 — Post-Context Shape Reclassification
 
-#### Instructions (4 screens, max 2 sentences each)
+#### Instructions (5 screens, max 2 sentences each)
 
 **Screen 1:** "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs."
 
@@ -228,11 +234,13 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Screen 4:** "Feel free to use whatever grouping feels intuitive."
 
-**TTL:** phase3_instr1–4_onset/enter/offset
+**Screen 5:** "Once you've submitted the position of a shape, you can't move it again."
 
-**What to say:** "Same as the start. Click to move, Enter when happy. You can use the Phase 2 associations—the images you saw with each shape—when deciding how to group them."
+**TTL:** phase3_instr1–5_onset/enter/offset
 
-**Simple version:** "Same as before. Put each where it goes. You can use the pictures you saw with each shape in Phase 2 to help you group them."
+**What to say:** "Same as the start. Click to move, Enter when happy. Once you submit, you can't move it. You can use the Phase 2 associations when deciding how to group them."
+
+**Simple version:** "Same as before. Put each where it goes. Once you press Enter, it's set. You can use the pictures from Phase 2 to help you group them."
 
 **Experimenter note:** Emphasize "Things that go together go close." Explicitly say they may refer to Phase 2 associations for their grouping.
 
