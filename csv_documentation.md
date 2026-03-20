@@ -35,9 +35,6 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `tutorial_video_offset` | — | Tutorial video ended |
 | `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1, 2, 3, 4, 5a, 5b, 6) |
 | `tutorial_fallback_offset` | — | Animated fallback step ended |
-| `tutorial_debrief_onset` | — | "We sorted by shape" screen appeared |
-| `tutorial_debrief_enter` | — | Enter pressed |
-| `tutorial_debrief_offset` | — | Screen transition |
 | `tutorial_transition_onset` | — | "Let's get started" screen appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
 | `tutorial_transition_offset` | — | Screen transition |
@@ -50,7 +47,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instr3_onset` | 1 | "Group them into groups—not on a spectrum..." appeared |
 | `phase1_instr3_enter` | 1 | Enter pressed |
 | `phase1_instr3_offset` | 1 | Screen transition |
-| `phase1_instr4_onset` | 1 | "Use as many groups as you need" appeared |
+| `phase1_instr4_onset` | 1 | "Use as many groups as you need" appeared (min 5 s before Enter) |
 | `phase1_instr4_enter` | 1 | Enter pressed |
 | `phase1_instr4_offset` | 1 | Screen transition |
 | `phase1_before_grid_onset` | 1 | "You will see 16 shapes..." appeared |
@@ -63,9 +60,6 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
 | `phase1_instruction2a_enter` | 1 | Enter pressed |
 | `phase1_instruction2a_offset` | 1 | Screen transition |
-| `phase1_instruction2b_onset` | 1 | "Group into groups—not on a spectrum..." appeared |
-| `phase1_instruction2b_enter` | 1 | Enter pressed |
-| `phase1_instruction2b_offset` | 1 | Screen transition |
 | `phase1_instruction2c_onset` | 1 | "Click to place... Once you've submitted..." instruction appeared |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |

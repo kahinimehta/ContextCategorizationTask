@@ -18,7 +18,7 @@ See `../README.md` and `../script.md` for task documentation.
 | 2 | ~3 s | Red square appears at center, then appears at left (click-to-place, no dragging) | "Red square appears. Clicking to place on the left." |
 | 3 | ~3 s | Red circle appears at center, then appears at right (click-to-place) | "Red circle appears. Clicking to place on the right." |
 | 4 | ~3 s | Green circle appears at center, then appears at right next to red circle (spaced apart, no overlap) | "Green circle appears. Clicking to place on the right." |
-| 5a | ~3 s | Final layout: square on left, both circles on right (sorted by shape) | "We sorted by shapes but could have sorted by color." |
+| 5a | ~3 s | Final layout: square on left, both circles on right (sorted by shape). Fallback draws circles around each group. | "We sorted by shapes but could have sorted by color." |
 | 5b | ~4 s | Same layout | "You're grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group." |
 | 6 | ~2.5 s | Same layout with new subtitle | "Objects in a group can still be slightly further apart than from objects in another group." + "Click to place. Press Enter to submit." |
 
@@ -38,4 +38,4 @@ See `../README.md` and `../script.md` for task documentation.
 
 ## Fallback
 
-If `tutorial_video.mp4` is missing, the task plays an animated fallback with the same sequence and subtitles.
+If `tutorial_video.mp4` is missing, the task plays an animated fallback with the same sequence and subtitles. Step 5a draws outline circles around each group (square alone; two circles together) to reinforce grouping. After the final step, the task goes directly to "Let's get started on your task!" (no debrief screen).

@@ -32,6 +32,15 @@ os.environ.setdefault('PSYCHOPY_IOHUB', '0')
 
 from psychopy import visual, core, event
 
+
+def _wait(secs):
+    """Wait secs seconds. On macOS, core.wait() can trigger pyglet Cocoa bug
+    (ObjCInstance has no attribute type) during event dispatch; use time.sleep instead."""
+    if sys.platform == 'darwin':
+        time.sleep(secs)
+    else:
+        core.wait(secs)
+
 # =========================
 #  TTL / Parallel Port
 # =========================
@@ -87,7 +96,7 @@ def _send_ttl():
             backend.activate_line(lines=_ttl_line)
         elif backend_type == 'parallel':
             backend.setData(255)
-            core.wait(0.01)
+            _wait(0.01)
             backend.setData(0)
     except Exception:
         pass
@@ -201,19 +210,19 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
     draw()
     win.flip()
     event.clearEvents()  # clear any key from previous screen
-    core.wait(0.08)  # brief debounce so carried-over key isn't registered
+    _wait(0.05)  # brief debounce so carried-over key isn't registered
     event.clearEvents()
     clock = core.Clock()
     clock.reset()
     return_pressed = False  # remember early Enter so user only needs to press once
-    enter_keys = ['return', 'enter']  # return = main Enter; enter = numpad on some systems
+    enter_keys = ['return', 'enter', 'num_enter', 'kp_enter']  # main Enter + numpad variants
 
     def accept_and_exit():
         if log_ttl:
             _log_ttl_event(f"{event_label}_enter")
             _log_ttl_event(f"{event_label}_offset")
         event.clearEvents()
-        core.wait(0.15)  # debounce before returning to avoid carry-over to next screen
+        _wait(0.05)  # minimal debounce to avoid carry-over to next screen
         return True
 
     while True:
@@ -230,9 +239,15 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
                 return_pressed = True  # advance as soon as min time elapses
         if return_pressed and clock.getTime() >= min_display_sec:
             return accept_and_exit()
+        if return_pressed:
+            # Waiting for min_display_sec after early Enter—chunk wait to reduce CPU, keep responsive
+            remaining = min_display_sec - clock.getTime()
+            if remaining > 0:
+                _wait(min(0.05, remaining))
+            continue
         draw()
         win.flip()
-        core.wait(0.016)
+        _wait(0.008)  # 8ms for snappier key response
 
 
 
@@ -276,7 +291,7 @@ def get_participant_name(win):
             elif len(key) == 1:
                 input_id += key
         redraw()
-        core.wait(0.016)
+        _wait(0.016)
 
 
 # =========================
@@ -341,7 +356,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1}")
         img.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1}")
         del img  # free texture before creating more stims
 
@@ -460,11 +475,11 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
     shape_stim.setPos(start_pos)
     draw_all()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     shape_stim.setPos(end_pos)
     draw_all()
     win.flip()
-    core.wait(2.0)
+    _wait(2.0)
 
 
 def run_tutorial_phase1(win, mouse, participant):
@@ -511,7 +526,7 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_green.draw()
         sub1.draw()
         win.flip()
-        core.wait(2.5)
+        _wait(2.5)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
@@ -533,19 +548,25 @@ def run_tutorial_phase1(win, mouse, participant):
                           anchors=[(sq, sq_pos), (circ_red, circ_red_pos)])
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
-        # Step 5a: Shape vs color
+        # Step 5a: Shape vs color — circle groups (square alone, two circles together)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=5a")
         sq.setPos(sq_pos)
         circ_red.setPos(circ_red_pos)
         circ_green.setPos(circ_green_pos)
+        group_circle_square = visual.Circle(win, radius=0.14, fillColor=None, lineColor='black', lineWidth=2,
+                                            pos=sq_pos, units='height')
+        group_circle_circles = visual.Circle(win, radius=0.24, fillColor=None, lineColor='black', lineWidth=2,
+                                            pos=(0.325, 0.08), units='height')  # encompasses both circles
         sq.draw()
         circ_red.draw()
         circ_green.draw()
+        group_circle_square.draw()
+        group_circle_circles.draw()
         sub_5a = visual.TextStim(win, text="We sorted by shapes but could have sorted by color.",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
-        core.wait(3.0)
+        _wait(3.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5a")
 
         # Step 5b: Distance denotes group
@@ -557,7 +578,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
-        core.wait(4.0)
+        _wait(4.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
 
         # Step 6: Press Enter subtitle
@@ -572,14 +593,8 @@ def run_tutorial_phase1(win, mouse, participant):
         sub_5c.draw()
         sub_enter.draw()
         win.flip()
-        core.wait(2.5)
+        _wait(2.5)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
-
-    # Debrief
-    debrief = visual.TextStim(win, text="In this practice, we sorted all objects by shape!",
-                              color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
-    if not wait_for_continue(win, debrief, "tutorial_debrief"):
-        return False
 
     # Transition
     trans = visual.TextStim(win, text="Let's get started on your task!", color='black', height=0.04, pos=(0, 0),
@@ -637,28 +652,28 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_fixation_onset")
     fix.draw()
     win.flip()
-    core.wait(0.5)
+    _wait(0.5)
     _log_ttl_event("phase2_tutorial_fixation_offset")
 
     # Practice context 1 - 1000ms
     _log_ttl_event("phase2_tutorial_context1_onset")
     img1.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_context1_offset")
 
     # Big blue circle - 1000ms
     _log_ttl_event("phase2_tutorial_shape_onset")
     circ.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_shape_offset")
 
     # Blank 1000ms
     _log_ttl_event("phase2_tutorial_blank_onset")
     blank.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_blank_offset")
 
     # Red dot + "PLANET" 3000ms
@@ -667,28 +682,28 @@ def run_phase2_tutorial(win, mouse, participant):
     txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.2))
     txt1.draw()
     win.flip()
-    core.wait(3.0)
+    _wait(3.0)
     _log_ttl_event("phase2_tutorial_reddot_offset")
 
     # Practice context 2 - 1000ms
     _log_ttl_event("phase2_tutorial_context2_onset")
     img2.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_context2_offset")
 
     # Same circle - 1000ms
     _log_ttl_event("phase2_tutorial_shape2_onset")
     circ.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_shape2_offset")
 
     # Blank 1000ms
     _log_ttl_event("phase2_tutorial_blank2_onset")
     blank.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_blank2_offset")
 
     # Red dot + "BALL" 3000ms
@@ -697,7 +712,7 @@ def run_phase2_tutorial(win, mouse, participant):
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
     txt2.draw()
     win.flip()
-    core.wait(3.0)
+    _wait(3.0)
     _log_ttl_event("phase2_tutorial_reddot2_offset")
 
     # Question: CIRCUS | SPACE — demo only (participant watches, no click)
@@ -714,7 +729,7 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_c.draw()
     txt_s.draw()
     win.flip()
-    core.wait(1.5)
+    _wait(1.5)
     # Animate SPACE button being pressed (highlight/darken)
     btn_space_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
     q.draw()
@@ -724,12 +739,12 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_s.draw()
     win.flip()
     _log_ttl_event("phase2_tutorial_response", trial_info="SPACE")
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase2_tutorial_question_offset")
     _log_ttl_event("phase2_tutorial_post_blank_onset")
     blank.draw()
     win.flip()
-    core.wait(3.0)
+    _wait(3.0)
     _log_ttl_event("phase2_tutorial_post_blank_offset")
 
     # Ready screen
@@ -780,7 +795,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")
         fix.draw()
         win.flip()
-        core.wait(0.5)
+        _wait(0.5)
         _log_ttl_event("phase2_fixation_offset", trial_info=f"trial={t_idx+1}")
 
         ctx1 = visual.ImageStim(win, image=trial['context_1'], units='height', size=(0.5, 0.5))
@@ -792,49 +807,49 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_context1_onset", trial_info=f"trial={t_idx+1}")
         ctx1.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_context1_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_shape_onset", trial_info=f"trial={t_idx+1}")
         shape_img.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_shape_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_blank1_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_blank1_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
         win.flip()
-        core.wait(3.0)
+        _wait(3.0)
         _log_ttl_event("phase2_reddot_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1}")
         ctx2.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_context2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_shape2_onset", trial_info=f"trial={t_idx+1}")
         shape_img.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_shape2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_blank2_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        core.wait(1.0)
+        _wait(1.0)
         _log_ttl_event("phase2_blank2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1}")
         dot.draw()
         win.flip()
-        core.wait(3.0)
+        _wait(3.0)
         _log_ttl_event("phase2_reddot2_offset", trial_info=f"trial={t_idx+1}")
 
         # Question
@@ -869,7 +884,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             txt_a.draw()
             txt_b.draw()
             win.flip()
-            core.wait(0.02)
+            _wait(0.02)
         rt = rt_clock.getTime()
         _log_ttl_event("phase2_response", trial_info=f"trial={t_idx+1} response={response}")
         _log_ttl_event("phase2_question_offset", trial_info=f"trial={t_idx+1}")
@@ -903,7 +918,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_trial_iti_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        core.wait(0.5)
+        _wait(0.5)
         _log_ttl_event("phase2_trial_iti_offset", trial_info=f"trial={t_idx+1}")
 
         del ctx1, ctx2, shape_img
@@ -974,7 +989,7 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
             txt_yes.draw()
             txt_no.draw()
             win.flip()
-            core.wait(0.016)
+            _wait(0.016)
 
         rt = rt_clock.getTime()
         _log_ttl_event("phase3_debrief_response", trial_info=f"question={i+1} answer={answer}")
@@ -1154,7 +1169,7 @@ def main():
         ("Let's sort some shapes. First you will see all of them.", "phase1_instr1", 0),
         ("Then place them one at a time by clicking where you want each to go, as in the practice.", "phase1_instr2", 0),
         ("Group them into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instr3", 0),
-        ("Use as many groups as you need.", "phase1_instr4", 8.0),
+        ("Use as many groups as you need.", "phase1_instr4", 5.0),
     ]
     for text, label, min_sec in p1_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1180,7 +1195,7 @@ def main():
     _log_ttl_event("phase1_grid_onset")
     grid_img.draw()
     win.flip()
-    core.wait(5.0)
+    _wait(5.0)
     _log_ttl_event("phase1_grid_offset")
 
     # Fixation 1 sec
@@ -1188,12 +1203,11 @@ def main():
     _log_ttl_event("phase1_fixation_onset")
     fix.draw()
     win.flip()
-    core.wait(1.0)
+    _wait(1.0)
     _log_ttl_event("phase1_fixation_offset")
 
     p1_instr2_screens = [
         ("You'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
-        ("Group into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instruction2b", 0),
         ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
@@ -1298,7 +1312,7 @@ def main():
     _log_ttl_event("thanks_onset")
     thanks.draw()
     win.flip()
-    core.wait(2.0)
+    _wait(2.0)
     _log_ttl_event("thanks_offset")
     win.close()
     _close_dummy()

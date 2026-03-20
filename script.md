@@ -40,21 +40,17 @@
 
 **Video:** `STIMULI/tutorial_video.mp4`. See `STIMULI/tutorial_video_spec.md`. Subtitles describe on-screen action; include "We sorted by shapes but could have sorted by color" and "Shapes closer together are in the same group."
 
-**Fallback** (no video): Step 1 — three shapes; Step 2 — red square center→left; Step 3 — red circle center→right; Step 4 — green circle center→right (with red); Step 5a — sorted by shape, could sort by color; Step 5b — groups, not line/spectrum; Step 6 — "Click to place. Press Enter to submit."
+**Fallback** (no video): Step 1 — three shapes; Step 2 — red square center→left; Step 3 — red circle center→right; Step 4 — green circle center→right (with red); Step 5a — sorted by shape, could sort by color (circles drawn around each group: square, two circles); Step 5b — groups, not line/spectrum; Step 6 — "Click to place. Press Enter to submit."
 
-**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1–6)
+**Transition:** "Let's get started on your task!" (1 Enter)
 
-#### Tutorial debrief
-
-**Display:** "In this practice, we sorted all objects by shape!"
-
-**TTL:** tutorial_debrief_onset/enter/offset, tutorial_transition_onset/enter/offset
+**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1–6), tutorial_transition_onset/enter/offset
 
 ---
 
 ### Phase 1 — Bottom-Up Shape Classification
 
-**Instructions (4 screens; screen 4 min 8 s):**
+**Instructions (4 screens; screen 4 min 5 s):**
 1. "Let's sort some shapes. First you will see all of them."
 2. "Then place them one at a time by clicking where you want each to go, as in the practice."
 3. "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
@@ -70,12 +66,11 @@
 
 **TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
-**Instructions (3 screens):**
+**Instructions (2 screens):**
 1. "You'll see the shapes from before, one at a time. Group each where you think it belongs."
-2. "Group into groups—not on a spectrum or line. Shapes closer together are in the same group."
-3. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
+2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
 
-**TTL:** phase1_instruction2a/2b/2c_onset/enter/offset
+**TTL:** phase1_instruction2a/2c_onset/enter/offset
 
 **Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. Hint on screen: "Click to place. Press Enter to submit."
 

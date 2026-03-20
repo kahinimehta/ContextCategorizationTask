@@ -75,6 +75,7 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 - **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
+- **Mac `ObjCInstance` crash:** If the task crashes during timed displays with `ObjCInstance has no attribute type`, the script uses `time.sleep` instead of `core.wait` on macOS to avoid this pyglet Cocoa bug.
 
 ## Paths
 
