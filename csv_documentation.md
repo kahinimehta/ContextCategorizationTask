@@ -13,7 +13,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 | `timestamp` | Float (Unix) | Time when TTL fired |
 | `trigger_code` | String | Event identifier (same as event_label unless overridden) |
 | `event_label` | String | Human-readable event name |
-| `trial_info` | String | Optional trial metadata (e.g., trial=3, shape=Shape_0.10_1.70.png) |
+| `trial_info` | String | Optional trial metadata (e.g., trial=3, shape=Shape_0_1.png) |
 
 **Event types**: See TTL Trigger Mapping below.
 
@@ -49,9 +49,12 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instr2_onset` | 1 | Phase 1 instruction screen 2 appeared |
 | `phase1_instr2_enter` | 1 | Enter pressed |
 | `phase1_instr2_offset` | 1 | Screen transition |
-| `phase1_instr3_onset` | 1 | Phase 1 instruction screen 3 appeared |
+| `phase1_instr3_onset` | 1 | "Group them into groups—not on a spectrum..." appeared |
 | `phase1_instr3_enter` | 1 | Enter pressed |
 | `phase1_instr3_offset` | 1 | Screen transition |
+| `phase1_instr4_onset` | 1 | "Use as many groups as you need" appeared |
+| `phase1_instr4_enter` | 1 | Enter pressed |
+| `phase1_instr4_offset` | 1 | Screen transition |
 | `phase1_before_grid_onset` | 1 | "You will see 16 shapes..." appeared |
 | `phase1_before_grid_enter` | 1 | Enter pressed |
 | `phase1_before_grid_offset` | 1 | Screen transition |
@@ -62,10 +65,10 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
 | `phase1_instruction2a_enter` | 1 | Enter pressed |
 | `phase1_instruction2a_offset` | 1 | Screen transition |
-| `phase1_instruction2b_onset` | 1 | "Click to place" instruction appeared |
+| `phase1_instruction2b_onset` | 1 | "Group into groups—not on a spectrum..." appeared |
 | `phase1_instruction2b_enter` | 1 | Enter pressed |
 | `phase1_instruction2b_offset` | 1 | Screen transition |
-| `phase1_instruction2c_onset` | 1 | "Once you've submitted..." instruction appeared |
+| `phase1_instruction2c_onset` | 1 | "Click to place... Once you've submitted..." instruction appeared |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N) |
@@ -184,13 +187,13 @@ Per-shape data from the bottom-up shape classification phase.
 
 ## Phase 2 CSV (phase2_{participant}_{datetime}.csv)
 
-Per-trial data from the top-down context incorporation phase (48 trials).
+Per-trial data from the top-down context incorporation phase. Trial count and order are defined by `phase2_trial_order.csv` (same fixed order for all participants).
 
-**Design:** Each shape is associated with exactly 2 context categories (A and B). Four trials per shape: (1) A then B, (2) B then A, (3) A-control then B-control, (4) B-control then A-control. Control = different image from same category (*_02s.jpg vs *_01b.jpg). Each context *pair* (A,B) is unique to one shape, but the same context category can appear across shapes (e.g. BARK with shape 1 and shape 5 in different pairs).
+**Design:** Trial order is loaded from `phase2_trial_order.csv` in the task root. Same fixed order for all participants—no randomization. CSV columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Paths are relative to STIMULI. Variants: original, context_swapped, control_context, control_context_swapped.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| `trial` | Integer | Trial number (1–48) |
+| `trial` | Integer | Trial number (1–N, per phase2_trial_order.csv) |
 | `shape_path` | String | Full path to the shape image |
 | `context_1_path` | String | Full path to first context image |
 | `context_2_path` | String | Full path to second context image |

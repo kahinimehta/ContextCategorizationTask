@@ -4,7 +4,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ## Acknowledgments
 
-- **Shape generation**: Henderson et al. 2025
+- **Shape generation**: Bunny anchor from Henderson et al. 2025; OpenAI used to create duck, bird, and squirrel anchors; contour interpolation (OpenCV, scipy) to morph the four anchors into a 4×4 grid. See `STIMULI/shape_generation.md` for the full pipeline and morphing script.
 - **Context images**: THINGS dataset
 - **Practice stimulus generation**: OpenAI
 - **Coding**: Cursor
@@ -22,17 +22,19 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Core Task
 
 - **`context_shape_task.py`** — Main PsychoPy script for the entire experiment
+- **`phase2_trial_order.csv`** — Fixed trial order for Phase 2 (same for all participants)
 
 ### Documentation
 
 - **`csv_documentation.md`** — Column-by-column description of all CSV outputs
 - **`script.md`** — All on-screen text, experimenter spoken instructions (including ELI5/simple versions for explaining to participants), and phase-by-phase script
 - **`STIMULI/tutorial_video_spec.md`** — Production spec for tutorial video (content, timing, subtitles)
+- **`STIMULI/shape_generation.md`** — Shape creation pipeline (Henderson bunny anchor → OpenAI anchors → morphing script)
 
 ### Stimuli
 
-- **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_X_Y.png) + ShapeGrid_4x4.png
-- **`STIMULI/Context_Images/`** — Context category folders (bark, cloud, coral, etc.) + practice1.png, practice2.png. Each category needs original (*_01b.jpg, *_01s.jpg) and control (*_02s.jpg) images—control = different image from same category, not the exact same context.
+- **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 and Phase 3 display the **scrambled** grid; shapes are then presented one-by-one in random order (Phase 1) or a different random order (Phase 3). See `STIMULI/shape_generation.md`.
+- **`STIMULI/Context_Images/`** — Flat folder of context PNGs named by category and variant: `{category}1.png`/`{category}2.png` or `{category}_1.png`/`{category}_2.png` (e.g., bedroom1.png, bedroom2.png; bookstore_1.png, bookstore_2.png). The number denotes the variation (1 = original, 2 = control). Practice images: practice1.png, practice2.png.
 - **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the click-to-place process (red square, red circle, green circle). See `STIMULI/tutorial_video_spec.md` for production spec (content, timing, subtitles). If missing, an animated fallback simulates the sequence.
 
 ## Data Output
@@ -43,7 +45,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 |------|-------------|
 | `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
-| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps |
+| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps (order from phase2_trial_order.csv) |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |

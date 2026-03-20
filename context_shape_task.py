@@ -22,6 +22,7 @@ STIMULI_DIR = SCRIPT_DIR / "STIMULI"
 SHAPES_DIR = STIMULI_DIR / "Shapes"
 CONTEXT_DIR = STIMULI_DIR / "Context_Images"
 LOG_DIR = SCRIPT_DIR.parent / "LOG_FILES"
+PHASE2_TRIAL_ORDER_CSV = SCRIPT_DIR / "phase2_trial_order.csv"
 
 # Ensure LOG_FILES exists
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -133,44 +134,43 @@ def get_shape_paths():
 
 
 def get_phase2_shapes():
-    """12 shapes: exclude middle 4 (1.70_1.70, 1.70_3.30, 3.30_1.70, 3.30_3.30)."""
+    """12 shapes: exclude middle 4 (1_1, 1_2, 2_1, 2_2)."""
     all_shapes = get_shape_paths()
-    exclude = {'Shape_1.70_1.70.png', 'Shape_1.70_3.30.png', 'Shape_3.30_1.70.png', 'Shape_3.30_3.30.png'}
+    exclude = {'Shape_1_1.png', 'Shape_1_2.png', 'Shape_2_1.png', 'Shape_2_2.png'}
     return [p for p in all_shapes if Path(p).name not in exclude]
 
 
 def get_context_categories():
-    """Return list of category folder names (exclude practice images at root)."""
-    cats = []
-    for d in CONTEXT_DIR.iterdir():
-        if d.is_dir():
-            cats.append(d.name)
+    """Return list of context category names from flat PNG filenames. Exclude practice1, practice2.
+    Filenames: {name}1.png, {name}2.png or {name}_1.png, {name}_2.png. Category = name."""
+    cats = set()
+    for f in CONTEXT_DIR.glob("*.png"):
+        if f.name in ('practice1.png', 'practice2.png'):
+            continue
+        name = f.stem
+        if '_1' in name or '_2' in name:
+            cats.add(name.rsplit('_', 1)[0])  # bookstore_1 -> bookstore, wall_1 -> wall
+        elif name.endswith('1') or name.endswith('2'):
+            cats.add(name[:-1])  # bedroom1 -> bedroom, pond1 -> pond
     return sorted(cats)
 
 
 def get_context_image(category, variant):
     """
-    Get context image path for a category. Each shape is associated with 2 context categories.
-    variant: 'original' -> *1 (01b or 01s), 'control' -> *2 (02s)
-    Control = different image from same category (not the exact same context).
-    Actual files: {cat}_01b.jpg, {cat}_01s.jpg, {cat}_02s.jpg
+    Get context image path for a category. Flat structure: {category}1.png / {category}2.png
+    or {category}_1.png / {category}_2.png. variant 'original' -> 1, 'control' -> 2.
     """
-    cat_dir = CONTEXT_DIR / category
-    if variant == 'original':
-        for pat in ['*_01b.jpg', '*_01s.jpg', '*1.jpg']:
-            matches = list(cat_dir.glob(pat))
-            if matches:
-                return str(matches[0])
-    elif variant == 'control':
-        for pat in ['*_02s.jpg', '*2.jpg']:
-            matches = list(cat_dir.glob(pat))
-            if matches:
-                return str(matches[0])
+    suffix = '1' if variant == 'original' else '2'
+    for stem in [f"{category}{suffix}", f"{category}_{suffix}"]:
+        p = CONTEXT_DIR / f"{stem}.png"
+        if p.exists():
+            return str(p)
     return None
 
 
 def get_shape_grid_path():
-    return str(SHAPES_DIR / "ShapeGrid_4x4.png")
+    """Return scrambled grid for Phase 1/3 display (shapes in randomized positions)."""
+    return str(SHAPES_DIR / "ShapeGrid_4x4_scrambled.png")
 
 
 def get_practice_context_paths():
@@ -553,7 +553,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5b = visual.TextStim(win, text="Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group.",
+        sub_5b = visual.TextStim(win, text="You're grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group.",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
@@ -565,8 +565,11 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
+        sub_5c = visual.TextStim(win, text="Objects in a group can still be slightly further apart than from objects in another group.",
+                                color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
         sub_enter = visual.TextStim(win, text="Click to place. Press Enter to submit.",
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
+        sub_5c.draw()
         sub_enter.draw()
         win.flip()
         core.wait(2.5)
@@ -587,54 +590,30 @@ def run_tutorial_phase1(win, mouse, participant):
 # =========================
 #  Phase 2: Context Task
 # =========================
-def build_phase2_trials(participant):
+def load_phase2_trials():
     """
-    Build 48 trials: 12 shapes × 4 variants.
-    Each shape is associated with exactly 2 context categories (cat_a, cat_b).
-    Four trials per shape: (1) A then B, (2) B then A, (3) A-control then B-control, (4) B-control then A-control.
-    Control = different image from same category. Same context category can appear across shapes;
-    each context pair (A,B) is unique to one shape. Same shape never consecutive.
+    Load Phase 2 trial order from phase2_trial_order.csv. Same fixed order for all participants.
+    CSV columns: trial_number, shape, shape_path, strong_context, neutral_context,
+    context1, context1_image, context2, context2_image, variant.
+    Paths in CSV are relative to STIMULI_DIR.
     """
-    shapes = get_phase2_shapes()
-    categories = get_context_categories()
-    if len(categories) < 2:
-        raise RuntimeError("Need at least 2 context categories")
-    random.seed(hash(participant) % (2**32) if participant else None)
-
-    # Build all unique (cat_a, cat_b) pairs; each pair used for exactly one shape
-    all_pairs = [(a, b) for a in categories for b in categories if a < b]
-    if len(all_pairs) < len(shapes):
-        raise RuntimeError(f"Need at least {len(shapes)} unique context pairs; have {len(categories)} categories")
-    used_pairs = random.sample(all_pairs, len(shapes))
-
+    if not PHASE2_TRIAL_ORDER_CSV.exists():
+        raise FileNotFoundError(f"Phase 2 trial order file not found: {PHASE2_TRIAL_ORDER_CSV}")
     trials = []
-    for shape_path, (cat_a, cat_b) in zip(shapes, used_pairs):
-        ctx_a_orig = get_context_image(cat_a, 'original')
-        ctx_b_orig = get_context_image(cat_b, 'original')
-        ctx_a_ctrl = get_context_image(cat_a, 'control')
-        ctx_b_ctrl = get_context_image(cat_b, 'control')
-        if not all([ctx_a_orig, ctx_b_orig, ctx_a_ctrl, ctx_b_ctrl]):
-            raise RuntimeError(f"Missing context images for {cat_a}/{cat_b}")
-        trials.append({'shape_path': shape_path, 'context_1': ctx_a_orig, 'context_2': ctx_b_orig,
-                      'cat_a': cat_a, 'cat_b': cat_b, 'variant': 'original'})
-        trials.append({'shape_path': shape_path, 'context_1': ctx_b_orig, 'context_2': ctx_a_orig,
-                      'cat_a': cat_a, 'cat_b': cat_b, 'variant': 'context_swapped'})
-        trials.append({'shape_path': shape_path, 'context_1': ctx_a_ctrl, 'context_2': ctx_b_ctrl,
-                      'cat_a': cat_a, 'cat_b': cat_b, 'variant': 'control_context'})
-        trials.append({'shape_path': shape_path, 'context_1': ctx_b_ctrl, 'context_2': ctx_a_ctrl,
-                      'cat_a': cat_a, 'cat_b': cat_b, 'variant': 'control_context_swapped'})
-    random.shuffle(trials)
-    # Enforce no consecutive same shape
-    for _ in range(100):
-        bad = False
-        for i in range(1, len(trials)):
-            if Path(trials[i]['shape_path']).name == Path(trials[i-1]['shape_path']).name:
-                bad = True
-                j = random.randint(i+1, len(trials)-1) if i+1 < len(trials) else random.randint(0, i-1)
-                trials[i], trials[j] = trials[j], trials[i]
-                break
-        if not bad:
-            break
+    with open(PHASE2_TRIAL_ORDER_CSV, 'r', newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            shape_path = str(STIMULI_DIR / row['shape_path'].strip())
+            ctx1_path = str(STIMULI_DIR / row['context1_image'].strip())
+            ctx2_path = str(STIMULI_DIR / row['context2_image'].strip())
+            trials.append({
+                'shape_path': shape_path,
+                'context_1': ctx1_path,
+                'context_2': ctx2_path,
+                'cat_a': row['context1'].strip(),
+                'cat_b': row['context2'].strip(),
+                'variant': row['variant'].strip(),
+            })
     return trials
 
 
@@ -762,7 +741,7 @@ def run_phase2_tutorial(win, mouse, participant):
 
 
 def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
-    """Run 48 Phase 2 trials with breaks every 12."""
+    """Run Phase 2 trials from phase2_trial_order.csv with breaks every 12."""
     fieldnames = ['trial', 'shape_path', 'context_1_path', 'context_2_path', 'trial_variant', 'response',
                    'rt', 'fixation_onset_ttl', 'context1_onset_ttl', 'shape_onset_ttl', 'reddot_onset_ttl',
                    'context2_onset_ttl', 'shape2_onset_ttl', 'reddot2_onset_ttl', 'question_onset_ttl', 'response_ttl']
@@ -1037,15 +1016,16 @@ def _euclidean_distances(positions):
 
 
 def _parse_shape_grid_position(shape_path):
-    """Extract (row, col) from Shape_X_Y.png. Grid: 0.10, 1.70, 3.30, 4.90 -> rows/cols 0-3."""
+    """Extract (row, col, gx, gy) from Shape_X_Y.png. X,Y are integer indices 0-3.
+    Grid centers: row/col 0->0.10, 1->1.70, 2->3.30, 3->4.90."""
     name = Path(shape_path).stem
+    row_to_g = {0: 0.10, 1: 1.70, 2: 3.30, 3: 4.90}
     try:
         parts = name.replace('Shape_', '').split('_')
         if len(parts) >= 2:
-            x, y = float(parts[0]), float(parts[1])
-            row = {0.10: 0, 1.70: 1, 3.30: 2, 4.90: 3}.get(x, -1)
-            col = {0.10: 0, 1.70: 1, 3.30: 2, 4.90: 3}.get(y, -1)
-            return row, col, x, y
+            row, col = int(parts[0]), int(parts[1])
+            if 0 <= row <= 3 and 0 <= col <= 3:
+                return row, col, row_to_g[row], row_to_g[col]
     except (ValueError, IndexError):
         pass
     return -1, -1, 0, 0
@@ -1173,7 +1153,8 @@ def main():
     p1_screens = [
         ("Let's sort some shapes. First you will see all of them.", "phase1_instr1", 0),
         ("Then place them one at a time by clicking where you want each to go, as in the practice.", "phase1_instr2", 0),
-        ("Shapes closer together are ones you're grouping as more similar. Use as many groups as you need.", "phase1_instr3", 8.0),
+        ("Group them into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instr3", 0),
+        ("Use as many groups as you need.", "phase1_instr4", 8.0),
     ]
     for text, label, min_sec in p1_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1212,8 +1193,8 @@ def main():
 
     p1_instr2_screens = [
         ("You'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
-        ("Shapes closer together are in the same group. Click to place, press Enter to submit.", "phase1_instruction2b", 0),
-        ("Once you've submitted the position of a shape, you can't move it again.", "phase1_instruction2c", 0),
+        ("Group into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instruction2b", 0),
+        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1224,7 +1205,7 @@ def main():
 
     shapes = get_shape_paths()
     random.shuffle(shapes)
-    if Path(shapes[0]).name == "Shape_0.10_0.10.png":
+    if Path(shapes[0]).name == "Shape_0_0.png":
         shapes.append(shapes.pop(0))
     phase1_results = run_drag_phase(win, mouse, shapes, "phase1", 1, participant, timestamp_str=timestamp_str)
     if phase1_results is None:
@@ -1254,7 +1235,7 @@ def main():
         _close_dummy()
         return
 
-    trials = build_phase2_trials(participant)
+    trials = load_phase2_trials()
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
     del trials
     gc.collect()

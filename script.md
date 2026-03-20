@@ -71,8 +71,8 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 - Step 3: Red circle appears at center, then at right: "Red circle appears. Clicking to place on the right."
 - Step 4: Green circle appears at center, then at right (next to red circle): "Green circle appears. Clicking to place on the right."
 - Step 5a: "We sorted by shapes but could have sorted by color."
-- Step 5b: "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group."
-- Step 6: "Click to place each shape. Press Enter to submit."
+- Step 5b: "You're grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group."
+- Step 6: "Objects in a group can still be slightly further apart than from objects in another group." + "Click to place. Press Enter to submit."
 
 **What to say:** "Watch the tutorial. It shows click to place, Enter to submit."
 
@@ -110,25 +110,27 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Screen 2:** "Then place them one at a time by clicking where you want each to go, as in the practice."
 
-**Screen 3:** "Shapes closer together are ones you're grouping as more similar. Use as many groups as you need." *(Enter after 8 s)*
+**Screen 3:** "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
 
-**What to say:** "You'll see the full grid first, then place each shape one at a time. Click to move, Enter when happy. Things that go together go close."
+**Screen 4:** "Use as many groups as you need." *(Enter after 8 s)*
 
-**Simple version:** "First you'll see all the shapes. Then one by one, put each on the screen. Click to move, Enter when happy. Things that go together go close."
+**What to say:** "You'll see the full grid first, then place each shape one at a time. Group them into groups—not on a line or spectrum. Click to move, Enter when happy. Things that go together go close."
 
-**Experimenter note:** Emphasize "Things that go together go close. Things that are different go far apart."
+**Simple version:** "First you'll see all the shapes. Then one by one, put each on the screen. Put them in groups—not in a line. Click to move, Enter when happy. Things that go together go close."
 
-**TTL:** phase1_instr1–3_onset/enter/offset
+**Experimenter note:** Emphasize "Group into groups—not on a spectrum or line." And "Things that go together go close. Things that are different go far apart."
+
+**TTL:** phase1_instr1–4_onset/enter/offset
 
 #### Before grid (1 screen)
 
-**Display:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them altogether just for context."
+**Display:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
 
 **TTL:** phase1_before_grid_onset, phase1_before_grid_enter, phase1_before_grid_offset
 
 #### Grid display
 
-ShapeGrid_4x4.png for 5 seconds
+ShapeGrid_4x4_scrambled.png for 5 seconds (shapes in randomized positions)
 
 **TTL:** phase1_grid_onset, phase1_grid_offset
 
@@ -142,9 +144,9 @@ Black cross, 1 second
 
 **Screen 1:** "You'll see the shapes from before, one at a time. Group each where you think it belongs."
 
-**Screen 2:** "Shapes closer together are in the same group. Click to place, press Enter to submit."
+**Screen 2:** "Group into groups—not on a spectrum or line. Shapes closer together are in the same group."
 
-**Screen 3:** "Once you've submitted the position of a shape, you can't move it again."
+**Screen 3:** "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
 
 **TTL:** phase1_instruction2a_onset/enter/offset, phase1_instruction2b_onset/enter/offset, phase1_instruction2c_onset/enter/offset
 
@@ -154,7 +156,7 @@ Black cross, 1 second
 
 #### Task (16 shapes)
 
-Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "Click to place. Press Enter to submit."
+Shapes presented one at a time in random order. Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "Click to place. Press Enter to submit."
 
 **What to say:** "Click to move, Enter when happy."
 
@@ -206,9 +208,9 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **What to say:** "Ready?"
 
-#### Task (48 trials)
+#### Task
 
-**Design:** Each shape has 2 context categories. Four trials per shape: A then B, B then A, A-control then B-control, B-control then A-control. See `csv_documentation.md` for details.
+**Trial order:** Fixed for all participants from `phase2_trial_order.csv`. Same image sequence for every participant. See `csv_documentation.md` for design details.
 
 **Trial:** Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s → Context 2 → Shape 1 s → Blank → Red dot 3 s → Question (click A or B) → Blank 500 ms
 
