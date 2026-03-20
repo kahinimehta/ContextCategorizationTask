@@ -56,7 +56,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 ## TTL Triggers
 
-TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response is logged (onset/offset for instructions, stimulus/click/submit for tasks). See `csv_documentation.md` for full mapping.
+TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response is logged (onset/offset for instructions, stimulus/click/submit for tasks, phase completion markers, debrief onset/response/offset, escape_pressed on quit). See `csv_documentation.md` for full mapping.
 
 ## Quick Start
 

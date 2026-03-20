@@ -31,6 +31,12 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 os.environ.setdefault('PSYCHOPY_IOHUB', '0')
 
 from psychopy import visual, core, event
+try:
+    from psychopy.hardware import keyboard as hw_keyboard
+    _has_keyboard = True
+except ImportError:
+    hw_keyboard = None
+    _has_keyboard = False
 
 
 def _wait(secs):
@@ -194,10 +200,12 @@ def get_practice_context_paths():
 # =========================
 def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0, extra_drawables=None, onset_trial_info=None):
     """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted.
-    extra_drawables: optional list of stimuli to draw. onset_trial_info: optional trial_info for onset TTL."""
+    extra_drawables: optional list of stimuli to draw. onset_trial_info: optional trial_info for onset TTL.
+    Uses hardware.Keyboard on Mac when available for snappier key response."""
     event.clearEvents()
     hint = visual.TextStim(win, text="Press Enter to continue.", color='gray', height=0.03, pos=(0, -0.35), units='height')
     extras = extra_drawables or []
+    kb = hw_keyboard.Keyboard() if _has_keyboard and hw_keyboard else None
 
     def draw():
         text_stim.draw()
@@ -209,45 +217,58 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
         _log_ttl_event(f"{event_label}_onset", trial_info=onset_trial_info)
     draw()
     win.flip()
-    event.clearEvents()  # clear any key from previous screen
-    _wait(0.05)  # brief debounce so carried-over key isn't registered
+    event.clearEvents()
+    _wait(0.05)
+    if kb:
+        kb.clearEvents()
     event.clearEvents()
     clock = core.Clock()
     clock.reset()
-    return_pressed = False  # remember early Enter so user only needs to press once
-    enter_keys = ['return', 'enter', 'num_enter', 'kp_enter']  # main Enter + numpad variants
+    return_pressed = False
+    enter_names = {'return', 'enter', 'num_enter', 'kp_enter', 'num_return'}
 
     def accept_and_exit():
         if log_ttl:
             _log_ttl_event(f"{event_label}_enter")
             _log_ttl_event(f"{event_label}_offset")
         event.clearEvents()
-        _wait(0.05)  # minimal debounce to avoid carry-over to next screen
+        if kb:
+            kb.clearEvents()
+        _wait(0.03)  # minimal debounce
         return True
 
-    while True:
+    def check_keys():
+        if kb:
+            try:
+                key_objs = kb.getKeys(['escape', 'return', 'enter'], waitRelease=False)
+                return [k.name for k in key_objs]
+            except Exception:
+                pass
         try:
-            keys = event.getKeys(keyList=['escape'] + enter_keys, timeStamped=False)
+            return event.getKeys(keyList=['escape', 'return', 'enter', 'num_enter', 'kp_enter'], timeStamped=False)
         except (AttributeError, RuntimeError):
-            keys = []
+            return []
+
+    while True:
+        keys = check_keys()
         if keys:
             if 'escape' in keys:
+                _log_ttl_event("escape_pressed", trial_info=f"screen={event_label}")
                 core.quit()
-            if any(k in keys for k in enter_keys):
+            if any(k in enter_names for k in keys):
                 if clock.getTime() >= min_display_sec:
                     return accept_and_exit()
-                return_pressed = True  # advance as soon as min time elapses
+                return_pressed = True
         if return_pressed and clock.getTime() >= min_display_sec:
             return accept_and_exit()
         if return_pressed:
-            # Waiting for min_display_sec after early Enter—chunk wait to reduce CPU, keep responsive
             remaining = min_display_sec - clock.getTime()
             if remaining > 0:
-                _wait(min(0.05, remaining))
+                _wait(min(0.03, remaining))
             continue
         draw()
         win.flip()
-        _wait(0.008)  # 8ms for snappier key response
+        _wait(0.005)  # 5ms polling for snappier response
 
 
 
@@ -280,6 +301,7 @@ def get_participant_name(win):
             keys = []
         if keys:
             if 'escape' in keys:
+                _log_ttl_event("escape_pressed", trial_info="participant_name")
                 core.quit()
             key = keys[0]
             if key == 'return':
@@ -381,6 +403,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
                 keys = []
             if keys:
                 if 'escape' in keys:
+                    _log_ttl_event("escape_pressed", trial_info=f"{phase_name}_click_place")
                     core.quit()
                 if 'return' in keys:
                     # RT = time from onset to last click (or Enter if no clicks)
@@ -495,6 +518,7 @@ def run_tutorial_phase1(win, mouse, participant):
                 except (AttributeError, RuntimeError):
                     keys = []
                 if keys and 'escape' in keys:
+                    _log_ttl_event("escape_pressed", trial_info="tutorial_video")
                     core.quit()
                 movie.draw()
                 win.flip()
@@ -635,7 +659,7 @@ def load_phase2_trials():
 def run_phase2_tutorial(win, mouse, participant):
     """Phase 2 tutorial: explicit intro screens, then practice1, practice2, circle, CIRCUS | SPACE."""
     # Single intro screen (max 2 sentences) — one Enter before demo
-    intro = visual.TextStim(win, text="In this example, you'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.",
+    intro = visual.TextStim(win, text="You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.",
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, intro, "phase2_tutorial_intro"):
         return False
@@ -730,15 +754,17 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_s.draw()
     win.flip()
     _wait(1.5)
-    # Animate SPACE button being pressed (highlight/darken)
-    btn_space_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
+    # Animate CIRCUS button being pressed (highlight/darken) + subtitle
+    btn_circus_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(-0.2, -0.2), units='height')
+    sub_select = visual.TextStim(win, text="You might select CIRCUS", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
-    btn_circus.draw()
-    btn_space_pressed.draw()  # darker = "pressed"
+    btn_circus_pressed.draw()  # darker = "pressed"
+    btn_space.draw()
     txt_c.draw()
     txt_s.draw()
+    sub_select.draw()
     win.flip()
-    _log_ttl_event("phase2_tutorial_response", trial_info="SPACE")
+    _log_ttl_event("phase2_tutorial_response", trial_info="CIRCUS")
     _wait(1.0)
     _log_ttl_event("phase2_tutorial_question_offset")
     _log_ttl_event("phase2_tutorial_post_blank_onset")
@@ -756,7 +782,7 @@ def run_phase2_tutorial(win, mouse, participant):
 
 
 def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
-    """Run Phase 2 trials from phase2_trial_order.csv with breaks every 12."""
+    """Run Phase 2 trials from phase2_trial_order.csv with breaks every 16."""
     fieldnames = ['trial', 'shape_path', 'context_1_path', 'context_2_path', 'trial_variant', 'response',
                    'rt', 'fixation_onset_ttl', 'context1_onset_ttl', 'shape_onset_ttl', 'reddot_onset_ttl',
                    'context2_onset_ttl', 'shape2_onset_ttl', 'reddot2_onset_ttl', 'question_onset_ttl', 'response_ttl']
@@ -777,7 +803,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 
     total_trials = len(trials)
     for t_idx, trial in enumerate(trials):
-        if t_idx > 0 and t_idx % 12 == 0:
+        if t_idx > 0 and t_idx % 16 == 0:
             pct = int(100 * t_idx / total_trials)
             break_text = visual.TextStim(win, text="Take a break!",
                                         color='black', height=0.04, pos=(0, 0.1), wrapWidth=1.2, units='height')
@@ -868,6 +894,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             except (AttributeError, RuntimeError):
                 keys = []
             if keys and 'escape' in keys:
+                _log_ttl_event("escape_pressed", trial_info="phase2_question")
                 core.quit()
             mpos = mouse.getPos()
             mbuttons = mouse.getPressed()
@@ -922,7 +949,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_trial_iti_offset", trial_info=f"trial={t_idx+1}")
 
         del ctx1, ctx2, shape_img
-        if (t_idx + 1) % 12 == 0:
+        if (t_idx + 1) % 16 == 0:
             gc.collect()
 
     if f:
@@ -971,6 +998,7 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
             except (AttributeError, RuntimeError):
                 keys = []
             if keys and 'escape' in keys:
+                _log_ttl_event("escape_pressed", trial_info="phase3_debrief")
                 if f:
                     f.close()
                 return None
@@ -994,6 +1022,7 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
         rt = rt_clock.getTime()
         _log_ttl_event("phase3_debrief_response", trial_info=f"question={i+1} answer={answer}")
         response_ttl = _last_ttl_timestamp[0]
+        _log_ttl_event("phase3_debrief_offset", trial_info=f"question={i+1}")
 
         row = {
             'question': i + 1,
@@ -1166,10 +1195,11 @@ def main():
 
     # Phase 1 — split instructions (max 2 sentences per screen)
     p1_screens = [
+        ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase1_questions", 0),
         ("Let's sort some shapes. First you will see all of them.", "phase1_instr1", 0),
-        ("Then place them one at a time by clicking where you want each to go, as in the practice.", "phase1_instr2", 0),
+        ("Then place them one at a time by clicking where you want each to go, as in the demo you just saw.", "phase1_instr2", 0),
         ("Group them into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instr3", 0),
-        ("Use as many groups as you need.", "phase1_instr4", 5.0),
+        ("Use as many groups as you need.", "phase1_instr4", 0),  # no min—reduces perceived Enter lag
     ]
     for text, label, min_sec in p1_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1180,7 +1210,7 @@ def main():
 
     # Before grid: 16 shapes, no need to memorize
     p1_before_grid = [
-        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase1_before_grid", 0),
+        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase1_before_grid", 0), 
     ]
     for text, label, _ in p1_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1226,16 +1256,17 @@ def main():
         win.close()
         _close_dummy()
         return
+    _log_ttl_event("phase1_complete")
     gc.collect()
 
     # Phase 2 — split instructions (max 2 sentences per screen), explicit explanation
     p2_screens = [
+        ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase2_questions", 0),
         ("Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures.", "phase2_instr1", 0),
-        ("For each picture, say out loud what the shape could be. For example: planet, ball, or cookie.", "phase2_instr2", 0),
-        ("Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr3", 0),
-        ("Do your best since you will be recorded, but don't panic if nothing comes to mind.", "phase2_instr4", 0),
-        ("You can also re-use answers.", "phase2_instr5", 0),
-        ("Here's an example to show you how it works.", "phase2_instr6", 5.0),
+        ("For each picture, you'll see the shape, then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2", 0),
+        ("Do your best since you will be recorded, but don't panic if nothing comes to mind.", "phase2_instr3", 0),
+        ("You can also re-use answers.", "phase2_instr4", 0),
+        ("Let's watch a quick demo.", "phase2_instr5", 5.0),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1252,10 +1283,12 @@ def main():
     trials = load_phase2_trials()
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
     del trials
+    _log_ttl_event("phase2_complete")
     gc.collect()
 
     # Phase 3 — split instructions (max 2 sentences per screen)
     p3_screens = [
+        ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase3_questions", 0),
         ("Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs.", "phase3_instr1", 0),
         ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
         ("Feel free to use whatever grouping feels intuitive.", "phase3_instr3", 0),
@@ -1279,6 +1312,7 @@ def main():
         win.close()
         _close_dummy()
         return
+    _log_ttl_event("phase3_complete")
 
     # Phase 3 debrief questions
     debrief_results = run_phase3_debrief(win, mouse, participant, timestamp_str=timestamp_str)
