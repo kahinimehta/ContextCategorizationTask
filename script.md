@@ -1,290 +1,144 @@
 # Experimenter Script
 
-Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version" when participants need plain language.
+**Specs:** README.md. **CSV/TTL mapping:** `csv_documentation.md`.
 
-**Convention:** Instruction screens show "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` when screen appears, `*_enter` when Enter pressed, `*_offset` when screen transitions. Full TTL mapping: `csv_documentation.md`.
+**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition).
 
----
-
-## Explaining to Participants (ELI5)
-
-**Explain the task like participants are 5.** Use short sentences, simple words, and no jargon. If someone looks confused, slow down and rephrase in even simpler terms.
-
-**General tips:**
-- Use "put" instead of "place," "click" instead of "select," "go together" instead of "group"
-- Break instructions into one idea at a time
-- Check in: "Does that make sense?" or "Any questions before we start?"
-- For Phase 1 & 3: "Things that go together go close together. Things that are different go far apart."
-- For Phase 2: "What could this shape be in this picture? Say it out loud. Then pick which picture it fits better with."
+**ELI5 tips:** "Put" not "place"; "go together" not "group"; break into one idea at a time. Phase 1 & 3: "Things that go together go close." Phase 2: "Say out loud what it could be, then pick which picture fits better."
 
 ---
 
 ## Quick Start
 
-1. Open terminal in the task directory
-2. Run: `python context_shape_task.py`
-3. Enter participant name on the fullscreen prompt (like Social Recognition Task)
-4. **ESC** exits during interactive screens (instructions, name entry, placement, etc.). Not during timed displays. Like Social Recognition Task—no global escape to reduce accidental quits.
-
-**Data saved to**: `../LOG_FILES/` (one level up from task folder). Filenames include date/time (e.g., `phase1_john_20250318_143022.csv`, `phase1_placements_john_20250318_143022.png`). No files written if name contains "test".
-
-**Display:** Fullscreen by default. Windowed (1280×720): `PSYCHOPY_WINDOWED=1`.
+1. Run `python context_shape_task.py` from task directory
+2. Enter participant name (no spaces); Enter when done
+3. **ESC** during interactive screens only—not during timed displays (grid, fixation, stimulus)
+4. **Data:** `../LOG_FILES/` — date/time in filenames. Name contains "test" → no files.
+5. **Windowed mode:** `PSYCHOPY_WINDOWED=1` (1280×720)
 
 ---
 
 ## Full Experiment Script
 
-### Participant Login (fullscreen, like SRT)
+### Participant Login
 
 **Display:** "Enter your first name and last initial with no spaces/capitals: Hit Enter when done."
-
-**What to say:** "Type your name. No spaces. Enter when done."
-
-**Simple version:** "Type your name. No spaces. Enter when finished."
 
 **TTL:** participant_name_onset, participant_name_offset
 
 ---
 
-### Welcome Screen
+### Welcome
 
-**Display says:**
-"Welcome! Let's get started. First, watch this example video of how we work on this task."
-
-**What to say:** "Welcome! Read the message."
-
-**Simple version:** "Hi! Read what it says."
+**Display:** "Welcome! Let's get started. First, watch this example video of how we work on this task."
 
 **TTL:** welcome_onset, welcome_enter, welcome_offset
 
 ---
 
-### Tutorial — Video with subtitles
+### Tutorial
 
-**Shapes:** Red square, red circle, green circle.
+**Video:** `STIMULI/tutorial_video.mp4`. See `STIMULI/tutorial_video_spec.md`. Subtitles describe on-screen action; include "We sorted by shapes but could have sorted by color" and "Shapes closer together are in the same group."
 
-**Option A (video):** Place `STIMULI/tutorial_video.mp4` in the stimuli folder. See `STIMULI/tutorial_video_spec.md` for full production spec. The video shows click-to-place—shapes appearing and being clicked to place. **Subtitles describe what's on screen** (e.g., "Red square appears. Clicking to place on the left."), not instructions read aloud. Include: "We sorted by shapes but could have sorted by color." then "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group." ESC exits (during video/fallback—interactive screen).
+**Fallback** (no video): Step 1 — three shapes; Step 2 — red square center→left; Step 3 — red circle center→right; Step 4 — green circle center→right (with red); Step 5a — sorted by shape, could sort by color; Step 5b — groups, not line/spectrum; Step 6 — "Click to place. Press Enter to submit."
 
-**Option B (fallback):** If no video, a click-to-place sequence (no dragging) simulates the tutorial:
-- Step 1: "Three shapes appear."
-- Step 2: Red square appears at center, then at left: "Red square appears. Clicking to place on the left."
-- Step 3: Red circle appears at center, then at right: "Red circle appears. Clicking to place on the right."
-- Step 4: Green circle appears at center, then at right (next to red circle): "Green circle appears. Clicking to place on the right."
-- Step 5a: "We sorted by shapes but could have sorted by color."
-- Step 5b: "You're grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group."
-- Step 6: "Objects in a group can still be slightly further apart than from objects in another group." + "Click to place. Press Enter to submit."
+**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1–6)
 
-**What to say:** "Watch the tutorial. It shows click to place, Enter to submit."
+#### Tutorial debrief
 
-**Simple version:** "Watch this short video. Click to put shapes where you want, press Enter when done."
+**Display:** "In this practice, we sorted all objects by shape!"
 
-**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1, 2, 3, 4, 5a, 5b, 6)
-
-#### Debrief
-
-**Display says:** "In this practice, we sorted all objects by shape!"
-
-**What to say:** "Great! We sorted by shape."
-
-**Simple version:** "Nice! We put the shapes that look alike together."
-
-**TTL:** tutorial_debrief_onset, tutorial_debrief_enter, tutorial_debrief_offset
-
-#### Transition
-
-**Display says:** "Let's get started on your task!"
-
-**What to say:** "Ready for the real task."
-
-**Simple version:** "Now we'll do the real thing."
-
-**TTL:** tutorial_transition_onset, tutorial_transition_offset
+**TTL:** tutorial_debrief_onset/enter/offset, tutorial_transition_onset/enter/offset
 
 ---
 
 ### Phase 1 — Bottom-Up Shape Classification
 
-#### Instructions (split screens, max 2 sentences each; last screen min 8 s)
-
-**Screen 1:** "Let's sort some shapes. First you will see all of them."
-
-**Screen 2:** "Then place them one at a time by clicking where you want each to go, as in the practice."
-
-**Screen 3:** "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
-
-**Screen 4:** "Use as many groups as you need." *(Enter after 8 s)*
-
-**What to say:** "You'll see the full grid first, then place each shape one at a time. Group them into groups—not on a line or spectrum. Click to move, Enter when happy. Things that go together go close."
-
-**Simple version:** "First you'll see all the shapes. Then one by one, put each on the screen. Put them in groups—not in a line. Click to move, Enter when happy. Things that go together go close."
-
-**Experimenter note:** Emphasize "Group into groups—not on a spectrum or line." And "Things that go together go close. Things that are different go far apart."
+**Instructions (4 screens; screen 4 min 8 s):**
+1. "Let's sort some shapes. First you will see all of them."
+2. "Then place them one at a time by clicking where you want each to go, as in the practice."
+3. "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
+4. "Use as many groups as you need."
 
 **TTL:** phase1_instr1–4_onset/enter/offset
 
-#### Before grid (1 screen)
+**Before grid:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
 
-**Display:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
+**TTL:** phase1_before_grid_onset/enter/offset
 
-**TTL:** phase1_before_grid_onset, phase1_before_grid_enter, phase1_before_grid_offset
+**Grid:** ShapeGrid_4x4_scrambled.png, 5 s. **Fixation:** black cross, 1 s.
 
-#### Grid display
+**TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
-ShapeGrid_4x4_scrambled.png for 5 seconds (shapes in randomized positions)
+**Instructions (3 screens):**
+1. "You'll see the shapes from before, one at a time. Group each where you think it belongs."
+2. "Group into groups—not on a spectrum or line. Shapes closer together are in the same group."
+3. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
 
-**TTL:** phase1_grid_onset, phase1_grid_offset
+**TTL:** phase1_instruction2a/2b/2c_onset/enter/offset
 
-#### Fixation
+**Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. Hint on screen: "Click to place. Press Enter to submit."
 
-Black cross, 1 second
-
-**TTL:** phase1_fixation_onset, phase1_fixation_offset
-
-#### Instruction screens (3 screens)
-
-**Screen 1:** "You'll see the shapes from before, one at a time. Group each where you think it belongs."
-
-**Screen 2:** "Group into groups—not on a spectrum or line. Shapes closer together are in the same group."
-
-**Screen 3:** "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
-
-**TTL:** phase1_instruction2a_onset/enter/offset, phase1_instruction2b_onset/enter/offset, phase1_instruction2c_onset/enter/offset
-
-**What to say:** "Place each shape where it belongs. Click to move, Enter when happy. Once you submit, you can't move it."
-
-**Simple version:** "Put each shape where it goes. Click to move, Enter when happy. Once you press Enter, it's set."
-
-#### Task (16 shapes)
-
-Shapes presented one at a time in random order. Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "Click to place. Press Enter to submit."
-
-**What to say:** "Click to move, Enter when happy."
-
-**Simple version:** "Click where you want it. You can click again to move. Enter when happy."
-
-**TTL:** phase1_stimulus_onset/offset, phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (incremental after each shape)
+**TTL:** phase1_stimulus_onset/offset, phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape)
 
 ---
 
 ### Phase 2 — Top-Down Context Incorporation
 
-#### Instructions (6 screens, max 2 sentences each; last screen min 5 s)
-
-**Screen 1:** "Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures."
-
-**Screen 2:** "For each picture, say out loud what the shape could be. For example: planet, ball, or cookie."
-
-**Screen 3:** "Then click which picture the shape fits better with. We need to hear you say it every time."
-
-**Screen 4:** "Do your best since you will be recorded, but don't panic if nothing comes to mind."
-
-**Screen 5:** "You can also re-use answers."
-
-**Screen 6:** "Here's an example to show you how it works." *(Enter after 5 s)*
+**Instructions (6 screens; screen 6 min 5 s):**
+1. "Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures."
+2. "For each picture, say out loud what the shape could be. For example: planet, ball, or cookie."
+3. "Then click which picture the shape fits better with. We need to hear you say it every time."
+4. "Do your best since you will be recorded, but don't panic if nothing comes to mind."
+5. "You can also re-use answers."
+6. "Here's an example to show you how it works."
 
 **TTL:** phase2_instr1–6_onset/enter/offset
 
-**What to say:** "Say out loud what the shape could be in each context—e.g. 'planet' or 'ball.' Then click which picture it fits better with."
+**Tutorial:** Intro (1 Enter) → Fixation 500 ms → practice1 (space) → circle → blank → red dot 3 s + PLANET → practice2 (circus) → circle → blank2 → red dot 3 s + BALL → Question CIRCUS | SPACE (participant watches; SPACE auto-demo) → Blank 3 s → Ready (1 Enter).
 
-**Simple version:** "Say out loud what the shape could be. We need to hear you. Then click which picture it fits better with."
+**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot_onset/offset, phase2_tutorial_context2/shape2/blank2/reddot2_onset/offset, phase2_tutorial_question_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset
 
-**Experimenter note:** Enforce saying it out loud. If quiet: "What could this shape be? Say it out loud."
+**Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s → Context 2 → Shape 1 s → Blank → Red dot 3 s → Question (click A or B) → ITI 500 ms.
 
-#### Tutorial — Single intro screen + demo
+**Breaks:** Every 12 trials; "Take a break!" + progress bar.
 
-**Intro (1 Enter):** "In this example, you'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better."
-
-**Demo:** Fixation 500 ms → practice1 (space) → circle → blank → red dot 3 s + "You might say the circle is a 'PLANET'" → practice2 (circus) → circle → blank2 → red dot 3 s + "You might say the circle is a 'BALL'" → Question: CIRCUS | SPACE (participant watches; SPACE button highlighted in demo) → Blank 3 s → Ready screen (1 Enter)
-
-**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot, phase2_tutorial_context2/shape2/blank2/reddot2, phase2_tutorial_question_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset
-
-**What to say:** "Circle could be a planet or a ball. You'll pick which fits better."
-
-**Simple version:** "In one picture it's a planet, in the other a ball. Pick which fits better."
-
-#### Ready screen
-
-**Display says:** "Ready to try this with some actual shapes and images?"
-
-**What to say:** "Ready?"
-
-#### Task
-
-**Trial order:** Fixed for all participants from `phase2_trial_order.csv`. Same image sequence for every participant. See `csv_documentation.md` for design details.
-
-**Trial:** Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s → Context 2 → Shape 1 s → Blank → Red dot 3 s → Question (click A or B) → Blank 500 ms
-
-**Breaks:** Every 12 trials: "Take a break!" with progress bar showing % contextualized (phase2_break_onset/enter/offset)
-
-**TTL:** phase2_fixation, phase2_context1/shape, phase2_blank1, phase2_reddot, phase2_context2/shape2, phase2_blank2, phase2_reddot2, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti (per trial)
-
-**What to say:** "Say out loud what the shape could be in each context. Then click which fits better. Say it every time."
-
-**Simple version:** "Say what it could be—like 'moon' or 'cookie.' Then click which picture fits better."
+**TTL:** phase2_fixation, phase2_context1/shape, phase2_blank1, phase2_reddot, phase2_context2/shape2, phase2_blank2, phase2_reddot2, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti_onset/offset, phase2_break_onset/enter/offset
 
 ---
 
 ### Phase 3 — Post-Context Shape Reclassification
 
-#### Instructions (4 screens, max 2 sentences each)
-
-**Screen 1:** "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs."
-
-**Screen 2:** "Again, shapes closer together are ones you're grouping as more similar."
-
-**Screen 3:** "Feel free to use whatever grouping feels intuitive."
-
-**Screen 4:** "Once you've submitted the position of a shape, you can't move it again."
+**Instructions (4 screens):**
+1. "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs."
+2. "Again, shapes closer together are ones you're grouping as more similar."
+3. "Feel free to use whatever grouping feels intuitive."
+4. "Once you've submitted the position of a shape, you can't move it again."
 
 **TTL:** phase3_instr1–4_onset/enter/offset
 
-**What to say:** "Same as the start. Click to move, Enter when happy. Once you submit, you can't move it."
+**Task:** Same as Phase 1 (no grid preview). Shapes in different random order than Phase 1. Hint: "Click to place. Press Enter to submit."
 
-**Simple version:** "Same as before. Put each where it goes. Once you press Enter, it's set."
+**TTL:** phase3_stimulus_onset/offset, phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape)
 
-**Experimenter note:** Emphasize "Things that go together go close."
-
-#### Task
-
-Identical to Phase 1. Shape order randomized differently. Hint: "Click to place. Press Enter to submit."
-
-**TTL:** phase3_stimulus_onset/offset, phase3_click_place, phase3_enter_submit, phase3_placements_saved (incremental after each shape)
-
-**What to say:** "Click to move, Enter when happy."
-
-**Simple version:** "Same as before. Click to move, Enter when happy."
-
-#### Debrief (3 questions)
-
-1. "Did you use the same grouping strategy as the first time you sorted these shapes?" — Yes / No
-2. "Did the images associated with each shape you saw influence your grouping the second time around?" — Yes / No
-3. "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?" — Yes / No
+**Debrief (3 Yes/No questions):**
+1. "Did you use the same grouping strategy as the first time you sorted these shapes?"
+2. "Did the images associated with each shape you saw influence your grouping the second time around?"
+3. "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?"
 
 **TTL:** phase3_debrief_onset, phase3_debrief_response (per question)
-
-**What to say:** "Three questions. Click Yes or No for each."
-
-**Simple version:** "Did you put them together the same way? Did the pictures change how you put them together? Did you see the shapes differently the second time?"
 
 ---
 
 ### End
 
-**Display:** "Thank you! Task complete." (2 seconds, then closes)
+**Display:** "Thank you! Task complete." (2 s)
 
 **TTL:** experiment_end, summary_saved, thanks_onset, thanks_offset
 
 ---
 
-## Notes for Experimenters
+## Notes
 
-- **ELI5:** Use "Simple version" when needed. Short sentences, no jargon. Check in: "Does that make sense?"
-- **ESC** exits during interactive screens. **Click** to move, **Enter** to submit (Phase 1 & 3). No global escape (like Social Recognition Task).
-- **Phase 2:** Say it out loud. Nudge if silent: "We need to hear you."
-- **Test runs:** Name contains "test" → no files written (TTL file deleted).
-- **Placement images:** `phase1_placements_*.png`, `phase3_placements_*.png` in `../LOG_FILES/`
-- **Euclidean distance:** Smaller = shapes grouped more similarly (closer categorically).
-- **Tutorial video:** `STIMULI/tutorial_video.mp4`; spec in `STIMULI/tutorial_video_spec.md`. Fallback if missing.
-- **TTL:** Every screen change and response is logged. See `csv_documentation.md` for full mapping.
-- **Mac:** Parallel port not supported; TTL logged to CSV only. Cedrus pyxid2 works if connected.
-- **OOM:** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen.
+- **Phase 2:** Enforce saying out loud. If quiet: "What could this shape be? Say it out loud."
+- **Troubleshooting:** See README (OOM, windowed mode, Mac TTL).

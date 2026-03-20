@@ -32,7 +32,7 @@ The script uses contour extraction (OpenCV), resampling to a fixed number of poi
 
 - **Shape_X_Y.png** — Individual morphed shapes (X, Y = 0..3 in grid coordinates).
 - **ShapeGrid_4x4.png** — Ordered 4×4 grid of all shapes.
-- **ShapeGrid_4x4_scrambled.png** — Same shapes in randomized positions (optional).
+- **ShapeGrid_4x4_scrambled.png** — Same shapes in randomized positions. Used for Phase 1 display (5 s preview before placement).
 
 ## Script
 
@@ -49,7 +49,7 @@ python morph_shapes.py
 ```
 
 ```python
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 """
 Morphs 4 anchor shapes into a 4x4 grid using contour interpolation.
 Corners: top-left=bunny, top-right=duck, bottom-left=bird, bottom-right=squirrel
@@ -196,7 +196,7 @@ def main():
     Image.fromarray(canvas).save(GRID_PATH)
     print(f"  saved → {GRID_PATH}")
 
-    # ── scrambled 4x4 grid ────────────────────────────────────────────────────
+# ── scrambled 4x4 grid ────────────────────────────────────────────────────
     print("\nBuilding scrambled grid image...")
     rng = np.random.default_rng(RANDOM_SEED)
 

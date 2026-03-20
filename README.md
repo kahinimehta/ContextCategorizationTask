@@ -26,14 +26,14 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Documentation
 
-- **`csv_documentation.md`** — Column-by-column description of all CSV outputs
-- **`script.md`** — All on-screen text, experimenter spoken instructions (including ELI5/simple versions for explaining to participants), and phase-by-phase script
+- **`csv_documentation.md`** — CSV columns and complete TTL trigger mapping
+- **`script.md`** — Experimenter script: on-screen text, phase-by-phase flow, TTL summary, ELI5 tips
 - **`STIMULI/tutorial_video_spec.md`** — Production spec for tutorial video (content, timing, subtitles)
 - **`STIMULI/shape_generation.md`** — Shape creation pipeline (Henderson bunny anchor → OpenAI anchors → morphing script)
 
 ### Stimuli
 
-- **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 and Phase 3 display the **scrambled** grid; shapes are then presented one-by-one in random order (Phase 1) or a different random order (Phase 3). See `STIMULI/shape_generation.md`.
+- **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 shows the **scrambled** grid (5 s), then shapes one-by-one in random order. Phase 3: same task, no grid preview, different random order. See `STIMULI/shape_generation.md`.
 - **`STIMULI/Context_Images/`** — Flat folder of context PNGs named by category and variant: `{category}1.png`/`{category}2.png` or `{category}_1.png`/`{category}_2.png` (e.g., bedroom1.png, bedroom2.png; bookstore_1.png, bookstore_2.png). The number denotes the variation (1 = original, 2 = control). Practice images: practice1.png, practice2.png.
 - **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the click-to-place process (red square, red circle, green circle). See `STIMULI/tutorial_video_spec.md` for production spec (content, timing, subtitles). If missing, an animated fallback simulates the sequence.
 
@@ -67,7 +67,7 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
 6. For practice runs: use a name containing "test" to skip all file saving
 
-**Experimenters:** See `script.md` for run-through and ELI5 scripts.
+**Experimenters:** See `script.md` for run-through.
 
 ## Troubleshooting
 

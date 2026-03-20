@@ -2,8 +2,8 @@
 """
 ContextShape Task — PsychoPy Implementation
 Environment: Python (Anaconda), PsychoPy v2025.1.1
-Fullscreen with DPI scaling. ESC exits at any time.
-TTL triggers via Blackrock parallel port for every screen change and response.
+Fullscreen with DPI scaling. ESC during interactive screens only (not during grid, fixation, stimulus).
+TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged. See csv_documentation.md.
 """
 
 import os
@@ -183,9 +183,9 @@ def get_practice_context_paths():
 # =========================
 #  Button / Wait Helpers — Enter only, no buttons, ESC exits
 # =========================
-def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0, extra_drawables=None):
+def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec=0, extra_drawables=None, onset_trial_info=None):
     """Wait for Enter. No buttons—Enter only. min_display_sec: minimum time before Enter is accepted.
-    extra_drawables: optional list of stimuli to draw in addition to text_stim (e.g. progress bar)."""
+    extra_drawables: optional list of stimuli to draw. onset_trial_info: optional trial_info for onset TTL."""
     event.clearEvents()
     hint = visual.TextStim(win, text="Press Enter to continue.", color='gray', height=0.03, pos=(0, -0.35), units='height')
     extras = extra_drawables or []
@@ -197,7 +197,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
         hint.draw()
 
     if log_ttl:
-        _log_ttl_event(f"{event_label}_onset")
+        _log_ttl_event(f"{event_label}_onset", trial_info=onset_trial_info)
     draw()
     win.flip()
     event.clearEvents()  # clear any key from previous screen
@@ -773,8 +773,8 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             bar_fill = visual.Rect(win, width=max(fill_w, 0.01), height=bar_h * 0.9, fillColor='steelblue', lineColor=None,
                                   pos=(-bar_w / 2 + max(fill_w, 0.01) / 2, -0.15), units='height')
             pct_text = visual.TextStim(win, text=f"{pct}%", color='black', height=0.03, pos=(0, -0.25), units='height')
-            _log_ttl_event("phase2_break_onset", trial_info=f"after_trial={t_idx}")
-            wait_for_continue(win, break_text, "phase2_break", extra_drawables=[bar_bg, bar_fill, pct_text])
+            wait_for_continue(win, break_text, "phase2_break", extra_drawables=[bar_bg, bar_fill, pct_text],
+                              onset_trial_info=f"after_trial={t_idx}")
 
         # Fixation 500ms
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")

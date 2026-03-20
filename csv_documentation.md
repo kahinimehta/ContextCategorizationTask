@@ -1,8 +1,6 @@
 # CSV Variables Documentation
 
-Complete reference for all CSV outputs from the ContextShape Task. See `script.md` for experimenter instructions (including ELI5/simple versions for explaining to participants).
-
-**Exit:** ESC works only during interactive screens (instructions, name entry, placement, Phase 2 questions, debrief). Not during timed displays. Like Social Recognition Task—no global escape.
+Complete reference for all CSV outputs and TTL triggers. See `script.md` for experimenter instructions.
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -96,13 +94,20 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
 | `phase2_tutorial_intro_enter` | 2 | Enter pressed |
 | `phase2_tutorial_intro_offset` | 2 | Screen transition |
-| `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation |
-| `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 |
-| `phase2_tutorial_shape_onset` | 2 | Tutorial shape |
-| `phase2_tutorial_blank_onset` | 2 | Tutorial blank |
-| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + PLANET |
-| `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 |
-| `phase2_tutorial_shape2_onset` | 2 | Tutorial shape 2 |
+| `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation onset |
+| `phase2_tutorial_fixation_offset` | 2 | Tutorial fixation ended |
+| `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 onset |
+| `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended |
+| `phase2_tutorial_shape_onset` | 2 | Tutorial shape onset |
+| `phase2_tutorial_shape_offset` | 2 | Tutorial shape ended |
+| `phase2_tutorial_blank_onset` | 2 | Tutorial blank onset |
+| `phase2_tutorial_blank_offset` | 2 | Tutorial blank ended |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + PLANET onset |
+| `phase2_tutorial_reddot_offset` | 2 | Tutorial red dot ended |
+| `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset |
+| `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
+| `phase2_tutorial_shape2_onset` | 2 | Tutorial shape 2 onset |
+| `phase2_tutorial_shape2_offset` | 2 | Tutorial shape 2 ended |
 | `phase2_tutorial_reddot2_onset` | 2 | Tutorial red dot + BALL |
 | `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
 | `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
@@ -138,7 +143,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_question_offset` | 2 | Question screen ended (after response) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
-| `phase2_break_onset` | 2 | Break screen appeared (every 12 trials; shows progress bar with % contextualized) |
+| `phase2_break_onset` | 2 | Break screen appeared (trial_info: after_trial=N; every 12 trials, progress bar) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
 | `phase3_instr1_onset` | 3 | Phase 3 instruction screen 1 appeared |
@@ -230,7 +235,7 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| `question` | Integer | Question number (1 or 2) |
+| `question` | Integer | Question number (1, 2, or 3) |
 | `question_text` | String | Full question text |
 | `answer` | String | Participant response: "Yes" or "No" |
 | `rt` | Float | Reaction time from question onset to button click (seconds) |
@@ -252,8 +257,8 @@ Overall experiment summary.
 |--------|------|-------------|
 | `participant_id` | String | Participant identifier |
 | `total_task_time_seconds` | Float | Total duration from start to end |
-| `shapegrid_width_px` | Integer | ShapeGrid_4x4.png pixel width |
-| `shapegrid_height_px` | Integer | ShapeGrid_4x4.png pixel height |
+| `shapegrid_width_px` | Integer | ShapeGrid pixel width (from ShapeGrid_4x4_scrambled.png) |
+| `shapegrid_height_px` | Integer | ShapeGrid pixel height |
 | `grid_border_coords` | String | Grid border coordinates (if computed) |
 | `per_shape_ground_truth` | String | Per-shape ground-truth: `Shape_X_Y.png:row=R,col=C,center_x=X,center_y=Y` (pipe-separated) |
 | `scaling_factor` | String | Scaling factor used for display |
