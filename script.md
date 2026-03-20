@@ -2,7 +2,7 @@
 
 Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version" when participants need plain language.
 
-**Convention:** Instruction screens show "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` when screen appears, `*_offset` when Enter pressed. Full TTL mapping: `csv_documentation.md`.
+**Convention:** Instruction screens show "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` when screen appears, `*_enter` when Enter pressed, `*_offset` when screen transitions. Full TTL mapping: `csv_documentation.md`.
 
 ---
 
@@ -28,7 +28,7 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Data saved to**: `../LOG_FILES/` (one level up from task folder). Filenames include date/time (e.g., `phase1_john_20250318_143022.csv`, `phase1_placements_john_20250318_143022.png`). No files written if name contains "test".
 
-**Windowed mode** (reduces OOM risk): `PSYCHOPY_WINDOWED=1 python context_shape_task.py`
+**Display:** Mac defaults to windowed (1280×720). Fullscreen: `PSYCHOPY_WINDOWED=0`. On Windows/Linux, windowed: `PSYCHOPY_WINDOWED=1`.
 
 ---
 
@@ -55,7 +55,7 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Simple version:** "Hi! Read what it says."
 
-**TTL:** welcome_onset, welcome_offset
+**TTL:** welcome_onset, welcome_enter, welcome_offset
 
 ---
 
@@ -68,8 +68,8 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 **Option B (fallback):** If no video, a click-to-place sequence (no dragging) simulates the tutorial:
 - Step 1: "Three shapes appear."
 - Step 2: Red square appears at center, then at left: "Red square appears. Clicking to place on the left."
-- Step 3: Red circle appears at center, then at left next to square (spaced apart): "Red circle appears. Clicking to place on the left."
-- Step 4: Green circle appears at center, then at right: "Green circle appears. Clicking to place on the right."
+- Step 3: Red circle appears at center, then at right: "Red circle appears. Clicking to place on the right."
+- Step 4: Green circle appears at center, then at right (next to red circle): "Green circle appears. Clicking to place on the right."
 - Step 5a: "We sorted by shapes but could have sorted by color."
 - Step 5b: "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group."
 - Step 6: "Click to place each shape. Press Enter to submit."
@@ -88,7 +88,7 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Simple version:** "Nice! We put the shapes that look alike together."
 
-**TTL:** tutorial_debrief_onset, tutorial_debrief_offset
+**TTL:** tutorial_debrief_onset, tutorial_debrief_enter, tutorial_debrief_offset
 
 #### Transition
 
@@ -118,6 +118,14 @@ Full task specs: README.md. CSV/TTL: `csv_documentation.md`. Use "Simple version
 
 **Experimenter note:** Emphasize "Things that go together go close. Things that are different go far apart."
 
+**TTL:** phase1_instr1–3_onset/enter/offset
+
+#### Before grid (1 screen)
+
+**Display:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them altogether just for context."
+
+**TTL:** phase1_before_grid_onset, phase1_before_grid_enter, phase1_before_grid_offset
+
 #### Grid display
 
 ShapeGrid_4x4.png for 5 seconds
@@ -136,7 +144,7 @@ Black cross, 1 second
 
 **Screen 2:** "Shapes closer together are in the same group. Click to place, press Enter to submit."
 
-**TTL:** phase1_instruction2a_onset/offset, phase1_instruction2b_onset/offset
+**TTL:** phase1_instruction2a_onset/enter/offset, phase1_instruction2b_onset/enter/offset
 
 **What to say:** "Place each shape where it belongs. Click to move, Enter when happy."
 
@@ -166,7 +174,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Screen 4:** "Here's an example to show you how it works." *(Enter after 5 s)*
 
-**TTL:** phase2_instr1–4_onset/offset
+**TTL:** phase2_instr1–4_onset/enter/offset
 
 **What to say:** "Say out loud what the shape could be in each context—e.g. 'planet' or 'ball.' Then click which picture it fits better with."
 
@@ -180,7 +188,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Demo:** Fixation 500 ms → practice1 (space) → circle → blank → red dot + "You might say the circle is a 'PLANET'" → practice2 (circus) → circle → blank2 → red dot + "You might say the circle is a 'BALL'" → Question: CIRCUS | SPACE (participant watches; SPACE button highlighted in demo) → Blank 3 s → Ready screen (1 Enter)
 
-**TTL:** phase2_tutorial_intro_onset/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot, phase2_tutorial_context2/shape2/blank2/reddot2, phase2_tutorial_question_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/offset
+**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot, phase2_tutorial_context2/shape2/blank2/reddot2, phase2_tutorial_question_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset
 
 **What to say:** "Circle could be a planet or a ball. You'll pick which fits better."
 
@@ -198,7 +206,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Trial:** Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 2 s → Context 2 → Shape 1 s → Blank → Red dot 2 s → Question (click A or B) → Blank 500 ms
 
-**Breaks:** Every 12 trials: "Take a break!" (phase2_break_onset/offset)
+**Breaks:** Every 12 trials: "Take a break!" (phase2_break_onset/enter/offset)
 
 **TTL:** phase2_fixation, phase2_context1/shape, phase2_blank1, phase2_reddot, phase2_context2/shape2, phase2_blank2, phase2_reddot2, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti (per trial)
 
@@ -220,7 +228,7 @@ Each shape shown 1 s, then clickable. Previously placed shapes visible. Hint: "C
 
 **Screen 4:** "Feel free to use whatever grouping feels intuitive."
 
-**TTL:** phase3_instr1–4_onset/offset
+**TTL:** phase3_instr1–4_onset/enter/offset
 
 **What to say:** "Same as the start. Click to move, Enter when happy. You can use the Phase 2 associations—the images you saw with each shape—when deciding how to group them."
 
@@ -271,4 +279,4 @@ Identical to Phase 1. Shape order randomized differently. Hint: "Click to place.
 - **Tutorial video:** `STIMULI/tutorial_video.mp4`; spec in `STIMULI/tutorial_video_spec.md`. Fallback if missing.
 - **TTL:** Every screen change and response is logged. See `csv_documentation.md` for full mapping.
 - **Mac:** Parallel port not supported; TTL logged to CSV only. Cedrus pyxid2 works if connected.
-- **OOM:** If process is killed, try `PSYCHOPY_WINDOWED=1 python context_shape_task.py`
+- **OOM:** Mac uses windowed mode (1280×720) by default. Use `PSYCHOPY_WINDOWED=0` for fullscreen. On Windows/Linux, use `PSYCHOPY_WINDOWED=1` for windowed.

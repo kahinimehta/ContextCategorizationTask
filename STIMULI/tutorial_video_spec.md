@@ -15,14 +15,14 @@ See `../README.md` and `../script.md` for task documentation.
 | Step | Duration | Visual | Subtitle |
 |------|----------|--------|----------|
 | 1 | ~2.5 s | Three shapes on screen: red square (left), red circle (center), green circle (right) | "Three shapes appear." |
-| 2 | ~1.6 s | Red square appears at center, then appears at left (click-to-place, no dragging) | "Red square appears. Clicking to place on the left." |
-| 3 | ~1.6 s | Red circle appears at center, then appears at left next to square (spaced apart, no overlap) | "Red circle appears. Clicking to place on the left." |
-| 4 | ~1.6 s | Green circle appears at center, then appears at right | "Green circle appears. Clicking to place on the right." |
-| 5a | ~2.5 s | Final layout: red square and red circle side-by-side on left (spaced apart), green on right | "We sorted by shapes but could have sorted by color." |
-| 5b | ~3 s | Same layout | "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group." |
-| 6 | ~2 s | Same layout with new subtitle | "Click to place. Press Enter to submit." |
+| 2 | ~3 s | Red square appears at center, then appears at left (click-to-place, no dragging) | "Red square appears. Clicking to place on the left." |
+| 3 | ~3 s | Red circle appears at center, then appears at right (click-to-place) | "Red circle appears. Clicking to place on the right." |
+| 4 | ~3 s | Green circle appears at center, then appears at right next to red circle (spaced apart, no overlap) | "Green circle appears. Clicking to place on the right." |
+| 5a | ~3 s | Final layout: square on left, both circles on right (sorted by shape) | "We sorted by shapes but could have sorted by color." |
+| 5b | ~4 s | Same layout | "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group." |
+| 6 | ~2.5 s | Same layout with new subtitle | "Click to place. Press Enter to submit." |
 
-**Total:** ~13–15 seconds
+**Total:** ~21 seconds. All text on screen for at least 2 seconds.
 
 ---
 
@@ -31,7 +31,7 @@ See `../README.md` and `../script.md` for task documentation.
 1. **Click-to-place, not drag:** Show shapes being placed by a single click at the target location. Do not show dragging.
 2. **Subtitle style:** Black text, centered at bottom of screen. Describe what's happening (e.g., "Clicking to place on the left").
 3. **Required subtitles (steps 5a, 5b):** Step 5a: "We sorted by shapes but could have sorted by color." Step 5b: "Shapes closer together are in the same group. Objects in a group can still be slightly further apart than from objects in another group."
-4. **Layout:** Red square and red circle side-by-side on the left (spaced apart, no overlap); green circle on the right.
+4. **Layout:** Square on the left; both circles (red and green) side-by-side on the right (spaced apart, no overlap). Sorted by shape.
 5. **Resolution:** 1920×1080 recommended (matches task display).
 
 ---

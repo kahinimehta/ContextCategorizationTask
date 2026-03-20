@@ -25,46 +25,63 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 |--------------|-------|-------------|
 | `participant_name_onset` | — | Participant name prompt appeared |
 | `participant_name_offset` | — | Participant pressed Enter on name |
+| *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
 | `experiment_end` | — | Experiment ended (trial_info: participant=…) |
 | `welcome_onset` | — | Welcome screen appeared |
-| `welcome_offset` | — | Participant pressed Enter on welcome |
+| `welcome_enter` | — | Enter pressed |
+| `welcome_offset` | — | Screen transition |
 | `tutorial_video_onset` | — | Tutorial video started |
 | `tutorial_video_offset` | — | Tutorial video ended |
 | `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1, 2, 3, 4, 5a, 5b, 6) |
 | `tutorial_fallback_offset` | — | Animated fallback step ended |
 | `tutorial_debrief_onset` | — | "We sorted by shape" screen appeared |
-| `tutorial_debrief_offset` | — | Enter pressed on debrief |
+| `tutorial_debrief_enter` | — | Enter pressed |
+| `tutorial_debrief_offset` | — | Screen transition |
 | `tutorial_transition_onset` | — | "Let's get started" screen appeared |
-| `tutorial_transition_offset` | — | Enter pressed on transition |
+| `tutorial_transition_enter` | — | Enter pressed |
+| `tutorial_transition_offset` | — | Screen transition |
 | `phase1_instr1_onset` | 1 | Phase 1 instruction screen 1 appeared |
-| `phase1_instr1_offset` | 1 | Enter pressed |
+| `phase1_instr1_enter` | 1 | Enter pressed |
+| `phase1_instr1_offset` | 1 | Screen transition |
 | `phase1_instr2_onset` | 1 | Phase 1 instruction screen 2 appeared |
-| `phase1_instr2_offset` | 1 | Enter pressed |
+| `phase1_instr2_enter` | 1 | Enter pressed |
+| `phase1_instr2_offset` | 1 | Screen transition |
 | `phase1_instr3_onset` | 1 | Phase 1 instruction screen 3 appeared |
-| `phase1_instr3_offset` | 1 | Enter pressed |
+| `phase1_instr3_enter` | 1 | Enter pressed |
+| `phase1_instr3_offset` | 1 | Screen transition |
+| `phase1_before_grid_onset` | 1 | "You will see 16 shapes..." appeared |
+| `phase1_before_grid_enter` | 1 | Enter pressed |
+| `phase1_before_grid_offset` | 1 | Screen transition |
 | `phase1_grid_onset` | 1 | Shape grid display started |
 | `phase1_grid_offset` | 1 | Shape grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
 | `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
-| `phase1_instruction2a_offset` | 1 | Enter pressed |
+| `phase1_instruction2a_enter` | 1 | Enter pressed |
+| `phase1_instruction2a_offset` | 1 | Screen transition |
 | `phase1_instruction2b_onset` | 1 | "Click to place" instruction appeared |
-| `phase1_instruction2b_offset` | 1 | Enter pressed |
+| `phase1_instruction2b_enter` | 1 | Enter pressed |
+| `phase1_instruction2b_offset` | 1 | Screen transition |
 | `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N) |
 | `phase1_stimulus_offset` | 1 | Shape display ended, clickable |
 | `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase2_instr1_onset` | 2 | Phase 2 instruction screen 1 appeared |
-| `phase2_instr1_offset` | 2 | Enter pressed |
+| `phase2_instr1_enter` | 2 | Enter pressed |
+| `phase2_instr1_offset` | 2 | Screen transition |
 | `phase2_instr2_onset` | 2 | Phase 2 instruction screen 2 appeared |
-| `phase2_instr2_offset` | 2 | Enter pressed |
+| `phase2_instr2_enter` | 2 | Enter pressed |
+| `phase2_instr2_offset` | 2 | Screen transition |
 | `phase2_instr3_onset` | 2 | Phase 2 instruction screen 3 appeared |
-| `phase2_instr3_offset` | 2 | Enter pressed |
+| `phase2_instr3_enter` | 2 | Enter pressed |
+| `phase2_instr3_offset` | 2 | Screen transition |
 | `phase2_instr4_onset` | 2 | Phase 2 instruction screen 4 ("Here's an example") appeared |
-| `phase2_instr4_offset` | 2 | Enter pressed |
+| `phase2_instr4_enter` | 2 | Enter pressed |
+| `phase2_instr4_offset` | 2 | Screen transition |
 | `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
-| `phase2_tutorial_intro_offset` | 2 | Enter pressed |
+| `phase2_tutorial_intro_enter` | 2 | Enter pressed |
+| `phase2_tutorial_intro_offset` | 2 | Screen transition |
 | `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation |
 | `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 |
 | `phase2_tutorial_shape_onset` | 2 | Tutorial shape |
@@ -82,7 +99,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
 | `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
 | `phase2_ready_onset` | 2 | "Ready to try" screen appeared |
-| `phase2_ready_offset` | 2 | Enter pressed |
+| `phase2_ready_enter` | 2 | Enter pressed |
+| `phase2_ready_offset` | 2 | Screen transition |
 | `phase2_fixation_onset` | 2 | Fixation before trial |
 | `phase2_fixation_offset` | 2 | Fixation ended |
 | `phase2_context1_onset` | 2 | Context 1 image onset |
@@ -107,15 +125,20 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
 | `phase2_break_onset` | 2 | Break screen appeared (every 12 trials) |
-| `phase2_break_offset` | 2 | Enter pressed on break |
+| `phase2_break_enter` | 2 | Enter pressed |
+| `phase2_break_offset` | 2 | Screen transition |
 | `phase3_instr1_onset` | 3 | Phase 3 instruction screen 1 appeared |
-| `phase3_instr1_offset` | 3 | Enter pressed |
+| `phase3_instr1_enter` | 3 | Enter pressed |
+| `phase3_instr1_offset` | 3 | Screen transition |
 | `phase3_instr2_onset` | 3 | Phase 3 instruction screen 2 appeared |
-| `phase3_instr2_offset` | 3 | Enter pressed |
+| `phase3_instr2_enter` | 3 | Enter pressed |
+| `phase3_instr2_offset` | 3 | Screen transition |
 | `phase3_instr3_onset` | 3 | Phase 3 instruction screen 3 appeared |
-| `phase3_instr3_offset` | 3 | Enter pressed |
+| `phase3_instr3_enter` | 3 | Enter pressed |
+| `phase3_instr3_offset` | 3 | Screen transition |
 | `phase3_instr4_onset` | 3 | Phase 3 instruction screen 4 appeared |
-| `phase3_instr4_offset` | 3 | Enter pressed |
+| `phase3_instr4_enter` | 3 | Enter pressed |
+| `phase3_instr4_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |
 | `phase3_stimulus_offset` | 3 | Shape display ended, clickable |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |

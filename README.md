@@ -69,7 +69,8 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 
 ## Troubleshooting
 
-- **`zsh: killed` (OOM):** If the process is killed during Phase 2 or 3, try running in windowed mode to reduce memory use: `PSYCHOPY_WINDOWED=1 python context_shape_task.py`
+- **`zsh: killed` (OOM):** Process uses windowed mode (1280×720) on Mac by default to reduce memory. Override with `PSYCHOPY_WINDOWED=0` for fullscreen. On Windows/Linux, use `PSYCHOPY_WINDOWED=1` for windowed mode.
+- **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 
 ## Paths

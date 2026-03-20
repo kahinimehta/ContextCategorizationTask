@@ -206,6 +206,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
                 core.quit()
             if 'return' in keys and clock.getTime() >= min_display_sec:
                 if log_ttl:
+                    _log_ttl_event(f"{event_label}_enter")
                     _log_ttl_event(f"{event_label}_offset")
                 return True
         draw()
@@ -410,19 +411,19 @@ TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
 def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle):
-    """Show click-to-place: shape at center briefly, then at target (no dragging)."""
+    """Show click-to-place: shape at center briefly, then at target (no dragging). Text on screen at least 2 s."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
     shape_stim.setPos(start_pos)
     shape_stim.draw()
     sub.draw()
     win.flip()
-    core.wait(0.6)
+    core.wait(1.0)
     shape_stim.setPos(end_pos)
     shape_stim.draw()
     sub.draw()
     win.flip()
-    core.wait(1.0)
+    core.wait(2.0)
 
 
 def run_tutorial_phase1(win, mouse, participant):
@@ -449,10 +450,10 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_red = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None)
         circ_green = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None)
 
-        # Positions: red square and red circle side-by-side on left (spaced apart), green on right
+        # Positions: square on left, circles on right (sorted by shape)
         sq_pos = (-0.45, 0.08)
-        circ_red_pos = (-0.2, 0.08)
-        circ_green_pos = (0.35, 0)
+        circ_red_pos = (0.2, 0.08)
+        circ_green_pos = (0.45, 0.08)
 
         # Step 1: Three shapes overview
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=1")
@@ -474,13 +475,13 @@ def run_tutorial_phase1(win, mouse, participant):
         _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. Clicking to place on the left.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
-        # Step 3: Red circle appears at center, clicks to place on left (next to square)
+        # Step 3: Red circle appears at center, clicks to place on right
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
         circ_red.setPos((0, 0))
-        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the left.")
+        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the right.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
-        # Step 4: Green circle appears at center, clicks to place on right
+        # Step 4: Green circle appears at center, clicks to place on right (next to red circle)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
         circ_green.setPos((0, 0))
         _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green circle appears. Clicking to place on the right.")
@@ -498,7 +499,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
-        core.wait(2.5)
+        core.wait(3.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5a")
 
         # Step 5b: Distance denotes group
@@ -510,7 +511,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
-        core.wait(3.0)
+        core.wait(4.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
 
         # Step 6: Press Enter subtitle
@@ -522,7 +523,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_enter.draw()
         win.flip()
-        core.wait(2.0)
+        core.wait(2.5)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Debrief
@@ -1038,12 +1039,24 @@ def write_summary(participant, experiment_start, experiment_end, phase1_results,
 # =========================
 def main():
     global _ttl_file_ref, _ttl_writer_ref
+    gc.collect()
     event.globalKeys.add(key='escape', func=lambda: core.quit(), modifiers=[])
 
-    # Use windowed mode on small screens or when PSYCHOPY_WINDOWED=1 (reduces OOM risk)
-    use_windowed = os.environ.get('PSYCHOPY_WINDOWED', '').lower() in ('1', 'true', 'yes')
+    # Dummy window (helps stability/OOM on some systems, e.g. Social Recognition Task). Disable: PSYCHOPY_DUMMY_WINDOW=0
+    use_dummy = os.environ.get('PSYCHOPY_DUMMY_WINDOW', '1').lower() not in ('0', 'false', 'no')
+    dummy_win = None
+    if use_dummy:
+        try:
+            dummy_win = visual.Window(size=(100, 100), pos=(0, 0), color='white', allowGUI=False)
+        except Exception:
+            pass
+
+    # Windowed mode reduces OOM risk. Default windowed on Mac (override with PSYCHOPY_WINDOWED=0 for fullscreen).
+    _default_windowed = '1' if sys.platform == 'darwin' else '0'
+    use_windowed = os.environ.get('PSYCHOPY_WINDOWED', _default_windowed).lower() in ('1', 'true', 'yes')
+    win_size = (1280, 720) if use_windowed else (1920, 1080)
     win = visual.Window(
-        size=(1920, 1080),
+        size=win_size,
         fullscr=not use_windowed,
         color='white',
         units='height',
@@ -1051,6 +1064,13 @@ def main():
     )
     mouse = event.Mouse(win=win)
     mouse.setVisible(True)
+
+    def _close_dummy():
+        if dummy_win is not None:
+            try:
+                dummy_win.close()
+            except Exception:
+                pass
 
     _probe_ttl()
     timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1073,11 +1093,13 @@ def main():
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
     if not wait_for_continue(win, welcome, "welcome"):
         win.close()
+        _close_dummy()
         return
 
     # Tutorial Phase 1
     if not run_tutorial_phase1(win, mouse, participant):
         win.close()
+        _close_dummy()
         return
 
     # Phase 1 — split instructions (max 2 sentences per screen)
@@ -1090,6 +1112,18 @@ def main():
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
             win.close()
+            _close_dummy()
+            return
+
+    # Before grid: 16 shapes, no need to memorize
+    p1_before_grid = [
+        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them altogether just for context.", "phase1_before_grid", 0),
+    ]
+    for text, label, _ in p1_before_grid:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label):
+            win.close()
+            _close_dummy()
             return
 
     # Grid 5 sec
@@ -1117,6 +1151,7 @@ def main():
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label):
             win.close()
+            _close_dummy()
             return
 
     shapes = get_shape_paths()
@@ -1126,6 +1161,7 @@ def main():
     phase1_results = run_drag_phase(win, mouse, shapes, "phase1", 1, participant, timestamp_str=timestamp_str)
     if phase1_results is None:
         win.close()
+        _close_dummy()
         return
     gc.collect()
 
@@ -1140,10 +1176,12 @@ def main():
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
             win.close()
+            _close_dummy()
             return
 
     if not run_phase2_tutorial(win, mouse, participant):
         win.close()
+        _close_dummy()
         return
 
     trials = build_phase2_trials(participant)
@@ -1161,6 +1199,7 @@ def main():
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label):
             win.close()
+            _close_dummy()
             return
 
     shapes3 = get_shape_paths()
@@ -1171,12 +1210,14 @@ def main():
     gc.collect()
     if phase3_results is None:
         win.close()
+        _close_dummy()
         return
 
     # Phase 3 debrief questions
     debrief_results = run_phase3_debrief(win, mouse, participant, timestamp_str=timestamp_str)
     if debrief_results is None:
         win.close()
+        _close_dummy()
         return
 
     experiment_end = time.time()
@@ -1207,6 +1248,7 @@ def main():
     core.wait(2.0)
     _log_ttl_event("thanks_offset")
     win.close()
+    _close_dummy()
 
 
 if __name__ == '__main__':
