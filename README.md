@@ -36,6 +36,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 - **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 shows the **scrambled** grid (5 s), then shapes one-by-one in random order. Phase 3: same task, no grid preview, different random order. See `STIMULI/shape_generation.md`.
 - **`STIMULI/Context_Images/`** — Flat folder of context PNGs named by category and variant: `{category}1.png`/`{category}2.png` or `{category}_1.png`/`{category}_2.png` (e.g., bedroom1.png, bedroom2.png; bookstore_1.png, bookstore_2.png). The number denotes the variation (1 = original, 2 = control). Practice images: practice1.png, practice2.png.
 - **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the click-to-place process (red square, red circle, green circle). See `STIMULI/tutorial_video_spec.md` for production spec (content, timing, subtitles). If missing, an animated fallback simulates the sequence.
+- **`demo.mp4`** — Optional. Standalone demo video in the task root. Use for presentations, quick overviews, or sharing the task flow without running the full experiment. Not used by the experiment script (which uses `STIMULI/tutorial_video.mp4` for the in-task tutorial).
 
 ## Data Output
 
