@@ -81,6 +81,8 @@
 
 ### Phase 2 — Top-Down Context Incorporation
 
+*Make sure they are speaking out loud when needed. can remind them at breaks/ in between as needed.*
+
 **Instructions (6 screens; screen 6 min 5 s):**
 1. "If you have any questions, ask the experimenter now. Press Enter when you're ready."
 2. "Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures."
