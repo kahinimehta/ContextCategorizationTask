@@ -25,6 +25,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Documentation
 
+- **`TASK_DESCRIPTION.md`** — Technical spec: code structure, timing, stimulus durations, trial selection, mapping, randomization, troubleshooting
 - **`csv_documentation.md`** — CSV columns and complete TTL trigger mapping
 - **`script.md`** — Experimenter script: on-screen text, phase-by-phase flow, TTL summary, ELI5 tips
 - **`STIMULI/tutorial_video_spec.md`** — Production spec for tutorial video (content, timing, subtitles)
@@ -83,7 +84,11 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
 6. For practice runs: use a name containing "test" to skip all file saving
 
-**Experimenters:** See `script.md` for run-through.
+**Experimenters:** See `script.md` for run-through. **Technical specs:** See `TASK_DESCRIPTION.md` for code structure, timing, trial selection, randomization, and full troubleshooting.
+
+## Troubleshooting
+
+See **`TASK_DESCRIPTION.md`** for the full troubleshooting section (ESC behavior, OOM, dummy window, Mac TTL/ObjC/Enter issues).
 
 ## Paths
 
