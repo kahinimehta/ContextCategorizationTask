@@ -5,10 +5,9 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ## Acknowledgments
 
 - **Shape generation**: Bunny anchor from Henderson et al. 2025; OpenAI used to create duck, bird, and squirrel anchors; contour interpolation (OpenCV, scipy) to morph the four anchors into a 4×4 grid. See `STIMULI/shape_generation.md` for the full pipeline and morphing script.
-- **Context images**: THINGS dataset
+- **Context images**: OpenAI
 - **Practice stimulus generation**: OpenAI
-- **Coding**: Cursor
-- **Idea development**: Claude
+- **Coding**: Cursor & Claude
 
 ## Environment
 
@@ -36,7 +35,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 - **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 shows the **scrambled** grid (5 s), then shapes one-by-one in random order. Phase 3: same task, no grid preview, different random order. See `STIMULI/shape_generation.md`.
 - **`STIMULI/Context_Images/`** — Flat folder of context PNGs named by category and variant: `{category}1.png`/`{category}2.png` or `{category}_1.png`/`{category}_2.png` (e.g., bedroom1.png, bedroom2.png; bookstore_1.png, bookstore_2.png). The number denotes the variation (1 = original, 2 = control). Practice images: practice1.png, practice2.png.
 - **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the click-to-place process (red square, red circle, green circle). See `STIMULI/tutorial_video_spec.md` for production spec (content, timing, subtitles). If missing, an animated fallback simulates the sequence.
-- **`demo.mp4`** — Optional. Standalone demo video in the task root. Use for presentations, quick overviews, or sharing the task flow without running the full experiment. Not used by the experiment script (which uses `STIMULI/tutorial_video.mp4` for the in-task tutorial).
+
 
 ## Data Output
 
@@ -55,7 +54,10 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 *datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
-### Example CSVs
+
+### Demonstration of task 
+
+**`demo.mp4`** — Demonstration of task. 
 
 Example output files in the task root illustrate the expected format:
 
@@ -64,6 +66,7 @@ Example output files in the task root illustrate the expected format:
 | `phase1_kahini_20260320_175811.csv` | Phase 1 output: one row per shape with `shape_path` (full path), `final_x`, `final_y`, `rt`, `click_ttl`, `submit_ttl`, etc. |
 | `phase2_kahini_20260320_175811.csv` | Phase 2 output: one row per trial with `shape_path`, `context_1_path`, `context_2_path`, `trial_variant`, `response`, `rt`, and TTL timestamps. |
 | `ttl_log_20260320_175811.csv` | TTL log: every event with `timestamp`, `trigger_code`, `event_label`, `trial_info`. Use for EEG/fMRI alignment. |
+
 
 See `csv_documentation.md` for full column definitions and TTL trigger mapping.
 
@@ -81,15 +84,6 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 6. For practice runs: use a name containing "test" to skip all file saving
 
 **Experimenters:** See `script.md` for run-through.
-
-## Troubleshooting
-
-- **Random/accidental quits:** ESC is not a global key (like Social Recognition Task). It only works during interactive screens (instructions, name entry, shape placement, Phase 2 questions, debrief). During timed displays (grid, fixation, stimulus), ESC does nothing—reduces accidental quits from key repeat or stray keypresses.
-- **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
-- **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
-- **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
-- **Mac `ObjCInstance` crash:** If the task crashes during timed displays with `ObjCInstance has no attribute type`, the script uses `time.sleep` instead of `core.wait` on macOS to avoid this pyglet Cocoa bug.
-- **Mac Enter/keys not working:** On macOS, the script disables PsychoPy's hardware keyboard backend (known to freeze or ignore keys) and uses `event.getKeys` only. If keys still don't register, ensure the PsychoPy window has focus.
 
 ## Paths
 
