@@ -33,7 +33,8 @@ os.environ.setdefault('PSYCHOPY_IOHUB', '0')
 from psychopy import visual, core, event
 try:
     from psychopy.hardware import keyboard as hw_keyboard
-    _has_keyboard = True
+    # Disable hardware keyboard on Mac—known to cause freezes/Enter not registering (PsychoPy discourse #36146, #35710)
+    _has_keyboard = sys.platform != 'darwin'
 except ImportError:
     hw_keyboard = None
     _has_keyboard = False
@@ -629,12 +630,21 @@ def run_tutorial_phase1(win, mouse, participant):
 # =========================
 #  Phase 2: Context Task
 # =========================
+def _resolve_stimulus_path(path_str):
+    """Resolve path: if absolute, use as-is; else resolve relative to STIMULI_DIR."""
+    p = path_str.strip()
+    if p.startswith('/'):
+        return p
+    return str(STIMULI_DIR / p)
+
+
 def load_phase2_trials():
     """
     Load Phase 2 trial order from phase2_trial_order.csv. Same fixed order for all participants.
     CSV columns: trial_number, shape, shape_path, strong_context, neutral_context,
     context1, context1_image, context2, context2_image, variant.
-    Paths in CSV are relative to STIMULI_DIR.
+    Paths: full absolute (e.g. .../ContextCategorizationTask/STIMULI/Context_Images/sky1.png)
+    or relative to STIMULI_DIR.
     """
     if not PHASE2_TRIAL_ORDER_CSV.exists():
         raise FileNotFoundError(f"Phase 2 trial order file not found: {PHASE2_TRIAL_ORDER_CSV}")
@@ -642,9 +652,9 @@ def load_phase2_trials():
     with open(PHASE2_TRIAL_ORDER_CSV, 'r', newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            shape_path = str(STIMULI_DIR / row['shape_path'].strip())
-            ctx1_path = str(STIMULI_DIR / row['context1_image'].strip())
-            ctx2_path = str(STIMULI_DIR / row['context2_image'].strip())
+            shape_path = _resolve_stimulus_path(row['shape_path'])
+            ctx1_path = _resolve_stimulus_path(row['context1_image'])
+            ctx2_path = _resolve_stimulus_path(row['context2_image'])
             trials.append({
                 'shape_path': shape_path,
                 'context_1': ctx1_path,

@@ -54,6 +54,18 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 *datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
+### Example CSVs
+
+Example output files in the task root illustrate the expected format:
+
+| File | Description |
+|------|-------------|
+| `phase1_kahini_20260320_175811.csv` | Phase 1 output: one row per shape with `shape_path` (full path), `final_x`, `final_y`, `rt`, `click_ttl`, `submit_ttl`, etc. |
+| `phase2_kahini_20260320_175811.csv` | Phase 2 output: one row per trial with `shape_path`, `context_1_path`, `context_2_path`, `trial_variant`, `response`, `rt`, and TTL timestamps. |
+| `ttl_log_20260320_175811.csv` | TTL log: every event with `timestamp`, `trigger_code`, `event_label`, `trial_info`. Use for EEG/fMRI alignment. |
+
+See `csv_documentation.md` for full column definitions and TTL trigger mapping.
+
 ## TTL Triggers
 
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response is logged (onset/offset for instructions, stimulus/click/submit for tasks, phase completion markers, debrief onset/response/offset, escape_pressed on quit). See `csv_documentation.md` for full mapping.
@@ -76,6 +88,7 @@ TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and respon
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 - **Mac `ObjCInstance` crash:** If the task crashes during timed displays with `ObjCInstance has no attribute type`, the script uses `time.sleep` instead of `core.wait` on macOS to avoid this pyglet Cocoa bug.
+- **Mac Enter/keys not working:** On macOS, the script disables PsychoPy's hardware keyboard backend (known to freeze or ignore keys) and uses `event.getKeys` only. If keys still don't register, ensure the PsychoPy window has focus.
 
 ## Paths
 

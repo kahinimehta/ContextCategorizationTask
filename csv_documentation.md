@@ -199,7 +199,7 @@ Per-shape data from the bottom-up shape classification phase.
 
 Per-trial data from the top-down context incorporation phase. Trial count and order are defined by `phase2_trial_order.csv` (same fixed order for all participants).
 
-**Design:** Trial order is loaded from `phase2_trial_order.csv` in the task root. Same fixed order for all participants—no randomization. CSV columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Paths are relative to STIMULI. Variants: original, context_swapped, control_context, control_context_swapped.
+**Design:** Trial order is loaded from `phase2_trial_order.csv` in the task root. Same fixed order for all participants—no randomization. CSV columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Stimulus paths: full absolute (e.g. `.../ContextCategorizationTask/STIMULI/Context_Images/sky1.png`) or relative to STIMULI. Variants: original, context_swapped, control_context, control_context_swapped.
 
 | Column | Type | Description |
 |--------|------|-------------|
