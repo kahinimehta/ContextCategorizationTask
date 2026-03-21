@@ -142,4 +142,4 @@
 ## Notes
 
 - **Phase 2:** Enforce saying out loud. If quiet: "What could this shape be? Say it out loud."
-- **Troubleshooting:** See README (OOM, windowed mode, Mac TTL).
+- **Troubleshooting:** See TASK_DESCRIPTION.md (OOM, windowed mode, Mac TTL).
