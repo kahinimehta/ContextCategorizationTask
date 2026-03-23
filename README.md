@@ -56,18 +56,17 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 *datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
 
-### Demonstration of task 
+### Demonstration of task
 
-**`demo.mp4`** — Demonstration of task. 
+**`demo.mp4`** — Demonstration of task.
 
-Example output files in the task root illustrate the expected format:
+Example output files in the task root illustrate the expected format (see `csv_documentation.md` for column definitions):
 
 | File | Description |
 |------|-------------|
-| `phase1_kahini_20260320_175811.csv` | Phase 1 output: one row per shape with `shape_path` (full path), `final_x`, `final_y`, `rt`, `click_ttl`, `submit_ttl`, etc. |
-| `phase2_kahini_20260320_175811.csv` | Phase 2 output: one row per trial with `shape_path`, `context_1_path`, `context_2_path`, `trial_variant`, `response`, `rt`, and TTL timestamps. |
-| `ttl_log_20260320_175811.csv` | TTL log: every event with `timestamp`, `trigger_code`, `event_label`, `trial_info`. Use for EEG/fMRI alignment. |
-
+| `phase1_kahini_20260320_175811.csv` | Phase 1: per-shape placements, RT, TTL timestamps |
+| `phase2_kahini_20260320_175811.csv` | Phase 2: per-trial responses and TTL timestamps |
+| `ttl_log_kahini_20260320_175811.csv` | TTL log: every event for EEG/fMRI alignment |
 
 See `csv_documentation.md` for full column definitions and TTL trigger mapping.
 

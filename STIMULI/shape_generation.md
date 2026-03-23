@@ -36,7 +36,7 @@ The script uses contour extraction (OpenCV), resampling to a fixed number of poi
 
 ## Script
 
-The morphing script (`morph_shapes.py`) and dependencies are below. Update the `ANCHORS` and `SAVEDIR` paths for your setup.
+The morphing script is provided inline below (save as `morph_shapes.py` to run). Update the `ANCHORS` and `SAVEDIR` paths for your setup.
 
 **Dependencies:**
 ```bash

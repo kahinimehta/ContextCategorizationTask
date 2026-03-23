@@ -2,9 +2,9 @@
 
 Complete reference for all CSV outputs and TTL triggers. See `script.md` for experimenter instructions.
 
-## TTL Log (ttl_log_{participant}_{datetime}.csv or ttl_log_{datetime}.csv)
+## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
-Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs.
+Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs. The file is initially created as `ttl_log_{datetime}.csv` (before participant name is known), then renamed to include the participant at task end.
 
 | Column | Type | Description |
 |--------|------|-------------|
