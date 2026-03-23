@@ -2,7 +2,7 @@
 
 Complete reference for all CSV outputs and TTL triggers. See `script.md` for experimenter instructions.
 
-## TTL Log (ttl_log_{participant}_{datetime}.csv)
+## TTL Log (ttl_log_{participant}_{datetime}.csv or ttl_log_{datetime}.csv)
 
 Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs.
 
@@ -35,7 +35,15 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `tutorial_video_offset` | — | Tutorial video ended |
 | `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1, 2, 3, 4, 5a, 5b, 6) |
 | `tutorial_fallback_offset` | — | Animated fallback step ended |
-| `tutorial_transition_onset` | — | "Let's get started" screen appeared |
+| `tutorial_fallback_step2_center_onset` | — | Step 2: shape at center (1 s) |
+| `tutorial_fallback_step2_center_offset` | — | Step 2: center ended |
+| `tutorial_fallback_step2_target_onset` | — | Step 2: shape at target (2 s) |
+| `tutorial_fallback_step2_target_offset` | — | Step 2: target ended |
+| `tutorial_fallback_step3_center_onset/offset` | — | Step 3: center phase |
+| `tutorial_fallback_step3_target_onset/offset` | — | Step 3: target phase |
+| `tutorial_fallback_step4_center_onset/offset` | — | Step 4: center phase |
+| `tutorial_fallback_step4_target_onset/offset` | — | Step 4: target phase |
+| `tutorial_transition_onset` | — | "Now that we've seen a demo... let's get started on your version!" screen appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
 | `tutorial_transition_offset` | — | Screen transition |
 | `phase1_questions_onset` | 1 | "If you have any questions, ask the experimenter now" appeared |
@@ -53,7 +61,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instr4_onset` | 1 | "Use as many groups as you need" appeared |
 | `phase1_instr4_enter` | 1 | Enter pressed |
 | `phase1_instr4_offset` | 1 | Screen transition |
-| `phase1_before_grid_onset` | 1 | "You will see 16 shapes..." appeared |
+| `phase1_before_grid_onset` | 1 | "You will now see 16 shapes..." appeared |
 | `phase1_before_grid_enter` | 1 | Enter pressed |
 | `phase1_before_grid_offset` | 1 | Screen transition |
 | `phase1_grid_onset` | 1 | Shape grid display started |
@@ -74,10 +82,10 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_questions_onset` | 2 | "If you have any questions, ask the experimenter now" appeared |
 | `phase2_questions_enter` | 2 | Enter pressed |
 | `phase2_questions_offset` | 2 | Screen transition |
-| `phase2_instr1_onset` | 2 | Phase 2 instruction screen 1 appeared |
+| `phase2_instr1_onset` | 2 | "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures." appeared |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | "When red dot is on screen, say what shape could be... Then click which picture..." |
+| `phase2_instr2_onset` | 2 | "For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be... Then click which picture fits better." |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
 | `phase2_instr3_onset` | 2 | "Do your best since you will be recorded..." appeared |
@@ -86,7 +94,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr4_onset` | 2 | "You can also re-use answers" appeared |
 | `phase2_instr4_enter` | 2 | Enter pressed |
 | `phase2_instr4_offset` | 2 | Screen transition |
-| `phase2_instr5_onset` | 2 | "Let's watch a quick demo" appeared (min 5 s) |
+| `phase2_instr5_onset` | 2 | "Let's watch a quick demo to help you understand how we work on this task" appeared (min 5 s) |
 | `phase2_instr5_enter` | 2 | Enter pressed |
 | `phase2_instr5_offset` | 2 | Screen transition |
 | `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
@@ -110,14 +118,19 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
 | `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
 | `phase2_tutorial_blank2_offset` | 2 | Tutorial blank 2 ended |
-| `phase2_tutorial_question_onset` | 2 | Tutorial question |
+| `phase2_tutorial_question_onset` | 2 | Tutorial question (CIRCUS | SPACE) |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select CIRCUS" demo appeared |
+| `phase2_tutorial_demo_select_offset` | 2 | Tutorial demo select ended |
 | `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after CIRCUS demo) |
 | `phase2_tutorial_response` | 2 | Tutorial response (CIRCUS; trial_info: CIRCUS) |
 | `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
 | `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
-| `phase2_ready_onset` | 2 | "Ready to try" screen appeared |
+| `phase2_ready_onset` | 2 | "Ready to try this with some actual shapes and images?" screen appeared |
 | `phase2_ready_enter` | 2 | Enter pressed |
 | `phase2_ready_offset` | 2 | Screen transition |
+| `phase2_before_trials_onset` | 2 | "Ask the experimenter now..." before Phase 2 trials appeared |
+| `phase2_before_trials_enter` | 2 | Enter pressed |
+| `phase2_before_trials_offset` | 2 | Screen transition |
 | `phase2_fixation_onset` | 2 | Fixation before trial |
 | `phase2_fixation_offset` | 2 | Fixation ended |
 | `phase2_context1_onset` | 2 | Context 1 image onset |
@@ -145,10 +158,10 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_break_onset` | 2 | Break screen appeared (trial_info: after_trial=N; every 16 trials, progress bar) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
-| `phase3_questions_onset` | 3 | "If you have any questions, ask the experimenter now" appeared |
+| `phase3_questions_onset` | 3 | "If you have any questions, ask the experimenter now. Press Enter when you're ready." (first Phase 3 screen) |
 | `phase3_questions_enter` | 3 | Enter pressed |
 | `phase3_questions_offset` | 3 | Screen transition |
-| `phase3_instr1_onset` | 3 | Phase 3 instruction screen 1 appeared |
+| `phase3_instr1_onset` | 3 | "Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs." appeared |
 | `phase3_instr1_enter` | 3 | Enter pressed |
 | `phase3_instr1_offset` | 3 | Screen transition |
 | `phase3_instr2_onset` | 3 | Phase 3 instruction screen 2 appeared |
@@ -157,7 +170,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instr3_onset` | 3 | "Feel free to use whatever grouping..." appeared |
 | `phase3_instr3_enter` | 3 | Enter pressed |
 | `phase3_instr3_offset` | 3 | Screen transition |
-| `phase3_instr4_onset` | 3 | "Once you've submitted..." instruction appeared |
+| `phase3_instr4_onset` | 3 | "Once you've submitted the position of a shape, you can't move it again." appeared |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |

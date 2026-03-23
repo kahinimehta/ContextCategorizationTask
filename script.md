@@ -22,7 +22,7 @@
 
 ### Participant Login
 
-**Display:** "Enter your first name and last initial with no spaces/capitals: Hit Enter when done."
+**Display:** "Enter your first name and last initial with no spaces/capitals:\n\nHit Enter when done."
 
 **TTL:** participant_name_onset, participant_name_offset
 
@@ -38,20 +38,20 @@
 
 ### Tutorial
 
-**Video:** `STIMULI/tutorial_video.mp4`. See `STIMULI/tutorial_video_spec.md`. Subtitles describe on-screen action; include "We sorted by shapes but could have sorted by color" and "Shapes closer together are in the same group."
+**Video:** `STIMULI/tutorial_video.mp4`. See `STIMULI/tutorial_video_spec.md`. Subtitles describe on-screen action; include "We ended up sorting by shapes (but could have sorted by color.)" and "Note that we are grouping into groups—not arranging on a line or spectrum."
 
-**Fallback** (no video): Step 1 — three shapes; Step 2 — red square center→left; Step 3 — red circle center→right; Step 4 — green circle center→right (with red); Step 5a — sorted by shape, could sort by color (circles drawn around each group: square, two circles); Step 5b — groups, not line/spectrum; Step 6 — "Click to place. Press Enter to submit."
+**Fallback** (no video): Step 1 — "Three shapes appear. How can we sort them?"; Step 2 — red square center→left ("Red square appears. We might click to place it on the left."); Step 3 — red circle center→right ("Red circle appears. Clicking to place on the right."); Step 4 — green circle center→right ("Green circle appears. Clicking to place on the right."); Step 5a — "We ended up sorting by shapes (but could have sorted by color.)" + circles around groups; Step 5b — "Note that we are grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group."; Step 6 — "Objects in a group can be farther apart while also being part of the same group: some shapes may appear to belong to a group more strongly than others" + "We click to place each shape and press Enter to submit each shape's position." (7 s)
 
-**Transition:** "Let's get started on your task!" (1 Enter)
+**Transition:** "Now that we've seen a demo of how we work on this task, let's get started on your version!" (1 Enter)
 
-**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1–6), tutorial_transition_onset/enter/offset
+**TTL:** tutorial_video_onset/offset or tutorial_fallback_onset/offset (step=1–6), tutorial_fallback_step2/3/4_center/target_onset/offset, tutorial_transition_onset/enter/offset
 
 ---
 
 ### Phase 1 — Bottom-Up Shape Classification
 
 **Instructions (5 screens):**
-1. "If you have any questions, ask the experimenter now. Press Enter when you're ready."
+1. "If you have any questions, ask the experimenter now."
 2. "Let's sort some shapes. First you will see all of them."
 3. "Then place them one at a time by clicking where you want each to go, as in the demo you just saw."
 4. "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
@@ -59,7 +59,7 @@
 
 **TTL:** phase1_questions_onset/enter/offset, phase1_instr1–4_onset/enter/offset
 
-**Before grid:** "You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
+**Before grid:** "You will now see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
 
 **TTL:** phase1_before_grid_onset/enter/offset
 
@@ -68,8 +68,8 @@
 **TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
 **Instructions (2 screens):**
-1. "You'll see the shapes from before, one at a time. Group each where you think it belongs."
-2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again."
+1. "Now you'll see the shapes from before, one at a time. Group each where you think it belongs."
+2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
 
 **TTL:** phase1_instruction2a/2c_onset/enter/offset
 
@@ -81,21 +81,23 @@
 
 ### Phase 2 — Top-Down Context Incorporation
 
-*Make sure they are speaking out loud when needed. can remind them at breaks/ in between as needed.*
+*Make sure they are speaking out loud when needed. Can remind them at breaks/in between as needed.*
 
 **Instructions (6 screens; screen 6 min 5 s):**
-1. "If you have any questions, ask the experimenter now. Press Enter when you're ready."
-2. "Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures."
-3. "For each picture, you'll see the shape, then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time."
+1. "If you have any questions, ask the experimenter now."
+2. "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures."
+3. "For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time."
 4. "Do your best since you will be recorded, but don't panic if nothing comes to mind."
 5. "You can also re-use answers."
-6. "Let's watch a quick demo."
+6. "Let's watch a quick demo to help you understand how we work on this task."
 
 **TTL:** phase2_questions_onset/enter/offset, phase2_instr1–5_onset/enter/offset
 
-**Tutorial:** "You'll see a space picture, then a circle, then a circus picture..." (1 Enter) → Fixation 500 ms → practice1 (space) → circle → blank → red dot 3 s + PLANET → practice2 (circus) → circle → blank2 → red dot 3 s + BALL → Question CIRCUS | SPACE (participant watches; CIRCUS highlighted + "You might select CIRCUS") → Blank 3 s → Ready (1 Enter).
+**Tutorial:** "You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better." (1 Enter) → Fixation 500 ms → practice1 (space) → circle → blank → red dot 3 s + PLANET → practice2 (circus) → circle → blank2 → red dot 3 s + BALL → Question "Which context fits the object better?" + CIRCUS | SPACE (1.5 s) → CIRCUS highlighted + "You might select CIRCUS" (1 s) → Blank 3 s → Ready (1 Enter).
 
-**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot_onset/offset, phase2_tutorial_context2/shape2/blank2/reddot2_onset/offset, phase2_tutorial_question_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset
+**Before trials:** "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." (1 Enter)
+
+**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot_onset/offset, phase2_tutorial_context2/shape2/blank2/reddot2_onset/offset, phase2_tutorial_question_onset/offset, phase2_tutorial_demo_select_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset, phase2_before_trials_onset/enter/offset
 
 **Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s → Context 2 → Shape 1 s → Blank → Red dot 3 s → Question (click A or B) → ITI 500 ms.
 
@@ -109,7 +111,7 @@
 
 **Instructions (5 screens):**
 1. "If you have any questions, ask the experimenter now. Press Enter when you're ready."
-2. "Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs."
+2. "Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs."
 3. "Again, shapes closer together are ones you're grouping as more similar."
 4. "Feel free to use whatever grouping feels intuitive."
 5. "Once you've submitted the position of a shape, you can't move it again."

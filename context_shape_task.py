@@ -482,9 +482,10 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
-def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None):
+def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None, ttl_label=None):
     """Show click-to-place: shape at center briefly, then at target (no dragging). Text on screen at least 2 s.
-    anchors: optional list of (stim, (x,y)) for previously placed shapes to keep visible (like actual task)."""
+    anchors: optional list of (stim, (x,y)) for previously placed shapes to keep visible.
+    ttl_label: optional prefix for TTL (e.g. tutorial_fallback_step2) — logs center_onset/offset, target_onset/offset."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
     anchor_list = anchors or []
@@ -496,14 +497,21 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
         shape_stim.draw()
         sub.draw()
 
+    if ttl_label:
+        _log_ttl_event(f"{ttl_label}_center_onset")
     shape_stim.setPos(start_pos)
     draw_all()
     win.flip()
     _wait(1.0)
+    if ttl_label:
+        _log_ttl_event(f"{ttl_label}_center_offset")
+        _log_ttl_event(f"{ttl_label}_target_onset")
     shape_stim.setPos(end_pos)
     draw_all()
     win.flip()
     _wait(2.0)
+    if ttl_label:
+        _log_ttl_event(f"{ttl_label}_target_offset")
 
 
 def run_tutorial_phase1(win, mouse, participant):
@@ -556,21 +564,22 @@ def run_tutorial_phase1(win, mouse, participant):
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. We might click to place it on the left.")
+        _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. We might click to place it on the left.",
+                          ttl_label="tutorial_fallback_step2")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
         # Step 3: Red circle appears at center, clicks to place on right (square stays visible)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
         circ_red.setPos((0, 0))
         _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle appears. Clicking to place on the right.",
-                          anchors=[(sq, sq_pos)])
+                          anchors=[(sq, sq_pos)], ttl_label="tutorial_fallback_step3")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
         # Step 4: Green circle appears at center, clicks to place on right (square and red circle stay visible)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
         circ_green.setPos((0, 0))
         _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green circle appears. Clicking to place on the right.",
-                          anchors=[(sq, sq_pos), (circ_red, circ_red_pos)])
+                          anchors=[(sq, sq_pos), (circ_red, circ_red_pos)], ttl_label="tutorial_fallback_step4")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
         # Step 5a: Shape vs color — circle groups (square alone, two circles together)
@@ -618,7 +627,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sub_5c.draw()
         sub_enter.draw()
         win.flip()
-        _wait(5.0)
+        _wait(7.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
@@ -765,6 +774,7 @@ def run_phase2_tutorial(win, mouse, participant):
     win.flip()
     _wait(1.5)
     # Animate CIRCUS button being pressed (highlight/darken) + subtitle
+    _log_ttl_event("phase2_tutorial_demo_select_onset")
     btn_circus_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(-0.2, -0.2), units='height')
     sub_select = visual.TextStim(win, text="You might select CIRCUS", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
@@ -776,6 +786,7 @@ def run_phase2_tutorial(win, mouse, participant):
     win.flip()
     _log_ttl_event("phase2_tutorial_response", trial_info="CIRCUS")
     _wait(1.0)
+    _log_ttl_event("phase2_tutorial_demo_select_offset")
     _log_ttl_event("phase2_tutorial_question_offset")
     _log_ttl_event("phase2_tutorial_post_blank_onset")
     blank.draw()
@@ -1205,7 +1216,7 @@ def main():
 
     # Phase 1 — split instructions (max 2 sentences per screen)
     p1_screens = [
-        ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase1_questions", 0),
+        ("If you have any questions, ask the experimenter now.", "phase1_questions", 0),
         ("Let's sort some shapes. First you will see all of them.", "phase1_instr1", 0),
         ("Then place them one at a time by clicking where you want each to go, as in the demo you just saw.", "phase1_instr2", 0),
         ("Group them into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase1_instr3", 0),
@@ -1220,7 +1231,7 @@ def main():
 
     # Before grid: 16 shapes, no need to memorize
     p1_before_grid = [
-        ("You will see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase1_before_grid", 0), 
+        ("You will now see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase1_before_grid", 0), 
     ]
     for text, label, _ in p1_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1247,8 +1258,8 @@ def main():
     _log_ttl_event("phase1_fixation_offset")
 
     p1_instr2_screens = [
-        ("You'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
-        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again.", "phase1_instruction2c", 0),
+        ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
+        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1271,12 +1282,12 @@ def main():
 
     # Phase 2 — split instructions (max 2 sentences per screen), explicit explanation
     p2_screens = [
-        ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase2_questions", 0),
-        ("Now you'll see the shapes again, paired with different pictures. Each shape appears with two pictures.", "phase2_instr1", 0),
-        ("For each picture, you'll see the shape, then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2", 0),
+        ("If you have any questions, ask the experimenter now.", "phase2_questions", 0),
+        ("Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures.", "phase2_instr1", 0),
+        ("For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2", 0),
         ("Do your best since you will be recorded, but don't panic if nothing comes to mind.", "phase2_instr3", 0),
         ("You can also re-use answers.", "phase2_instr4", 0),
-        ("Let's watch a quick demo.", "phase2_instr5", 5.0),
+        ("Let's watch a quick demo to help you understand how we work on this task.", "phase2_instr5", 5.0),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1290,6 +1301,13 @@ def main():
         _close_dummy()
         return
 
+    ask_screen = visual.TextStim(win, text="Ask the experimenter now if you have any questions. Press Enter when you're ready to begin.",
+                                 color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+    if not wait_for_continue(win, ask_screen, "phase2_before_trials"):
+        win.close()
+        _close_dummy()
+        return
+
     trials = load_phase2_trials()
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
     del trials
@@ -1299,7 +1317,7 @@ def main():
     # Phase 3 — split instructions (max 2 sentences per screen)
     p3_screens = [
         ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase3_questions", 0),
-        ("Let's sort some shapes again, like we did in the VERY beginning. Click to place each shape where you think it belongs.", "phase3_instr1", 0),
+        ("Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs.", "phase3_instr1", 0),
         ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
         ("Feel free to use whatever grouping feels intuitive.", "phase3_instr3", 0),
         ("Once you've submitted the position of a shape, you can't move it again.", "phase3_instr4", 0),

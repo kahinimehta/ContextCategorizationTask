@@ -13,8 +13,8 @@ Complete technical specification: code structure, timing, trial selection, rando
 2. **Welcome** — "Let's get started. First, watch this example video..."
 3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
 4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit)
-5. **Phase 2** — Top-down context: 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
-6. **Phase 3** — Post-context shape reclassification: same click-to-place task as Phase 1 (no grid preview); 16 shapes in different random order
+5. **Phase 2** — Top-down context: instruction 5 min 5 s ("Let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
+6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; same click-to-place task as Phase 1 (no grid preview); 16 shapes in different random order
 7. **Debrief** — 3 Yes/No questions
 8. **End** — Thank-you screen (2 s)
 
@@ -58,7 +58,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | 4 | 3 s | Green circle: 1 s center, 2 s at target |
 | 5a | 3 s | Groups explained |
 | 5b | 4 s | "Not a line/spectrum" |
-| 6 | 2.5 s | Enter to submit reminder |
+| 6 | 7 s | "Objects in a group can be farther apart..." + "We click to place each shape and press Enter to submit each shape's position." |
 
 ### Phase 1
 
@@ -82,7 +82,8 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Shape 2 | 1 s |
 | Blank 2 | 1 s |
 | Red dot 2 (BALL) | 3 s |
-| Question (demo) | Participant-paced |
+| Question (CIRCUS | SPACE) | 1.5 s |
+| Demo select ("You might select CIRCUS") | 1 s |
 | Post-blank | 3 s |
 
 ### Phase 2 Trials (per trial)
@@ -115,6 +116,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Thank-you screen | 2 s |
 | Break (every 16 Phase 2 trials) | Participant-paced |
 | Instruction screens | Participant-paced (Enter to continue); phase2_instr5 min 5 s |
+| Phase 2 before trials | "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." |
 
 ---
 
