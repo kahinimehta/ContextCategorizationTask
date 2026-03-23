@@ -544,7 +544,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.setPos((-0.35, 0))
         circ_red.setPos((0, 0))
         circ_green.setPos((0.35, 0))
-        sub1 = visual.TextStim(win, text="Three shapes appear.", color='black', height=0.032, pos=(0, -0.42),
+        sub1 = visual.TextStim(win, text="Three shapes appear. How can we sort them? ", color='black', height=0.032, pos=(0, -0.42),
                               wrapWidth=1.3, units='height', alignText='center')
         sq.draw()
         circ_red.draw()
@@ -556,7 +556,7 @@ def run_tutorial_phase1(win, mouse, participant):
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. Clicking to place on the left.")
+        _show_click_place(win, sq, (0, 0), sq_pos, "Red square appears. We might click to place it on the left.")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
         # Step 3: Red circle appears at center, clicks to place on right (square stays visible)
@@ -587,7 +587,7 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_green.draw()
         group_circle_square.draw()
         group_circle_circles.draw()
-        sub_5a = visual.TextStim(win, text="We sorted by shapes but could have sorted by color.",
+        sub_5a = visual.TextStim(win, text="We ended up sorting by shapes (but could have sorted by color.)",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
@@ -599,7 +599,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5b = visual.TextStim(win, text="You're grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group.",
+        sub_5b = visual.TextStim(win, text="Note that we are grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group.",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
@@ -611,18 +611,18 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5c = visual.TextStim(win, text="Objects in a group can still be slightly further apart than from objects in another group.",
+        sub_5c = visual.TextStim(win, text="Objects in a group can be farther apart while also being part of the same group: some shapes may appear to belong to a group more strongly than others",
                                 color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
-        sub_enter = visual.TextStim(win, text="Click to place. Press Enter to submit.",
+        sub_enter = visual.TextStim(win, text="We click to place each shape and press Enter to submit each shape's position.",
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5c.draw()
         sub_enter.draw()
         win.flip()
-        _wait(2.5)
+        _wait(5.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
-    trans = visual.TextStim(win, text="Let's get started on your task!", color='black', height=0.04, pos=(0, 0),
+    trans = visual.TextStim(win, text="Now that we've seen a demo of how we work on this task, let's get started on your version!", color='black', height=0.04, pos=(0, 0),
                            wrapWidth=1.2, units='height')
     return wait_for_continue(win, trans, "tutorial_transition")
 
