@@ -29,7 +29,16 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 - **Shapes:** `STIMULI/Shapes/Shape_X_Y.png` (X,Y 0–3). Format: `.../ContextCategorizationTask/STIMULI/Shapes/Shape_X_Y.png`
 - **Context images:** `STIMULI/Context_Images/{category}1.png` or `{category}_1.png` (original), `{category}2.png` or `{category}_2.png` (control)
 - **Grid:** `STIMULI/Shapes/ShapeGrid_4x4_scrambled.png` for Phase 1 and Phase 3 preview
-- **Phase 2 trial order:** `phase2_trial_order.csv` — paths can be absolute or relative to STIMULI
+- **Phase 2 trial template:** See **Phase 2 trial template** subsection below.
+
+### Phase 2 trial template (`phase2_trial_order.csv`)
+
+- **Location:** Task root (next to `context_shape_task.py`).
+- **Size:** Header row plus **64** trial rows (trials **1–64**). Row order is the run order for every participant.
+- **Columns:** `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`.
+- **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`.
+- **What the code reads:** `shape_path`, `context1_image`, `context2_image`, `context1` and `context2` (category labels for A/B), `variant`. `strong_context` and `neutral_context` are design labels for the spreadsheet only (not loaded by the script).
+- **Output alignment:** Each row of `phase2_{participant}_{datetime}.csv` matches the same-index row in this file (stimulus columns + variant); `trial` is 1…64 in presentation order.
 
 ### Phase 2 Trial Variants
 
@@ -133,9 +142,9 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 ### Phase 2
 
-- **Source:** `phase2_trial_order.csv` — fixed order for all participants.
-- **Selection:** No randomization. Order is defined by CSV row order.
-- **Mapping:** Each row: `shape_path`, `context1_image`, `context2_image`, `context1` (cat_a), `context2` (cat_b), `variant`. Trial variants control context image choice and left/right assignment.
+- **Source:** `phase2_trial_order.csv` — **64** trials, fixed order for all participants.
+- **Selection:** No randomization. Order is CSV row order after the header.
+- **Mapping:** Each row supplies `shape_path`, `context1_image`, `context2_image`, `context1` (left label / cat_a), `context2` (right label / cat_b), `variant`. Variants control which images appear and how left/right map to categories.
 
 ### Phase 3
 

@@ -21,14 +21,20 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Core Task
 
 - **`context_shape_task.py`** — Main PsychoPy script for the entire experiment
-- **`phase2_trial_order.csv`** — Fixed trial order for Phase 2 (same for all participants)
+- **`phase2_trial_order.csv`** — Phase 2 trial template: **64** trials (one row per trial after the header). Columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Image paths may be absolute or relative to `STIMULI/`. Same row order for every participant; logged `phase2_*.csv` matches this order (`trial` 1…64). Details: **TASK_DESCRIPTION.md** (Phase 2 trial template).
+
+### Task design (summary)
+
+- **Phase 1:** 16 shapes, random order (with `Shape_0_0` not first), click-to-place after grid preview.
+- **Phase 2:** **64** context trials in **fixed** order from `phase2_trial_order.csv` (no randomization).
+- **Phase 3:** Same 16 shapes as Phase 1, new random order (must differ from Phase 1).
 
 ### Documentation
 
 | File | Purpose |
 |------|---------|
 | **`script.md`** | Experimenter script: on-screen text, phase-by-phase flow, TTL summary, ELI5 tips |
-| **`TASK_DESCRIPTION.md`** | Technical spec: timing, trial selection, troubleshooting |
+| **`TASK_DESCRIPTION.md`** | Technical spec: timing, trial selection, Phase 2 template CSV, troubleshooting |
 | **`csv_documentation.md`** | CSV columns and complete TTL trigger mapping |
 | **`STIMULI/tutorial_video_spec.md`** | Tutorial video production spec (content, timing, subtitles) |
 | **`STIMULI/shape_generation.md`** | Shape creation pipeline (morphing, anchors) |
@@ -48,7 +54,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 |------|-------------|
 | `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), click_ttl (last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
-| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, contexts, variant, response, RT (column-level TTL fields: see csv_documentation.md) |
+| `phase2_{participant}_{datetime}.csv` | **64** trials; order matches `phase2_trial_order.csv`. Per-trial: shape, contexts, variant, response, RT (TTL columns: csv_documentation.md) |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |

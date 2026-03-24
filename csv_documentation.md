@@ -226,15 +226,15 @@ Per-shape data from the bottom-up shape classification phase.
 
 ## Phase 2 CSV (phase2_{participant}_{datetime}.csv)
 
-Per-trial data from the top-down context incorporation phase. Trial count and order are defined by `phase2_trial_order.csv` (same fixed order for all participants).
+Per-trial data from the top-down context incorporation phase. **64 trials** per session. Trial order and stimuli match **`phase2_trial_order.csv`** in the task root row-for-row (`trial` 1…64 = template row order).
 
-**Design:** Trial order is loaded from `phase2_trial_order.csv` in the task root. Same fixed order for all participants—no randomization. CSV columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Stimulus paths: full absolute (e.g. `.../ContextCategorizationTask/STIMULI/Context_Images/sky1.png`) or relative to STIMULI. Variants: original, context_swapped, control_context, control_context_swapped.
+**Template (`phase2_trial_order.csv`):** Header plus 64 rows. Columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. The task loads stimulus paths and `variant`; `strong_context` / `neutral_context` are not read by the script (design labels only). Paths may be absolute or relative to `STIMULI/`. Variants: `original`, `context_swapped`, `control_context`, `control_context_swapped`. Full template semantics: **TASK_DESCRIPTION.md** (Phase 2 trial template).
 
 **Note:** TTL columns `fixation_onset_ttl` through `question_onset_ttl` are reserved but currently written empty; use `ttl_log` for full event timestamps. Only `response_ttl` is populated.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| `trial` | Integer | Trial number (1–N, per phase2_trial_order.csv) |
+| `trial` | Integer | Trial number (1–64; same order as rows in `phase2_trial_order.csv`) |
 | `shape_path` | String | Full path to the shape image |
 | `context_1_path` | String | Full path to first context image |
 | `context_2_path` | String | Full path to second context image |

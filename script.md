@@ -100,7 +100,7 @@
 
 **TTL (tutorial & before trials):** `phase2_tutorial_*`, `phase2_ready_*`, `phase2_before_trials_*`—see csv_documentation.md.
 
-**Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Question (click A or B) → ITI 500 ms.
+**Task:** **64** trials in fixed order from `phase2_trial_order.csv` (task root; one row per trial). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Question (click A or B) → ITI 500 ms. Template columns and design notes: TASK_DESCRIPTION.md.
 
 **Breaks:** Every 16 trials; "Take a break!" + progress bar.
 
