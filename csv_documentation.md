@@ -1,6 +1,6 @@
 # CSV and TTL Documentation
 
-Reference for all CSV outputs and TTL triggers. **Experimenter script:** `script.md`. **Technical spec:** `TASK_DESCRIPTION.md`.
+Reference for all CSV outputs and TTL triggers. **Example files (repo root):** `README.md` (Data output → Example output). **Experimenter script:** `script.md`. **Technical spec:** `TASK_DESCRIPTION.md`.
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -307,3 +307,5 @@ Overall experiment summary.
 - **Location**: `../LOG_FILES/`
 - **Filenames**: `{basename}_{participant}_{YYYYMMDD_HHMMSS}.csv` or `.png`
 - **Test participants**: Name contains "test" → no files written (TTL log deleted)
+
+**Examples in the repository:** Filenames and file list: **README.md** (Data output → Example output).

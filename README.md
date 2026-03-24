@@ -48,7 +48,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 |------|-------------|
 | `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), click_ttl (last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
-| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps (order from phase2_trial_order.csv) |
+| `phase2_{participant}_{datetime}.csv` | Per-trial: shape, contexts, variant, response, RT (column-level TTL fields: see csv_documentation.md) |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |
@@ -60,11 +60,15 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 ### Example output
 
-Example CSV files in the task root illustrate the format. See `csv_documentation.md` for column definitions and TTL trigger mapping.
+Example files in the task root show a full non-test run (participant `kini`, timestamp `20260324_140014`):
 
-## TTL Triggers
+| Files |
+|-------|
+| `phase1_kini_20260324_140014.csv`, `phase2_kini_20260324_140014.csv`, `phase3_kini_20260324_140014.csv` |
+| `debrief_kini_20260324_140014.csv`, `summary_kini_20260324_140014.csv`, `ttl_log_kini_20260324_140014.csv` |
+| `phase1_placements_kini_20260324_140014.png`, `phase3_placements_kini_20260324_140014.png` |
 
-TTL via Cedrus pyxid2 or parallel port (Mac: log only). Every screen change and response logged. See `csv_documentation.md` for full trigger mapping and trial_info fields.
+Live runs write the same filenames under `../LOG_FILES/`. **Columns and TTL:** `csv_documentation.md` (trigger codes, trial_info, which CSV fields are populated).
 
 ## Quick Start
 

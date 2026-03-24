@@ -1,0 +1,4 @@
+question,question_text,answer,rt,onset_ttl,response_ttl
+1,Did you use the same grouping strategy as the first time you sorted these shapes?,Yes,1.7450,1774376343.040051937,1774376344.785372972
+2,Did the images associated with each shape you saw influence your grouping the second time around?,Yes,1.1677,1774376344.811201096,1774376345.979702950
+3,"After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?",Yes,0.8356,1774376346.027904987,1774376346.863726139

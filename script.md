@@ -1,8 +1,8 @@
 # Experimenter Script
 
-**Overview:** README.md. **Technical:** TASK_DESCRIPTION.md. **CSV/TTL:** csv_documentation.md.
+**Overview:** README.md (includes committed example CSVs/PNGs). **Technical:** TASK_DESCRIPTION.md. **CSV columns & full TTL table:** csv_documentation.md.
 
-**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition). Trial events include trial_info for EEG/fMRI alignment—see csv_documentation.md.
+**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL pattern: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition). Trial events add `trial_info`—full trigger list in csv_documentation.md (not repeated here).
 
 **ELI5 tips:** "Put" not "place"; "go together" not "group"; break into one idea at a time. Phase 1 & 3: "Things that go together go close." Phase 2: "Say out loud what it could be, then pick which picture fits better."
 
@@ -98,13 +98,13 @@
 
 **Before trials:** "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." (1 Enter)
 
-**TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot_onset/offset, phase2_tutorial_context2/shape2/blank2/reddot2_onset/offset, phase2_tutorial_question_onset/offset, phase2_tutorial_demo_select_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset, phase2_before_trials_onset/enter/offset
+**TTL (tutorial & before trials):** `phase2_tutorial_*`, `phase2_ready_*`, `phase2_before_trials_*`—see csv_documentation.md.
 
 **Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Question (click A or B) → ITI 500 ms.
 
 **Breaks:** Every 16 trials; "Take a break!" + progress bar.
 
-**TTL:** phase2_fixation_onset/offset, phase2_context1_onset/offset, phase2_shape_onset/offset, phase2_blank1_onset/offset, phase2_reddot_onset/offset, phase2_context2_onset/offset, phase2_shape2_onset/offset, phase2_blank2_onset/offset, phase2_reddot2_onset/offset, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti_onset/offset, phase2_break_onset/enter/offset, phase2_complete. *Trial events include trial_info (trial=N, shape=…, cat_a=…, cat_b=…, variant=…).*
+**TTL (trials & breaks):** `phase2_fixation` through `phase2_trial_iti`, `phase2_break_*`, `phase2_complete`; `phase2_response` on choice. Trial `trial_info`: trial, shape, cat_a, cat_b, variant—full labels in csv_documentation.md.
 
 ---
 

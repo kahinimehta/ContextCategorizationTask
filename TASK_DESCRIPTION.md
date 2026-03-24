@@ -10,7 +10,7 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 
 **Flow:**
 1. **Login** — Participant name (fullscreen, Enter to submit)
-2. **Welcome** — "Let's get started. First, watch this example video..."
+2. **Welcome** — Full line on screen: see script.md (Welcome). Video or fallback follows.
 3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
 4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required)
 5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
@@ -18,7 +18,7 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 7. **Debrief** — 3 Yes/No questions (same grouping strategy?; images influenced grouping?; interpreted shapes differently?)
 8. **End** — Thank-you screen (2 s)
 
-**Output:** CSVs in `../LOG_FILES/` (phase1, phase2, phase3, debrief, summary, ttl_log). No files if participant name contains "test".
+**Output:** CSVs/PNGs in `../LOG_FILES/` (phase1, phase2, phase3, debrief, summary, ttl_log, placement images). No files if participant name contains "test". Example filenames in repo: README → Example output.
 
 ---
 
