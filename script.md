@@ -4,7 +4,7 @@
 
 **Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL pattern: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition). Trial events add `trial_info`—full trigger list in csv_documentation.md (not repeated here).
 
-**ELI5 tips:** "Put" not "place"; "go together" not "group"; break into one idea at a time. Phase 1 & 3: "Things that go together go close." Phase 2: "Say out loud what it could be, then pick which picture fits better."
+Make sure participants do not press enter more than once during instructions, even if some screens are laggy. 
 
 ---
 
@@ -24,6 +24,8 @@
 
 **Display:** "Enter your first name and last initial with no spaces/capitals:\n\nHit Enter when done."
 
+Here, the experimenter should enter their anonymized name. 
+
 **TTL:** participant_name_onset, participant_name_offset
 
 ---
@@ -41,6 +43,7 @@
 **Video:** `STIMULI/tutorial_video.mp4`. See `STIMULI/tutorial_video_spec.md`. Subtitles describe on-screen action; include "We ended up sorting by shapes (but could have sorted by color.)" and "Note that we are grouping into groups—not arranging on a line or spectrum."
 
 **Fallback** (no video): Step 1 — "Three shapes appear. How can we sort them?"; Step 2 — red square center→left ("Red square appears. We might click to place it on the left."); Step 3 — red circle center→right ("Red circle appears. Clicking to place on the right."); Step 4 — green circle center→right ("Green circle appears. Clicking to place on the right."); Step 5a — "We ended up sorting by shapes (but could have sorted by color.)" + circles around groups; Step 5b — "Note that we are grouping into groups—not arranging on a line or spectrum. Shapes closer together are in the same group."; Step 6 — "Objects in a group can be farther apart while also being part of the same group: some shapes may appear to belong to a group more strongly than others" + "We click to place each shape and press Enter to submit each shape's position." (7 s)
+
 
 **Transition:** "Now that we've seen a demo of how we work on this task, let's get started on your version!" (1 Enter)
 
@@ -102,7 +105,9 @@
 
 **Task:** **64** trials in fixed order from `phase2_trial_order.csv` (task root; one row per trial). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Question (click A or B) → ITI 500 ms. Template columns and design notes: TASK_DESCRIPTION.md.
 
-**Breaks:** Every 16 trials; "Take a break!" + progress bar.
+**Breaks:** Every 16 trials; "Take a break!" + progress bar. 
+
+Experimenter to nudge them if they are not speaking out loud/ not doing their best. 
 
 **TTL (trials & breaks):** `phase2_fixation` through `phase2_trial_iti`, `phase2_break_*`, `phase2_complete`; `phase2_response` on choice. Trial `trial_info`: trial, shape, cat_a, cat_b, variant—full labels in csv_documentation.md.
 
