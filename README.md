@@ -46,7 +46,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 | File | Description |
 |------|-------------|
-| `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), all_click_ttl, submit_ttl |
+| `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), click_ttl (last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `phase2_{participant}_{datetime}.csv` | Per-trial: shape, 2 contexts, variant, response, RT, TTL timestamps (order from phase2_trial_order.csv) |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |

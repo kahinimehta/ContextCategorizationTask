@@ -69,13 +69,13 @@
 
 **Instructions (2 screens):**
 1. "Now you'll see the shapes from before, one at a time. Group each where you think it belongs."
-2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
+2. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
 
 **TTL:** phase1_instruction2a/2c_onset/enter/offset
 
-**Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. Hint on screen: "Click to place. Press Enter to submit."
+**Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
 
-**TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape)
+**TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape). **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
 ---
 
@@ -129,13 +129,13 @@
 
 **Instructions (2 screens):**
 1. "Now you'll see the shapes from before, one at a time. Group each where you think it belongs, as you did earlier."
-2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
+2. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
 
 **TTL:** phase3_instruction2a/2c_onset/enter/offset
 
-**Task:** Same as Phase 1. Shapes in different random order than Phase 1. Hint: "Click to place. Press Enter to submit."
+**Task:** Same as Phase 1. Shapes in different random order than Phase 1. At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
 
-**TTL:** phase3_stimulus_onset/offset (trial_info: trial=N, shape=…), phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete
+**TTL:** phase3_stimulus_onset/offset (trial_info: trial=N, shape=…), phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete. **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
 **Debrief (3 Yes/No questions):**
 1. "Did you use the same grouping strategy as the first time you sorted these shapes?"

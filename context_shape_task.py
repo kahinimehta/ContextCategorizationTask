@@ -391,7 +391,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         # Pre-create anchor stims and hint once (avoids per-frame allocation lag)
         anchor_stims = [(visual.ImageStim(win, image=p, units='height', size=(0.1, 0.1)), ax, ay)
                        for p, (ax, ay) in anchors.items()]
-        hint = visual.TextStim(win, text="Click to place. Press Enter to submit.", color='gray', height=0.028, pos=(0, -0.38), units='height')
+        hint = visual.TextStim(win, text="Click somewhere to place, then press Enter to submit.", color='gray', height=0.028, pos=(0, -0.38), units='height')
 
         rt_start = time.time()
         submitted = False
@@ -406,9 +406,9 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
                 if 'escape' in keys:
                     _log_ttl_event("escape_pressed", trial_info=f"{phase_name}_click_place")
                     core.quit()
-                if 'return' in keys:
-                    # RT = time from onset to last click (or Enter if no clicks)
-                    last_click_time = click_times[-1] if click_times else time.time()
+                if 'return' in keys and click_times:
+                    # Require at least one click before Enter is accepted
+                    last_click_time = click_times[-1]
                     rt = last_click_time - rt_start
                     _log_ttl_event(f"{phase_name}_enter_submit", trial_info=f"trial={idx+1} shape={shape_name}")
                     submitted = True
@@ -428,7 +428,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             win.flip()
 
         fx, fy = stim.pos
-        first_click_ttl = click_times[0] if click_times else None
+        last_click_ttl = click_times[-1] if click_times else None
         all_click_ttl_str = ';'.join(f"{t:.9f}" for t in click_times) if click_times else ''
         row = {
             'shape_path': shape_path,
@@ -437,7 +437,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             'rt': f"{rt:.4f}",
             'stimulus_onset_ttl': '',
             'stimulus_offset_ttl': '',
-            'click_ttl': f"{first_click_ttl:.9f}" if first_click_ttl else '',
+            'click_ttl': f"{last_click_ttl:.9f}" if last_click_ttl else '',
             'all_click_ttl': all_click_ttl_str,
             'submit_ttl': f"{_last_ttl_timestamp[0]:.9f}" if _last_ttl_timestamp[0] else ''
         }
@@ -1013,6 +1013,16 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
         rt_clock = core.Clock()
         rt_clock.reset()
         answer = None
+        prev_pressed = False
+        # Wait for mouse release so a held click from previous question doesn't immediately answer this one
+        while mouse.getPressed()[0]:
+            q.draw()
+            btn_yes.draw()
+            btn_no.draw()
+            txt_yes.draw()
+            txt_no.draw()
+            win.flip()
+            _wait(0.05)
 
         while answer is None:
             try:
@@ -1026,13 +1036,16 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
                 return None
             mpos = mouse.getPos()
             mbuttons = mouse.getPressed()
-            if mbuttons[0]:
+            pressed = mbuttons[0]
+            # Only register click on press (not hold): prevents one click from answering multiple questions
+            if pressed and not prev_pressed:
                 if -0.31 <= mpos[0] <= -0.13 and -0.28 <= mpos[1] <= -0.22:
                     answer = "Yes"
                     break
                 if 0.13 <= mpos[0] <= 0.31 and -0.28 <= mpos[1] <= -0.22:
                     answer = "No"
                     break
+            prev_pressed = pressed
             q.draw()
             btn_yes.draw()
             btn_no.draw()
@@ -1260,7 +1273,7 @@ def main():
 
     p1_instr2_screens = [
         ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
-        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
+        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1362,7 +1375,7 @@ def main():
 
     p3_instr2_screens = [
         ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs, as you did earlier.", "phase3_instruction2a", 0),
-        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
+        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')

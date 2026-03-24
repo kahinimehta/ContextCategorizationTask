@@ -71,7 +71,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
 | `phase1_instruction2a_enter` | 1 | Enter pressed |
 | `phase1_instruction2a_offset` | 1 | Screen transition |
-| `phase1_instruction2c_onset` | 1 | "Click to place... Once you've submitted..." instruction appeared |
+| `phase1_instruction2c_onset` | 1 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all shapes placed) |
@@ -186,7 +186,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instruction2a_onset` | 3 | "Group each where you think it belongs, as you did earlier" instruction appeared |
 | `phase3_instruction2a_enter` | 3 | Enter pressed |
 | `phase3_instruction2a_offset` | 3 | Screen transition |
-| `phase3_instruction2c_onset` | 3 | "Click to place... Once you've submitted..." instruction appeared |
+| `phase3_instruction2c_onset` | 3 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N, shape=Shape_X_Y.png) |
@@ -215,10 +215,10 @@ Per-shape data from the bottom-up shape classification phase.
 | `shape_path` | String | Full path to the shape image file |
 | `final_x` | Float | Final x position in screen coordinates (height units) |
 | `final_y` | Float | Final y position in screen coordinates (height units) |
-| `rt` | Float | Reaction time from clickable onset to last click (seconds). If no clicks, time to Enter. |
-| `stimulus_onset_ttl` | Float | TTL timestamp at stimulus onset |
-| `stimulus_offset_ttl` | Float | TTL timestamp at stimulus offset |
-| `click_ttl` | Float | TTL timestamp at first click to place |
+| `rt` | Float | Reaction time from clickable onset to last click (seconds). At least one click required before Enter. |
+| `stimulus_onset_ttl` | Float | Reserved (currently empty); use ttl_log for stimulus onset timestamp |
+| `stimulus_offset_ttl` | Float | Reserved (currently empty); use ttl_log for stimulus offset timestamp |
+| `click_ttl` | Float | TTL timestamp at last click to place |
 | `all_click_ttl` | String | Semicolon-separated timestamps of all clicks (Unix) |
 | `submit_ttl` | Float | TTL timestamp when participant pressed Enter to submit |
 
@@ -230,6 +230,8 @@ Per-trial data from the top-down context incorporation phase. Trial count and or
 
 **Design:** Trial order is loaded from `phase2_trial_order.csv` in the task root. Same fixed order for all participants—no randomization. CSV columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. Stimulus paths: full absolute (e.g. `.../ContextCategorizationTask/STIMULI/Context_Images/sky1.png`) or relative to STIMULI. Variants: original, context_swapped, control_context, control_context_swapped.
 
+**Note:** TTL columns `fixation_onset_ttl` through `question_onset_ttl` are reserved but currently written empty; use `ttl_log` for full event timestamps. Only `response_ttl` is populated.
+
 | Column | Type | Description |
 |--------|------|-------------|
 | `trial` | Integer | Trial number (1–N, per phase2_trial_order.csv) |
@@ -239,21 +241,21 @@ Per-trial data from the top-down context incorporation phase. Trial count and or
 | `trial_variant` | String | original, context_swapped, control_context, control_context_swapped |
 | `response` | String | Button clicked: category A or B (e.g., BARK, CLOUD) |
 | `rt` | Float | Reaction time from question onset to button click (seconds) |
-| `fixation_onset_ttl` | Float | TTL timestamp at fixation onset |
-| `context1_onset_ttl` | Float | TTL timestamp at context 1 onset |
-| `shape_onset_ttl` | Float | TTL timestamp at shape onset |
-| `reddot_onset_ttl` | Float | TTL timestamp at red dot onset |
-| `context2_onset_ttl` | Float | TTL timestamp at context 2 onset |
-| `shape2_onset_ttl` | Float | TTL timestamp at shape 2 onset |
-| `reddot2_onset_ttl` | Float | TTL timestamp at red dot 2 onset |
-| `question_onset_ttl` | Float | TTL timestamp at question screen onset |
-| `response_ttl` | Float | TTL timestamp at response button click |
+| `fixation_onset_ttl` | Float | TTL at fixation onset (see note above) |
+| `context1_onset_ttl` | Float | TTL at context 1 onset |
+| `shape_onset_ttl` | Float | TTL at shape onset |
+| `reddot_onset_ttl` | Float | TTL at red dot onset |
+| `context2_onset_ttl` | Float | TTL at context 2 onset |
+| `shape2_onset_ttl` | Float | TTL at shape 2 onset |
+| `reddot2_onset_ttl` | Float | TTL at red dot 2 onset |
+| `question_onset_ttl` | Float | TTL at question screen onset |
+| `response_ttl` | Float | TTL at response button click (populated) |
 
 ---
 
 ## Phase 3 CSV (phase3_{participant}_{datetime}.csv)
 
-Same structure as Phase 1. Per-shape data from the post-context shape reclassification phase. Shape order is randomized differently from Phase 1.
+Same structure as Phase 1 (including click_ttl = last click, all_click_ttl = all clicks). Per-shape data from the post-context shape reclassification phase. Shape order is randomized differently from Phase 1.
 
 ---
 
