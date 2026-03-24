@@ -32,7 +32,7 @@ The script uses contour extraction (OpenCV), resampling to a fixed number of poi
 
 - **Shape_X_Y.png** — Individual morphed shapes (X, Y = 0..3 in grid coordinates).
 - **ShapeGrid_4x4.png** — Ordered 4×4 grid of all shapes.
-- **ShapeGrid_4x4_scrambled.png** — Same shapes in randomized positions. Used for Phase 1 display (5 s preview before placement).
+- **ShapeGrid_4x4_scrambled.png** — Same shapes in randomized positions. Used for Phase 1 and Phase 3 display (5 s preview before placement).
 
 ## Script
 

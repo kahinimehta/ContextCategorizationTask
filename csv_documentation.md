@@ -1,6 +1,6 @@
-# CSV Variables Documentation
+# CSV and TTL Documentation
 
-Complete reference for all CSV outputs and TTL triggers. See `script.md` for experimenter instructions.
+Reference for all CSV outputs and TTL triggers. **Experimenter script:** `script.md`. **Technical spec:** `TASK_DESCRIPTION.md`.
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -75,8 +75,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all shapes placed) |
-| `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N) |
-| `phase1_stimulus_offset` | 1 | Shape display ended, clickable |
+| `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase1_stimulus_offset` | 1 | Shape display ended, clickable (trial_info: trial=N, shape=Shape_X_Y.png) |
 | `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase2_questions_onset` | 2 | "If you have any questions, ask the experimenter now" appeared |
@@ -85,16 +85,19 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr1_onset` | 2 | "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures." appeared |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | "For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be... Then click which picture fits better." |
+| `phase2_instr2_onset` | 2 | "For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot." appeared |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
-| `phase2_instr3_onset` | 2 | "Do your best since you will be recorded..." appeared |
+| `phase2_instr2b_onset` | 2 | "When the red dot is on screen, say out loud what the shape could be... Then click which picture fits better. We need to hear you say it every time." appeared |
+| `phase2_instr2b_enter` | 2 | Enter pressed |
+| `phase2_instr2b_offset` | 2 | Screen transition |
+| `phase2_instr3_onset` | 2 | "Do your best since you will be recorded... You will watch a demo before you have to do the task, so don't worry if this makes no sense yet." appeared |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
-| `phase2_instr4_onset` | 2 | "You can also re-use answers" appeared |
+| `phase2_instr4_onset` | 2 | "You can also re-use answers, but try to be creative if you can." appeared |
 | `phase2_instr4_enter` | 2 | Enter pressed |
 | `phase2_instr4_offset` | 2 | Screen transition |
-| `phase2_instr5_onset` | 2 | "Let's watch a quick demo to help you understand how we work on this task" appeared (min 5 s) |
+| `phase2_instr5_onset` | 2 | "Now let's watch a quick demo to help you understand how we work on this task" appeared (min 5 s) |
 | `phase2_instr5_enter` | 2 | Enter pressed |
 | `phase2_instr5_offset` | 2 | Screen transition |
 | `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
@@ -131,56 +134,69 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_before_trials_onset` | 2 | "Ask the experimenter now..." before Phase 2 trials appeared |
 | `phase2_before_trials_enter` | 2 | Enter pressed |
 | `phase2_before_trials_offset` | 2 | Screen transition |
-| `phase2_fixation_onset` | 2 | Fixation before trial |
-| `phase2_fixation_offset` | 2 | Fixation ended |
-| `phase2_context1_onset` | 2 | Context 1 image onset |
-| `phase2_context1_offset` | 2 | Context 1 offset |
-| `phase2_shape_onset` | 2 | Shape onset |
-| `phase2_shape_offset` | 2 | Shape offset |
+| `phase2_fixation_onset` | 2 | Fixation before trial (trial_info: trial=N) |
+| `phase2_fixation_offset` | 2 | Fixation ended (trial_info: trial=N) |
+| `phase2_context1_onset` | 2 | Context 1 image onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_context1_offset` | 2 | Context 1 offset (trial_info: trial=N) |
+| `phase2_shape_onset` | 2 | Shape onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_shape_offset` | 2 | Shape offset (trial_info: trial=N) |
 | `phase2_blank1_onset` | 2 | Blank between shape and red dot (trial_info: trial=N) |
 | `phase2_blank1_offset` | 2 | Blank 1 ended |
-| `phase2_reddot_onset` | 2 | Red dot + category label onset |
-| `phase2_reddot_offset` | 2 | Red dot offset |
-| `phase2_context2_onset` | 2 | Context 2 image onset |
-| `phase2_context2_offset` | 2 | Context 2 offset |
-| `phase2_shape2_onset` | 2 | Shape (2nd) onset |
-| `phase2_shape2_offset` | 2 | Shape (2nd) offset |
+| `phase2_reddot_onset` | 2 | Red dot + "say out loud" (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_reddot_offset` | 2 | Red dot offset (trial_info: trial=N) |
+| `phase2_context2_onset` | 2 | Context 2 image onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_context2_offset` | 2 | Context 2 offset (trial_info: trial=N) |
+| `phase2_shape2_onset` | 2 | Shape (2nd) onset (trial_info: trial=N) |
+| `phase2_shape2_offset` | 2 | Shape (2nd) offset (trial_info: trial=N) |
 | `phase2_blank2_onset` | 2 | Blank between shape2 and red dot 2 (trial_info: trial=N) |
 | `phase2_blank2_offset` | 2 | Blank 2 ended |
-| `phase2_reddot2_onset` | 2 | Red dot 2 onset |
-| `phase2_reddot2_offset` | 2 | Red dot 2 offset |
-| `phase2_question_onset` | 2 | "Which context fits better?" onset |
-| `phase2_response` | 2 | Participant clicked category A or B |
-| `phase2_question_offset` | 2 | Question screen ended (after response) |
+| `phase2_reddot2_onset` | 2 | Red dot 2 + "say out loud" (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_reddot2_offset` | 2 | Red dot 2 offset (trial_info: trial=N) |
+| `phase2_question_onset` | 2 | "Which context fits better?" onset (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
+| `phase2_response` | 2 | Participant clicked category A or B (trial_info: trial=N, response=X) |
+| `phase2_question_offset` | 2 | Question screen ended (trial_info: trial=N) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
 | `phase2_complete` | 2 | Phase 2 trials finished |
-| `phase2_break_onset` | 2 | Break screen appeared (trial_info: after_trial=N; every 16 trials, progress bar) |
+| `phase2_break_onset` | 2 | Break screen appeared (trial_info: after_trial=N, total_trials=M; every 16 trials, progress bar) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
 | `phase3_questions_onset` | 3 | "If you have any questions, ask the experimenter now. Press Enter when you're ready." (first Phase 3 screen) |
 | `phase3_questions_enter` | 3 | Enter pressed |
 | `phase3_questions_offset` | 3 | Screen transition |
-| `phase3_instr1_onset` | 3 | "Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs." appeared |
+| `phase3_instr1_onset` | 3 | "Now let's sort some shapes again... First you will see all of them." appeared |
 | `phase3_instr1_enter` | 3 | Enter pressed |
 | `phase3_instr1_offset` | 3 | Screen transition |
-| `phase3_instr2_onset` | 3 | Phase 3 instruction screen 2 appeared |
+| `phase3_instr2_onset` | 3 | "Then place them one at a time by clicking where you want each to go, as in the demo you saw earlier." appeared |
 | `phase3_instr2_enter` | 3 | Enter pressed |
 | `phase3_instr2_offset` | 3 | Screen transition |
-| `phase3_instr3_onset` | 3 | "Feel free to use whatever grouping..." appeared |
+| `phase3_instr3_onset` | 3 | "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group." appeared |
 | `phase3_instr3_enter` | 3 | Enter pressed |
 | `phase3_instr3_offset` | 3 | Screen transition |
-| `phase3_instr4_onset` | 3 | "Once you've submitted the position of a shape, you can't move it again." appeared |
+| `phase3_instr4_onset` | 3 | "Use as many groups as you need, and any grouping that is intuitive to you." appeared |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
-| `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N) |
-| `phase3_stimulus_offset` | 3 | Shape display ended, clickable |
+| `phase3_before_grid_onset` | 3 | "As earlier, you will now see 16 shapes..." appeared |
+| `phase3_before_grid_enter` | 3 | Enter pressed |
+| `phase3_before_grid_offset` | 3 | Screen transition |
+| `phase3_grid_onset` | 3 | Shape grid display started |
+| `phase3_grid_offset` | 3 | Shape grid display ended |
+| `phase3_fixation_onset` | 3 | Fixation cross onset |
+| `phase3_fixation_offset` | 3 | Fixation cross ended |
+| `phase3_instruction2a_onset` | 3 | "Group each where you think it belongs, as you did earlier" instruction appeared |
+| `phase3_instruction2a_enter` | 3 | Enter pressed |
+| `phase3_instruction2a_offset` | 3 | Screen transition |
+| `phase3_instruction2c_onset` | 3 | "Click to place... Once you've submitted..." instruction appeared |
+| `phase3_instruction2c_enter` | 3 | Enter pressed |
+| `phase3_instruction2c_offset` | 3 | Screen transition |
+| `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase3_stimulus_offset` | 3 | Shape display ended, clickable (trial_info: trial=N, shape=Shape_X_Y.png) |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all shapes placed) |
-| `phase3_debrief_onset` | 3 | Debrief question onset |
-| `phase3_debrief_response` | 3 | Participant clicked Yes/No |
-| `phase3_debrief_offset` | 3 | Debrief question ended (trial_info: question=N) |
+| `phase3_debrief_onset` | 3 | Debrief question N appeared (trial_info: question=1, 2, or 3). Logged 3×. |
+| `phase3_debrief_response` | 3 | Participant clicked Yes/No (trial_info: question=N, answer=Yes/No). Logged 3×. |
+| `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each shape (trial_info: filename trial=N) |
 | `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each shape (trial_info: filename trial=N) |
 | `summary_saved` | — | Summary CSV written (trial_info: filename) |

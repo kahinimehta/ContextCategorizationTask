@@ -373,18 +373,18 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         writer = None
 
     for idx, shape_path in enumerate(shape_paths):
+        shape_name = Path(shape_path).name
         # 1 second: shape alone (screen cleared per spec)
         img = visual.ImageStim(win, image=shape_path, units='height', size=(0.15, 0.15))
         img.setPos((0, 0))
-        _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1}")
+        _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1} shape={shape_name}")
         img.draw()
         win.flip()
         _wait(1.0)
-        _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1}")
+        _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1} shape={shape_name}")
         del img  # free texture before creating more stims
 
         # Now clickable: click anywhere to place
-        shape_name = Path(shape_path).name
         stim = visual.ImageStim(win, image=shape_path, units='height', size=(0.15, 0.15))
         stim.setPos((0, 0))
 
@@ -836,7 +836,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
                                   pos=(-bar_w / 2 + max(fill_w, 0.01) / 2, -0.15), units='height')
             pct_text = visual.TextStim(win, text=f"{pct}%", color='black', height=0.03, pos=(0, -0.25), units='height')
             wait_for_continue(win, break_text, "phase2_break", extra_drawables=[bar_bg, bar_fill, pct_text],
-                              onset_trial_info=f"after_trial={t_idx}")
+                              onset_trial_info=f"after_trial={t_idx} total_trials={total_trials}")
 
         # Fixation 500ms
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")
@@ -851,13 +851,13 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         cat_a = trial['cat_a'].upper()
         cat_b = trial['cat_b'].upper()
 
-        _log_ttl_event("phase2_context1_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_context1_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         ctx1.draw()
         win.flip()
         _wait(1.0)
         _log_ttl_event("phase2_context1_offset", trial_info=f"trial={t_idx+1}")
 
-        _log_ttl_event("phase2_shape_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_shape_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         shape_img.draw()
         win.flip()
         _wait(1.0)
@@ -869,13 +869,13 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(1.0)
         _log_ttl_event("phase2_blank1_offset", trial_info=f"trial={t_idx+1}")
 
-        _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         dot.draw()
         win.flip()
         _wait(3.0)
         _log_ttl_event("phase2_reddot_offset", trial_info=f"trial={t_idx+1}")
 
-        _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         ctx2.draw()
         win.flip()
         _wait(1.0)
@@ -893,7 +893,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(1.0)
         _log_ttl_event("phase2_blank2_offset", trial_info=f"trial={t_idx+1}")
 
-        _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         dot.draw()
         win.flip()
         _wait(3.0)
@@ -905,7 +905,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         btn_b = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
         txt_a = visual.TextStim(win, text=cat_a, color='black', height=0.03, pos=(-0.2, -0.2), units='height')
         txt_b = visual.TextStim(win, text=cat_b, color='black', height=0.03, pos=(0.2, -0.2), units='height')
-        _log_ttl_event("phase2_question_onset", trial_info=f"trial={t_idx+1}")
+        _log_ttl_event("phase2_question_onset", trial_info=f"trial={t_idx+1} cat_a={cat_a} cat_b={cat_b} variant={trial['variant']}")
         rt_clock = core.Clock()
         rt_clock.reset()
         response = None
@@ -1001,7 +1001,8 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
 
     results = []
     for i, qtext in enumerate(questions):
-        q = visual.TextStim(win, text=qtext, color='black', height=0.04, pos=(0, 0.1), wrapWidth=1.3, units='height')
+        q = visual.TextStim(win, text=qtext, color='black', height=0.04, pos=(0, 0.2), wrapWidth=1.5, units='height',
+                           anchorVert='top', alignText='center')
         btn_yes = visual.Rect(win, width=0.18, height=0.06, fillColor='lightgreen', lineColor='black', pos=(-0.22, -0.25), units='height')
         btn_no = visual.Rect(win, width=0.18, height=0.06, fillColor='lightcoral', lineColor='black', pos=(0.22, -0.25), units='height')
         txt_yes = visual.TextStim(win, text="Yes", color='black', height=0.03, pos=(-0.22, -0.25), units='height')
@@ -1284,10 +1285,11 @@ def main():
     p2_screens = [
         ("If you have any questions, ask the experimenter now.", "phase2_questions", 0),
         ("Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures.", "phase2_instr1", 0),
-        ("For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2", 0),
-        ("Do your best since you will be recorded, but don't panic if nothing comes to mind.", "phase2_instr3", 0),
-        ("You can also re-use answers.", "phase2_instr4", 0),
-        ("Let's watch a quick demo to help you understand how we work on this task.", "phase2_instr5", 5.0),
+        ("For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot.", "phase2_instr2", 0),
+        ("When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2b", 0),
+        ("Do your best since you will be recorded, but don't panic if nothing comes to mind. You will watch a demo before you have to do the task, so don't worry if this makes no sense yet.", "phase2_instr3", 0),
+        ("You can also re-use answers, but try to be creative if you can.", "phase2_instr4", 0),
+        ("Now let's watch a quick demo to help you understand how we work on this task.", "phase2_instr5", 5.0),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1314,16 +1316,55 @@ def main():
     _log_ttl_event("phase2_complete")
     gc.collect()
 
-    # Phase 3 — split instructions (max 2 sentences per screen)
+    # Phase 3 — split instructions (max 2 sentences per screen), similar structure to Phase 1
     p3_screens = [
         ("If you have any questions, ask the experimenter now. Press Enter when you're ready.", "phase3_questions", 0),
-        ("Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs.", "phase3_instr1", 0),
-        ("Again, shapes closer together are ones you're grouping as more similar.", "phase3_instr2", 0),
-        ("Feel free to use whatever grouping feels intuitive.", "phase3_instr3", 0),
-        ("Once you've submitted the position of a shape, you can't move it again.", "phase3_instr4", 0),
+        ("Now let's sort some shapes again, like we did in the VERY beginning. First you will see all of them.", "phase3_instr1", 0),
+        ("Then place them one at a time by clicking where you want each to go, as in the demo you saw earlier.", "phase3_instr2", 0),
+        ("Group them into groups—not on a spectrum or line. Shapes closer together are in the same group.", "phase3_instr3", 0),
+        ("Use as many groups as you need, and any grouping that is intuitive to you.", "phase3_instr4", 0),
     ]
     gc.collect()  # free Phase 2 memory before Phase 3 task
     for text, label, _ in p3_screens:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label):
+            win.close()
+            _close_dummy()
+            return
+
+    # Before grid: 16 shapes, for context
+    p3_before_grid = [
+        ("As earlier, you will now see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context.", "phase3_before_grid", 0),
+    ]
+    for text, label, _ in p3_before_grid:
+        stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
+        if not wait_for_continue(win, stim, label):
+            win.close()
+            _close_dummy()
+            return
+
+    # Grid 5 sec (same scrambled grid as Phase 1)
+    grid_path = get_shape_grid_path()
+    grid_img = visual.ImageStim(win, image=grid_path, units='height', size=(0.8, 0.8))
+    _log_ttl_event("phase3_grid_onset")
+    grid_img.draw()
+    win.flip()
+    _wait(5.0)
+    _log_ttl_event("phase3_grid_offset")
+
+    # Fixation 1 sec
+    fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
+    _log_ttl_event("phase3_fixation_onset")
+    fix.draw()
+    win.flip()
+    _wait(1.0)
+    _log_ttl_event("phase3_fixation_offset")
+
+    p3_instr2_screens = [
+        ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs, as you did earlier.", "phase3_instruction2a", 0),
+        ("Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
+    ]
+    for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
         if not wait_for_continue(win, stim, label):
             win.close()

@@ -1,6 +1,6 @@
 # Context Shape Task — Technical Description
 
-Complete technical specification: code structure, timing, trial selection, randomization, stimulus durations, and troubleshooting.
+Technical specification: timing, trial selection, randomization, stimulus durations, troubleshooting. **Experimenter script:** `script.md`. **CSV/TTL mapping:** `csv_documentation.md`.
 
 ---
 
@@ -13,9 +13,9 @@ Complete technical specification: code structure, timing, trial selection, rando
 2. **Welcome** — "Let's get started. First, watch this example video..."
 3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
 4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit)
-5. **Phase 2** — Top-down context: instruction 5 min 5 s ("Let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
-6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; same click-to-place task as Phase 1 (no grid preview); 16 shapes in different random order
-7. **Debrief** — 3 Yes/No questions
+5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
+6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; before-grid screen; grid preview (5 s) → fixation (1 s) → 2 instruction screens → same click-to-place task as Phase 1; 16 shapes in different random order
+7. **Debrief** — 3 Yes/No questions (same grouping strategy?; images influenced grouping?; interpreted shapes differently?)
 8. **End** — Thank-you screen (2 s)
 
 **Output:** CSVs in `../LOG_FILES/` (phase1, phase2, phase3, debrief, summary, ttl_log). No files if participant name contains "test".
@@ -28,7 +28,7 @@ Complete technical specification: code structure, timing, trial selection, rando
 
 - **Shapes:** `STIMULI/Shapes/Shape_X_Y.png` (X,Y 0–3). Format: `.../ContextCategorizationTask/STIMULI/Shapes/Shape_X_Y.png`
 - **Context images:** `STIMULI/Context_Images/{category}1.png` or `{category}_1.png` (original), `{category}2.png` or `{category}_2.png` (control)
-- **Grid:** `STIMULI/Shapes/ShapeGrid_4x4_scrambled.png` for Phase 1 preview
+- **Grid:** `STIMULI/Shapes/ShapeGrid_4x4_scrambled.png` for Phase 1 and Phase 3 preview
 - **Phase 2 trial order:** `phase2_trial_order.csv` — paths can be absolute or relative to STIMULI
 
 ### Phase 2 Trial Variants
@@ -106,6 +106,8 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 | Event | Duration |
 |-------|----------|
+| Grid (ShapeGrid_4x4_scrambled) | 5 s |
+| Fixation (cross) | 1 s |
 | Shape display (before clickable) | 1 s |
 | Click-to-place | Participant-paced |
 

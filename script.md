@@ -1,8 +1,8 @@
 # Experimenter Script
 
-**Specs:** README.md. **CSV/TTL mapping:** `csv_documentation.md`.
+**Overview:** README.md. **Technical:** TASK_DESCRIPTION.md. **CSV/TTL:** csv_documentation.md.
 
-**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition).
+**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition). Trial events include trial_info for EEG/fMRI alignment—see csv_documentation.md.
 
 **ELI5 tips:** "Put" not "place"; "go together" not "group"; break into one idea at a time. Phase 1 & 3: "Things that go together go close." Phase 2: "Say out loud what it could be, then pick which picture fits better."
 
@@ -75,7 +75,7 @@
 
 **Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. Hint on screen: "Click to place. Press Enter to submit."
 
-**TTL:** phase1_stimulus_onset/offset, phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape)
+**TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape)
 
 ---
 
@@ -83,15 +83,16 @@
 
 *Make sure they are speaking out loud when needed. Can remind them at breaks/in between as needed.*
 
-**Instructions (6 screens; screen 6 min 5 s):**
+**Instructions (7 screens; screen 7 min 5 s):**
 1. "If you have any questions, ask the experimenter now."
 2. "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures."
-3. "For each context-picture pair, you'll first see the context, then the shape, and then a red dot. When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time."
-4. "Do your best since you will be recorded, but don't panic if nothing comes to mind."
-5. "You can also re-use answers."
-6. "Let's watch a quick demo to help you understand how we work on this task."
+3. "For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot."
+4. "When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time."
+5. "Do your best since you will be recorded, but don't panic if nothing comes to mind. You will watch a demo before you have to do the task, so don't worry if this makes no sense yet."
+6. "You can also re-use answers, but try to be creative if you can."
+7. "Now let's watch a quick demo to help you understand how we work on this task."
 
-**TTL:** phase2_questions_onset/enter/offset, phase2_instr1–5_onset/enter/offset
+**TTL:** phase2_questions_onset/enter/offset, phase2_instr1_onset/enter/offset, phase2_instr2_onset/enter/offset, phase2_instr2b_onset/enter/offset, phase2_instr3–5_onset/enter/offset
 
 **Tutorial:** "You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better." (1 Enter) → Fixation 500 ms → practice1 (space) → circle → blank → red dot 3 s + PLANET → practice2 (circus) → circle → blank2 → red dot 3 s + BALL → Question "Which context fits the object better?" + CIRCUS | SPACE (1.5 s) → CIRCUS highlighted + "You might select CIRCUS" (1 s) → Blank 3 s → Ready (1 Enter).
 
@@ -99,11 +100,11 @@
 
 **TTL:** phase2_tutorial_intro_onset/enter/offset, phase2_tutorial_fixation_onset/offset, phase2_tutorial_context1/shape/blank/reddot_onset/offset, phase2_tutorial_context2/shape2/blank2/reddot2_onset/offset, phase2_tutorial_question_onset/offset, phase2_tutorial_demo_select_onset/offset, phase2_tutorial_response, phase2_tutorial_post_blank_onset/offset, phase2_ready_onset/enter/offset, phase2_before_trials_onset/enter/offset
 
-**Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s → Context 2 → Shape 1 s → Blank → Red dot 3 s → Question (click A or B) → ITI 500 ms.
+**Task:** Trial order from `phase2_trial_order.csv` (fixed for all participants). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 3 s (say out loud) → Question (click A or B) → ITI 500 ms.
 
 **Breaks:** Every 16 trials; "Take a break!" + progress bar.
 
-**TTL:** phase2_fixation, phase2_context1/shape, phase2_blank1, phase2_reddot, phase2_context2/shape2, phase2_blank2, phase2_reddot2, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti_onset/offset, phase2_break_onset/enter/offset, phase2_complete
+**TTL:** phase2_fixation_onset/offset, phase2_context1_onset/offset, phase2_shape_onset/offset, phase2_blank1_onset/offset, phase2_reddot_onset/offset, phase2_context2_onset/offset, phase2_shape2_onset/offset, phase2_blank2_onset/offset, phase2_reddot2_onset/offset, phase2_question_onset, phase2_response, phase2_question_offset, phase2_trial_iti_onset/offset, phase2_break_onset/enter/offset, phase2_complete. *Trial events include trial_info (trial=N, shape=…, cat_a=…, cat_b=…, variant=…).*
 
 ---
 
@@ -111,16 +112,30 @@
 
 **Instructions (5 screens):**
 1. "If you have any questions, ask the experimenter now. Press Enter when you're ready."
-2. "Now, let's sort some shapes again, like we did in the VERY beginning. Like before, click to place each shape where you think it belongs."
-3. "Again, shapes closer together are ones you're grouping as more similar."
-4. "Feel free to use whatever grouping feels intuitive."
-5. "Once you've submitted the position of a shape, you can't move it again."
+2. "Now let's sort some shapes again, like we did in the VERY beginning. First you will see all of them."
+3. "Then place them one at a time by clicking where you want each to go, as in the demo you saw earlier."
+4. "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group."
+5. "Use as many groups as you need, and any grouping that is intuitive to you."
 
 **TTL:** phase3_questions_onset/enter/offset, phase3_instr1–4_onset/enter/offset
 
-**Task:** Same as Phase 1 (no grid preview). Shapes in different random order than Phase 1. Hint: "Click to place. Press Enter to submit."
+**Before grid:** "As earlier, you will now see 16 shapes. You do not need to memorize them, recreate this grid, or remember any of the shapes—you will see them all together just for context."
 
-**TTL:** phase3_stimulus_onset/offset, phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete
+**TTL:** phase3_before_grid_onset/enter/offset
+
+**Grid:** ShapeGrid_4x4_scrambled.png, 5 s. **Fixation:** black cross, 1 s.
+
+**TTL:** phase3_grid_onset/offset, phase3_fixation_onset/offset
+
+**Instructions (2 screens):**
+1. "Now you'll see the shapes from before, one at a time. Group each where you think it belongs, as you did earlier."
+2. "Click to place, press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
+
+**TTL:** phase3_instruction2a/2c_onset/enter/offset
+
+**Task:** Same as Phase 1. Shapes in different random order than Phase 1. Hint: "Click to place. Press Enter to submit."
+
+**TTL:** phase3_stimulus_onset/offset (trial_info: trial=N, shape=…), phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete
 
 **Debrief (3 Yes/No questions):**
 1. "Did you use the same grouping strategy as the first time you sorted these shapes?"
@@ -137,7 +152,7 @@
 
 **TTL:** summary_saved (during write_summary), experiment_end, thanks_onset, thanks_offset
 
-**Escape:** If participant presses ESC during any interactive screen, `escape_pressed` is logged (trial_info: screen=…). Logged before quit. Screens: participant_name, instruction screens (via wait_for_continue), phase1/phase3_click_place, tutorial_video, phase2_question, phase3_debrief.
+**Escape:** If participant presses ESC during any interactive screen, `escape_pressed` is logged (trial_info: screen=…). Logged before quit. Screens: participant_name, welcome, instruction screens (via wait_for_continue), tutorial_video, tutorial_transition, phase1/phase3_click_place, phase2_question, phase2_before_trials, phase2_break, phase3_debrief.
 
 ---
 
