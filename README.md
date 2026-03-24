@@ -36,14 +36,12 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 | **`script.md`** | Experimenter script: on-screen text, phase-by-phase flow, TTL summary, ELI5 tips |
 | **`TASK_DESCRIPTION.md`** | Technical spec: timing, trial selection, Phase 2 template CSV, troubleshooting |
 | **`csv_documentation.md`** | CSV columns and complete TTL trigger mapping |
-| **`STIMULI/tutorial_video_spec.md`** | Tutorial video production spec (content, timing, subtitles) |
 | **`STIMULI/shape_generation.md`** | Shape creation pipeline (morphing, anchors) |
 
 ### Stimuli
 
 - **`STIMULI/Shapes/`** — 16 shape PNGs (Shape_0_0.png … Shape_3_3.png) + ShapeGrid_4x4.png, ShapeGrid_4x4_scrambled.png. Phase 1 and Phase 3 each show the **scrambled** grid (5 s), then shapes one-by-one in random order (Phase 3 uses a different order than Phase 1). See `STIMULI/shape_generation.md`.
 - **`STIMULI/Context_Images/`** — Flat folder of context PNGs named by category and variant: `{category}1.png`/`{category}2.png` or `{category}_1.png`/`{category}_2.png` (e.g., bedroom1.png, bedroom2.png; bookstore_1.png, bookstore_2.png). The number denotes the variation (1 = original, 2 = control). Practice images: practice1.png, practice2.png.
-- **`STIMULI/tutorial_video.mp4`** — Optional. Video showing the click-to-place process (red square, red circle, green circle). See `STIMULI/tutorial_video_spec.md` for production spec (content, timing, subtitles). If missing, an animated fallback simulates the sequence.
 
 
 ## Data Output
@@ -63,6 +61,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 *datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
+**Only `ttl_log` has real timing data; the other CSVs keep timing column headers empty on purpose so files stay small and merge cleanly.** 
 
 ### Example output
 
