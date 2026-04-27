@@ -12,9 +12,9 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 1. **Login** — Participant name (fullscreen, Enter to submit)
 2. **Welcome** — Full line on screen: see script.md (Welcome). Video or fallback follows.
 3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
-4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required)
-5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot → context2 → shape → blank → red dot → question (choose A or B)
-6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; before-grid screen; grid preview (5 s) → fixation (1 s) → 2 instruction screens → same click-to-place task as Phase 1 (at least one click required); 16 shapes in different random order
+4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required). While placing, a **miniature full grid** (`ShapeGrid_4x4_scrambled.png`) stays in the **bottom-right** for the whole sort.
+5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot (2 s) → context2 → shape → blank → red dot (2 s) → question (choose A or B)
+6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; before-grid screen; grid preview (5 s) → fixation (1 s) → 2 instruction screens (sort prompt: "Sort by where you'd expect to see the shapes") → same click-to-place task as Phase 1 including **miniature grid** in the bottom-right; 16 shapes in different random order
 7. **Debrief** — 3 Yes/No questions (same grouping strategy?; images influenced grouping?; interpreted shapes differently?)
 8. **End** — Thank-you screen (2 s)
 
@@ -76,7 +76,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Grid (ShapeGrid_4x4_scrambled) | 5 s |
 | Fixation (cross) | 1 s |
 | Shape display (before clickable) | 1 s |
-| Click-to-place | Participant-paced; at least one click required, then Enter to submit |
+| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
 
 ### Phase 2 Tutorial
 
@@ -86,11 +86,11 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Context 1 (practice1) | 1 s |
 | Shape (blue circle) | 1 s |
 | Blank | 1 s |
-| Red dot + label (PLANET) | 3 s |
+| Red dot + label (PLANET) | 2 s |
 | Context 2 (practice2) | 1 s |
 | Shape 2 | 1 s |
 | Blank 2 | 1 s |
-| Red dot 2 (BALL) | 3 s |
+| Red dot 2 (BALL) | 2 s |
 | Question (CIRCUS | SPACE) | 1.5 s |
 | Demo select ("You might select CIRCUS") | 1 s |
 | Post-blank | 3 s |
@@ -103,11 +103,11 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Context 1 | 1 s |
 | Shape | 1 s |
 | Blank 1 | 1 s |
-| Red dot | 3 s |
+| Red dot | 2 s |
 | Context 2 | 1 s |
 | Shape 2 | 1 s |
 | Blank 2 | 1 s |
-| Red dot 2 | 3 s |
+| Red dot 2 | 2 s |
 | Question (click A or B) | Participant-paced |
 | ITI (blank) | 0.5 s |
 
@@ -118,7 +118,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 | Grid (ShapeGrid_4x4_scrambled) | 5 s |
 | Fixation (cross) | 1 s |
 | Shape display (before clickable) | 1 s |
-| Click-to-place | Participant-paced; at least one click required, then Enter to submit |
+| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
 
 ### Other
 

@@ -23,6 +23,8 @@ SHAPES_DIR = STIMULI_DIR / "Shapes"
 CONTEXT_DIR = STIMULI_DIR / "Context_Images"
 LOG_DIR = SCRIPT_DIR.parent / "LOG_FILES"
 PHASE2_TRIAL_ORDER_CSV = SCRIPT_DIR / "phase2_trial_order.csv"
+# Phase 2: red-dot screens (verbal response period) per trial and in tutorial
+PHASE2_REDDOT_DURATION_SEC = 2.0
 
 # Ensure LOG_FILES exists
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -350,14 +352,27 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080)):
     img.save(output_path)
 
 
-def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, anchors=None, timestamp_str=None):
+def _make_grid_inset_stim(win, grid_path):
+    """Miniature full grid (ShapeGrid) at bottom-right; height units, stays fixed across trials."""
+    aspect = float(win.size[0]) / float(win.size[1])
+    inset = 0.2
+    margin = 0.03
+    gx = aspect - margin - inset / 2
+    gy = -1.0 + margin + inset / 2
+    return visual.ImageStim(win, image=grid_path, units='height', size=(inset, inset), pos=(gx, gy))
+
+
+def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, anchors=None, timestamp_str=None, inset_grid_path=None):
     """
     Sequential click-to-place task. shape_paths: list of shape file paths.
     anchors: dict {path: (x,y)} of previously placed shapes to show.
+    inset_grid_path: if set, show a small full-grid reference in the bottom-right for the
+    whole phase (only during click-to-place, not the 1 s isolated shape preview).
     Returns list of dicts: shape_path, final_x, final_y, rt, ttl timestamps.
     """
     if anchors is None:
         anchors = {}
+    grid_inset = _make_grid_inset_stim(win, inset_grid_path) if inset_grid_path else None
     results = []
     fieldnames = ['shape_path', 'final_x', 'final_y', 'rt', 'stimulus_onset_ttl', 'stimulus_offset_ttl',
                   'click_ttl', 'all_click_ttl', 'submit_ttl']
@@ -424,6 +439,8 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
                 a.setPos((ax, ay))
                 a.draw()
             stim.draw()
+            if grid_inset is not None:
+                grid_inset.draw()
             hint.draw()
             win.flip()
 
@@ -469,6 +486,8 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 
     if f:
         f.close()
+    if grid_inset is not None:
+        del grid_inset
 
     return results
 
@@ -725,7 +744,7 @@ def run_phase2_tutorial(win, mouse, participant):
     txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.2))
     txt1.draw()
     win.flip()
-    _wait(3.0)
+    _wait(PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot_offset")
 
     # Practice context 2 - 1000ms
@@ -755,7 +774,7 @@ def run_phase2_tutorial(win, mouse, participant):
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
     txt2.draw()
     win.flip()
-    _wait(3.0)
+    _wait(PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot2_offset")
 
     # Question: CIRCUS | SPACE — demo only (participant watches, no click)
@@ -872,7 +891,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         dot.draw()
         win.flip()
-        _wait(3.0)
+        _wait(PHASE2_REDDOT_DURATION_SEC)
         _log_ttl_event("phase2_reddot_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
@@ -896,7 +915,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         dot.draw()
         win.flip()
-        _wait(3.0)
+        _wait(PHASE2_REDDOT_DURATION_SEC)
         _log_ttl_event("phase2_reddot2_offset", trial_info=f"trial={t_idx+1}")
 
         # Question
@@ -1272,7 +1291,7 @@ def main():
     _log_ttl_event("phase1_fixation_offset")
 
     p1_instr2_screens = [
-        ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs.", "phase1_instruction2a", 0),
+        ("Sort by where you'd expect to see the shapes", "phase1_instruction2a", 0),
         ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
@@ -1286,7 +1305,7 @@ def main():
     random.shuffle(shapes)
     if Path(shapes[0]).name == "Shape_0_0.png":
         shapes.append(shapes.pop(0))
-    phase1_results = run_drag_phase(win, mouse, shapes, "phase1", 1, participant, timestamp_str=timestamp_str)
+    phase1_results = run_drag_phase(win, mouse, shapes, "phase1", 1, participant, timestamp_str=timestamp_str, inset_grid_path=grid_path)
     if phase1_results is None:
         win.close()
         _close_dummy()
@@ -1374,7 +1393,7 @@ def main():
     _log_ttl_event("phase3_fixation_offset")
 
     p3_instr2_screens = [
-        ("Now you'll see the shapes from before, one at a time. Group each where you think it belongs, as you did earlier.", "phase3_instruction2a", 0),
+        ("Sort by where you'd expect to see the shapes", "phase3_instruction2a", 0),
         ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
@@ -1388,7 +1407,7 @@ def main():
     random.shuffle(shapes3)
     while shapes3 == shapes:
         random.shuffle(shapes3)
-    phase3_results = run_drag_phase(win, mouse, shapes3, "phase3", 3, participant, timestamp_str=timestamp_str)
+    phase3_results = run_drag_phase(win, mouse, shapes3, "phase3", 3, participant, timestamp_str=timestamp_str, inset_grid_path=grid_path)
     gc.collect()
     if phase3_results is None:
         win.close()

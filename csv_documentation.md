@@ -68,7 +68,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_grid_offset` | 1 | Shape grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2a_onset` | 1 | "Group each" instruction appeared |
+| `phase1_instruction2a_onset` | 1 | "Sort by where you'd expect to see the shapes" instruction appeared |
 | `phase1_instruction2a_enter` | 1 | Enter pressed |
 | `phase1_instruction2a_offset` | 1 | Screen transition |
 | `phase1_instruction2c_onset` | 1 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
@@ -183,7 +183,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_grid_offset` | 3 | Shape grid display ended |
 | `phase3_fixation_onset` | 3 | Fixation cross onset |
 | `phase3_fixation_offset` | 3 | Fixation cross ended |
-| `phase3_instruction2a_onset` | 3 | "Group each where you think it belongs, as you did earlier" instruction appeared |
+| `phase3_instruction2a_onset` | 3 | "Sort by where you'd expect to see the shapes" instruction appeared |
 | `phase3_instruction2a_enter` | 3 | Enter pressed |
 | `phase3_instruction2a_offset` | 3 | Screen transition |
 | `phase3_instruction2c_onset` | 3 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |

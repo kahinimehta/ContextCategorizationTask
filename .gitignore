@@ -1,4 +1,6 @@
 # Python
+.venv/
+.bmp_grid_venv/
 __pycache__/
 *.py[cod]
 *$py.class
