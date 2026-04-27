@@ -12,8 +12,8 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 1. **Login** — Participant name (fullscreen, Enter to submit)
 2. **Welcome** — Full line on screen: see script.md (Welcome). Video or fallback follows.
 3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
-4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required). While placing, a **miniature full grid** (`ShapeGrid_4x4_scrambled.png`) stays in the **bottom-right** for the whole sort.
-5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; 64 trials from `phase2_trial_order.csv` (fixed order); each trial: context1 → shape → blank → red dot (2 s) → context2 → shape → blank → red dot (2 s) → question (choose A or B)
+4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required). While placing, a **miniature full grid** (`STIMULI/shapes/ShapeGrid_4x4_bmp.png`) stays in the **bottom-right** for the whole sort.
+5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; all trials from `phase2_trial_order.csv` (fixed order; breaks every 16); each trial: context1 → shape → blank → red dot (2 s) → context2 → shape → blank → red dot (2 s) → question (choose A or B)
 6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; before-grid screen; grid preview (5 s) → fixation (1 s) → 2 instruction screens (sort prompt: "Sort by where you'd expect to see the shapes") → same click-to-place task as Phase 1 including **miniature grid** in the bottom-right; 16 shapes in different random order
 7. **Debrief** — 3 Yes/No questions (same grouping strategy?; images influenced grouping?; interpreted shapes differently?)
 8. **End** — Thank-you screen (2 s)
@@ -26,28 +26,23 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 
 ### Stimulus Paths
 
-- **Shapes:** `STIMULI/Shapes/Shape_X_Y.png` (X,Y 0–3). Format: `.../ContextCategorizationTask/STIMULI/Shapes/Shape_X_Y.png`
-- **Context images:** `STIMULI/Context_Images/{category}1.png` or `{category}_1.png` (original), `{category}2.png` or `{category}_2.png` (control)
-- **Grid:** `STIMULI/Shapes/ShapeGrid_4x4_scrambled.png` for Phase 1 and Phase 3 preview
+- **Shapes:** `STIMULI/shapes/*.bmp` — 16 task shapes are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major)
+- **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`)
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` for Phase 1 and Phase 3 preview and inset
 - **Phase 2 trial template:** See **Phase 2 trial template** subsection below.
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
 - **Location:** Task root (next to `context_shape_task.py`).
-- **Size:** Header row plus **64** trial rows (trials **1–64**). Row order is the run order for every participant.
-- **Columns:** `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`.
-- **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`.
-- **What the code reads:** `shape_path`, `context1_image`, `context2_image`, `context1` and `context2` (category labels for A/B), `variant`. `strong_context` and `neutral_context` are design labels for the spreadsheet only (not loaded by the script).
-- **Output alignment:** Each row of `phase2_{participant}_{datetime}.csv` matches the same-index row in this file (stimulus columns + variant); `trial` is 1…64 in presentation order.
+- **Size:** Header row plus **N** trial rows (row order = run order for every participant).
+- **Columns:** `trial_number`, `shape`, `shape_path`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`; design labels `primary_context` & `secondary_context` (or legacy `strong_context` / `neutral_context`).
+- **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`. The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`.
+- **What the code reads:** `shape_path`, `context1_image`, `context2_image`, `context1` and `context2` (category labels for A/B), `variant`, and optional primary/secondary context labels for logging.
+- **Output alignment:** Each row of `phase2_{participant}_{datetime}.csv` matches the same-index row in this file (stimulus columns + variant); `trial` is 1…N in presentation order.
 
 ### Phase 2 Trial Variants
 
-| Variant | Description |
-|---------|-------------|
-| `original` | Strong context first, neutral second; standard mapping |
-| `context_swapped` | Order of contexts swapped (left/right button positions) |
-| `control_context` | Control context images used |
-| `control_context_swapped` | Control context images + order swapped |
+The `variant` column is a **pass-through** design label in the current template (e.g. `primary_first_img0`, `secondary_first_img1`); the script does not change trial logic based on it—only **which image** is in `context1_image` / `context2_image` and **which** labels are in `context1` / `context2` matter for presentation.
 
 ### TTL
 
@@ -73,7 +68,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 | Event | Duration |
 |-------|----------|
-| Grid (ShapeGrid_4x4_scrambled) | 5 s |
+| Grid (`ShapeGrid_4x4_bmp.png`) | 5 s |
 | Fixation (cross) | 1 s |
 | Shape display (before clickable) | 1 s |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
@@ -115,7 +110,7 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 | Event | Duration |
 |-------|----------|
-| Grid (ShapeGrid_4x4_scrambled) | 5 s |
+| Grid (`ShapeGrid_4x4_bmp.png`) | 5 s |
 | Fixation (cross) | 1 s |
 | Shape display (before clickable) | 1 s |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
@@ -135,14 +130,14 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 ### Phase 1
 
-- **Source:** All 16 shapes from `STIMULI/Shapes/` (excludes ShapeGrid).
-- **Selection:** `get_shape_paths()` returns sorted paths; then `random.shuffle(shapes)`.
-- **Constraint:** If first shape is `Shape_0_0.png`, move it to end (`shapes.append(shapes.pop(0))`).
-- **Mapping:** Shape paths mapped to `(x, y)` final positions via participant clicks. Ground truth from filename `Shape_X_Y.png` (grid row/col 0–3).
+- **Source:** First 16 `*.bmp` in `STIMULI/shapes/` by sorted filename (excludes `ShapeGrid*`).
+- **Selection:** `get_shape_paths()`; then `random.shuffle(shapes)`.
+- **Constraint:** If the first shuffled file is the alphabetically first task shape (`ball_slope.bmp` in the default set), move it to the end of the list.
+- **Mapping:** Clicks to `(x, y)`; ground-truth row/col is the shape’s index in the sorted 4×4 list (0–3 for row and column), not the filename.
 
 ### Phase 2
 
-- **Source:** `phase2_trial_order.csv` — **64** trials, fixed order for all participants.
+- **Source:** `phase2_trial_order.csv` — fixed order for all participants (N rows in the template).
 - **Selection:** No randomization. Order is CSV row order after the header.
 - **Mapping:** Each row supplies `shape_path`, `context1_image`, `context2_image`, `context1` (left label / cat_a), `context2` (right label / cat_b), `variant`. Variants control which images appear and how left/right map to categories.
 
@@ -158,11 +153,11 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 | Phase | What | How |
 |-------|------|-----|
-| Phase 1 | Shape order | `random.shuffle(shapes)`; Shape_0_0 not first |
+| Phase 1 | Shape order | `random.shuffle(shapes)`; default first sorted `.bmp` not first |
 | Phase 2 | Trial order | None — fixed from CSV |
 | Phase 3 | Shape order | `random.shuffle(shapes3)`; must differ from Phase 1 |
 | Tutorial fallback | N/A | Fixed sequence |
-| Phase 2 tutorial | N/A | Fixed (practice1, practice2, circle, PLANET/BALL) |
+| Phase 2 tutorial | N/A | Fixed (`sky1`, `petshop1`, circle, PLANET/BALL, SKY/PETSHOP demo) |
 
 ---
 

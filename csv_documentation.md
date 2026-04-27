@@ -75,8 +75,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all shapes placed) |
-| `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N, shape=Shape_X_Y.png) |
-| `phase1_stimulus_offset` | 1 | Shape display ended, clickable (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N, shape=*.bmp filename) |
+| `phase1_stimulus_offset` | 1 | Shape display ended, clickable (trial_info: trial=N, shape=*.bmp) |
 | `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase2_questions_onset` | 2 | "If you have any questions, ask the experimenter now" appeared |
@@ -85,7 +85,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr1_onset` | 2 | "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures." appeared |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | "For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot." appeared |
+| `phase2_instr2_onset` | 2 | Phase 2 instruction: context → shape → red dot (see on-screen `phase2_instr2` in script) |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
 | `phase2_instr2b_onset` | 2 | "When the red dot is on screen, say out loud what the shape could be... Then click which picture fits better. We need to hear you say it every time." appeared |
@@ -121,11 +121,11 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
 | `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
 | `phase2_tutorial_blank2_offset` | 2 | Tutorial blank 2 ended |
-| `phase2_tutorial_question_onset` | 2 | Tutorial question (CIRCUS | SPACE) |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select CIRCUS" demo appeared |
+| `phase2_tutorial_question_onset` | 2 | Tutorial question (SKY \| PETSHOP) |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select PETSHOP" demo appeared |
 | `phase2_tutorial_demo_select_offset` | 2 | Tutorial demo select ended |
-| `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after CIRCUS demo) |
-| `phase2_tutorial_response` | 2 | Tutorial response (CIRCUS; trial_info: CIRCUS) |
+| `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after demo selection) |
+| `phase2_tutorial_response` | 2 | Demo choice (e.g. trial_info: PETSHOP) |
 | `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
 | `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
 | `phase2_ready_onset` | 2 | "Ready to try this with some actual shapes and images?" screen appeared |
@@ -136,21 +136,21 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_before_trials_offset` | 2 | Screen transition |
 | `phase2_fixation_onset` | 2 | Fixation before trial (trial_info: trial=N) |
 | `phase2_fixation_offset` | 2 | Fixation ended (trial_info: trial=N) |
-| `phase2_context1_onset` | 2 | Context 1 image onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_context1_onset` | 2 | Context 1 image onset (trial_info: trial=N, shape=*.bmp) |
 | `phase2_context1_offset` | 2 | Context 1 offset (trial_info: trial=N) |
-| `phase2_shape_onset` | 2 | Shape onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_shape_onset` | 2 | Shape onset (trial_info: trial=N, shape=*.bmp) |
 | `phase2_shape_offset` | 2 | Shape offset (trial_info: trial=N) |
 | `phase2_blank1_onset` | 2 | Blank between shape and red dot (trial_info: trial=N) |
 | `phase2_blank1_offset` | 2 | Blank 1 ended |
-| `phase2_reddot_onset` | 2 | Red dot + "say out loud" (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_reddot_onset` | 2 | Red dot + "say out loud" (trial_info: trial=N, shape=*.bmp) |
 | `phase2_reddot_offset` | 2 | Red dot offset (trial_info: trial=N) |
-| `phase2_context2_onset` | 2 | Context 2 image onset (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_context2_onset` | 2 | Context 2 image onset (trial_info: trial=N, shape=*.bmp) |
 | `phase2_context2_offset` | 2 | Context 2 offset (trial_info: trial=N) |
 | `phase2_shape2_onset` | 2 | Shape (2nd) onset (trial_info: trial=N) |
 | `phase2_shape2_offset` | 2 | Shape (2nd) offset (trial_info: trial=N) |
 | `phase2_blank2_onset` | 2 | Blank between shape2 and red dot 2 (trial_info: trial=N) |
 | `phase2_blank2_offset` | 2 | Blank 2 ended |
-| `phase2_reddot2_onset` | 2 | Red dot 2 + "say out loud" (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase2_reddot2_onset` | 2 | Red dot 2 + "say out loud" (trial_info: trial=N, shape=*.bmp) |
 | `phase2_reddot2_offset` | 2 | Red dot 2 offset (trial_info: trial=N) |
 | `phase2_question_onset` | 2 | "Which context fits better?" onset (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
 | `phase2_response` | 2 | Participant clicked category A or B (trial_info: trial=N, response=X) |
@@ -189,8 +189,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instruction2c_onset` | 3 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
-| `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N, shape=Shape_X_Y.png) |
-| `phase3_stimulus_offset` | 3 | Shape display ended, clickable (trial_info: trial=N, shape=Shape_X_Y.png) |
+| `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N, shape=*.bmp) |
+| `phase3_stimulus_offset` | 3 | Shape display ended, clickable (trial_info: trial=N, shape=*.bmp) |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all shapes placed) |
@@ -226,19 +226,19 @@ Per-shape data from the bottom-up shape classification phase.
 
 ## Phase 2 CSV (phase2_{participant}_{datetime}.csv)
 
-Per-trial data from the top-down context incorporation phase. **64 trials** per session. Trial order and stimuli match **`phase2_trial_order.csv`** in the task root row-for-row (`trial` 1…64 = template row order).
+Per-trial data from the top-down context incorporation phase. Trial count matches **`phase2_trial_order.csv`** (e.g. 80 rows). Trial order and stimuli match the template row-for-row (`trial` 1…N = template row order).
 
-**Template (`phase2_trial_order.csv`):** Header plus 64 rows. Columns: `trial_number`, `shape`, `shape_path`, `strong_context`, `neutral_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. The task loads stimulus paths and `variant`; `strong_context` / `neutral_context` are not read by the script (design labels only). Paths may be absolute or relative to `STIMULI/`. Variants: `original`, `context_swapped`, `control_context`, `control_context_swapped`. Full template semantics: **TASK_DESCRIPTION.md** (Phase 2 trial template).
+**Template (`phase2_trial_order.csv`):** Header plus N trial rows. Columns include `trial_number`, `shape`, `shape_path`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`, and design labels `primary_context` / `secondary_context` (or legacy `strong_context` / `neutral_context`). The script loads paths, `context1`/`context2` (A/B), `variant`, and optional primary/secondary labels. Paths may be absolute or relative to `STIMULI/`; `Shapes`/`Contexts` in paths are normalized to `shapes`/`contexts`. `variant` is a pass-through string (e.g. `primary_first_img0`). **TASK_DESCRIPTION.md** has the full spec.
 
 **Note:** TTL columns `fixation_onset_ttl` through `question_onset_ttl` are reserved but currently written empty; use `ttl_log` for full event timestamps. Only `response_ttl` is populated.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| `trial` | Integer | Trial number (1–64; same order as rows in `phase2_trial_order.csv`) |
+| `trial` | Integer | Trial number (1…N; same order as rows in `phase2_trial_order.csv`) |
 | `shape_path` | String | Full path to the shape image |
 | `context_1_path` | String | Full path to first context image |
 | `context_2_path` | String | Full path to second context image |
-| `trial_variant` | String | original, context_swapped, control_context, control_context_swapped |
+| `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
 | `response` | String | Button clicked: category A or B (e.g., BARK, CLOUD) |
 | `rt` | Float | Reaction time from question onset to button click (seconds) |
 | `fixation_onset_ttl` | Float | TTL at fixation onset (see note above) |
@@ -293,10 +293,10 @@ Overall experiment summary.
 |--------|------|-------------|
 | `participant_id` | String | Participant identifier |
 | `total_task_time_seconds` | Float | Total duration from start to end |
-| `shapegrid_width_px` | Integer | ShapeGrid pixel width (from ShapeGrid_4x4_scrambled.png) |
+| `shapegrid_width_px` | Integer | ShapeGrid pixel width (from `ShapeGrid_4x4_bmp.png`) |
 | `shapegrid_height_px` | Integer | ShapeGrid pixel height |
 | `grid_border_coords` | String | Grid border coordinates (if computed) |
-| `per_shape_ground_truth` | String | Per-shape ground-truth: `Shape_X_Y.png:row=R,col=C,center_x=X,center_y=Y` (pipe-separated) |
+| `per_shape_ground_truth` | String | Per-shape: `name.bmp:row=R,col=C,center_x=X,center_y=Y` (4×4 from sorted order; pipe-separated) |
 | `scaling_factor` | String | Scaling factor used for display |
 | `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = shapes grouped more similarly (closer categorically). |
 

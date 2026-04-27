@@ -66,7 +66,7 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase1_before_grid_onset/enter/offset
 
-**Grid:** ShapeGrid_4x4_scrambled.png, 5 s. **Fixation:** black cross, 1 s.
+**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s. **Fixation:** black cross, 1 s.
 
 **TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
@@ -76,7 +76,7 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase1_instruction2a/2c_onset/enter/offset
 
-**Task:** 16 shapes, one at a time in random order. 1 s display, then clickable. A miniature full grid (`ShapeGrid_4x4_scrambled.png`) is shown in the **bottom-right** for the full click-to-place block (all 16 trials). At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
+**Task:** 16 shapes (`.bmp` in `STIMULI/shapes/`), one at a time in random order. 1 s display, then clickable. A miniature full grid (`ShapeGrid_4x4_bmp.png`) is shown in the **bottom-right** for the full click-to-place block (all 16 trials). At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
 
 **TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape). **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
@@ -89,7 +89,7 @@ Here, the experimenter should enter their anonymized name.
 **Instructions (7 screens; screen 7 min 5 s):**
 1. "If you have any questions, ask the experimenter now."
 2. "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures."
-3. "For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot."
+3. "For each context-picture pair, you'll first see the context (for example a kitchen or a park scene), then the shape (like the ones you sorted before), and then a red dot."
 4. "When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time."
 5. "Do your best since you will be recorded, but don't panic if nothing comes to mind. You will watch a demo before you have to do the task, so don't worry if this makes no sense yet."
 6. "You can also re-use answers, but try to be creative if you can."
@@ -97,13 +97,13 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase2_questions_onset/enter/offset, phase2_instr1_onset/enter/offset, phase2_instr2_onset/enter/offset, phase2_instr2b_onset/enter/offset, phase2_instr3–5_onset/enter/offset
 
-**Tutorial:** "You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better." (1 Enter) → Fixation 500 ms → practice1 (space) → circle → blank → red dot 2 s + PLANET → practice2 (circus) → circle → blank2 → red dot 2 s + BALL → Question "Which context fits the object better?" + CIRCUS | SPACE (1.5 s) → CIRCUS highlighted + "You might select CIRCUS" (1 s) → Blank 3 s → Ready (1 Enter).
+**Tutorial:** "You'll see a sky picture, then a circle, then a pet shop picture…" (1 Enter) → Fixation 500 ms → `contexts/sky1.png` → circle → blank → red dot 2 s + PLANET → `contexts/petshop1.png` → circle → blank2 → red dot 2 s + BALL → Question "Which context fits the object better?" + SKY | PETSHOP (1.5 s) → PETSHOP highlighted + "You might select PETSHOP" (1 s) → Blank 3 s → Ready (1 Enter).
 
 **Before trials:** "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." (1 Enter)
 
 **TTL (tutorial & before trials):** `phase2_tutorial_*`, `phase2_ready_*`, `phase2_before_trials_*`—see csv_documentation.md.
 
-**Task:** **64** trials in fixed order from `phase2_trial_order.csv` (task root; one row per trial). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Question (click A or B) → ITI 500 ms. Template columns and design notes: TASK_DESCRIPTION.md.
+**Task:** All trials in fixed order from `phase2_trial_order.csv` (task root; one row per trial). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Question (click A or B) → ITI 500 ms. Template columns and design notes: TASK_DESCRIPTION.md.
 
 **Breaks:** Every 16 trials; "Take a break!" + progress bar. 
 
@@ -128,7 +128,7 @@ Experimenter to nudge them if they are not speaking out loud/ not doing their be
 
 **TTL:** phase3_before_grid_onset/enter/offset
 
-**Grid:** ShapeGrid_4x4_scrambled.png, 5 s. **Fixation:** black cross, 1 s.
+**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s. **Fixation:** black cross, 1 s.
 
 **TTL:** phase3_grid_onset/offset, phase3_fixation_onset/offset
 

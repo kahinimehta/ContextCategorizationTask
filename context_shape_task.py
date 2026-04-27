@@ -19,8 +19,11 @@ from pathlib import Path
 # Paths relative to script location
 SCRIPT_DIR = Path(__file__).resolve().parent
 STIMULI_DIR = SCRIPT_DIR / "STIMULI"
-SHAPES_DIR = STIMULI_DIR / "Shapes"
-CONTEXT_DIR = STIMULI_DIR / "Context_Images"
+SHAPES_DIR = STIMULI_DIR / "shapes"
+CONTEXT_DIR = STIMULI_DIR / "contexts"
+# Task uses 16 .bmp shapes (first 16 alphabetically in shapes/; matches ShapeGrid_4x4_bmp.png)
+PHASE1_SHAPE_COUNT = 16
+PHASE1_FIRST_BMP = "ball_slope.bmp"  # first in sorted 16; avoid always leading with this (see main shuffle)
 LOG_DIR = SCRIPT_DIR.parent / "LOG_FILES"
 PHASE2_TRIAL_ORDER_CSV = SCRIPT_DIR / "phase2_trial_order.csv"
 # Phase 2: red-dot screens (verbal response period) per trial and in tutorial
@@ -143,58 +146,69 @@ def is_test_participant(name):
 #  Stimulus Helpers
 # =========================
 def get_shape_paths():
-    """Return list of Shape_X_Y.png paths (exclude ShapeGrid)."""
-    paths = []
-    for f in SHAPES_DIR.glob("Shape_*.png"):
-        if "ShapeGrid" not in f.name:
-            paths.append(str(f))
-    return sorted(paths)
+    """Return paths to the 16 task shapes: .bmp in shapes/ (excludes grid composites), first PHASE1_SHAPE_COUNT by sorted name."""
+    paths = [str(f) for f in SHAPES_DIR.glob("*.bmp") if not f.name.startswith("ShapeGrid")]
+    paths = sorted(paths, key=lambda p: Path(p).name.lower())
+    if len(paths) > PHASE1_SHAPE_COUNT:
+        paths = paths[:PHASE1_SHAPE_COUNT]
+    return paths
 
 
 def get_phase2_shapes():
-    """12 shapes: exclude middle 4 (1_1, 1_2, 2_1, 2_2)."""
+    """12 shapes: exclude center 2×2 of the 4×4 grid (flat indices 5, 6, 9, 10)."""
     all_shapes = get_shape_paths()
-    exclude = {'Shape_1_1.png', 'Shape_1_2.png', 'Shape_2_1.png', 'Shape_2_2.png'}
-    return [p for p in all_shapes if Path(p).name not in exclude]
+    exclude_idx = {5, 6, 9, 10}
+    return [p for i, p in enumerate(all_shapes) if i not in exclude_idx]
 
 
 def get_context_categories():
-    """Return list of context category names from flat PNG filenames. Exclude practice1, practice2.
-    Filenames: {name}1.png, {name}2.png or {name}_1.png, {name}_2.png. Category = name."""
+    """Base category for each {name}.png + {name}1.png pair in contexts/ (e.g. sky, bathroom)."""
+    by_name = {f.name: True for f in CONTEXT_DIR.glob("*.png")}
     cats = set()
     for f in CONTEXT_DIR.glob("*.png"):
-        if f.name in ('practice1.png', 'practice2.png'):
-            continue
-        name = f.stem
-        if '_1' in name or '_2' in name:
-            cats.add(name.rsplit('_', 1)[0])  # bookstore_1 -> bookstore, wall_1 -> wall
-        elif name.endswith('1') or name.endswith('2'):
-            cats.add(name[:-1])  # bedroom1 -> bedroom, pond1 -> pond
+        s = f.stem
+        if s.endswith("1") and len(s) > 1 and f"{s[:-1]}.png" in by_name:
+            cats.add(s[:-1])
+        elif f"{s}1.png" in by_name:
+            pass  # will record base from the *1 file
+        else:
+            cats.add(s)
     return sorted(cats)
 
 
 def get_context_image(category, variant):
     """
-    Get context image path for a category. Flat structure: {category}1.png / {category}2.png
-    or {category}_1.png / {category}_2.png. variant 'original' -> 1, 'control' -> 2.
+    Get context image path. Each category has two variants: {category}1.png and {category}.png
+    (original → '1' file, control → base name without digit).
     """
-    suffix = '1' if variant == 'original' else '2'
-    for stem in [f"{category}{suffix}", f"{category}_{suffix}"]:
-        p = CONTEXT_DIR / f"{stem}.png"
+    c = category.strip()
+    if variant == "original":
+        p = CONTEXT_DIR / f"{c}1.png"
         if p.exists():
             return str(p)
+    else:
+        p = CONTEXT_DIR / f"{c}.png"
+        if p.exists():
+            return str(p)
+    p = CONTEXT_DIR / f"{c}1.png"
+    if p.exists():
+        return str(p)
+    p = CONTEXT_DIR / f"{c}.png"
+    if p.exists():
+        return str(p)
     return None
 
 
 def get_shape_grid_path():
-    """Return scrambled grid for Phase 1/3 display (shapes in randomized positions)."""
-    return str(SHAPES_DIR / "ShapeGrid_4x4_scrambled.png")
+    """Return composite grid for Phase 1/3 preview and inset (16 bmps in 4×4)."""
+    return str(SHAPES_DIR / "ShapeGrid_4x4_bmp.png")
 
 
 def get_practice_context_paths():
+    """Tutorial: two distinct contexts (paths must exist in contexts/)."""
     return [
-        str(CONTEXT_DIR / "practice1.png"),
-        str(CONTEXT_DIR / "practice2.png")
+        str(CONTEXT_DIR / "sky1.png"),
+        str(CONTEXT_DIR / "petshop1.png"),
     ]
 
 
@@ -658,21 +672,51 @@ def run_tutorial_phase1(win, mouse, participant):
 # =========================
 #  Phase 2: Context Task
 # =========================
+def _fix_stimuli_path_case(p: Path) -> Path:
+    """Map CSV folder names to on-disk: Shapes→shapes, Contexts/Context_Images→contexts (case-sensitive FS)."""
+    s = p.as_posix()
+    s = s.replace("/Shapes/", "/shapes/").replace("/Contexts/", "/contexts/").replace("/Context_Images/", "/contexts/")
+    return Path(s)
+
+
 def _resolve_stimulus_path(path_str):
-    """Resolve path: if absolute, use as-is; else resolve relative to STIMULI_DIR."""
-    p = path_str.strip()
-    if p.startswith('/'):
-        return p
-    return str(STIMULI_DIR / p)
+    """
+    Resolve path to an existing file. Relative paths are under STIMULI_DIR.
+    Absolute paths: if missing, try normalizing Shapes/Contexts/Context_Images, then basename in shapes/ or contexts/.
+    """
+    p = path_str.strip().strip('"')
+    if not p:
+        raise ValueError("Empty stimulus path in phase2_trial_order.csv")
+    path = Path(os.path.expanduser(p))
+    to_try: list[Path] = []
+    if not path.is_absolute():
+        to_try.append((STIMULI_DIR / path).resolve())
+    else:
+        to_try.append(path.resolve())
+        to_try.append(_fix_stimuli_path_case(path).resolve())
+
+    for cand in to_try:
+        if cand.is_file():
+            return str(cand)
+
+    name = path.name
+    for sub in ("shapes", "contexts"):
+        alt = (STIMULI_DIR / sub / name).resolve()
+        if alt.is_file():
+            return str(alt)
+
+    if not path.is_absolute():
+        fallback = (STIMULI_DIR / path).resolve()
+        return str(fallback)
+    return str(path.resolve())
 
 
 def load_phase2_trials():
     """
     Load Phase 2 trial order from phase2_trial_order.csv. Same fixed order for all participants.
-    CSV columns: trial_number, shape, shape_path, strong_context, neutral_context,
-    context1, context1_image, context2, context2_image, variant.
-    Paths: full absolute (e.g. .../ContextCategorizationTask/STIMULI/Context_Images/sky1.png)
-    or relative to STIMULI_DIR.
+    Required columns: shape_path, context1_image, context2_image, context1, context2, variant.
+    Design columns (optional): primary_context, secondary_context or strong_context, neutral_context.
+    Paths: absolute or relative to STIMULI/; Shapes/Contexts spelling is fixed automatically.
     """
     if not PHASE2_TRIAL_ORDER_CSV.exists():
         raise FileNotFoundError(f"Phase 2 trial order file not found: {PHASE2_TRIAL_ORDER_CSV}")
@@ -680,9 +724,13 @@ def load_phase2_trials():
     with open(PHASE2_TRIAL_ORDER_CSV, 'r', newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
+            if not row.get('shape_path', '').strip():
+                continue
             shape_path = _resolve_stimulus_path(row['shape_path'])
             ctx1_path = _resolve_stimulus_path(row['context1_image'])
             ctx2_path = _resolve_stimulus_path(row['context2_image'])
+            primary = (row.get('primary_context') or row.get('strong_context') or '').strip()
+            secondary = (row.get('secondary_context') or row.get('neutral_context') or '').strip()
             trials.append({
                 'shape_path': shape_path,
                 'context_1': ctx1_path,
@@ -690,14 +738,18 @@ def load_phase2_trials():
                 'cat_a': row['context1'].strip(),
                 'cat_b': row['context2'].strip(),
                 'variant': row['variant'].strip(),
+                'primary_context': primary,
+                'secondary_context': secondary,
             })
+    if not trials:
+        raise ValueError(f"No trial rows in {PHASE2_TRIAL_ORDER_CSV}")
     return trials
 
 
 def run_phase2_tutorial(win, mouse, participant):
-    """Phase 2 tutorial: explicit intro screens, then practice1, practice2, circle, CIRCUS | SPACE."""
+    """Phase 2 tutorial: intro, then two practice context images (see get_practice_context_paths), circle, demo question."""
     # Single intro screen (max 2 sentences) — one Enter before demo
-    intro = visual.TextStim(win, text="You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.",
+    intro = visual.TextStim(win, text="You'll see a sky picture, then a circle, then a pet shop picture. Say what the shape could be in each, then watch as we pick which fits better.",
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, intro, "phase2_tutorial_intro"):
         return False
@@ -777,33 +829,32 @@ def run_phase2_tutorial(win, mouse, participant):
     _wait(PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot2_offset")
 
-    # Question: CIRCUS | SPACE — demo only (participant watches, no click)
+    # Question: SKY | PETSHOP (left = first context, right = second) — demo only
     q = visual.TextStim(win, text="Which context fits the object better?", color='black', height=0.04, pos=(0, 0.1))
-    btn_circus = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(-0.2, -0.2), units='height')
-    btn_space = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
-    txt_c = visual.TextStim(win, text="CIRCUS", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
-    txt_s = visual.TextStim(win, text="SPACE", color='black', height=0.03, pos=(0.2, -0.2), units='height')
+    btn_a = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(-0.2, -0.2), units='height')
+    btn_b = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
+    txt_a = visual.TextStim(win, text="SKY", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
+    txt_b = visual.TextStim(win, text="PETSHOP", color='black', height=0.03, pos=(0.2, -0.2), units='height')
     _log_ttl_event("phase2_tutorial_question_onset")
-    # Show question + buttons for ~1.5 s
     q.draw()
-    btn_circus.draw()
-    btn_space.draw()
-    txt_c.draw()
-    txt_s.draw()
+    btn_a.draw()
+    btn_b.draw()
+    txt_a.draw()
+    txt_b.draw()
     win.flip()
     _wait(1.5)
-    # Animate CIRCUS button being pressed (highlight/darken) + subtitle
+    # Highlight right button (second context) + subtitle, matching old “second image” demo
     _log_ttl_event("phase2_tutorial_demo_select_onset")
-    btn_circus_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(-0.2, -0.2), units='height')
-    sub_select = visual.TextStim(win, text="You might select CIRCUS", color='black', height=0.028, pos=(0, -0.38), units='height')
+    btn_b_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
+    sub_select = visual.TextStim(win, text="You might select PETSHOP", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
-    btn_circus_pressed.draw()  # darker = "pressed"
-    btn_space.draw()
-    txt_c.draw()
-    txt_s.draw()
+    btn_a.draw()
+    btn_b_pressed.draw()
+    txt_a.draw()
+    txt_b.draw()
     sub_select.draw()
     win.flip()
-    _log_ttl_event("phase2_tutorial_response", trial_info="CIRCUS")
+    _log_ttl_event("phase2_tutorial_response", trial_info="PETSHOP")
     _wait(1.0)
     _log_ttl_event("phase2_tutorial_demo_select_offset")
     _log_ttl_event("phase2_tutorial_question_offset")
@@ -1114,18 +1165,15 @@ def _euclidean_distances(positions):
 
 
 def _parse_shape_grid_position(shape_path):
-    """Extract (row, col, gx, gy) from Shape_X_Y.png. X,Y are integer indices 0-3.
-    Grid centers: row/col 0->0.10, 1->1.70, 2->3.30, 3->4.90."""
-    name = Path(shape_path).stem
+    """Map shape file to 4×4 (row, col) by order in get_shape_paths() (same as ShapeGrid_4x4_bmp).
+    Grid centers: row/col 0->0.10, 1->1.70, 2->3.30, 3->4.90 (latent for analysis)."""
     row_to_g = {0: 0.10, 1: 1.70, 2: 3.30, 3: 4.90}
-    try:
-        parts = name.replace('Shape_', '').split('_')
-        if len(parts) >= 2:
-            row, col = int(parts[0]), int(parts[1])
+    target = Path(shape_path).name
+    for i, p in enumerate(get_shape_paths()):
+        if Path(p).name == target:
+            row, col = divmod(i, 4)
             if 0 <= row <= 3 and 0 <= col <= 3:
                 return row, col, row_to_g[row], row_to_g[col]
-    except (ValueError, IndexError):
-        pass
     return -1, -1, 0, 0
 
 
@@ -1228,6 +1276,22 @@ def main():
     participant = get_participant_name(win)
     participant = participant.strip() or 'anonymous'
 
+    _shape_set = get_shape_paths()
+    if len(_shape_set) < PHASE1_SHAPE_COUNT:
+        print(
+            f"ERROR: need at least {PHASE1_SHAPE_COUNT} .bmp files in {SHAPES_DIR} (excl. grid); found {len(_shape_set)}.",
+            file=sys.stderr,
+        )
+        try:
+            if _ttl_file_ref[0]:
+                _ttl_file_ref[0].close()
+                _ttl_file_ref[0] = None
+        except Exception:
+            pass
+        win.close()
+        _close_dummy()
+        return
+
     experiment_start = time.time()
     _log_ttl_event("experiment_start", trial_info=f"participant={participant}")
 
@@ -1303,7 +1367,7 @@ def main():
 
     shapes = get_shape_paths()
     random.shuffle(shapes)
-    if Path(shapes[0]).name == "Shape_0_0.png":
+    if Path(shapes[0]).name == PHASE1_FIRST_BMP:
         shapes.append(shapes.pop(0))
     phase1_results = run_drag_phase(win, mouse, shapes, "phase1", 1, participant, timestamp_str=timestamp_str, inset_grid_path=grid_path)
     if phase1_results is None:
@@ -1317,7 +1381,7 @@ def main():
     p2_screens = [
         ("If you have any questions, ask the experimenter now.", "phase2_questions", 0),
         ("Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures.", "phase2_instr1", 0),
-        ("For each context-picture pair, you'll first see the context (so an image like a circus for example), then the shape (like the ones you sorted before), and then a red dot.", "phase2_instr2", 0),
+        ("For each context-picture pair, you'll first see the context (for example a kitchen or a park scene), then the shape (like the ones you sorted before), and then a red dot.", "phase2_instr2", 0),
         ("When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2b", 0),
         ("Do your best since you will be recorded, but don't panic if nothing comes to mind. You will watch a demo before you have to do the task, so don't worry if this makes no sense yet.", "phase2_instr3", 0),
         ("You can also re-use answers, but try to be creative if you can.", "phase2_instr4", 0),
