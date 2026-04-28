@@ -1,20 +1,8 @@
-# Experimenter Script
+# Experimenter Script — run sheet
 
-On-screen wording, phase sequence, TTL **names** (not the full lookup table).
+Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_documentation.md` only`). Timings/constants and **`phase2_trial_order.csv`:** **`TASK_DESCRIPTION.md`** (**`README.md`** → Documentation summarizes file roles).
 
-| Doc | Use |
-|-----|-----|
-| **`README.md`** | Repo layout, Quick Start |
-| **`TASK_DESCRIPTION.md`** | Durations/constants, paths, **`phase2_trial_order.csv`**, troubleshooting |
-| **`csv_documentation.md`** | Output column definitions; complete TTL/code list |
-
-**Instruction screens** include **Enter to continue** at the bottom. Avoid double-Enter during laggy screens.
-
-### Quick reminders
-
-- **`python context_shape_task.py`** from task directory; participant name (**`test`** in name → **no saved files**)
-- **ESC** only during **interactive** screens (not grid / fixation / timed stimulus trains)
-- Data under **`../LOG_FILES/`**; **`PSYCHOPY_WINDOWED=1`** for windowed 1280×720
+**Operational:** `python context_shape_task.py` from task folder; **`../LOG_FILES/`**; participant name **`test`** → no saved files; **`PSYCHOPY_WINDOWED=1`** windowed (**1280×720**); **`PSYCHOPY_DUMMY_WINDOW=0`** disables the extra stability window; **`PSYCHOPY_CHECK_TIMING=1`** enables startup frame calibration (macOS rarely). **ESC** only during interactive canvases; macOS timing/keyboard quirks **`TASK_DESCRIPTION.md`**. Instruction prompts end with **Enter to continue**; avoid accidental double Enter when laggy.
 
 ---
 
@@ -70,15 +58,14 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
-**Instructions (2 screens):**
-1. "Sort by where you'd expect to see the shapes"
-2. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
+**Instructions (1 screen):**
+1. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help."
 
-**TTL:** phase1_instruction2a/2c_onset/enter/offset
+**TTL:** phase1_instruction2c_onset/enter/offset
 
-**Task:** 16 shapes (`.bmp` in `STIMULI/shapes/`), one at a time in random order. 1 s display, then clickable. A miniature full grid (`ShapeGrid_4x4_bmp.png`) is shown in the **bottom-right** for the full click-to-place block (all 16 trials). At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
+**Task:** 16 shapes (`.bmp` in `STIMULI/shapes/`), one at a time in random order. 1 s isolated preview, then clickable; each shape is drawn at **native aspect ratio** (not forced square). **Miniature 4×4 grid** (**`ShapeGrid_4x4_bmp.png`**, aspect preserved) stays **bottom-right** during the **1 s preview and** the click-to-place period for **every** trial until this phase ends. At least one click required before Enter. Hint repeats instruction above.
 
-**TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape). **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
+**TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape), **phase1_complete**. **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
 ---
 
@@ -95,21 +82,21 @@ Here, the experimenter should enter their anonymized name.
 6. "You can also re-use answers, but try to be creative if you can."
 7. "Now let's watch a quick demo to help you understand how we work on this task."
 
-**TTL:** phase2_questions_onset/enter/offset, phase2_instr1_onset/enter/offset, phase2_instr2_onset/enter/offset, phase2_instr2b_onset/enter/offset, phase2_instr3–5_onset/enter/offset
+**TTL:**
+- Instructions (above): `phase2_questions_*` … `phase2_instr5_*` (**`phase2_instr5`** onset has min display **5 s** before Enter).
+- Tutorial (**SPACE**/ **CIRCUS** demo — intro screen **`phase2_tutorial_intro`** first): `phase2_tutorial_*`, **`phase2_ready_*`** (“Ready…” after demo).
+- Before Phase 2 trial list: **`phase2_before_trials_*`**.
+- Each trial + mandatory breaks (**every 16** trials): **`phase2_fixation_*`** … **`phase2_trial_iti_*`**, **`phase2_break_*`**, **`phase2_complete`**, **`phase2_response`** (full **`event_label`** / **`trial_info`**: **`csv_documentation.md`**).
 
-**Tutorial:** After intro (**Enter**): fixation (**~0.5 s**) → images **`practice1.png`** / **`practice2.png`** (**`STIMULI/`** or **`contexts/`**) → blue circle intervals → PLANET cue on red dot (**~2 s**) → second context + circle sequence → BALL cue (**~2 s**) → **Which context fits the object better?** with SPACE \| CIRCUS → highlight + "You might select CIRCUS" → post-demo blank → Ready (**Enter**). Exact seconds: **`TASK_DESCRIPTION.md`** (Phase 2 tutorial table).
+**Tutorial (after screen 7 — one Enter):**
+- **Intro:** “You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.” (**Enter**)
+- **Sequence:** fixation **0.5 s** → first **`practice1.png`** **1 s** → blue circle **1 s** → blank **1 s** → red dot + “You might say the circle is a 'PLANET'” **2 s** → second **`practice2.png`** **1 s** → same circle **1 s** → blank **1 s** → red dot + “You might say the circle is a 'BALL'” **2 s** → **Which context fits the object better?** with **SPACE** | **CIRCUS** (initial **1.5 s**, then highlight) → **CIRCUS** highlighted + “You might select CIRCUS” **1 s** → blank **3 s** → **Ready:** “Ready to try this with some actual shapes and images?” (**Enter**). PNGs: **`STIMULI/`** or **`STIMULI/contexts/`** (see code). Exact constants: **`TASK_DESCRIPTION.md`**.
 
-**Before trials:** "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." (1 Enter)
+**Before trials:** “Ask the experimenter now if you have any questions. Press Enter when you're ready to begin.” (**Enter**)
 
-**TTL (tutorial & before trials):** `phase2_tutorial_*`, `phase2_ready_*`, `phase2_before_trials_*`—see csv_documentation.md.
+**Task:** Trials follow **`phase2_trial_order.csv`** (**`stderr`:** `Phase 2: N trials …`). fixation → alternating contexts/shapes/red dots → question (**Which context fits the object better?**) → ITI (**timings/constants `TASK_DESCRIPTION.md`**). Mandatory breaks every **16** trials (**16**, **32**, **48** for the shipped **64** trials).
 
-**Task:** Fixed CSV order (**64** trials in shipped file; **`stderr`** prints `Phase 2: N trials from phase2_trial_order.csv`). Timeline: fixation → contexts/shapes/blanks/red dots → question **Which context fits the object better?** → ITI. Timing constants **`TASK_DESCRIPTION.md`**.
-
-**Breaks:** After every **16** trials (**16**, **32**, **48**) for the shipped length; breaks scale with **`N`** if you lengthen the CSV.
-
-Experimenter to nudge them if they are not speaking out loud/ not doing their best. 
-
-**TTL (trials & breaks):** `phase2_fixation` through `phase2_trial_iti`, `phase2_break_*`, `phase2_complete`; `phase2_response` on choice. Trial `trial_info`: trial, shape, cat_a, cat_b, variant—full labels in csv_documentation.md.
+Experimenter to nudge them if they are not speaking out loud / not doing their best. 
 
 ---
 
@@ -132,13 +119,12 @@ Experimenter to nudge them if they are not speaking out loud/ not doing their be
 
 **TTL:** phase3_grid_onset/offset, phase3_fixation_onset/offset
 
-**Instructions (2 screens):**
-1. "Sort by where you'd expect to see the shapes"
-2. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help."
+**Instructions (1 screen):**
+1. "Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help."
 
-**TTL:** phase3_instruction2a/2c_onset/enter/offset
+**TTL:** phase3_instruction2c_onset/enter/offset
 
-**Task:** Same as Phase 1 (including miniature full grid in the bottom-right during click-to-place). Shapes in different random order than Phase 1. At least one click required before Enter. Hint: "Click somewhere to place, then press Enter to submit."
+**Task:** Same structure as Phase 1: shapes and inset grid at **native aspect ratio**; **miniature 4×4 grid** stays **bottom-right** during the **1 s preview and** click-to-place for **every** trial until this phase ends. Shapes in a different random order than Phase 1. At least one click required before Enter. Hint matches instruction above.
 
 **TTL:** phase3_stimulus_onset/offset (trial_info: trial=N, shape=…), phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete. **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 

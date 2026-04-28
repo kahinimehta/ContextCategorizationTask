@@ -386,6 +386,40 @@ def get_participant_name(win):
 # =========================
 #  Phase 1 & 3: Click-to-Place Task
 # =========================
+def _native_image_aspect_ratio(path_str):
+    """Native width / height (~1 if unreadable)."""
+    try:
+        from PIL import Image
+        with Image.open(Path(path_str).expanduser()) as im:
+            iw, ih = im.size
+        if ih <= 0:
+            return 1.0
+        return float(iw) / float(ih)
+    except Exception:
+        return 1.0
+
+
+def _image_size_height_units(path_str, max_extent):
+    """
+    `(width, height)` in PsychoPy `units='height'` while preserving BMP/PNG aspect ratio.
+    `max_extent` limits the larger side — same role as earlier square `(s, s)`.
+    """
+    ar = _native_image_aspect_ratio(path_str)
+    if ar >= 1.0:
+        return (float(max_extent), float(max_extent) / ar)
+    return (float(max_extent) * ar, float(max_extent))
+
+
+def _pixel_thumbnail_size(iw, ih, max_px):
+    """Preserve aspect with longer side capped at max_px (for PIL placement PNG export)."""
+    if ih <= 0:
+        return (max_px, max_px)
+    ar = float(iw) / float(ih)
+    if iw >= ih:
+        return (max_px, max(1, int(round(max_px / ar))))
+    return (max(1, int(round(max_px * ar))), max_px)
+
+
 def _save_placement_image(results, output_path, win_size=(1920, 1080)):
     """Save placement visualization as PNG. results: list of {shape_path, final_x, final_y}."""
     try:
@@ -407,9 +441,11 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080)):
         y_px = int((1 - y) / 2 * h)
         try:
             shape_img = Image.open(r['shape_path']).convert('RGBA')
-            shape_img = shape_img.resize((shape_size_px, shape_size_px), Image.Resampling.LANCZOS)
-            paste_x = x_px - shape_size_px // 2
-            paste_y = y_px - shape_size_px // 2
+            iw, ih = shape_img.size
+            tw, th = _pixel_thumbnail_size(iw, ih, shape_size_px)
+            shape_img = shape_img.resize((tw, th), Image.Resampling.LANCZOS)
+            paste_x = x_px - tw // 2
+            paste_y = y_px - th // 2
             img.paste(shape_img, (paste_x, paste_y), shape_img)
         except Exception:
             pass
@@ -417,13 +453,14 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080)):
 
 
 def _make_grid_inset_stim(win, grid_path):
-    """Miniature full grid (ShapeGrid) at bottom-right; height units, stays fixed across trials."""
-    aspect = float(win.size[0]) / float(win.size[1])
-    inset = 0.2
+    """Miniature full grid at bottom-right; preserves composite PNG aspect (not forced square)."""
+    aspect_win = float(win.size[0]) / float(win.size[1])
+    max_extent = 0.2
+    w_units, h_units = _image_size_height_units(grid_path, max_extent)
     margin = 0.03
-    gx = aspect - margin - inset / 2
-    gy = -1.0 + margin + inset / 2
-    return visual.ImageStim(win, image=grid_path, units='height', size=(inset, inset), pos=(gx, gy))
+    gx = aspect_win - margin - w_units / 2
+    gy = -1.0 + margin + h_units / 2
+    return visual.ImageStim(win, image=grid_path, units='height', size=(w_units, h_units), pos=(gx, gy))
 
 
 def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, anchors=None, timestamp_str=None, inset_grid_path=None):
@@ -431,7 +468,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
     Sequential click-to-place task. shape_paths: list of shape file paths.
     anchors: dict {path: (x,y)} of previously placed shapes to show.
     inset_grid_path: if set, show a small full-grid reference in the bottom-right for the
-    whole phase (only during click-to-place, not the 1 s isolated shape preview).
+    whole sorting block (1 s isolated preview per shape plus click-to-place until submit).
     Returns list of dicts: shape_path, final_x, final_y, rt, ttl timestamps.
     """
     if anchors is None:
@@ -453,23 +490,32 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 
     for idx, shape_path in enumerate(shape_paths):
         shape_name = Path(shape_path).name
+        sh_sz = _image_size_height_units(shape_path, 0.15)
         # 1 second: shape alone (screen cleared per spec)
-        img = visual.ImageStim(win, image=shape_path, units='height', size=(0.15, 0.15))
+        img = visual.ImageStim(win, image=shape_path, units='height', size=sh_sz)
         img.setPos((0, 0))
         _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1} shape={shape_name}")
         img.draw()
+        if grid_inset is not None:
+            grid_inset.draw()
         win.flip()
         _wait(SHAPE_STATIC_PREVIEW_SEC)
         _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1} shape={shape_name}")
         del img  # free texture before creating more stims
 
         # Now clickable: click anywhere to place
-        stim = visual.ImageStim(win, image=shape_path, units='height', size=(0.15, 0.15))
+        stim = visual.ImageStim(win, image=shape_path, units='height', size=sh_sz)
         stim.setPos((0, 0))
 
         # Pre-create anchor stims and hint once (avoids per-frame allocation lag)
-        anchor_stims = [(visual.ImageStim(win, image=p, units='height', size=(0.1, 0.1)), ax, ay)
-                       for p, (ax, ay) in anchors.items()]
+        anchor_stims = [
+            (
+                visual.ImageStim(win, image=p, units='height', size=_image_size_height_units(p, 0.1)),
+                ax,
+                ay,
+            )
+            for p, (ax, ay) in anchors.items()
+        ]
         hint = visual.TextStim(win, text="Click somewhere to place, then press Enter to submit.", color='gray', height=0.028, pos=(0, -0.38), units='height')
 
         rt_start = time.time()
@@ -819,8 +865,10 @@ def run_phase2_tutorial(win, mouse, participant):
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
     blank = visual.Rect(win, width=3, height=3, fillColor='white', lineColor=None, pos=(0, 0), units='height')
     dot = visual.Circle(win, radius=0.006, fillColor='red', lineColor=None, pos=(0, 0))
-    img1 = visual.ImageStim(win, image=p1, units='height', size=(0.5, 0.5))
-    img2 = visual.ImageStim(win, image=p2, units='height', size=(0.5, 0.5))
+    pr1 = _image_size_height_units(p1, 0.5)
+    pr2 = _image_size_height_units(p2, 0.5)
+    img1 = visual.ImageStim(win, image=p1, units='height', size=pr1)
+    img2 = visual.ImageStim(win, image=p2, units='height', size=pr2)
 
     # Fixation 500ms
     _log_ttl_event("phase2_tutorial_fixation_onset")
@@ -975,9 +1023,15 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(PHASE2_FIXATION_PRE_TRIAL_SEC)
         _log_ttl_event("phase2_fixation_offset", trial_info=f"trial={t_idx+1}")
 
-        ctx1 = visual.ImageStim(win, image=trial['context_1'], units='height', size=(0.5, 0.5))
-        ctx2 = visual.ImageStim(win, image=trial['context_2'], units='height', size=(0.5, 0.5))
-        shape_img = visual.ImageStim(win, image=trial['shape_path'], units='height', size=(0.2, 0.2))
+        ctx1 = visual.ImageStim(
+            win, image=trial['context_1'], units='height', size=_image_size_height_units(trial['context_1'], 0.5)
+        )
+        ctx2 = visual.ImageStim(
+            win, image=trial['context_2'], units='height', size=_image_size_height_units(trial['context_2'], 0.5)
+        )
+        shape_img = visual.ImageStim(
+            win, image=trial['shape_path'], units='height', size=_image_size_height_units(trial['shape_path'], 0.2)
+        )
         cat_a = trial['cat_a'].upper()
         cat_b = trial['cat_b'].upper()
 
@@ -1403,7 +1457,7 @@ def main():
 
     # Grid 5 sec
     grid_path = get_shape_grid_path()
-    grid_img = visual.ImageStim(win, image=grid_path, units='height', size=(0.8, 0.8))
+    grid_img = visual.ImageStim(win, image=grid_path, units='height', size=_image_size_height_units(grid_path, 0.8))
     _log_ttl_event("phase1_grid_onset")
     grid_img.draw()
     win.flip()
@@ -1419,8 +1473,7 @@ def main():
     _log_ttl_event("phase1_fixation_offset")
 
     p1_instr2_screens = [
-        ("Sort by where you'd expect to see the shapes", "phase1_instruction2a", 0),
-        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
+        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1509,7 +1562,7 @@ def main():
 
     # Grid 5 sec (same scrambled grid as Phase 1)
     grid_path = get_shape_grid_path()
-    grid_img = visual.ImageStim(win, image=grid_path, units='height', size=(0.8, 0.8))
+    grid_img = visual.ImageStim(win, image=grid_path, units='height', size=_image_size_height_units(grid_path, 0.8))
     _log_ttl_event("phase3_grid_onset")
     grid_img.draw()
     win.flip()
@@ -1525,8 +1578,7 @@ def main():
     _log_ttl_event("phase3_fixation_offset")
 
     p3_instr2_screens = [
-        ("Sort by where you'd expect to see the shapes", "phase3_instruction2a", 0),
-        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
+        ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')

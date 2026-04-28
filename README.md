@@ -25,9 +25,9 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Task design (summary)
 
-- **Phase 1:** 16 `.bmp` shapes (from `STIMULI/shapes/`), random order (alphabetically first task shape not first), click-to-place after grid preview.
+- **Phase 1:** 16 `.bmp` shapes (from `STIMULI/shapes/`), random order (alphabetically first task shape not first), full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
 - **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials).
-- **Phase 3:** Same 16 shapes as Phase 1, new random order (must differ from Phase 1).
+- **Phase 3:** Same 16 shapes as Phase 1, new random order (must differ from Phase 1); same **bottom-right miniature grid** behavior as Phase 1.
 
 ### Documentation
 

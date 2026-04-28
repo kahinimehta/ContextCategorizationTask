@@ -8,7 +8,7 @@ Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), s
 
 PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (grid/fixation/isolated shapes → click-sort with inset grid **`ShapeGrid_4x4_bmp.png`**) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (re-sort → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
+**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (full-screen grid/fixation → per-trial: isolated shape + **bottom-right miniature** **`ShapeGrid_4x4_bmp.png`** through preview and placement) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (same inset behavior as Phase 1 → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
 
 **Writes:** **`../LOG_FILES/`** — skipped entirely if **`test`** occurs in participant name (**`ttl_log_*`** likewise removed).
 
@@ -20,7 +20,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 - **Shapes:** `STIMULI/shapes/*.bmp` — 16 task shapes are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major)
 - **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
-- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` for Phase 1 and Phase 3 preview and inset (rebuild with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order)
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — full-screen 5 s preview in Phase 1/3, then a **miniature** copy in the **bottom-right** for every shape trial (**`SHAPE_STATIC_PREVIEW_SEC`** + click-to-place) until that phase ends (rebuild with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order)
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
@@ -33,7 +33,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 ### TTL
 
-Events are logged incrementally via Cedrus/pyxid or parallel port (macOS logs only unless hardware connects). Timing semantics (**onset** before first **`flip()`**, **offset** after the wait): see **`csv_documentation.md`** (full trigger table).
+Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** timestamps only unless hardware attached). Timing semantics preamble + exhaustive **`ttl_log_*`** event table (**`csv_documentation.md`**).
 
 ---
 
@@ -59,8 +59,8 @@ Events are logged incrementally via Cedrus/pyxid or parallel port (macOS logs on
 |-------|----------|
 | Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` (5 s) |
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` (1 s) |
-| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s) |
-| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
+| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); **miniature** `ShapeGrid_4x4_bmp.png` bottom-right (same as placement) |
+| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block (same inset as preview) |
 
 ### Phase 2 Tutorial
 
@@ -101,8 +101,8 @@ Events are logged incrementally via Cedrus/pyxid or parallel port (macOS logs on
 |-------|----------|
 | Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` |
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` |
-| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` |
-| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
+| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
+| Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block |
 
 ### Other
 
@@ -120,7 +120,7 @@ Events are logged incrementally via Cedrus/pyxid or parallel port (macOS logs on
 | Phase | Selection | Ground truth / mapping |
 |-------|-----------|------------------------|
 | **1** | `random.shuffle(get_shape_paths())`; if first item is alphabetically first task shape (`ball_slope.bmp` default), rotate it to end | Clicks → `(x,y)`; row/col from index in sorted 4×4 list ( **`ShapeGrid_4x4_bmp.png`** order via `scripts/generate_shape_grid.py`). |
-| **2** | Fixed: **`phase2_trial_order.csv`** row order (**N** rows; **64** shipped) | Paths from **`context*_image`**; labels **`context1`/`context2`** → A/B buttons. **`variant`**: logged only. |
+| **2** | Fixed **`phase2_trial_order.csv`** order (**N** trial rows) | Paths from **`context*_image`**; **`context1`/`context2`** → buttons. **`variant`**: logged only (see **Phase 2 trial template**). |
 | **3** | `random.shuffle` until sequence ≠ Phase 1 order | Same (x,y)→cell mapping as Phase 1; Euclidean distances in **`summary`** CSV |
 
 Phase 2 **tutorial** (not from CSV): `practice1.png`/`practice2.png`, circle demo, scripted SPACE \| CIRCUS.

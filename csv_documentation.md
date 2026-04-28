@@ -1,6 +1,8 @@
 # CSV and TTL Documentation
 
-**`ttl_log_*`:** column definitions + exhaustive **`event_label` / trial_info** lookup table (**below**). **`phase*_*.csv`**, **`debrief`** & **`summary`:** column schemas (**below**). Run narrative & screen copy: **`script.md`**. **`phase2_trial_order.csv`:** **`TASK_DESCRIPTION.md`**. Repo / Quick Start / example filenames: **`README.md`**.
+Definitions for **`ttl_log_*`** (columns here; mapping table § below) plus **`phase*_*.csv`**, **`debrief`**, **`summary`**.
+
+**Elsewhere:** run sheet (**`script.md`**); stimuli + timings + **`phase2_trial_order.csv`** (**`TASK_DESCRIPTION.md`**); repo bootstrap / example filenames (**`README.md`**).
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -18,6 +20,8 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 question trials, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end).
 
 ---
+
+**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted).
 
 ## TTL Trigger Mapping
 
@@ -70,15 +74,12 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_grid_offset` | 1 | Shape grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2a_onset` | 1 | "Sort by where you'd expect to see the shapes" instruction appeared |
-| `phase1_instruction2a_enter` | 1 | Enter pressed |
-| `phase1_instruction2a_offset` | 1 | Screen transition |
-| `phase1_instruction2c_onset` | 1 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
+| `phase1_instruction2c_onset` | 1 | Instruction before sorting: click/Enter, immovable placements, miniature 4×4 grid stays bottom-right (see **`script.md`**) |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all shapes placed) |
-| `phase1_stimulus_onset` | 1 | Shape shown (trial_info: trial=N, shape=*.bmp filename) |
-| `phase1_stimulus_offset` | 1 | Shape display ended, clickable (trial_info: trial=N, shape=*.bmp) |
+| `phase1_stimulus_onset` | 1 | Isolation preview: centered shape + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp filename) |
+| `phase1_stimulus_offset` | 1 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
 | `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase2_questions_onset` | 2 | "If you have any questions, ask the experimenter now" appeared |
@@ -185,14 +186,11 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_grid_offset` | 3 | Shape grid display ended |
 | `phase3_fixation_onset` | 3 | Fixation cross onset |
 | `phase3_fixation_offset` | 3 | Fixation cross ended |
-| `phase3_instruction2a_onset` | 3 | "Sort by where you'd expect to see the shapes" instruction appeared |
-| `phase3_instruction2a_enter` | 3 | Enter pressed |
-| `phase3_instruction2a_offset` | 3 | Screen transition |
-| `phase3_instruction2c_onset` | 3 | "Click somewhere to place, then press Enter to submit. Once you've submitted..." instruction appeared |
+| `phase3_instruction2c_onset` | 3 | Instruction before sorting: click/Enter, immovable placements, miniature 4×4 grid stays bottom-right (see **`script.md`**) |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
-| `phase3_stimulus_onset` | 3 | Shape shown (trial_info: trial=N, shape=*.bmp) |
-| `phase3_stimulus_offset` | 3 | Shape display ended, clickable (trial_info: trial=N, shape=*.bmp) |
+| `phase3_stimulus_onset` | 3 | Isolation preview: centered shape + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp) |
+| `phase3_stimulus_offset` | 3 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
 | `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all shapes placed) |
