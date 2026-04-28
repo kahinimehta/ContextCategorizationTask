@@ -1,20 +1,20 @@
 # Experimenter Script
 
-**Overview:** README.md (includes committed example CSVs/PNGs). **Technical:** TASK_DESCRIPTION.md. **CSV columns & full TTL table:** csv_documentation.md.
+On-screen wording, phase sequence, TTL **names** (not the full lookup table).
 
-**Convention:** Instruction screens: "Press Enter to continue" at bottom. Max 2 sentences per screen. TTL pattern: `*_onset` (appeared), `*_enter` (keypress), `*_offset` (transition). Trial events add `trial_info`—full trigger list in csv_documentation.md (not repeated here).
+| Doc | Use |
+|-----|-----|
+| **`README.md`** | Repo layout, Quick Start |
+| **`TASK_DESCRIPTION.md`** | Durations/constants, paths, **`phase2_trial_order.csv`**, troubleshooting |
+| **`csv_documentation.md`** | Output column definitions; complete TTL/code list |
 
-Make sure participants do not press enter more than once during instructions, even if some screens are laggy. 
+**Instruction screens** include **Enter to continue** at the bottom. Avoid double-Enter during laggy screens.
 
----
+### Quick reminders
 
-## Quick Start
-
-1. Run `python context_shape_task.py` from task directory
-2. Enter participant name (no spaces); Enter when done
-3. **ESC** during interactive screens only—not during timed displays (grid, fixation, stimulus)
-4. **Data:** `../LOG_FILES/` — date/time in filenames. Name contains "test" → no files.
-5. **Windowed mode:** `PSYCHOPY_WINDOWED=1` (1280×720)
+- **`python context_shape_task.py`** from task directory; participant name (**`test`** in name → **no saved files**)
+- **ESC** only during **interactive** screens (not grid / fixation / timed stimulus trains)
+- Data under **`../LOG_FILES/`**; **`PSYCHOPY_WINDOWED=1`** for windowed 1280×720
 
 ---
 
@@ -97,15 +97,15 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase2_questions_onset/enter/offset, phase2_instr1_onset/enter/offset, phase2_instr2_onset/enter/offset, phase2_instr2b_onset/enter/offset, phase2_instr3–5_onset/enter/offset
 
-**Tutorial:** "You'll see a sky picture, then a circle, then a pet shop picture…" (1 Enter) → Fixation 500 ms → `contexts/sky1.png` → circle → blank → red dot 2 s + PLANET → `contexts/petshop1.png` → circle → blank2 → red dot 2 s + BALL → Question "Which context fits the object better?" + SKY | PETSHOP (1.5 s) → PETSHOP highlighted + "You might select PETSHOP" (1 s) → Blank 3 s → Ready (1 Enter).
+**Tutorial:** After intro (**Enter**): fixation (**~0.5 s**) → images **`practice1.png`** / **`practice2.png`** (**`STIMULI/`** or **`contexts/`**) → blue circle intervals → PLANET cue on red dot (**~2 s**) → second context + circle sequence → BALL cue (**~2 s**) → **Which context fits the object better?** with SPACE \| CIRCUS → highlight + "You might select CIRCUS" → post-demo blank → Ready (**Enter**). Exact seconds: **`TASK_DESCRIPTION.md`** (Phase 2 tutorial table).
 
 **Before trials:** "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." (1 Enter)
 
 **TTL (tutorial & before trials):** `phase2_tutorial_*`, `phase2_ready_*`, `phase2_before_trials_*`—see csv_documentation.md.
 
-**Task:** All trials in fixed order from `phase2_trial_order.csv` (task root; one row per trial). Per trial: Fixation 500 ms → Context 1 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Context 2 → Shape 1 s → Blank → Red dot 2 s (say out loud) → Question (click A or B) → ITI 500 ms. Template columns and design notes: TASK_DESCRIPTION.md.
+**Task:** Fixed CSV order (**64** trials in shipped file; **`stderr`** prints `Phase 2: N trials from phase2_trial_order.csv`). Timeline: fixation → contexts/shapes/blanks/red dots → question **Which context fits the object better?** → ITI. Timing constants **`TASK_DESCRIPTION.md`**.
 
-**Breaks:** Every 16 trials; "Take a break!" + progress bar. 
+**Breaks:** After every **16** trials (**16**, **32**, **48**) for the shipped length; breaks scale with **`N`** if you lengthen the CSV.
 
 Experimenter to nudge them if they are not speaking out loud/ not doing their best. 
 
@@ -163,5 +163,5 @@ Experimenter to nudge them if they are not speaking out loud/ not doing their be
 
 ## Notes
 
-- **Phase 2:** Enforce saying out loud. If quiet: "What could this shape be? Say it out loud."
-- **Troubleshooting:** See TASK_DESCRIPTION.md (OOM, windowed mode, Mac TTL).
+If a participant barely speaks **Phase 2** prompts, cue them to label the shape aloud, then respond on screen.
+

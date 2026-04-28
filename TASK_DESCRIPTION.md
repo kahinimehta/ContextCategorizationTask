@@ -1,24 +1,16 @@
 # Context Shape Task — Technical Description
 
-Technical specification: timing, trial selection, randomization, stimulus durations, troubleshooting. **Experimenter script:** `script.md`. **CSV/TTL mapping:** `csv_documentation.md`.
+Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), stimulus paths, **`phase2_trial_order.csv`**, trials→grid mapping, and troubleshooting. Narrative experiment flow (**Welcome**, instruction strings, TTL **names**) lives in **`script.md`**.
 
 ---
 
-## Code Overview
+## Code overview
 
-**Implementation:** PsychoPy (v2025.1.1), Python 3. Main script: `context_shape_task.py`.
+PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Flow:**
-1. **Login** — Participant name (fullscreen, Enter to submit)
-2. **Welcome** — Full line on screen: see script.md (Welcome). Video or fallback follows.
-3. **Tutorial** — Video (`STIMULI/tutorial_video.mp4`) or animated fallback (red square, red circle, green circle; click-to-place demo)
-4. **Phase 1** — Bottom-up shape classification: grid preview (5 s) → fixation (1 s) → 16 shapes one-by-one (click to place, Enter to submit; at least one click required). While placing, a **miniature full grid** (`STIMULI/shapes/ShapeGrid_4x4_bmp.png`) stays in the **bottom-right** for the whole sort.
-5. **Phase 2** — Top-down context: 7 instruction screens (instr5 min 5 s: "Now let's watch a quick demo to help you understand..."); tutorial; "Ask the experimenter now if you have any questions" screen; all trials from `phase2_trial_order.csv` (fixed order; breaks every 16); each trial: context1 → shape → blank → red dot (2 s) → context2 → shape → blank → red dot (2 s) → question (choose A or B)
-6. **Phase 3** — Post-context shape reclassification: phase3_questions first ("Ask the experimenter now"), then instr1–4; before-grid screen; grid preview (5 s) → fixation (1 s) → 2 instruction screens (sort prompt: "Sort by where you'd expect to see the shapes") → same click-to-place task as Phase 1 including **miniature grid** in the bottom-right; 16 shapes in different random order
-7. **Debrief** — 3 Yes/No questions (same grouping strategy?; images influenced grouping?; interpreted shapes differently?)
-8. **End** — Thank-you screen (2 s)
+**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (grid/fixation/isolated shapes → click-sort with inset grid **`ShapeGrid_4x4_bmp.png`**) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (re-sort → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
 
-**Output:** CSVs/PNGs in `../LOG_FILES/` (phase1, phase2, phase3, debrief, summary, ttl_log, placement images). No files if participant name contains "test". Example filenames in repo: README → Example output.
+**Writes:** **`../LOG_FILES/`** — skipped entirely if **`test`** occurs in participant name (**`ttl_log_*`** likewise removed).
 
 ---
 
@@ -27,30 +19,27 @@ Technical specification: timing, trial selection, randomization, stimulus durati
 ### Stimulus Paths
 
 - **Shapes:** `STIMULI/shapes/*.bmp` — 16 task shapes are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major)
-- **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`)
-- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` for Phase 1 and Phase 3 preview and inset
-- **Phase 2 trial template:** See **Phase 2 trial template** subsection below.
+- **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` for Phase 1 and Phase 3 preview and inset (rebuild with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order)
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
 - **Location:** Task root (next to `context_shape_task.py`).
-- **Size:** Header row plus **N** trial rows (row order = run order for every participant).
-- **Columns:** `trial_number`, `shape`, `shape_path`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`; design labels `primary_context` & `secondary_context` (or legacy `strong_context` / `neutral_context`).
+- **Size:** Header row plus **N** trial rows (row order = run order for every participant). The shipped template defines **64** trials; replacing the file updates N automatically (`stderr` prints the loaded count at run time).
+- **Columns** (exact header order in the repo template): `trial_number`, `shape`, `shape_path`, `primary_context`, `secondary_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. **`primary_context` / `secondary_context`** design labels may also appear under legacy names `strong_context` / `neutral_context`.
 - **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`. The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`.
-- **What the code reads:** `shape_path`, `context1_image`, `context2_image`, `context1` and `context2` (category labels for A/B), `variant`, and optional primary/secondary context labels for logging.
-- **Output alignment:** Each row of `phase2_{participant}_{datetime}.csv` matches the same-index row in this file (stimulus columns + variant); `trial` is 1…N in presentation order.
-
-### Phase 2 Trial Variants
-
-The `variant` column is a **pass-through** design label in the current template (e.g. `primary_first_img0`, `secondary_first_img1`); the script does not change trial logic based on it—only **which image** is in `context1_image` / `context2_image` and **which** labels are in `context1` / `context2` matter for presentation.
+- **What the code reads:** stimulus paths and `context1`/`context2` (A/B); `variant` plus primary/secondary labels are **logged only**. Presentation follows **`context*_image`** paths and button labels—not `variant`-driven branching.
+- **Output alignment:** `phase2_*.csv` rows match template rows in order (trial 1…N).
 
 ### TTL
 
-Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port (Mac: log only). See `csv_documentation.md` for full mapping.
+Events are logged incrementally via Cedrus/pyxid or parallel port (macOS logs only unless hardware connects). Timing semantics (**onset** before first **`flip()`**, **offset** after the wait): see **`csv_documentation.md`** (full trigger table).
 
 ---
 
 ## Timing (Stimulus Durations)
+
+**Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_REDDOT_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`). The tables below mirror those values.
 
 ### Tutorial (fallback)
 
@@ -68,96 +57,73 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 
 | Event | Duration |
 |-------|----------|
-| Grid (`ShapeGrid_4x4_bmp.png`) | 5 s |
-| Fixation (cross) | 1 s |
-| Shape display (before clickable) | 1 s |
+| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` (5 s) |
+| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` (1 s) |
+| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
 
 ### Phase 2 Tutorial
 
 | Event | Duration |
 |-------|----------|
-| Fixation | 0.5 s |
-| Context 1 (practice1) | 1 s |
-| Shape (blue circle) | 1 s |
-| Blank | 1 s |
-| Red dot + label (PLANET) | 2 s |
-| Context 2 (practice2) | 1 s |
-| Shape 2 | 1 s |
-| Blank 2 | 1 s |
-| Red dot 2 (BALL) | 2 s |
-| Question (CIRCUS | SPACE) | 1.5 s |
-| Demo select ("You might select CIRCUS") | 1 s |
-| Post-blank | 3 s |
+| Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` |
+| Context 1 (**`practice1.png`**, SPACE) | `PHASE2_SEGMENT_SEC` |
+| Shape (blue circle) | `PHASE2_SEGMENT_SEC` |
+| Blank | `PHASE2_SEGMENT_SEC` |
+| Red dot + label (PLANET) | `PHASE2_REDDOT_DURATION_SEC` |
+| Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_SEGMENT_SEC` |
+| Shape 2 | `PHASE2_SEGMENT_SEC` |
+| Blank 2 | `PHASE2_SEGMENT_SEC` |
+| Red dot 2 + label (BALL) | `PHASE2_REDDOT_DURATION_SEC` |
+| Question (SPACE \| CIRCUS static) | 1.5 s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`) |
+| Highlight + "You might select CIRCUS" | 1 s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
+| Post-blank | 3 s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
 
 ### Phase 2 Trials (per trial)
 
 | Event | Duration |
 |-------|----------|
-| Fixation | 0.5 s |
-| Context 1 | 1 s |
-| Shape | 1 s |
-| Blank 1 | 1 s |
-| Red dot | 2 s |
-| Context 2 | 1 s |
-| Shape 2 | 1 s |
-| Blank 2 | 1 s |
-| Red dot 2 | 2 s |
-| Question (click A or B) | Participant-paced |
-| ITI (blank) | 0.5 s |
+| Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` (0.5 s) |
+| Context 1 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Shape | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Blank 1 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Red dot | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Context 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Shape 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Blank 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Red dot 2 | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Question (**Which context fits the object better?**; click A or B) | Participant-paced |
+| ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
 
 ### Phase 3
 
 | Event | Duration |
 |-------|----------|
-| Grid (`ShapeGrid_4x4_bmp.png`) | 5 s |
-| Fixation (cross) | 1 s |
-| Shape display (before clickable) | 1 s |
+| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` |
+| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` |
+| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire phase |
 
 ### Other
 
 | Event | Duration |
 |-------|----------|
-| Thank-you screen | 2 s |
+| Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
-| Instruction screens | Participant-paced (Enter to continue); phase2_instr5 min 5 s |
+| Instruction screens | Participant-paced (Enter to continue); **phase2_instr5** minimum `PHASE2_INSTR5_MIN_SEC` |
 | Phase 2 before trials | "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." |
 
 ---
 
-## Trial Selection and Mapping
+## Trial order, mapping, randomization
 
-### Phase 1
+| Phase | Selection | Ground truth / mapping |
+|-------|-----------|------------------------|
+| **1** | `random.shuffle(get_shape_paths())`; if first item is alphabetically first task shape (`ball_slope.bmp` default), rotate it to end | Clicks → `(x,y)`; row/col from index in sorted 4×4 list ( **`ShapeGrid_4x4_bmp.png`** order via `scripts/generate_shape_grid.py`). |
+| **2** | Fixed: **`phase2_trial_order.csv`** row order (**N** rows; **64** shipped) | Paths from **`context*_image`**; labels **`context1`/`context2`** → A/B buttons. **`variant`**: logged only. |
+| **3** | `random.shuffle` until sequence ≠ Phase 1 order | Same (x,y)→cell mapping as Phase 1; Euclidean distances in **`summary`** CSV |
 
-- **Source:** First 16 `*.bmp` in `STIMULI/shapes/` by sorted filename (excludes `ShapeGrid*`).
-- **Selection:** `get_shape_paths()`; then `random.shuffle(shapes)`.
-- **Constraint:** If the first shuffled file is the alphabetically first task shape (`ball_slope.bmp` in the default set), move it to the end of the list.
-- **Mapping:** Clicks to `(x, y)`; ground-truth row/col is the shape’s index in the sorted 4×4 list (0–3 for row and column), not the filename.
-
-### Phase 2
-
-- **Source:** `phase2_trial_order.csv` — fixed order for all participants (N rows in the template).
-- **Selection:** No randomization. Order is CSV row order after the header.
-- **Mapping:** Each row supplies `shape_path`, `context1_image`, `context2_image`, `context1` (left label / cat_a), `context2` (right label / cat_b), `variant`. Variants control which images appear and how left/right map to categories.
-
-### Phase 3
-
-- **Source:** Same 16 shapes as Phase 1.
-- **Selection:** `random.shuffle(shapes3)` with constraint: `shapes3 != shapes` (different order than Phase 1); reshuffle until different.
-- **Mapping:** Same as Phase 1. Euclidean distances between final positions used for similarity analysis.
-
----
-
-## Randomization Summary
-
-| Phase | What | How |
-|-------|------|-----|
-| Phase 1 | Shape order | `random.shuffle(shapes)`; default first sorted `.bmp` not first |
-| Phase 2 | Trial order | None — fixed from CSV |
-| Phase 3 | Shape order | `random.shuffle(shapes3)`; must differ from Phase 1 |
-| Tutorial fallback | N/A | Fixed sequence |
-| Phase 2 tutorial | N/A | Fixed (`sky1`, `petshop1`, circle, PLANET/BALL, SKY/PETSHOP demo) |
+Phase 2 **tutorial** (not from CSV): `practice1.png`/`practice2.png`, circle demo, scripted SPACE \| CIRCUS.
 
 ---
 
@@ -167,6 +133,5 @@ Every screen change and response logged. Backend: Cedrus pyxid2 or parallel port
 - **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
-- **Mac `ObjCInstance` crash:** If the task crashes during timed displays with `ObjCInstance has no attribute type`, the script uses `time.sleep` instead of `core.wait` on macOS to avoid this pyglet Cocoa bug.
+- **Mac `ObjCInstance` / NSTrackingArea crash:** If `visual.Window(...)` crashes at startup (`NSTrackingArea` has no attribute `type`), PsychoPy’s initial **`getActualFrameRate()`** path calls `flip()` and triggers a known pyglet/Cocoa interaction. The script passes **`checkTiming=False`** by default on macOS so startup frame calibration is skipped. Enable calibration with **`PSYCHOPY_CHECK_TIMING=1`** only if needed and stable. Separately during trials the script uses `time.sleep` instead of `core.wait` on macOS where the same ObjC bug can occur.
 - **Mac Enter/keys not working:** On macOS, the script disables PsychoPy's hardware keyboard backend (known to freeze or ignore keys) and uses `event.getKeys` only. If keys still don't register, ensure the PsychoPy window has focus.
-- **csvs** are written out incrementally

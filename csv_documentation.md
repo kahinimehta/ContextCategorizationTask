@@ -1,6 +1,6 @@
 # CSV and TTL Documentation
 
-Reference for all CSV outputs and TTL triggers. **Example files (repo root):** `README.md` (Data output → Example output). **Experimenter script:** `script.md`. **Technical spec:** `TASK_DESCRIPTION.md`.
+**`ttl_log_*`:** column definitions + exhaustive **`event_label` / trial_info** lookup table (**below**). **`phase*_*.csv`**, **`debrief`** & **`summary`:** column schemas (**below**). Run narrative & screen copy: **`script.md`**. **`phase2_trial_order.csv`:** **`TASK_DESCRIPTION.md`**. Repo / Quick Start / example filenames: **`README.md`**.
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -14,6 +14,8 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 | `trial_info` | String | Optional trial metadata (e.g., trial=3, shape=Shape_0_1.png) |
 
 **Event types**: See TTL Trigger Mapping below.
+
+For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 question trials, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end).
 
 ---
 
@@ -111,21 +113,21 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_shape_offset` | 2 | Tutorial shape ended |
 | `phase2_tutorial_blank_onset` | 2 | Tutorial blank onset |
 | `phase2_tutorial_blank_offset` | 2 | Tutorial blank ended |
-| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + PLANET onset |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + on-screen PLANET cue (`PHASE2_REDDOT_DURATION_SEC`) |
 | `phase2_tutorial_reddot_offset` | 2 | Tutorial red dot ended |
 | `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset |
 | `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
 | `phase2_tutorial_shape2_onset` | 2 | Tutorial shape 2 onset |
 | `phase2_tutorial_shape2_offset` | 2 | Tutorial shape 2 ended |
-| `phase2_tutorial_reddot2_onset` | 2 | Tutorial red dot + BALL |
-| `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
 | `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
 | `phase2_tutorial_blank2_offset` | 2 | Tutorial blank 2 ended |
-| `phase2_tutorial_question_onset` | 2 | Tutorial question (SKY \| PETSHOP) |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select PETSHOP" demo appeared |
+| `phase2_tutorial_reddot2_onset` | 2 | Tutorial red dot + on-screen BALL cue |
+| `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
+| `phase2_tutorial_question_onset` | 2 | Tutorial question (SPACE \| CIRCUS) |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select CIRCUS" demo appeared |
 | `phase2_tutorial_demo_select_offset` | 2 | Tutorial demo select ended |
 | `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after demo selection) |
-| `phase2_tutorial_response` | 2 | Demo choice (e.g. trial_info: PETSHOP) |
+| `phase2_tutorial_response` | 2 | Scripted demo choice (e.g. trial_info: CIRCUS) |
 | `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
 | `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
 | `phase2_ready_onset` | 2 | "Ready to try this with some actual shapes and images?" screen appeared |
@@ -152,7 +154,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_blank2_offset` | 2 | Blank 2 ended |
 | `phase2_reddot2_onset` | 2 | Red dot 2 + "say out loud" (trial_info: trial=N, shape=*.bmp) |
 | `phase2_reddot2_offset` | 2 | Red dot 2 offset (trial_info: trial=N) |
-| `phase2_question_onset` | 2 | "Which context fits better?" onset (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
+| `phase2_question_onset` | 2 | Question **"Which context fits the object better?"** (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
 | `phase2_response` | 2 | Participant clicked category A or B (trial_info: trial=N, response=X) |
 | `phase2_question_offset` | 2 | Question screen ended (trial_info: trial=N) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
@@ -226,11 +228,9 @@ Per-shape data from the bottom-up shape classification phase.
 
 ## Phase 2 CSV (phase2_{participant}_{datetime}.csv)
 
-Per-trial data from the top-down context incorporation phase. Trial count matches **`phase2_trial_order.csv`** (e.g. 80 rows). Trial order and stimuli match the template row-for-row (`trial` 1…N = template row order).
+Per-trial (**`trial`** aligns with **`phase2_trial_order.csv`**). Template (**`phase2_trial_order.csv`**, **`PHASE2_CSV_REQUIRED`**) and **`stderr`** row-count banner: **`TASK_DESCRIPTION.md`** only.
 
-**Template (`phase2_trial_order.csv`):** Header plus N trial rows. Columns include `trial_number`, `shape`, `shape_path`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`, and design labels `primary_context` / `secondary_context` (or legacy `strong_context` / `neutral_context`). The script loads paths, `context1`/`context2` (A/B), `variant`, and optional primary/secondary labels. Paths may be absolute or relative to `STIMULI/`; `Shapes`/`Contexts` in paths are normalized to `shapes`/`contexts`. `variant` is a pass-through string (e.g. `primary_first_img0`). **TASK_DESCRIPTION.md** has the full spec.
-
-**Note:** TTL columns `fixation_onset_ttl` through `question_onset_ttl` are reserved but currently written empty; use `ttl_log` for full event timestamps. Only `response_ttl` is populated.
+Placeholder epoch columns (`fixation_onset_ttl` … `question_onset_ttl`): schema only; timings in **`ttl_log_*`**. **`response_ttl`** populated.
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -239,17 +239,10 @@ Per-trial data from the top-down context incorporation phase. Trial count matche
 | `context_1_path` | String | Full path to first context image |
 | `context_2_path` | String | Full path to second context image |
 | `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
-| `response` | String | Button clicked: category A or B (e.g., BARK, CLOUD) |
+| `response` | String | Selected category (**uppercased** button label) |
 | `rt` | Float | Reaction time from question onset to button click (seconds) |
-| `fixation_onset_ttl` | Float | TTL at fixation onset (see note above) |
-| `context1_onset_ttl` | Float | TTL at context 1 onset |
-| `shape_onset_ttl` | Float | TTL at shape onset |
-| `reddot_onset_ttl` | Float | TTL at red dot onset |
-| `context2_onset_ttl` | Float | TTL at context 2 onset |
-| `shape2_onset_ttl` | Float | TTL at shape 2 onset |
-| `reddot2_onset_ttl` | Float | TTL at red dot 2 onset |
-| `question_onset_ttl` | Float | TTL at question screen onset |
-| `response_ttl` | Float | TTL at response button click (populated) |
+| `fixation_onset_ttl` … `question_onset_ttl` | Float | Unused placeholders (epoch markers live in **`ttl_log_*`** only) |
+| `response_ttl` | Float | Participant choice (**populated**) |
 
 ---
 
@@ -308,4 +301,4 @@ Overall experiment summary.
 - **Filenames**: `{basename}_{participant}_{YYYYMMDD_HHMMSS}.csv` or `.png`
 - **Test participants**: Name contains "test" → no files written (TTL log deleted)
 
-**Examples in the repository:** Filenames and file list: **README.md** (Data output → Example output).
+Example filenames: **README.md** → Data output.

@@ -21,26 +21,26 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Core Task
 
 - **`context_shape_task.py`** — Main PsychoPy script for the entire experiment
-- **`phase2_trial_order.csv`** — Phase 2 trial template (one row per trial). Columns include `shape_path`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`, and design labels `primary_context` / `secondary_context` (or legacy `strong_context` / `neutral_context`). Paths may be absolute or relative to `STIMULI/`; `Shapes`/`Contexts` folder names in the CSV are normalized to `shapes`/`contexts`. Logged `phase2_*.csv` matches row order. Details: **TASK_DESCRIPTION.md**.
+- **`phase2_trial_order.csv`** — Defines Phase 2 (**shipped:** **64** rows; **`stderr`** logs **`N`** on load). Columns, **`PHASE2_CSV_REQUIRED`**, path quirks: **`TASK_DESCRIPTION.md`**.
 
 ### Task design (summary)
 
 - **Phase 1:** 16 `.bmp` shapes (from `STIMULI/shapes/`), random order (alphabetically first task shape not first), click-to-place after grid preview.
-- **Phase 2:** Context trials in **fixed** order from `phase2_trial_order.csv` (no randomization; breaks every 16 trials).
+- **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials).
 - **Phase 3:** Same 16 shapes as Phase 1, new random order (must differ from Phase 1).
 
 ### Documentation
 
-| File | Purpose |
-|------|---------|
-| **`script.md`** | Experimenter script: on-screen text, phase-by-phase flow, TTL summary, ELI5 tips |
-| **`TASK_DESCRIPTION.md`** | Technical spec: timing, trial selection, Phase 2 template CSV, troubleshooting |
-| **`csv_documentation.md`** | CSV columns and complete TTL trigger mapping |
+| File | Contents |
+|------|----------|
+| **`script.md`** | Verbatim on-screen wording, phase sequence, TTL **aliases** |
+| **`TASK_DESCRIPTION.md`** | Timing constants (`*_SEC`), stimuli paths, **`phase2_trial_order.csv`** spec, troubleshooting |
+| **`csv_documentation.md`** | TTL trigger table (`ttl_log_*`) plus phase/debrief **`*.csv`** column definitions |
 
 ### Stimuli
 
-- **`STIMULI/shapes/`** — Task shapes as `.bmp` files (16 used: first 16 by sorted name; extra files ignored) plus `ShapeGrid_4x4_bmp.png` (4×4 composite for grid preview and inset). Phase 1 and Phase 3 show that grid 5 s, then shapes one-by-one in random order.
-- **`STIMULI/contexts/`** — Context photos: for each category, `{category}1.png` and `{category}.png` (two variants). The Phase 2 tutorial uses `sky1.png` and `petshop1.png` as the two practice images (see `get_practice_context_paths` in the script).
+- **`STIMULI/shapes/`** — 16 task `.bmp` files plus `ShapeGrid_4x4_bmp.png` composite (ordering: **`TASK_DESCRIPTION.md`**). Rebuild composite: **`python scripts/generate_shape_grid.py`** (needs **Pillow**).
+- **`STIMULI/contexts/`** — Category pairs `{category}1.png` / `{category}.png`. Tutorial practice assets: **`practice1.png`**, **`practice2.png`** (**space** / **circus**) in **`STIMULI/`** or **`contexts/`**.
 
 
 ## Data Output
@@ -51,7 +51,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 |------|-------------|
 | `phase1_{participant}_{datetime}.csv` | Per-shape: final (x,y), RT (to last click), click_ttl (last click), all_click_ttl, submit_ttl |
 | `phase1_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
-| `phase2_{participant}_{datetime}.csv` | One row per Phase 2 trial; order matches `phase2_trial_order.csv`. Per-trial: shape, contexts, variant, response, RT (TTL columns: csv_documentation.md) |
+| `phase2_{participant}_{datetime}.csv` | One row per Phase 2 trial; order matches template. Columns: **`csv_documentation.md`** |
 | `phase3_{participant}_{datetime}.csv` | Same structure as phase1 |
 | `phase3_placements_{participant}_{datetime}.png` | Image of shape placements (saved incrementally after each shape) |
 | `debrief_{participant}_{datetime}.csv` | Post–Phase 3: 3 Yes/No questions, answers, RT, onset/response TTL |
@@ -72,22 +72,18 @@ Example files in the task root show a full non-test run (participant `kini`, tim
 | `debrief_kini_20260324_140014.csv`, `summary_kini_20260324_140014.csv`, `ttl_log_kini_20260324_140014.csv` |
 | `phase1_placements_kini_20260324_140014.png`, `phase3_placements_kini_20260324_140014.png` |
 
-Live runs write the same filenames under `../LOG_FILES/`. **Columns and TTL:** `csv_documentation.md` (trigger codes, trial_info, which CSV fields are populated).
+Live runs write the same filenames under `../LOG_FILES/`.
 
 ## Quick Start
 
-1. Ensure PsychoPy and dependencies are installed (Anaconda environment)
-2. Run: `python context_shape_task.py`
-3. Enter participant name on fullscreen (like Social Recognition Task); press Enter when done
-4. **ESC** exits during interactive screens (instructions, name entry, shape placement, etc.). Not during timed displays (grid, fixation). Like Social Recognition Task, no global escape—reduces accidental quits.
-5. Optional: Add `STIMULI/tutorial_video.mp4` for video tutorial; otherwise a timed fallback plays
-6. For practice runs: use a name containing "test" to skip all file saving
-
-**Experimenters:** See `script.md`. **Technical specs:** See `TASK_DESCRIPTION.md`.
+1. PsychoPy (Anaconda) environment
+2. `python context_shape_task.py` from the task folder
+3. Participant name → Enter (**`test`** in name → no CSV/PNG saves; TTL log removed)
+4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback tutorial
 
 ## Troubleshooting
 
-See **`TASK_DESCRIPTION.md`** for the full troubleshooting section (ESC behavior, OOM, dummy window, Mac TTL/ObjC/Enter issues).
+**`TASK_DESCRIPTION.md`** only (ESC timing, **`PSYCHOPY_WINDOWED`**, **`PSYCHOPY_DUMMY_WINDOW`**, **`PSYCHOPY_CHECK_TIMING`**, macOS quirks).
 
 ## Paths
 

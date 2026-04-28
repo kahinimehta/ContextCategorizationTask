@@ -3,7 +3,8 @@
 ContextShape Task — PsychoPy Implementation
 Environment: Python (Anaconda), PsychoPy v2025.1.1
 Fullscreen with DPI scaling. ESC during interactive screens only (not during grid, fixation, stimulus).
-TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged. See csv_documentation.md.
+TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
+Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_REDDOT_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md § Timing.
 """
 
 import os
@@ -26,8 +27,34 @@ PHASE1_SHAPE_COUNT = 16
 PHASE1_FIRST_BMP = "ball_slope.bmp"  # first in sorted 16; avoid always leading with this (see main shuffle)
 LOG_DIR = SCRIPT_DIR.parent / "LOG_FILES"
 PHASE2_TRIAL_ORDER_CSV = SCRIPT_DIR / "phase2_trial_order.csv"
-# Phase 2: red-dot screens (verbal response period) per trial and in tutorial
+# Required columns in phase2_trial_order.csv (order in file may vary).
+PHASE2_CSV_REQUIRED = (
+    "shape_path",
+    "context1_image",
+    "context2_image",
+    "context1",
+    "context2",
+    "variant",
+)
+# --- Fixed stimulus durations (seconds). TTL aligns with screen boundaries tied to `_log_ttl_event`; see TASK_DESCRIPTION.md § Timing. ---
 PHASE2_REDDOT_DURATION_SEC = 2.0
+PHASE_GRID_PREVIEW_SEC = 5.0
+PHASE_FIXATION_CROSS_SEC = 1.0
+SHAPE_STATIC_PREVIEW_SEC = 1.0  # Phase 1/3: isolate shape before placement
+PHASE2_SEGMENT_SEC = 1.0       # Phase 2 trial: context, shape, blank, etc. (each equal duration before red dots)
+PHASE2_FIXATION_PRE_TRIAL_SEC = 0.5
+PHASE2_TRIAL_ITI_SEC = 0.5
+TUTORIAL_FB_OVERVIEW_SEC = 2.5
+TUTORIAL_FB_CLICK_CENTER_SEC = 1.0
+TUTORIAL_FB_CLICK_TARGET_SEC = 2.0
+TUTORIAL_FB_STEP5A_SEC = 3.0
+TUTORIAL_FB_STEP5B_SEC = 4.0
+TUTORIAL_FB_STEP6_SEC = 7.0
+PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC = 1.5
+PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC = 1.0
+PHASE2_TUTORIAL_POST_BLANK_SEC = 3.0
+THANKS_SCREEN_SEC = 2.0
+PHASE2_INSTR5_MIN_SEC = 5.0  # min display before Enter on "watch a quick demo" screen
 
 # Ensure LOG_FILES exists
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -43,6 +70,19 @@ try:
 except ImportError:
     hw_keyboard = None
     _has_keyboard = False
+
+
+def _psycho_win_check_timing():
+    """Return whether Window.__init__ should run initial frame-interval calibration (`checkTiming`).
+    On macOS, PsychoPy's calibration calls flip() → pyglet can crash with NSTrackingArea /
+    ObjCInstance has no attribute 'type' during event dispatch—default off unless overridden.
+    Set PSYCHOPY_CHECK_TIMING=1 to enable, 0 to force disable on any OS."""
+    v = (os.environ.get('PSYCHOPY_CHECK_TIMING') or '').strip().lower()
+    if v in ('1', 'true', 'yes'):
+        return True
+    if v in ('0', 'false', 'no'):
+        return False
+    return sys.platform != 'darwin'
 
 
 def _wait(secs):
@@ -155,7 +195,7 @@ def get_shape_paths():
 
 
 def get_phase2_shapes():
-    """12 shapes: exclude center 2×2 of the 4×4 grid (flat indices 5, 6, 9, 10)."""
+    """Unused: Phase 2 stimuli come only from ``shape_path`` rows in ``phase2_trial_order.csv``."""
     all_shapes = get_shape_paths()
     exclude_idx = {5, 6, 9, 10}
     return [p for i, p in enumerate(all_shapes) if i not in exclude_idx]
@@ -205,11 +245,21 @@ def get_shape_grid_path():
 
 
 def get_practice_context_paths():
-    """Tutorial: two distinct contexts (paths must exist in contexts/)."""
-    return [
-        str(CONTEXT_DIR / "sky1.png"),
-        str(CONTEXT_DIR / "petshop1.png"),
-    ]
+    """Tutorial: SPACE (practice1) + CIRCUS (practice2). Files `practice1.png`, `practice2.png`
+    in `STIMULI/` or `STIMULI/contexts/` (first match wins)."""
+    out = []
+    for fn in ("practice1.png", "practice2.png"):
+        candidates = (STIMULI_DIR / fn, CONTEXT_DIR / fn)
+        for p in candidates:
+            if p.is_file():
+                out.append(str(p))
+                break
+        else:
+            tried = " or ".join(str(p) for p in candidates)
+            raise FileNotFoundError(
+                f"Phase 2 tutorial needs {fn} (space/circus practice). Tried: {tried}"
+            )
+    return out
 
 
 # =========================
@@ -409,7 +459,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
         _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1} shape={shape_name}")
         img.draw()
         win.flip()
-        _wait(1.0)
+        _wait(SHAPE_STATIC_PREVIEW_SEC)
         _log_ttl_event(f"{phase_name}_stimulus_offset", trial_info=f"trial={idx+1} shape={shape_name}")
         del img  # free texture before creating more stims
 
@@ -535,14 +585,14 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
     shape_stim.setPos(start_pos)
     draw_all()
     win.flip()
-    _wait(1.0)
+    _wait(TUTORIAL_FB_CLICK_CENTER_SEC)
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_center_offset")
         _log_ttl_event(f"{ttl_label}_target_onset")
     shape_stim.setPos(end_pos)
     draw_all()
     win.flip()
-    _wait(2.0)
+    _wait(TUTORIAL_FB_CLICK_TARGET_SEC)
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_target_offset")
 
@@ -592,7 +642,7 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_green.draw()
         sub1.draw()
         win.flip()
-        _wait(2.5)
+        _wait(TUTORIAL_FB_OVERVIEW_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
@@ -633,7 +683,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
-        _wait(3.0)
+        _wait(TUTORIAL_FB_STEP5A_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5a")
 
         # Step 5b: Distance denotes group
@@ -645,7 +695,7 @@ def run_tutorial_phase1(win, mouse, participant):
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
-        _wait(4.0)
+        _wait(TUTORIAL_FB_STEP5B_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
 
         # Step 6: Press Enter subtitle
@@ -660,7 +710,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sub_5c.draw()
         sub_enter.draw()
         win.flip()
-        _wait(7.0)
+        _wait(TUTORIAL_FB_STEP6_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
@@ -714,33 +764,43 @@ def _resolve_stimulus_path(path_str):
 def load_phase2_trials():
     """
     Load Phase 2 trial order from phase2_trial_order.csv. Same fixed order for all participants.
-    Required columns: shape_path, context1_image, context2_image, context1, context2, variant.
-    Design columns (optional): primary_context, secondary_context or strong_context, neutral_context.
-    Paths: absolute or relative to STIMULI/; Shapes/Contexts spelling is fixed automatically.
+    Required columns: PHASE2_CSV_REQUIRED. Optional: trial_number, shape, primary_context,
+    secondary_context (or legacy strong_context / neutral_context for design labels).
+    Paths: absolute or relative to STIMULI/; Shapes/Contexts spelling is normalized automatically.
+    Run length equals the number of non-empty trial rows (shipped repo template: 64 trials).
     """
     if not PHASE2_TRIAL_ORDER_CSV.exists():
         raise FileNotFoundError(f"Phase 2 trial order file not found: {PHASE2_TRIAL_ORDER_CSV}")
     trials = []
-    with open(PHASE2_TRIAL_ORDER_CSV, 'r', newline='', encoding='utf-8') as f:
+    # utf-8-sig strips Excel BOM if present
+    with open(PHASE2_TRIAL_ORDER_CSV, "r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
+        cols = reader.fieldnames or []
+        missing = [c for c in PHASE2_CSV_REQUIRED if c not in cols]
+        if missing:
+            raise ValueError(
+                f"{PHASE2_TRIAL_ORDER_CSV.name} missing required column(s): {missing}. Found: {cols}"
+            )
         for row in reader:
-            if not row.get('shape_path', '').strip():
+            if not row.get("shape_path", "").strip():
                 continue
-            shape_path = _resolve_stimulus_path(row['shape_path'])
-            ctx1_path = _resolve_stimulus_path(row['context1_image'])
-            ctx2_path = _resolve_stimulus_path(row['context2_image'])
-            primary = (row.get('primary_context') or row.get('strong_context') or '').strip()
-            secondary = (row.get('secondary_context') or row.get('neutral_context') or '').strip()
-            trials.append({
-                'shape_path': shape_path,
-                'context_1': ctx1_path,
-                'context_2': ctx2_path,
-                'cat_a': row['context1'].strip(),
-                'cat_b': row['context2'].strip(),
-                'variant': row['variant'].strip(),
-                'primary_context': primary,
-                'secondary_context': secondary,
-            })
+            shape_path = _resolve_stimulus_path(row["shape_path"])
+            ctx1_path = _resolve_stimulus_path(row["context1_image"])
+            ctx2_path = _resolve_stimulus_path(row["context2_image"])
+            primary = (row.get("primary_context") or row.get("strong_context") or "").strip()
+            secondary = (row.get("secondary_context") or row.get("neutral_context") or "").strip()
+            trials.append(
+                {
+                    "shape_path": shape_path,
+                    "context_1": ctx1_path,
+                    "context_2": ctx2_path,
+                    "cat_a": row["context1"].strip(),
+                    "cat_b": row["context2"].strip(),
+                    "variant": (row.get("variant") or "").strip(),
+                    "primary_context": primary,
+                    "secondary_context": secondary,
+                }
+            )
     if not trials:
         raise ValueError(f"No trial rows in {PHASE2_TRIAL_ORDER_CSV}")
     return trials
@@ -749,7 +809,7 @@ def load_phase2_trials():
 def run_phase2_tutorial(win, mouse, participant):
     """Phase 2 tutorial: intro, then two practice context images (see get_practice_context_paths), circle, demo question."""
     # Single intro screen (max 2 sentences) — one Enter before demo
-    intro = visual.TextStim(win, text="You'll see a sky picture, then a circle, then a pet shop picture. Say what the shape could be in each, then watch as we pick which fits better.",
+    intro = visual.TextStim(win, text="You'll see a space picture, then a circle, then a circus picture. Say what the shape could be in each, then watch as we pick which fits better.",
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, intro, "phase2_tutorial_intro"):
         return False
@@ -766,31 +826,31 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_fixation_onset")
     fix.draw()
     win.flip()
-    _wait(0.5)
+    _wait(PHASE2_FIXATION_PRE_TRIAL_SEC)
     _log_ttl_event("phase2_tutorial_fixation_offset")
 
     # Practice context 1 - 1000ms
     _log_ttl_event("phase2_tutorial_context1_onset")
     img1.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_context1_offset")
 
     # Big blue circle - 1000ms
     _log_ttl_event("phase2_tutorial_shape_onset")
     circ.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_shape_offset")
 
     # Blank 1000ms
     _log_ttl_event("phase2_tutorial_blank_onset")
     blank.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_blank_offset")
 
-    # Red dot + "PLANET" 3000ms
+    # Red dot + "PLANET" (PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot_onset")
     dot.draw()
     txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.2))
@@ -803,24 +863,24 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_context2_onset")
     img2.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_context2_offset")
 
     # Same circle - 1000ms
     _log_ttl_event("phase2_tutorial_shape2_onset")
     circ.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_shape2_offset")
 
     # Blank 1000ms
     _log_ttl_event("phase2_tutorial_blank2_onset")
     blank.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE2_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_blank2_offset")
 
-    # Red dot + "BALL" 3000ms
+    # Red dot + "BALL" (PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot2_onset")
     dot.draw()
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
@@ -829,12 +889,12 @@ def run_phase2_tutorial(win, mouse, participant):
     _wait(PHASE2_REDDOT_DURATION_SEC)
     _log_ttl_event("phase2_tutorial_reddot2_offset")
 
-    # Question: SKY | PETSHOP (left = first context, right = second) — demo only
+    # Question: SPACE | CIRCUS (left = first practice image, right = second) — demo only
     q = visual.TextStim(win, text="Which context fits the object better?", color='black', height=0.04, pos=(0, 0.1))
     btn_a = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(-0.2, -0.2), units='height')
     btn_b = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
-    txt_a = visual.TextStim(win, text="SKY", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
-    txt_b = visual.TextStim(win, text="PETSHOP", color='black', height=0.03, pos=(0.2, -0.2), units='height')
+    txt_a = visual.TextStim(win, text="SPACE", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
+    txt_b = visual.TextStim(win, text="CIRCUS", color='black', height=0.03, pos=(0.2, -0.2), units='height')
     _log_ttl_event("phase2_tutorial_question_onset")
     q.draw()
     btn_a.draw()
@@ -842,11 +902,11 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_a.draw()
     txt_b.draw()
     win.flip()
-    _wait(1.5)
+    _wait(PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC)
     # Highlight right button (second context) + subtitle, matching old “second image” demo
     _log_ttl_event("phase2_tutorial_demo_select_onset")
     btn_b_pressed = visual.Rect(win, width=0.2, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
-    sub_select = visual.TextStim(win, text="You might select PETSHOP", color='black', height=0.028, pos=(0, -0.38), units='height')
+    sub_select = visual.TextStim(win, text="You might select CIRCUS", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
     btn_a.draw()
     btn_b_pressed.draw()
@@ -854,14 +914,14 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_b.draw()
     sub_select.draw()
     win.flip()
-    _log_ttl_event("phase2_tutorial_response", trial_info="PETSHOP")
-    _wait(1.0)
+    _log_ttl_event("phase2_tutorial_response", trial_info="CIRCUS")
+    _wait(PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC)
     _log_ttl_event("phase2_tutorial_demo_select_offset")
     _log_ttl_event("phase2_tutorial_question_offset")
     _log_ttl_event("phase2_tutorial_post_blank_onset")
     blank.draw()
     win.flip()
-    _wait(3.0)
+    _wait(PHASE2_TUTORIAL_POST_BLANK_SEC)
     _log_ttl_event("phase2_tutorial_post_blank_offset")
 
     # Ready screen
@@ -912,7 +972,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_fixation_onset", trial_info=f"trial={t_idx+1}")
         fix.draw()
         win.flip()
-        _wait(0.5)
+        _wait(PHASE2_FIXATION_PRE_TRIAL_SEC)
         _log_ttl_event("phase2_fixation_offset", trial_info=f"trial={t_idx+1}")
 
         ctx1 = visual.ImageStim(win, image=trial['context_1'], units='height', size=(0.5, 0.5))
@@ -924,19 +984,19 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_context1_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         ctx1.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_context1_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_shape_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         shape_img.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_shape_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_blank1_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_blank1_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
@@ -948,19 +1008,19 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_context2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
         ctx2.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_context2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_shape2_onset", trial_info=f"trial={t_idx+1}")
         shape_img.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_shape2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_blank2_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        _wait(1.0)
+        _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_blank2_offset", trial_info=f"trial={t_idx+1}")
 
         _log_ttl_event("phase2_reddot2_onset", trial_info=f"trial={t_idx+1} shape={Path(trial['shape_path']).name}")
@@ -1036,7 +1096,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _log_ttl_event("phase2_trial_iti_onset", trial_info=f"trial={t_idx+1}")
         blank.draw()
         win.flip()
-        _wait(0.5)
+        _wait(PHASE2_TRIAL_ITI_SEC)
         _log_ttl_event("phase2_trial_iti_offset", trial_info=f"trial={t_idx+1}")
 
         del ctx1, ctx2, shape_img
@@ -1237,10 +1297,13 @@ def main():
 
     # Dummy window (helps stability/OOM on some systems, e.g. Social Recognition Task). Disable: PSYCHOPY_DUMMY_WINDOW=0
     use_dummy = os.environ.get('PSYCHOPY_DUMMY_WINDOW', '1').lower() not in ('0', 'false', 'no')
+    _chk = _psycho_win_check_timing()
     dummy_win = None
     if use_dummy:
         try:
-            dummy_win = visual.Window(size=(100, 100), pos=(0, 0), color='white', allowGUI=False)
+            dummy_win = visual.Window(
+                size=(100, 100), pos=(0, 0), color='white', allowGUI=False, checkTiming=_chk
+            )
         except Exception:
             pass
 
@@ -1253,7 +1316,8 @@ def main():
         fullscr=not use_windowed,
         color='white',
         units='height',
-        allowGUI=False
+        allowGUI=False,
+        checkTiming=_chk,
     )
     mouse = event.Mouse(win=win)
     mouse.setVisible(True)
@@ -1343,7 +1407,7 @@ def main():
     _log_ttl_event("phase1_grid_onset")
     grid_img.draw()
     win.flip()
-    _wait(5.0)
+    _wait(PHASE_GRID_PREVIEW_SEC)
     _log_ttl_event("phase1_grid_offset")
 
     # Fixation 1 sec
@@ -1351,7 +1415,7 @@ def main():
     _log_ttl_event("phase1_fixation_onset")
     fix.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE_FIXATION_CROSS_SEC)
     _log_ttl_event("phase1_fixation_offset")
 
     p1_instr2_screens = [
@@ -1385,7 +1449,7 @@ def main():
         ("When the red dot is on screen, say out loud what the shape could be in that context—e.g., planet or ball. Then click which picture the shape fits better with. We need to hear you say it every time.", "phase2_instr2b", 0),
         ("Do your best since you will be recorded, but don't panic if nothing comes to mind. You will watch a demo before you have to do the task, so don't worry if this makes no sense yet.", "phase2_instr3", 0),
         ("You can also re-use answers, but try to be creative if you can.", "phase2_instr4", 0),
-        ("Now let's watch a quick demo to help you understand how we work on this task.", "phase2_instr5", 5.0),
+        ("Now let's watch a quick demo to help you understand how we work on this task.", "phase2_instr5", PHASE2_INSTR5_MIN_SEC),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1407,6 +1471,10 @@ def main():
         return
 
     trials = load_phase2_trials()
+    print(
+        f"Phase 2: {len(trials)} trials from {PHASE2_TRIAL_ORDER_CSV.name}",
+        file=sys.stderr,
+    )
     run_phase2_trials(win, mouse, trials, participant, timestamp_str=timestamp_str)
     del trials
     _log_ttl_event("phase2_complete")
@@ -1445,7 +1513,7 @@ def main():
     _log_ttl_event("phase3_grid_onset")
     grid_img.draw()
     win.flip()
-    _wait(5.0)
+    _wait(PHASE_GRID_PREVIEW_SEC)
     _log_ttl_event("phase3_grid_offset")
 
     # Fixation 1 sec
@@ -1453,7 +1521,7 @@ def main():
     _log_ttl_event("phase3_fixation_onset")
     fix.draw()
     win.flip()
-    _wait(1.0)
+    _wait(PHASE_FIXATION_CROSS_SEC)
     _log_ttl_event("phase3_fixation_offset")
 
     p3_instr2_screens = [
@@ -1511,7 +1579,7 @@ def main():
     _log_ttl_event("thanks_onset")
     thanks.draw()
     win.flip()
-    _wait(2.0)
+    _wait(THANKS_SCREEN_SEC)
     _log_ttl_event("thanks_offset")
     win.close()
     _close_dummy()
