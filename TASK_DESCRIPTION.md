@@ -8,7 +8,7 @@ Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), s
 
 PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (full-screen grid/fixation → per-trial: isolated shape + **bottom-right miniature** **`ShapeGrid_4x4_bmp.png`** through preview and placement) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (same inset behavior as Phase 1 → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
+**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (**`ShapeGrid_4x4_bmp.png`**: full-screen + bottom-right miniature from preview through fixation, pre-sort instruction, then per-trial isolate + placement) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (same grid/inset pattern as Phase 1 → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
 
 **Writes:** **`../LOG_FILES/`** — skipped entirely if **`test`** occurs in participant name (**`ttl_log_*`** likewise removed).
 
@@ -20,7 +20,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 - **Shapes:** `STIMULI/shapes/*.bmp` — 16 task shapes are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major)
 - **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
-- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — full-screen 5 s preview in Phase 1/3, then a **miniature** copy in the **bottom-right** for every shape trial (**`SHAPE_STATIC_PREVIEW_SEC`** + click-to-place) until that phase ends (rebuild with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order)
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — in Phase 1/3: **same** **`ShapeGrid_4x4_bmp.png`** appears full-screen (**`PHASE_GRID_PREVIEW_SEC`**), miniature in bottom-right (**same position/size as sorting**), fixation cross (**`PHASE_FIXATION_CROSS_SEC`**) plus miniature again, **`phase*_instruction2c`** with miniature again, then per-trial previews and click-to-place (rebuild composite with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order).
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
@@ -57,8 +57,8 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 
 | Event | Duration |
 |-------|----------|
-| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` (5 s) |
-| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` (1 s) |
+| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` (5 s); large centered grid + **miniature** same PNG bottom-right |
+| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` (1 s); cross + **miniature** grid bottom-right |
 | Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); **miniature** `ShapeGrid_4x4_bmp.png` bottom-right (same as placement) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block (same inset as preview) |
 
@@ -99,8 +99,8 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 
 | Event | Duration |
 |-------|----------|
-| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` |
-| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` |
+| Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC`; large + miniature bottom-right (same as Phase 1) |
+| Fixation (cross) | `PHASE_FIXATION_CROSS_SEC`; cross + miniature bottom-right |
 | Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block |
 
@@ -112,6 +112,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Break (every 16 Phase 2 trials) | Participant-paced |
 | Instruction screens | Participant-paced (Enter to continue); **phase2_instr5** minimum `PHASE2_INSTR5_MIN_SEC` |
 | Phase 2 before trials | "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." |
+| **Phase 1/3** pre-sort instruction **`phase*_instruction2c`** | Participant-paced; **miniature** grid bottom-right (same as trials) |
 
 ---
 

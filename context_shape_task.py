@@ -491,7 +491,7 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
     for idx, shape_path in enumerate(shape_paths):
         shape_name = Path(shape_path).name
         sh_sz = _image_size_height_units(shape_path, 0.15)
-        # 1 second: shape alone (screen cleared per spec)
+        # 1 s: centered isolate preview; miniature full grid stays bottom-right throughout sorting
         img = visual.ImageStim(win, image=shape_path, units='height', size=sh_sz)
         img.setPos((0, 0))
         _log_ttl_event(f"{phase_name}_stimulus_onset", trial_info=f"trial={idx+1} shape={shape_name}")
@@ -1455,32 +1455,40 @@ def main():
             _close_dummy()
             return
 
-    # Grid 5 sec
+    # Grid 5 sec — large preview + same miniature bottom-right inset as later trials
     grid_path = get_shape_grid_path()
     grid_img = visual.ImageStim(win, image=grid_path, units='height', size=_image_size_height_units(grid_path, 0.8))
+    grid_inset_ref = _make_grid_inset_stim(win, grid_path)
     _log_ttl_event("phase1_grid_onset")
     grid_img.draw()
+    grid_inset_ref.draw()
     win.flip()
     _wait(PHASE_GRID_PREVIEW_SEC)
     _log_ttl_event("phase1_grid_offset")
+    del grid_inset_ref
 
-    # Fixation 1 sec
+    # Fixation 1 sec — keep miniature grid in bottom-right
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
+    grid_inset_ref = _make_grid_inset_stim(win, grid_path)
     _log_ttl_event("phase1_fixation_onset")
     fix.draw()
+    grid_inset_ref.draw()
     win.flip()
     _wait(PHASE_FIXATION_CROSS_SEC)
     _log_ttl_event("phase1_fixation_offset")
+    del grid_inset_ref
 
     p1_instr2_screens = [
         ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help.", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-        if not wait_for_continue(win, stim, label):
+        grid_inset_ref = _make_grid_inset_stim(win, grid_path)
+        if not wait_for_continue(win, stim, label, extra_drawables=[grid_inset_ref]):
             win.close()
             _close_dummy()
             return
+        del grid_inset_ref
 
     shapes = get_shape_paths()
     random.shuffle(shapes)
@@ -1560,32 +1568,40 @@ def main():
             _close_dummy()
             return
 
-    # Grid 5 sec (same scrambled grid as Phase 1)
+    # Grid 5 sec — large preview + same miniature bottom-right inset as sorting trials
     grid_path = get_shape_grid_path()
     grid_img = visual.ImageStim(win, image=grid_path, units='height', size=_image_size_height_units(grid_path, 0.8))
+    grid_inset_ref = _make_grid_inset_stim(win, grid_path)
     _log_ttl_event("phase3_grid_onset")
     grid_img.draw()
+    grid_inset_ref.draw()
     win.flip()
     _wait(PHASE_GRID_PREVIEW_SEC)
     _log_ttl_event("phase3_grid_offset")
+    del grid_inset_ref
 
-    # Fixation 1 sec
+    # Fixation 1 sec — keep miniature grid in bottom-right
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
+    grid_inset_ref = _make_grid_inset_stim(win, grid_path)
     _log_ttl_event("phase3_fixation_onset")
     fix.draw()
+    grid_inset_ref.draw()
     win.flip()
     _wait(PHASE_FIXATION_CROSS_SEC)
     _log_ttl_event("phase3_fixation_offset")
+    del grid_inset_ref
 
     p3_instr2_screens = [
         ("Click somewhere to place, then press Enter to submit. Once you've submitted the position of a shape, you can't move it again. A miniature picture of all 16 shapes in a grid will stay in the bottom-right corner for every trial—use it if it helps. Ask the experimenter now if you need help.", "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-        if not wait_for_continue(win, stim, label):
+        grid_inset_ref = _make_grid_inset_stim(win, grid_path)
+        if not wait_for_continue(win, stim, label, extra_drawables=[grid_inset_ref]):
             win.close()
             _close_dummy()
             return
+        del grid_inset_ref
 
     shapes3 = get_shape_paths()
     random.shuffle(shapes3)

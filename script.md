@@ -54,7 +54,7 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase1_before_grid_onset/enter/offset
 
-**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s. **Fixation:** black cross, 1 s.
+**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s (large centered; **same miniature bottom-right inset** as in sorting). **Fixation:** black cross, 1 s (**miniature inset** still bottom-right).
 
 **TTL:** phase1_grid_onset/offset, phase1_fixation_onset/offset
 
@@ -63,7 +63,7 @@ Here, the experimenter should enter their anonymized name.
 
 **TTL:** phase1_instruction2c_onset/enter/offset
 
-**Task:** 16 shapes (`.bmp` in `STIMULI/shapes/`), one at a time in random order. 1 s isolated preview, then clickable; each shape is drawn at **native aspect ratio** (not forced square). **Miniature 4×4 grid** (**`ShapeGrid_4x4_bmp.png`**, aspect preserved) stays **bottom-right** during the **1 s preview and** the click-to-place period for **every** trial until this phase ends. At least one click required before Enter. Hint repeats instruction above.
+**Task:** 16 shapes (`.bmp` in `STIMULI/shapes/`), one at a time in random order. **Miniature 4×4 grid** (**`ShapeGrid_4x4_bmp.png`**, aspect preserved) stays **bottom-right** from **grid preview** (with large grid) through **fixation**, **instruction** (screen above), then each shape’s **1 s preview** and **click-to-place** until this phase ends. Each shape is drawn at **native aspect ratio** (not forced square). At least one click required before Enter. Hint repeats instruction above.
 
 **TTL:** phase1_stimulus_onset/offset (trial_info: trial=N, shape=…), phase1_click_place (each click), phase1_enter_submit, phase1_placements_saved (after each shape), **phase1_complete**. **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
@@ -115,7 +115,7 @@ Experimenter to nudge them if they are not speaking out loud / not doing their b
 
 **TTL:** phase3_before_grid_onset/enter/offset
 
-**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s. **Fixation:** black cross, 1 s.
+**Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png`, 5 s (large centered; **same miniature bottom-right inset** as in sorting). **Fixation:** black cross, 1 s (**miniature inset** still bottom-right).
 
 **TTL:** phase3_grid_onset/offset, phase3_fixation_onset/offset
 
@@ -124,7 +124,7 @@ Experimenter to nudge them if they are not speaking out loud / not doing their b
 
 **TTL:** phase3_instruction2c_onset/enter/offset
 
-**Task:** Same structure as Phase 1: shapes and inset grid at **native aspect ratio**; **miniature 4×4 grid** stays **bottom-right** during the **1 s preview and** click-to-place for **every** trial until this phase ends. Shapes in a different random order than Phase 1. At least one click required before Enter. Hint matches instruction above.
+**Task:** Same structure as Phase 1: **miniature 4×4 grid** bottom-right from **grid preview** through **fixation**, **instruction** (screen above), each **1 s preview** and **click-to-place**; shapes at **native aspect ratio**. Shapes in a different random order than Phase 1. At least one click required before Enter. Hint matches instruction above.
 
 **TTL:** phase3_stimulus_onset/offset (trial_info: trial=N, shape=…), phase3_click_place, phase3_enter_submit, phase3_placements_saved (after each shape), phase3_complete. **CSV:** all clicks in all_click_ttl; click_ttl = last click timestamp.
 
