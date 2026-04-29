@@ -1,7 +1,6 @@
 # Context Categorization Task — Python dependencies for context_shape_task.py
 #
-# Supported setup in README: Anaconda + PsychoPy (e.g. build 2025.1.1). For pip, the 2025.1.x
-# line is often unavailable on PyPI; 2025.2+ matches the same API used here.
+# Supported setup in README: Anaconda + PsychoPy (often 2025.1.x builds); pip installs use psychopy>=2025.2,<2027 below.
 #
 # Install: pip install -r requirements.txt
 

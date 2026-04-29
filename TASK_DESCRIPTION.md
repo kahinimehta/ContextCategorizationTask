@@ -6,7 +6,7 @@ Canonical **`context_shape_task.py`** reference: **`*_SEC` timings**, stimulus p
 
 ## Code overview
 
-PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
+PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main module: **`context_shape_task.py`**.
 
 **Output directory / filenames / `test`:** **`README.md`**.
 
@@ -28,7 +28,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 - **Required columns** (must be present; header order may vary — enforced by **`PHASE2_CSV_REQUIRED`** in **`context_shape_task.py`**): `shape_path`, `context1_image`, `context2_image`, `context1`, `context2`, `variant`.
 - **Optional columns** (repo template includes these for bookkeeping; loader does not require them): `trial_number`, `shape`, `primary_context`, `secondary_context` — **`primary_context` / `secondary_context`** may also appear under legacy names `strong_context` / `neutral_context`.
 - **Typical header order** in the shipped template: `trial_number`, `shape`, `shape_path`, `primary_context`, `secondary_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`.
-- **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`. The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`.
+- **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative paths resolved under **`STIMULI/`** (e.g. **`shapes/foo.bmp`**, **`contexts/bar.png`** — see shipped template). The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`; **prefer lowercase repo-relative paths** so edits survive moves and case-sensitive filesystems (Linux).
 - **What the code reads:** stimulus paths and `context1`/`context2` (A/B); `variant` plus primary/secondary labels are **logged only**. Presentation follows **`context*_image`** paths and button labels—not `variant`-driven branching.
 - **Output alignment:** `phase2_*.csv` rows match template rows in order (trial 1…N). Onset columns mirror **`ttl_log_*`** (see **`csv_documentation.md`**).
 
@@ -37,6 +37,8 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 ## Timing (Stimulus Durations)
 
 **Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_REDDOT_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`, `TRAINING_DEMO_SCREEN_EXTRA_SEC` adds time on scripted training-demo screens only — real Phase 2 trials still use `PHASE2_SEGMENT_SEC` / `PHASE2_REDDOT_DURATION_SEC`). Phase 2 transitions from each **task object** epoch to the following **black cue dot** with **no** intervening blank (`PHASE2_SEGMENT_SEC` still controls context/object display length only). **`PHASE2_REDDOT_*`** names are historical; the on-screen dot is **black**.
+
+**Phase 2 cue dot geometry (PsychoPy `units='height'`):** Phase 2 **tutorial** uses `Circle` **`radius=0.003`**; **recorded trials** use **`radius=0.006`** (same black fill). Timings unchanged — radii differ only between tutorial and main Phase 2 loop.
 
 ### Tutorial (fallback)
 

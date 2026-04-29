@@ -308,9 +308,9 @@ Overall experiment summary.
 | `total_task_time_seconds` | Float | Total duration from start to end |
 | `shapegrid_width_px` | Integer | ShapeGrid pixel width (from `ShapeGrid_4x4_bmp.png`) |
 | `shapegrid_height_px` | Integer | ShapeGrid pixel height |
-| `grid_border_coords` | String | Grid border coordinates (if computed) |
+| `grid_border_coords` | String | Always empty in current code; reserved |
 | `per_shape_ground_truth` | String | Per-shape: `name.bmp:row=R,col=C,center_x=X,center_y=Y` (4×4 from sorted order; pipe-separated). **`center_x` / `center_y`** are **fixed latent cell coordinates** (**0.10**, **1.70**, **3.30**, **4.90** per row/col — see **`_parse_shape_grid_position`** in **`context_shape_task.py`**), **not** PsychoPy **height** units and **not** pixel positions on **`ShapeGrid_4x4_bmp.png`**. |
-| `scaling_factor` | String | Scaling factor used for display |
+| `scaling_factor` | String | Always empty in current code; reserved |
 | `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = objects grouped more similarly (closer categorically). |
 
 ---

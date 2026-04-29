@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ContextShape Task — PsychoPy Implementation
-Environment: Python (Anaconda), PsychoPy v2025.1.1
+Environment: Python (Anaconda); PsychoPy per requirements.txt (psychopy>=2025.2,<2027)
 Fullscreen with DPI scaling. ESC during interactive screens only (not during grid, fixation, stimulus).
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
 Task object `.bmp` files (excluding `ShapeGrid*`): near-white matte → transparency at load (`OBJECT_WHITE_BG_STRIP_THRESHOLD`).

@@ -11,7 +11,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ## Environment
 
 - **Python**: Anaconda
-- **PsychoPy**: v2025.1.1
+- **PsychoPy**: **`requirements.txt`** pins **`psychopy>=2025.2,<2027`** (Anaconda builds often ship **2025.1.x**; either works with this script — same API surface used here)
 - **Display**: Fullscreen by default (windowed via `PSYCHOPY_WINDOWED=1` if needed)
 - **Exit**: ESC during interactive screens only (no global escape; like Social Recognition Task)
 
