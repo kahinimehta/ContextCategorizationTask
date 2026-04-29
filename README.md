@@ -25,7 +25,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Task design (summary)
 
 - **Phase 1:** 16 `.bmp` objects (from `STIMULI/shapes/`), random order (alphabetically first task stimulus not first), full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
-- **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials). Context images use a **fixed on-screen frame** with **center cover** crop (same size every trial); constants **`PHASE2_CONTEXT_MAX_EXTENT`**, **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** in **`context_shape_task.py`** / **`TASK_DESCRIPTION.md`**.
+- **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials). Context images use a **large centered square** with **center cover** crop (same size every trial); constants **`PHASE2_CONTEXT_MAX_EXTENT`**, **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** (**1.0** = square) in **`context_shape_task.py`** / **`TASK_DESCRIPTION.md`**.
 - **Phase 3:** Same 16 objects as Phase 1, new random order (must differ from Phase 1); same **bottom-right miniature grid** behavior as Phase 1.
 
 ### Documentation
@@ -59,7 +59,7 @@ All CSV data is written incrementally to `../LOG_FILES/` (relative to the task r
 
 *datetime* = `YYYYMMDD_HHMMSS`. **No files** if name contains "test".
 
-**Only `ttl_log` has real timing data; the other CSVs keep timing column headers empty on purpose so files stay small and merge cleanly.** 
+**Primarily `ttl_log_*` for event-aligned analysis;** Phase **2** `phase2_*.csv` also stores **Unix timestamps** in **`fixation_onset_ttl` … `question_onset_ttl`** (onset times) and **`response_ttl`** so trial tables are self-contained. Phase **1**/**3** behavior CSVs still keep most timing columns empty by design (`click_ttl` / `submit_ttl` populated). 
 
 ### Example output
 

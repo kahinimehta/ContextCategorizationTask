@@ -18,7 +18,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Welcome
 
-**Display:** "Welcome — watch the example, then Continue."
+**Display:** "Welcome to your task! Hit Enter to watch the tutorial video." Gray hint **"Enter to continue."** (all **`wait_for_continue`** screens use this pattern).
 
 **TTL:** welcome_onset, welcome_enter, welcome_offset
 
@@ -32,19 +32,19 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **Fallback** (timing **`TASK_DESCRIPTION.md`**, Tutorial fallback subsection):
 
-**Step 1** (`trial_info`: `step=1`): "Watch how we sort these shapes."
+**Step 1** (`trial_info`: `step=1`): "The first part of the task is about sorting shapes. Watch how we sort these shapes!"
 
-**Step 2** (`tutorial_fallback_step2_*`): "First let's place the red square to the left."
+**Step 2** (`tutorial_fallback_step2_*`): "First, let's click to place the red square on the left. Then, we hit Enter."
 
-**Step 3** (`tutorial_fallback_step3_*`): "Let's group the red circle with the red square and place it to the left."
+**Step 3** (`tutorial_fallback_step3_*`): "Now, let's group the red circle with the red square on the left."
 
-**Step 4** (`tutorial_fallback_step4_*`): "Let's place the green circle to the right (different group)."
+**Step 4** (`tutorial_fallback_step4_*`): "Let's place the green circle to the right (in a different group)."
 
-**Step 5a** (`step=5a`): "See how we ended up sorting by color (but could have sorted by shape?)"
+**Step 5a** (`step=5a`): "See how we ended up sorting by color? We could have sorted by shape too -- there are no wrong answers here!"
 
 **Step 5b** (`step=5b`): "We created groups, not a spectrum - nearby objects share a group."
 
-**Step 6** (`trial_info`: `step=6`): Upper: "A group does not have to pack tight— a large spread is OK." Lower: "Click to place — Enter submits each placement."
+**Step 6** (`trial_info`: `step=6`): "Click to place — Enter submits each placement." *(Upper “large spread is OK” line exists in code only as a comment; not shown.)*
 
 **Transition:** "Your turn to group some objects! Remember the same rules."
 
@@ -54,14 +54,12 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Phase 1 — Object sorting
 
-**Instructions (3 screens):**
+**Instructions (1 screen before grid):**
 1. "Ask the experimenter if you have any questions!" · **`phase1_questions`**
-2. "You will now sort some objects." · **`phase1_instr1`**
-3. "Use as many groups as you want, and group objects however feels intuitive." · **`phase1_instr4`**
 
-**TTL:** phase1_questions_* … phase1_instr4_*
+**TTL:** phase1_questions_*
 
-**Before grid:** "You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."
+**Before grid:** "You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize."
 
 **TTL:** phase1_before_grid_*
 
@@ -69,11 +67,14 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **TTL:** phase1_grid_* , phase1_fixation_*
 
-**Instruction (mini-grid):** "Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!"
+**After fixation:** *(in order)*  
+1. "Now, group these objects like in the demo." · **`phase1_instr1`** (mini-grid)  
+2. "Use as many groups as you want, and group objects however feels intuitive." · **`phase1_instr2`** (full screen)  
+3. "Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!" · **`phase1_instr3`** (mini-grid)  
 
-**TTL:** phase1_instruction2c_*
+**TTL:** phase1_instr1_* · phase1_instr2_* · phase1_instr3_*
 
-**Task:** One object per trial (**`STIMULI/shapes`** `.bmp`; near-white matte **stripped at load** — **`TASK_DESCRIPTION.md`**). Mini-grid persists; **`run_drag`** hint strip: "**Click to place — Enter submits.**"
+**Task:** One object per trial (**`STIMULI/shapes`** `.bmp`; near-white matte **stripped at load** — **`TASK_DESCRIPTION.md`**). Mini-grid persists; bottom hint strip: "**Click to place — Enter submits.**"
 
 **TTL / CSV:** **`csv_documentation.md`** (`phase1_stimulus_*`, `phase1_click_place`, **`phase1_complete`**, placements PNGs).
 
@@ -81,27 +82,26 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Phase 2 — Context incorporation
 
-Cue speech on dot; **`phase2`** questions use **`←`**/**`→`** (left = first label / **`context_1`**, right = **`context_2`**) · on-screen cue **"Better context?"** · hint strip **"← or → arrow"**.
+Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = first label / **`context_1`**, right = **`context_2`**) · on-screen prompt **"Which context fits best? Use the left/right keys to choose."** · hint strip **"← or → arrow"**.
 
-**Instructions (6 screens):** screen 6 (**`phase2_instr5`**) has a **minimum 5 s** before Enter (`PHASE2_INSTR5_MIN_SEC`).
+**Instructions (5 screens)** before the Phase 2 demo:
 1. "Ask the experimenter if you have any questions!" · **`phase2_questions`**
 2. "For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts." · **`phase2_instr1`**
 3. "You will see: a context → object → dot." · **`phase2_instr2`**
-4. "When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best." · **`phase2_instr2b`**
-5. "The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers." · **`phase2_instr3`**
-6. "Watch this demo before you start the task!" · **`phase2_instr5`**
+4. "When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best." · **`phase2_instr3`**
+5. "The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers." · **`phase2_instr4`**
 
-**TTL (instructions):** **`phase2_questions_*`** … **`phase2_instr5_*`** (includes **`phase2_instr2b_*`**).
+**TTL (instruction block):** **`phase2_questions_*`** … **`phase2_instr4_*`**.
 
-**Tutorial (after screen 6):** Intro: "Space scene → circle → circus scene. Name the object aloud; then we choose which fits." · fixation · two practice **context** images (fixed 16∶9 frame, center **cover** crop — same on-screen size for every context) · blue **circle** demo shape · red-dot + example lines · **`Better context?`** SPACE \| CIRCUS · highlight line **e.g., CIRCUS** · blank · **`Ready for recorded trials?`** (with Continue control as on other Enter screens).
+**Tutorial (after instructions):** Intro: **"Watch this demo before you start the task!"** · **`phase2_tutorial_intro`** (minimum **`PHASE2_INSTR5_MIN_SEC`** before Enter) · fixation · two practice **context** images (large **centered square**, center **cover** crop) · blue **circle** · black cue **dots** · **"You might say the circle is a 'PLANET'"** / **"'BALL'"** · **`Better context?`** (SPACE \| CIRCUS) · scripted highlight + **"You might say CIRCUS is a better context"** · blank · **"Ready for recorded trials?"** · Enter to continue ( **`phase2_ready`** ).
 
 **TTL (Phase 2 tutorial + handoff):** **`phase2_tutorial_intro_*`**; **`phase2_tutorial_fixation_*`** … **`phase2_tutorial_post_blank_*`**; **`phase2_ready_*`**; **`phase2_before_trials_*`** — full list **`csv_documentation.md`**.
 
-**Before trials:** "Questions? Enter to start."
+**Before trials:** "Ask the experimenter if you have any questions. Enter to start."
 
-**Task:** fixation → contexts/objects/dots (**black** cue) → **`Better context?`** (**←**/**→**) → ITI (**`TASK_DESCRIPTION.md`**). Context scenes: same fixed frame (large height per **`PHASE2_CONTEXT_MAX_EXTENT`**, width from aspect ratio constant in code). Breaks **every 16** trials (**64**-trial template ⇒ **16**, **32**, **48**).
+**Task:** fixation → contexts/objects/dots (**black** cue) → **"Which context fits best? Use the left/right keys to choose."** (**←**/**→**) → ITI (**`TASK_DESCRIPTION.md`**). Context scenes: same **centered square** (see **`PHASE2_CONTEXT_*`** in code). **Break:** **"Take a break!"** with progress bar and **Enter** (**`phase2_break`**) after each block of **16** completed trials (shipped **64** trials ⇒ before trials **17**, **33**, **49**).
 
-**TTL (trials + breaks):** **`phase2_fixation_*`** through trial/ITI events (**`csv_documentation.md`**); **`phase2_break_*`** between trial blocks; **`phase2_complete`**.
+**TTL (trials + breaks):** **`phase2_fixation_*`** through trial/ITI events (**`csv_documentation.md`**); **`phase2_break_*`** between blocks; **`phase2_complete`**.
 
 Experimenter: prompt speech plus valid keys when needed.
 
@@ -112,18 +112,24 @@ Experimenter: prompt speech plus valid keys when needed.
 **Instructions (3):**
 1. "Ask the experimenter if you have any questions!" · **`phase3_questions`**
 2. "Now you will sort the objects again — like you did right in the beginning. See all the objects first." · **`phase3_instr1`**
-3. "Use whatever grouping method feels intuitive to you." · **`phase3_instr4`**
+3. "Use whatever grouping method feels intuitive to you." · **`phase3_instr2`**
 
 **Before grid:** "You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."
 
-**Instruction mini-grid:** "As before, sort the objects. Click to place — Enter locks."
+**TTL:** phase3_before_grid_*
+
+**Grid / fixation:** `ShapeGrid_4x4_bmp.png` + miniature inset (same pattern as Phase 1; timings **`TASK_DESCRIPTION.md`**).
+
+**TTL:** phase3_grid_* , phase3_fixation_*
+
+**Instruction mini-grid:** "As before, sort the objects. Click to place — Enter locks." · **`phase3_instruction2c`**
 
 **Debrief Yes/No (3):**
 1. "Same grouping style as Phase 1?"
 2. "Did contexts sway round-2 groups?"
 3. "See objects differently the second sort?"
 
-**TTL / CSV:** per **`csv_documentation.md`** (**`phase3_questions_*`** … **`phase3_instr4_*`**; **`phase3_before_grid_*`**; **`phase3_grid_*`** / **`phase3_fixation_*`**; **`phase3_instruction2c_*`**; **`phase3_stimulus_*`**, **`phase3_click_place`**, **`phase3_enter_submit`**, **`phase3_complete`**, **`phase3_placements_saved`**; **`phase3_debrief_*`**).
+**TTL / CSV:** per **`csv_documentation.md`** (**`phase3_questions_*`** … **`phase3_instr2_*`**; **`phase3_before_grid_*`**; **`phase3_grid_*`** / **`phase3_fixation_*`**; **`phase3_instruction2c_*`**; **`phase3_stimulus_*`**, **`phase3_click_place`**, **`phase3_enter_submit`**, **`phase3_complete`**, **`phase3_placements_saved`**; **`phase3_debrief_*`**).
 
 ---
 
@@ -135,7 +141,7 @@ Experimenter: prompt speech plus valid keys when needed.
 
 ---
 
-**Escape (`escape_pressed`) screens:** `screen=<label>` from **`wait_for_continue`** (`welcome`, **`tutorial_transition`**, **`phase*_questions`**, **`phase*_instr*`**, **`phase*_before_grid`**, **`phase*_instruction2c`**, **`phase2_before_trials`**, **`phase2_ready`**, **`phase2_break`**), plus **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**. Full list **`csv_documentation.md`**.
+**Escape (`escape_pressed`) screens:** `screen=<label>` from **`wait_for_continue`** (`welcome`, **`tutorial_transition`**, **`phase*_questions`**, **`phase*_instr*`**, **`phase3_instruction2c`**, **`phase*_before_grid`**, **`phase2_before_trials`**, **`phase2_ready`**, **`phase2_break`**), plus **`participant_name`**, **`tutorial_video`**, **`phase2_tutorial_intro`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**. Full list **`csv_documentation.md`**.
 
 ---
 

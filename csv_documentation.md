@@ -4,7 +4,7 @@ Definitions for **`ttl_log_*`** (columns below; mapping table follows) plus **`p
 
 **Elsewhere:** run sheet (**`script.md`**); stimuli + timings + **`phase2_trial_order.csv`** (**`TASK_DESCRIPTION.md`**); repo bootstrap / example filenames (**`README.md`**).
 
-Instruction-screen **TTL** names that no longer run in current **`main()`** (e.g. **`phase1_instr2`**, **`phase2_instr4`**) remain in the mapping table as **legacy** for older logs — see the **Historical** note below the preamble.
+Instruction-screen **TTL** names that no longer run in current **`main()`** remain in the mapping table as **legacy** for older logs — see the **Historical** note below the preamble (e.g. **`phase1_instruction2b`**, **`phase1_instr4`**, **`phase2_instr2b`**, **`phase2_instr5`**, **`phase3_instr4`**).
 
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
@@ -25,7 +25,7 @@ For **fixed-duration** segments, `*_onset` fires immediately **before** the firs
 
 ---
 
-**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). Older runs may also list **`phase1_instr2_*`**, **`phase1_instr3_*`**, **`phase2_instr4_*`**, **`phase3_instr2_*`**, **`phase3_instr3_*`** (extra instruction screens; **not emitted** in current `context_shape_task.py` `main()`).
+**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). **Post-fixation Phase 1:** logs may show **`phase1_instruction2b_*`**, **`phase1_instr4_*`**, **`phase1_instruction2c_*`** for the same copy as current **`phase1_instr1_*`** … **`phase1_instr3_*`**. **Phase 2:** **`phase2_instr2b_*`** / **`phase2_instr5_*`** match current **`phase2_instr3_*`** and **`phase2_tutorial_intro_*`** (watch-demo screen moved into the tutorial). **Phase 3:** **`phase3_instr4_*`** matches current **`phase3_instr2_*`**. Forks that enabled pre-grid **`phase1_instr1_*`** as **“You will now sort…”** must not be confused with current **`phase1_instr1_*`** (**“Now, group these…”** after fixation).
 
 ## TTL Trigger Mapping
 
@@ -38,7 +38,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
 | `experiment_end` | — | Experiment ended (trial_info: participant=…) |
-| `welcome_onset` | — | Welcome screen appeared |
+| `welcome_onset` | — | Welcome: **"Welcome to your task! Hit Enter to watch the tutorial video."** |
 | `welcome_enter` | — | Enter pressed |
 | `welcome_offset` | — | Screen transition |
 | `tutorial_video_onset` | — | Tutorial video started |
@@ -63,28 +63,31 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_questions_onset` | 1 | **"Ask the experimenter if you have any questions!"** |
 | `phase1_questions_enter` | 1 | Enter pressed |
 | `phase1_questions_offset` | 1 | Screen transition |
-| `phase1_instr1_onset` | 1 | **"You will now sort some objects."** |
+| `phase1_instr1_onset` | 1 | **"Now, group these objects like in the demo."** (miniature grid inset) |
 | `phase1_instr1_enter` | 1 | Enter pressed |
 | `phase1_instr1_offset` | 1 | Screen transition |
-| `phase1_instr2_onset` | 1 | Legacy — **not emitted** (old **"Place one at a time…"** screen removed from `main()`) |
-| `phase1_instr2_enter` | 1 | Legacy — **not emitted** |
-| `phase1_instr2_offset` | 1 | Legacy — **not emitted** |
-| `phase1_instr3_onset` | 1 | Legacy — **not emitted** (old **"Group by proximity…"** screen removed) |
-| `phase1_instr3_enter` | 1 | Legacy — **not emitted** |
-| `phase1_instr3_offset` | 1 | Legacy — **not emitted** |
-| `phase1_instr4_onset` | 1 | **"Use as many groups as you want, and group objects however feels intuitive."** |
-| `phase1_instr4_enter` | 1 | Enter pressed |
-| `phase1_instr4_offset` | 1 | Screen transition |
-| `phase1_before_grid_onset` | 1 | **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** |
+| `phase1_instr2_onset` | 1 | **"Use as many groups as you want, and group objects however feels intuitive."** (full screen, no inset) |
+| `phase1_instr2_enter` | 1 | Enter pressed |
+| `phase1_instr2_offset` | 1 | Screen transition |
+| `phase1_instr3_onset` | 1 | **"Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!"** (miniature grid inset) |
+| `phase1_instr3_enter` | 1 | Enter pressed |
+| `phase1_instr3_offset` | 1 | Screen transition |
+| `phase1_instr4_onset` | 1 | Legacy — **same copy as `phase1_instr2_*`** (older TTL label after grid+fixation) |
+| `phase1_instr4_enter` | 1 | Legacy |
+| `phase1_instr4_offset` | 1 | Legacy |
+| `phase1_before_grid_onset` | 1 | **"You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize."** |
 | `phase1_before_grid_enter` | 1 | Enter pressed |
 | `phase1_before_grid_offset` | 1 | Screen transition |
 | `phase1_grid_onset` | 1 | Object grid display started |
 | `phase1_grid_offset` | 1 | Object grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2c_onset` | 1 | **"Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!"** (with miniature grid inset) |
-| `phase1_instruction2c_enter` | 1 | Enter pressed |
-| `phase1_instruction2c_offset` | 1 | Screen transition |
+| `phase1_instruction2b_onset` | 1 | Legacy — **same copy / inset pattern as `phase1_instr1_*`** |
+| `phase1_instruction2b_enter` | 1 | Legacy |
+| `phase1_instruction2b_offset` | 1 | Legacy |
+| `phase1_instruction2c_onset` | 1 | Legacy — **same copy / inset pattern as `phase1_instr3_*`** |
+| `phase1_instruction2c_enter` | 1 | Legacy |
+| `phase1_instruction2c_offset` | 1 | Legacy |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all objects placed) |
 | `phase1_stimulus_onset` | 1 | Isolation preview: centered object (BMP) + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp filename) |
 | `phase1_stimulus_offset` | 1 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
@@ -99,41 +102,41 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr2_onset` | 2 | **"You will see: a context → object → dot."** |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
-| `phase2_instr2b_onset` | 2 | **"When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best."** |
-| `phase2_instr2b_enter` | 2 | Enter pressed |
-| `phase2_instr2b_offset` | 2 | Screen transition |
-| `phase2_instr3_onset` | 2 | **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** |
+| `phase2_instr2b_onset` | 2 | Legacy — **same copy as `phase2_instr3_*`** |
+| `phase2_instr2b_enter` | 2 | Legacy |
+| `phase2_instr2b_offset` | 2 | Legacy |
+| `phase2_instr3_onset` | 2 | **"When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best."** |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
-| `phase2_instr4_onset` | 2 | Legacy — **not emitted** (old **"Reuse OK…"** screen removed; content folded into **`phase2_instr3`**) |
-| `phase2_instr4_enter` | 2 | Legacy — **not emitted** |
-| `phase2_instr4_offset` | 2 | Legacy — **not emitted** |
-| `phase2_instr5_onset` | 2 | **"Watch this demo before you start the task!"** (min display `PHASE2_INSTR5_MIN_SEC`, 5 s) |
-| `phase2_instr5_enter` | 2 | Enter pressed |
-| `phase2_instr5_offset` | 2 | Screen transition |
-| `phase2_tutorial_intro_onset` | 2 | Phase 2 tutorial intro: **"Space scene → circle → circus scene. Name the object aloud; then we choose which fits."** |
+| `phase2_instr4_onset` | 2 | **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** |
+| `phase2_instr4_enter` | 2 | Enter pressed |
+| `phase2_instr4_offset` | 2 | Screen transition |
+| `phase2_instr5_onset` | 2 | Legacy — **same screen/copy as `phase2_tutorial_intro_*`** (older **`phase2_instr5_*`** label; min display `PHASE2_INSTR5_MIN_SEC` now applies to **`phase2_tutorial_intro`**) |
+| `phase2_instr5_enter` | 2 | Legacy |
+| `phase2_instr5_offset` | 2 | Legacy |
+| `phase2_tutorial_intro_onset` | 2 | **"Watch this demo before you start the task!"** (min display `PHASE2_INSTR5_MIN_SEC` before Enter is accepted) |
 | `phase2_tutorial_intro_enter` | 2 | Enter pressed |
 | `phase2_tutorial_intro_offset` | 2 | Screen transition |
 | `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation onset |
 | `phase2_tutorial_fixation_offset` | 2 | Tutorial fixation ended |
-| `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 onset |
-| `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended |
-| `phase2_tutorial_shape_onset` | 2 | Tutorial focal object onset (event label **`shape`** retained) |
-| `phase2_tutorial_shape_offset` | 2 | Tutorial focal object ended |
+| `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 onset (`trial_info`: **`context=<filename>`**, e.g. **`practice1.png`**) |
+| `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended (**same `trial_info`**) |
+| `phase2_tutorial_shape_onset` | 2 | Tutorial focal object onset (`trial_info`: **`demo=blue_circle`**) |
+| `phase2_tutorial_shape_offset` | 2 | Tutorial focal object ended (**`demo=blue_circle`**) |
 | `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** in current code (1 s blank between object epoch and cue dot was removed) |
 | `phase2_tutorial_blank_offset` | 2 | Legacy — **not emitted** |
-| `phase2_tutorial_reddot_onset` | 2 | Tutorial cue dot (black circle) + on-screen PLANET cue (`PHASE2_REDDOT_DURATION_SEC`) |
-| `phase2_tutorial_reddot_offset` | 2 | Tutorial cue dot ended |
-| `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial cue dot (black) + on-screen PLANET cue (`trial_info`: **`cue=circle_label_1`**) |
+| `phase2_tutorial_reddot_offset` | 2 | Tutorial cue dot ended (`trial_info`: **`cue=circle_label_1`**) |
+| `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset (`trial_info`: **`context=<filename>`**) |
 | `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
-| `phase2_tutorial_shape2_onset` | 2 | Tutorial second object onset |
-| `phase2_tutorial_shape2_offset` | 2 | Tutorial second object ended |
+| `phase2_tutorial_shape2_onset` | 2 | Tutorial second object onset (`trial_info`: **`demo=blue_circle`**) |
+| `phase2_tutorial_shape2_offset` | 2 | Tutorial second object ended (**`demo=blue_circle`**) |
 | `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** in current code (blank before second cue dot removed) |
 | `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
-| `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + on-screen BALL cue |
-| `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended |
+| `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + BALL cue (`trial_info`: **`cue=circle_label_2`**) |
+| `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_question_onset` | 2 | Tutorial question (SPACE \| CIRCUS) |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"e.g., CIRCUS"** |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say CIRCUS is a better context"** |
 | `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
 | `phase2_tutorial_question_offset` | 2 | Question screen ended (after demo selection) |
 | `phase2_tutorial_response` | 2 | Scripted demo choice (e.g. **trial_info: CIRCUS**) |
@@ -142,31 +145,31 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
 | `phase2_ready_enter` | 2 | Enter pressed |
 | `phase2_ready_offset` | 2 | Screen transition |
-| `phase2_before_trials_onset` | 2 | **"Questions? Enter to start."** |
+| `phase2_before_trials_onset` | 2 | **"Ask the experimenter if you have any questions. Enter to start."** |
 | `phase2_before_trials_enter` | 2 | Enter pressed |
 | `phase2_before_trials_offset` | 2 | Screen transition |
-| `phase2_fixation_onset` | 2 | Fixation before trial (trial_info: trial=N) |
-| `phase2_fixation_offset` | 2 | Fixation ended (trial_info: trial=N) |
-| `phase2_context1_onset` | 2 | Context 1 display onset (trial_info: trial=N, shape=*.bmp) |
-| `phase2_context1_offset` | 2 | Context 1 offset (trial_info: trial=N) |
-| `phase2_shape_onset` | 2 | Task object (BMP) onset (trial_info: trial=N, shape=*.bmp) |
-| `phase2_shape_offset` | 2 | Task object epoch ended (trial_info: trial=N) |
+| `phase2_fixation_onset` | 2 | Fixation before trial (`trial_info`: **`trial=N shape=*.bmp ctx1=*.png ctx2=*.png variant=…`**) |
+| `phase2_fixation_offset` | 2 | Fixation ended (same **`trial_info`**) |
+| `phase2_context1_onset` | 2 | Context 1 display onset (same structured **`trial_info`**) |
+| `phase2_context1_offset` | 2 | Context 1 offset |
+| `phase2_shape_onset` | 2 | Task object (BMP) onset |
+| `phase2_shape_offset` | 2 | Task object epoch ended |
 | `phase2_blank1_onset` | 2 | Legacy — **not emitted** (object epoch → cue dot is immediate; formerly 1 s blank) |
 | `phase2_blank1_offset` | 2 | Legacy — **not emitted** |
-| `phase2_reddot_onset` | 2 | Black cue dot + “say aloud” epoch (trial_info: trial=N, shape=*.bmp). Event label **`reddot`** is historical |
-| `phase2_reddot_offset` | 2 | Cue dot offset (trial_info: trial=N) |
-| `phase2_context2_onset` | 2 | Context 2 display onset (trial_info: trial=N, shape=*.bmp) |
-| `phase2_context2_offset` | 2 | Context 2 offset (trial_info: trial=N) |
-| `phase2_shape2_onset` | 2 | Task object (2nd) onset (trial_info: trial=N) |
-| `phase2_shape2_offset` | 2 | Task object (2nd) epoch ended (trial_info: trial=N) |
+| `phase2_reddot_onset` | 2 | Black cue dot + “say aloud” epoch (`trial_info` as above). Event label **`reddot`** is historical |
+| `phase2_reddot_offset` | 2 | Cue dot offset |
+| `phase2_context2_onset` | 2 | Context 2 display onset |
+| `phase2_context2_offset` | 2 | Context 2 offset |
+| `phase2_shape2_onset` | 2 | Task object (2nd) onset |
+| `phase2_shape2_offset` | 2 | Task object (2nd) epoch ended |
 | `phase2_blank2_onset` | 2 | Legacy — **not emitted** (2nd object epoch → cue dot 2 is immediate) |
 | `phase2_blank2_offset` | 2 | Legacy — **not emitted** |
-| `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” (trial_info: trial=N, shape=*.bmp) |
-| `phase2_reddot2_offset` | 2 | Cue dot 2 offset (trial_info: trial=N) |
-| `phase2_question_onset` | 2 | **"Better context?"** with category labels (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
-| `phase2_response` | 2 | **Left**/**right** arrow selects **`context_1`** / **`context_2`** (trial_info: trial=N, response=label) |
-| `phase2_question_offset` | 2 | Question screen ended (trial_info: trial=N) |
-| `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
+| `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” |
+| `phase2_reddot2_offset` | 2 | Cue dot 2 offset |
+| `phase2_question_onset` | 2 | Question screen — **"Which context fits best? Use the left/right keys to choose."** with left/right category buttons (**`trial_info`**: full line above plus **`cat_a=… cat_b=…`**) |
+| `phase2_response` | 2 | Arrow choice (**`trial_info`**: full line plus **`response=…`**) |
+| `phase2_question_offset` | 2 | Question screen ended (same base **`trial_info`** as fixation) |
+| `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (same base **`trial_info`**) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
 | `phase2_complete` | 2 | Phase 2 trials finished |
 | `phase2_break_onset` | 2 | **"Take a break!"** + progress bar (trial_info on **onset** only: **after_trial** = 0-based index of next trial, **total_trials** = N; first break at **after_trial=16** for 64 trials) |
@@ -178,15 +181,15 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instr1_onset` | 3 | **"Now you will sort the objects again — like you did right in the beginning. See all the objects first."** |
 | `phase3_instr1_enter` | 3 | Enter pressed |
 | `phase3_instr1_offset` | 3 | Screen transition |
-| `phase3_instr2_onset` | 3 | Legacy — **not emitted** |
-| `phase3_instr2_enter` | 3 | Legacy — **not emitted** |
-| `phase3_instr2_offset` | 3 | Legacy — **not emitted** |
+| `phase3_instr2_onset` | 3 | **"Use whatever grouping method feels intuitive to you."** |
+| `phase3_instr2_enter` | 3 | Enter pressed |
+| `phase3_instr2_offset` | 3 | Screen transition |
 | `phase3_instr3_onset` | 3 | Legacy — **not emitted** |
 | `phase3_instr3_enter` | 3 | Legacy — **not emitted** |
 | `phase3_instr3_offset` | 3 | Legacy — **not emitted** |
-| `phase3_instr4_onset` | 3 | **"Use whatever grouping method feels intuitive to you."** |
-| `phase3_instr4_enter` | 3 | Enter pressed |
-| `phase3_instr4_offset` | 3 | Screen transition |
+| `phase3_instr4_onset` | 3 | Legacy — **same copy as `phase3_instr2_*`** |
+| `phase3_instr4_enter` | 3 | Legacy |
+| `phase3_instr4_offset` | 3 | Legacy |
 | `phase3_before_grid_onset` | 3 | **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** |
 | `phase3_before_grid_enter` | 3 | Enter pressed |
 | `phase3_before_grid_offset` | 3 | Screen transition |
@@ -210,7 +213,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `summary_saved` | — | Summary CSV written (trial_info: filename) |
 | `thanks_onset` | — | Thank-you screen appeared |
 | `thanks_offset` | — | Thank-you screen ended |
-| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`** screens, or fixed strings e.g. **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
+| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`** screens, or fixed strings e.g. **`participant_name`**, **`tutorial_video`**, **`phase2_tutorial_intro`**, **`phase1_instr1`** … **`phase1_instr3`**, **`phase3_instruction2c`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
 
 ---
 
@@ -236,7 +239,7 @@ Per-trial object data from Phase 1 (bottom-up grouping; **`shape`** in filenames
 
 Per-trial (**`trial`** aligns with **`phase2_trial_order.csv`**). Template (**`phase2_trial_order.csv`**, **`PHASE2_CSV_REQUIRED`**) and **`stderr`** row-count banner: **`TASK_DESCRIPTION.md`** only.
 
-Placeholder epoch columns (`fixation_onset_ttl` … `question_onset_ttl`): schema only; timings in **`ttl_log_*`**. **`response_ttl`** populated.
+Epoch **`_onset_ttl`** columns duplicate the **Unix timestamp** recorded in **`ttl_log_*`** at each **`phase2_*_onset`** (same clock as the behavioral row). **`response_ttl`** is the **`phase2_response`** event time.
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -247,8 +250,8 @@ Placeholder epoch columns (`fixation_onset_ttl` … `question_onset_ttl`): schem
 | `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
 | `response` | String | Selected category (**uppercased**); **left arrow** = label on left (**`context_1`**), **right arrow** = label on right (**`context_2`**) |
 | `rt` | Float | Reaction time from question onset to arrow key press (seconds) |
-| `fixation_onset_ttl` … `question_onset_ttl` | Float | Unused placeholders (epoch markers live in **`ttl_log_*`** only) |
-| `response_ttl` | Float | Participant choice (**populated**) |
+| `fixation_onset_ttl` … `question_onset_ttl` | Float | **Unix timestamp** at the matching **`phase2_*_onset`** in **`ttl_log_*`** (empty if missing) |
+| `response_ttl` | Float | Unix timestamp at **`phase2_response`** |
 
 ---
 
