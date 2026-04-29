@@ -369,43 +369,91 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
 #  Phase 0: Participant Login — SRT-style fullscreen
 # =========================
 def get_participant_name(win):
-    """Fullscreen text input like Social Recognition Task. Returns name or None if ESC."""
+    """Centered typed participant id. Enter submits (non-empty), ESC quits."""
     _log_ttl_event("participant_name_onset")
     input_id = ""
-    key_list = ['return', 'backspace'] + [chr(i) for i in range(97, 123)] + [chr(i) for i in range(65, 91)] + [chr(i) for i in range(48, 58)]
-    id_prompt = visual.TextStim(win, text="First name + last initial—lowercase, no spaces:\n\nEnter when done.",
-                                color='black', height=0.045, wrapWidth=1.4, pos=(0, 0.25), units='height')
-    input_display = visual.TextStim(win, text="", color='black', height=0.06, pos=(0, 0), units='height')
+    # Do not restrict event.getKeys with keyList — on macOS/Pyglet matched names miss real keys (`enter` vs `return`).
+    submit_names = frozenset(('return', 'enter', 'num_enter', 'kp_enter', 'num_return'))
+
+    # Pyglet sometimes reports symbols as key names, not single characters.
+    symbol_aliases = {
+        'minus': '-',
+        'underscore': '_',
+        'period': '.',
+        'comma': ',',
+        'slash': '/',
+        'backslash': '\\',
+        'equal': '=',
+        'space': ' ',
+    }
+    for _i in range(10):
+        symbol_aliases[f'num_{_i}'] = str(_i)
+
+    input_display = visual.TextStim(
+        win,
+        text="",
+        color='black',
+        height=0.06,
+        pos=(0, 0),
+        wrapWidth=1.6,
+        units='height',
+    )
+
+    modifier_keys = frozenset({
+        'lshift', 'rshift', 'lcontrol', 'rcontrol', 'lctrl', 'rctrl', 'option', 'lalt', 'ralt',
+        'lcmd', 'rcmd', 'command', 'lsuper', 'rsuper', 'capslock',
+    })
 
     def redraw():
-        id_prompt.draw()
         input_display.text = f"{input_id}_"
         input_display.draw()
         win.flip()
 
     redraw()
-    event.clearEvents()
 
     while True:
         try:
-            keys = event.getKeys(keyList=key_list + ['escape'], timeStamped=False)
+            keys = event.getKeys(timeStamped=False)
         except (AttributeError, RuntimeError):
             keys = []
-        if keys:
-            if 'escape' in keys:
-                _log_ttl_event("escape_pressed", trial_info="participant_name")
+        dirty = False
+        for raw in keys:
+            k = str(raw).strip()
+            if not k:
+                continue
+            low = k.lower()
+            if low == 'escape':
+                _log_ttl_event('escape_pressed', trial_info='participant_name')
                 core.quit()
-            key = keys[0]
-            if key == 'return':
+            if low in modifier_keys:
+                continue
+            if low in submit_names:
                 if input_id.strip():
-                    _log_ttl_event("participant_name_offset")
-                    return input_id.strip() or 'anonymous'
-            elif key == 'backspace':
-                input_id = input_id[:-1] if input_id else ""
-            elif len(key) == 1:
-                input_id += key
-        redraw()
-        _wait(0.016)
+                    _log_ttl_event('participant_name_offset')
+                    return input_id.strip()
+                continue
+            if low in ('backspace', 'delete'):
+                if input_id:
+                    dirty = True
+                    input_id = input_id[:-1]
+                continue
+            if len(low) > 32:
+                continue
+            if low in symbol_aliases:
+                dirty = True
+                input_id += symbol_aliases[low]
+                if len(input_id) > 127:
+                    input_id = input_id[:127]
+                continue
+            if len(k) == 1 and k.isprintable():
+                dirty = True
+                input_id += k
+                if len(input_id) > 127:
+                    input_id = input_id[:127]
+        if dirty:
+            redraw()
+        else:
+            _wait(0.016)
 
 
 # ----------------------------

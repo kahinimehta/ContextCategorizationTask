@@ -31,7 +31,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 
 | Trigger code | Phase | Description |
 |--------------|-------|-------------|
-| `participant_name_onset` | — | Participant name prompt appeared |
+| `participant_name_onset` | — | Participant id entry (typed text + cursor; no format instructions on screen) |
 | `participant_name_offset` | — | Participant pressed Enter on name |
 | *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
