@@ -20,6 +20,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 - **Task objects (.bmp):** `STIMULI/shapes/*.bmp` — 16 stimuli are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major). At load, each **task** `.bmp` (not `ShapeGrid*` composites) has **near-white matte pixels** (R, G, B ≥ **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**, default **247**) **set to transparent** in PsychoPy; context PNGs and the grid composite are unchanged.
 - **Contexts:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
+- **Phase 2 context on-screen framing:** Every context image (tutorial + main trials) is drawn in a **fixed** rectangle in PsychoPy `units='height'`: height **`PHASE2_CONTEXT_MAX_EXTENT`** (default **1.0**), width **height × `PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** (default **16∶9**). Source PNGs are **uniformly scaled** and **center-cropped** (object-fit **cover**) in Pillow so pixels keep aspect ratio inside that box — see **`_phase2_context_frame_size_height_units`** / **`_phase2_context_image_cropped_pil`** in **`context_shape_task.py`**.
 - **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — in Phase 1/3: **same** **`ShapeGrid_4x4_bmp.png`** appears full-screen (**`PHASE_GRID_PREVIEW_SEC`**), miniature in bottom-right (**same position/size as sorting**), fixation cross (**`PHASE_FIXATION_CROSS_SEC`**) plus miniature again, **`phase*_instruction2c`** with miniature again, then per-trial previews and click-to-place (rebuild composite with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order).
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
@@ -45,13 +46,13 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 
 | Step | Duration | Content |
 |------|----------|---------|
-| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three objects overview |
-| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`) |
+| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three shapes overview + subtitle **"Watch how we sort these shapes."** |
+| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`); subtitles **"First let's place…"** etc. (**`script.md`**) |
 | 3 | **6** s total | Red circle: center then beside square (`TUTORIAL_FB_CLICK_*`; same durations as step 2) |
 | 4 | **6** s total | Green circle: center then right target (`TUTORIAL_FB_CLICK_*`; same durations as step 2) |
-| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately) |
-| 5b | **5.5** s | "Not a line/spectrum" |
-| 6 | **8.5** s | Upper: **"A group need not pack tight—spread is OK."** Lower: **"Click to place — Enter submits each placement."** |
+| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately); subtitle **"See how we ended up sorting by color…"** (**`script.md`**) |
+| 5b | **5.5** s | Subtitle **"We created groups, not a spectrum - nearby objects share a group."** |
+| 6 | **8.5** s | Upper: **"A group does not have to pack tight— a large spread is OK."** Lower: **"Click to place — Enter submits each placement."** |
 
 ### Phase 1
 
@@ -67,14 +68,14 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Event | Duration |
 |-------|----------|
 | Fixation | `PHASE2_TUTORIAL_FIXATION_SEC` (2 s); main trials remain `PHASE2_FIXATION_PRE_TRIAL_SEC` |
-| Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC` |
+| Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC`; **same context framing as trials** (fixed frame, center cover crop) |
 | Task object (blue circle) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Black dot + label (PLANET) | `PHASE2_TUTORIAL_REDDOT_SEC` (3.5 s); main trials: `PHASE2_REDDOT_DURATION_SEC` (**immediately** after circle) |
 | Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Task object 2 | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Black dot 2 + label (BALL) | `PHASE2_TUTORIAL_REDDOT_SEC` |
 | Question (SPACE \| CIRCUS static) | **3** s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`) |
-| Highlight + "You might select CIRCUS" | **2.5** s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
+| Highlight + subtitle **"e.g., CIRCUS"** | **2.5** s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
 | Post-blank | **4.5** s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
 
 ### Phase 2 Trials (per trial)
@@ -82,10 +83,10 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Event | Duration |
 |-------|----------|
 | Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` (0.5 s) |
-| Context 1 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Context 1 | 1 s (`PHASE2_SEGMENT_SEC`); fixed aspect frame, center **cover** crop (same size all trials) |
 | Task object | 1 s (`PHASE2_SEGMENT_SEC`); cue dot follows **without** intervening blank |
 | Cue dot (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
-| Context 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
+| Context 2 | 1 s (`PHASE2_SEGMENT_SEC`); same frame as context 1 |
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
 | Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
 | Question (**Better context?** — **LEFT** / **RIGHT** arrow selects **`context_1`** / **`context_2`** label vs left/right) | Participant-paced |
@@ -106,7 +107,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 |-------|----------|
 | Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
-| Instruction screens | Participant-paced (Enter to continue); **phase2_instr5** minimum `PHASE2_INSTR5_MIN_SEC` |
+| Instruction screens | Participant-paced (Enter to continue). **Phase 1:** **3** screens — **`phase1_questions`**, **`phase1_instr1`**, **`phase1_instr4`**. **Phase 2:** **6** screens ending with **`phase2_instr5`** (minimum `PHASE2_INSTR5_MIN_SEC`). **Phase 3:** **3** screens — **`phase3_questions`**, **`phase3_instr1`**, **`phase3_instr4`**. Verbatim text: **`script.md`**. Legacy TTL rows for removed screens: **`csv_documentation.md`**. |
 | Phase 2 before trials | "Questions? Enter to start." |
 | **Phase 1/3** pre-sort instruction **`phase*_instruction2c`** | Participant-paced; **miniature** grid bottom-right (same as trials) |
 
@@ -128,6 +129,7 @@ Phase 2 **tutorial** (not from CSV): `practice1.png`/`practice2.png`, circle dem
 
 - **Random/accidental quits:** ESC is not a global key (like Social Recognition Task). It only works during interactive screens (instructions, name entry, object placement, Phase 2 questions, debrief). During timed displays (grid, fixation, stimulus), ESC does nothing—reduces accidental quits from key repeat or stray keypresses. Command + Q will always kill the tasks. 
 - **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
-- **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.- **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
+- **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
+- **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.
 - **Mac `ObjCInstance` / NSTrackingArea crash:** If `visual.Window(...)` crashes at startup (`NSTrackingArea` has no attribute `type`), PsychoPy’s initial **`getActualFrameRate()`** path calls `flip()` and triggers a known pyglet/Cocoa interaction. The script passes **`checkTiming=False`** by default on macOS so startup frame calibration is skipped. Enable calibration with **`PSYCHOPY_CHECK_TIMING=1`** only if needed and stable. Separately during trials the script uses `time.sleep` instead of `core.wait` on macOS where the same ObjC bug can occur.
-- **Mac Enter/keys not working:** On macOS, the script disables PsychoPy's hardware keyboard backend for **Enter-to-continue** screens (known to freeze); those use `event.getKeys` with normalization. **Participant id** uses a **fixed `keyList`** (letters, digits, backspace, return) and redraws every frame. Ensure the PsychoPy window has focus; if the macOS input source is non–US English, test that expected characters appear.
+- **Mac Enter/keys not working:** On macOS, the script disables PsychoPy's hardware keyboard backend for **Enter-to-continue** screens (known to freeze); those use `event.getKeys` with normalization. **Participant id** uses **unrestricted** **`event.getKeys()`** then filters keys in code (see **`get_participant_name`**). Ensure the PsychoPy window has focus—the script calls **`_ensure_psychopy_window_key_focus`** after the first name-screen draw (dummy window + macOS can steal focus).

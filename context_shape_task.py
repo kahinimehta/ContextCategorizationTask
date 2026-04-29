@@ -41,7 +41,9 @@ PHASE13_GRID_PREVIEW_MAX_EXTENT = 1.0  # was 0.8; doubling 1.6 would clip — us
 GRID_INSET_MAX_EXTENT = 0.40  # miniature bottom-right reference (doubled from 0.20)
 
 # Phase 2 — contexts use one shared scale (match each trial); trial BMP epochs doubled:
-PHASE2_CONTEXT_MAX_EXTENT = 1.0  # doubled from 0.5 (long edge = relative monitor height fraction)
+PHASE2_CONTEXT_MAX_EXTENT = 1.0  # frame height in height units (unchanged — keeps contexts large)
+# All Phase 2 context images share this fixed aspect box (cover crop, center); width = height × ratio.
+PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H = 16.0 / 9.0
 PHASE2_TRIAL_OBJECT_MAX_EXTENT = 0.40  # doubled from 0.2
 LOG_DIR = SCRIPT_DIR.parent / "LOG_FILES"
 PHASE2_TRIAL_ORDER_CSV = SCRIPT_DIR / "phase2_trial_order.csv"
@@ -108,6 +110,39 @@ def _psycho_win_check_timing():
     if v in ('0', 'false', 'no'):
         return False
     return sys.platform != 'darwin'
+
+
+def _ensure_psychopy_window_key_focus(win):
+    """Bring the experiment window forward so keyboard events are delivered to it.
+
+    With PSYCHOPY_DUMMY_WINDOW=1 a small Window is created first; on macOS that
+    window can keep keyboard focus while the fullscreen task runs, so
+    event.getKeys() on `win` stays empty until the user clicks the task display."""
+    try:
+        h = getattr(win, 'winHandle', None)
+        if h is None:
+            return
+        activate = getattr(h, 'activate', None)
+        if callable(activate):
+            activate()
+            return
+        switch_to = getattr(h, 'switch_to', None)
+        if callable(switch_to):
+            switch_to()
+    except Exception:
+        pass
+
+
+def _event_key_token(raw):
+    """Normalize psychopy.event.getKeys() entries to a key name string."""
+    if raw is None:
+        return ''
+    name = getattr(raw, 'name', None)
+    if name is not None:
+        return str(name).strip()
+    if isinstance(raw, str):
+        return raw.strip()
+    return str(raw).strip()
 
 
 def _wait(secs):
@@ -372,7 +407,11 @@ def get_participant_name(win):
     """Fullscreen text input like Social Recognition Task. Returns name or None if ESC."""
     _log_ttl_event("participant_name_onset")
     input_id = ""
-    key_list = ['return', 'backspace'] + [chr(i) for i in range(97, 123)] + [chr(i) for i in range(65, 91)] + [chr(i) for i in range(48, 58)]
+    # Characters we accept (same as historical key_list singles: a-z A-Z 0-9).
+    _allowed_chars = frozenset(
+        chr(i) for i in list(range(97, 123)) + list(range(65, 91)) + list(range(48, 58))
+    )
+    _return_names = frozenset(('return', 'enter', 'num_enter', 'kp_enter', 'num_return'))
     id_prompt = visual.TextStim(
         win,
         text="Enter your name",
@@ -391,26 +430,35 @@ def get_participant_name(win):
         win.flip()
 
     redraw()
+    _ensure_psychopy_window_key_focus(win)
     event.clearEvents()
 
     while True:
+        # Do NOT use event.getKeys(keyList=...): macOS/PsychoPy often emits 'enter' / 'num_enter' vs 'return';
+        # a restrictive keyList drops ALL keys so nothing registers. Poll unrestricted, filter here.
         try:
-            keys = event.getKeys(keyList=key_list + ['escape'], timeStamped=False)
+            keys = event.getKeys(timeStamped=False)
         except (AttributeError, RuntimeError):
             keys = []
-        if keys:
-            if 'escape' in keys:
+        for raw in keys:
+            key = _event_key_token(raw)
+            if not key:
+                continue
+            low = key.lower()
+            if low == 'escape':
                 _log_ttl_event("escape_pressed", trial_info="participant_name")
                 core.quit()
-            key = keys[0]
-            if key == 'return':
+            if low in _return_names:
                 if input_id.strip():
                     _log_ttl_event("participant_name_offset")
                     return input_id.strip() or 'anonymous'
-            elif key == 'backspace':
+                continue
+            if low == 'backspace':
                 input_id = input_id[:-1] if input_id else ""
-            elif len(key) == 1:
-                input_id += key
+                continue
+            if len(key) == 1 and key in _allowed_chars:
+                if len(input_id) < 127:
+                    input_id += key
         redraw()
         _wait(0.016)
 
@@ -476,6 +524,55 @@ def _image_size_height_units(path_str, max_extent):
     if ar >= 1.0:
         return (float(max_extent), float(max_extent) / ar)
     return (float(max_extent) * ar, float(max_extent))
+
+
+# Phase 2 context display: fixed on-screen rectangle; images are center-cropped (cover) to match.
+_phase2_context_cover_cache: dict[tuple[str, int, int], object] = {}
+
+
+def _phase2_context_frame_size_height_units():
+    """Fixed (width, height) in `units='height'` for every Phase 2 context image."""
+    h = float(PHASE2_CONTEXT_MAX_EXTENT)
+    w = h * float(PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H)
+    return (w, h)
+
+
+def _phase2_context_image_cropped_pil(win, path_str):
+    """Scale + center-crop to the Phase 2 frame in pixels (object-fit: cover); cached."""
+    from PIL import Image
+
+    w_u, h_u = _phase2_context_frame_size_height_units()
+    win_h = max(1, int(win.size[1]))
+    out_w = max(2, int(round(w_u * win_h)))
+    out_h = max(2, int(round(h_u * win_h)))
+    canon = os.path.abspath(os.path.expanduser(str(path_str)))
+    key = (canon, out_w, out_h)
+    hit = _phase2_context_cover_cache.get(key)
+    if hit is not None:
+        return hit
+    try:
+        im = Image.open(canon)
+        if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
+            im = im.convert('RGBA')
+            bg = Image.new('RGB', im.size, (255, 255, 255))
+            bg.paste(im, mask=im.split()[3])
+            im = bg
+        else:
+            im = im.convert('RGB')
+        iw, ih = im.size
+        if iw <= 0 or ih <= 0:
+            raise ValueError('empty image')
+        scale = max(out_w / float(iw), out_h / float(ih))
+        nw = max(1, int(round(iw * scale)))
+        nh = max(1, int(round(ih * scale)))
+        im = im.resize((nw, nh), Image.Resampling.LANCZOS)
+        left = (nw - out_w) // 2
+        top = (nh - out_h) // 2
+        out = im.crop((left, top, left + out_w, top + out_h))
+    except Exception:
+        out = Image.new('RGB', (out_w, out_h), color=(245, 245, 245))
+    _phase2_context_cover_cache[key] = out
+    return out
 
 
 def _pixel_thumbnail_size(iw, ih, max_px):
@@ -760,7 +857,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.setPos((-0.35, 0))
         circ_red.setPos((0, 0))
         circ_green.setPos((0.35, 0))
-        sub1 = visual.TextStim(win, text="Sort these—how? ", color='black', height=0.032, pos=(0, -0.42),
+        sub1 = visual.TextStim(win, text="Watch how we sort these shapes.", color='black', height=0.032, pos=(0, -0.42),
                               wrapWidth=1.3, units='height', alignText='center')
         sq.draw()
         circ_red.draw()
@@ -772,21 +869,21 @@ def run_tutorial_phase1(win, mouse, participant):
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        _show_click_place(win, sq, (0, 0), sq_pos, "Red square—with the reds left.",
+        _show_click_place(win, sq, (0, 0), sq_pos, "First let's place the red square to the left.",
                           ttl_label="tutorial_fallback_step2")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
         # Step 3: Red circle joins red cluster beside square (square stays visible as anchor)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
         circ_red.setPos((0, 0))
-        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Red circle—next to the square.",
+        _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Let's group the red circle with the red square and place it to the left.",
                           anchors=[(sq, sq_pos)], ttl_label="tutorial_fallback_step3")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
         # Step 4: Green circle to right, separate color group (previous anchors visible)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
         circ_green.setPos((0, 0))
-        _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Green—away from reds (new color group).",
+        _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Let's place the green circle to the right (different group).",
                           anchors=[(sq, sq_pos), (circ_red, circ_red_pos)], ttl_label="tutorial_fallback_step4")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
@@ -804,7 +901,7 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_green.draw()
         group_circle_redshapes.draw()
         group_circle_green.draw()
-        sub_5a = visual.TextStim(win, text="We ended up sorting by color (but could have sorted by shape.)",
+        sub_5a = visual.TextStim(win, text="See how we ended up sorting by color (but could have sorted by shape?)",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
@@ -816,7 +913,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5b = visual.TextStim(win, text="Groups, not a line—near things share a group.",
+        sub_5b = visual.TextStim(win, text="We created groups, not a spectrum - nearby objects share a group.",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
@@ -828,7 +925,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5c = visual.TextStim(win, text="A group need not pack tight—spread is OK.",
+        sub_5c = visual.TextStim(win, text="A group does not have to pack tight— a large spread is OK.",
                                 color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
         sub_enter = visual.TextStim(win, text="Click to place — Enter submits each placement.",
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
@@ -839,7 +936,7 @@ def run_tutorial_phase1(win, mouse, participant):
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
-    trans = visual.TextStim(win, text="Your turn—same rules.", color='black', height=0.04, pos=(0, 0),
+    trans = visual.TextStim(win, text="Your turn to group some objects! Remember the same rules.", color='black', height=0.04, pos=(0, 0),
                            wrapWidth=1.2, units='height')
     return wait_for_continue(win, trans, "tutorial_transition")
 
@@ -940,14 +1037,13 @@ def run_phase2_tutorial(win, mouse, participant):
         return False
 
     p1, p2 = get_practice_context_paths()
-    circ = visual.Circle(win, radius=0.4, fillColor='blue', lineColor=None)
+    circ = visual.Circle(win, radius=0.2, fillColor='blue', lineColor=None)
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
     blank = visual.Rect(win, width=3, height=3, fillColor='white', lineColor=None, pos=(0, 0), units='height')
     dot = visual.Circle(win, radius=0.006, fillColor='black', lineColor=None, pos=(0, 0))
-    pr1 = _image_size_height_units(p1, PHASE2_CONTEXT_MAX_EXTENT)
-    pr2 = _image_size_height_units(p2, PHASE2_CONTEXT_MAX_EXTENT)
-    img1 = visual.ImageStim(win, image=p1, units='height', size=pr1)
-    img2 = visual.ImageStim(win, image=p2, units='height', size=pr2)
+    ctx_sz = _phase2_context_frame_size_height_units()
+    img1 = visual.ImageStim(win, image=_phase2_context_image_cropped_pil(win, p1), units='height', size=ctx_sz)
+    img2 = visual.ImageStim(win, image=_phase2_context_image_cropped_pil(win, p2), units='height', size=ctx_sz)
 
     # Fixation (longer than main trials — training demo pacing)
     _log_ttl_event("phase2_tutorial_fixation_onset")
@@ -1082,13 +1178,18 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(PHASE2_FIXATION_PRE_TRIAL_SEC)
         _log_ttl_event("phase2_fixation_offset", trial_info=f"trial={t_idx+1}")
 
+        ctx_sz = _phase2_context_frame_size_height_units()
         ctx1 = visual.ImageStim(
-            win, image=trial['context_1'], units='height',
-            size=_image_size_height_units(trial['context_1'], PHASE2_CONTEXT_MAX_EXTENT),
+            win,
+            image=_phase2_context_image_cropped_pil(win, trial['context_1']),
+            units='height',
+            size=ctx_sz,
         )
         ctx2 = visual.ImageStim(
-            win, image=trial['context_2'], units='height',
-            size=_image_size_height_units(trial['context_2'], PHASE2_CONTEXT_MAX_EXTENT),
+            win,
+            image=_phase2_context_image_cropped_pil(win, trial['context_2']),
+            units='height',
+            size=ctx_sz,
         )
         shape_img = visual.ImageStim(
             win,
@@ -1497,11 +1598,11 @@ def main():
 
     # Phase 1 — split instructions (max 2 sentences per screen)
     p1_screens = [
-        ("Questions? Ask now.", "phase1_questions", 0),
-        ("Sort objects—all on screen first.", "phase1_instr1", 0),
-        ("Place one at a time (same as demo).", "phase1_instr2", 0),
-        ("Group by proximity—not along a spectrum.", "phase1_instr3", 0),
-        ("Use as many groups as you want.", "phase1_instr4", 0),  # no min—reduces perceived Enter lag
+        ("Ask the experimenter if you have any questions!", "phase1_questions", 0),
+        ("You will now sort some objects.", "phase1_instr1", 0),
+        # ("Place one at a time (same as demo).", "phase1_instr2", 0),
+        # ("Group by proximity—not along a spectrum.", "phase1_instr3", 0),
+        ("Use as many groups as you want, and group objects however feels intuitive.", "phase1_instr4", 0),  # no min—reduces perceived Enter lag
     ]
     for text, label, min_sec in p1_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1512,7 +1613,7 @@ def main():
 
     # Before grid: 16 shapes, no need to memorize
     p1_before_grid = [
-        ("16 objects next — reference only; don't memorize.", "phase1_before_grid", 0), 
+        ("You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize.", "phase1_before_grid", 0), 
     ]
     for text, label, _ in p1_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1547,7 +1648,7 @@ def main():
     del grid_inset_ref
 
     p1_instr2_screens = [
-        ("Click to place — Enter locks. Mini-grid bottom-right stays. Help? Ask.", "phase1_instruction2c", 0),
+        ("Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!", "phase1_instruction2c", 0),
     ]
     for text, label, _ in p1_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1572,13 +1673,12 @@ def main():
 
     # Phase 2 — split instructions (max 2 sentences per screen), explicit explanation
     p2_screens = [
-        ("Questions? Ask now.", "phase2_questions", 0),
-        ("Each object paired with two contexts.", "phase2_instr1", 0),
-        ("Trial: scene → object → dot.", "phase2_instr2", 0),
-        ("On the dot: say a label aloud. ←/→ chooses fit — speak each trial.", "phase2_instr2b", 0),
-        ("Recorded — demo runs first.", "phase2_instr3", 0),
-        ("Reuse OK; vary when possible.", "phase2_instr4", 0),
-        ("Watch demo next.", "phase2_instr5", PHASE2_INSTR5_MIN_SEC),
+        ("Ask the experimenter if you have any questions!", "phase2_questions", 0),
+        ("For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts.", "phase2_instr1", 0),
+        ("You will see: a context → object → dot.", "phase2_instr2", 0),
+        ("When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best.", "phase2_instr2b", 0),
+        ("The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers.", "phase2_instr3", 0),
+        ("Watch this demo before you start the task!", "phase2_instr5", PHASE2_INSTR5_MIN_SEC),
     ]
     for text, label, min_sec in p2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1611,11 +1711,9 @@ def main():
 
     # Phase 3 — split instructions (max 2 sentences per screen), similar structure to Phase 1
     p3_screens = [
-        ("Questions? Enter when ready.", "phase3_questions", 0),
-        ("Sort again — like Phase 1. See all objects first.", "phase3_instr1", 0),
-        ("Place one at a time (same as earlier).", "phase3_instr2", 0),
-        ("Groups by proximity — not along a spectrum.", "phase3_instr3", 0),
-        ("Any intuitive grouping counts.", "phase3_instr4", 0),
+        ("Ask the experimenter if you have any questions!", "phase3_questions", 0),
+        ("Now you will sort the objects again — like you did right in the beginning. See all the objects first.", "phase3_instr1", 0),
+        ("Use whatever grouping method feels intuitive to you.", "phase3_instr4", 0),
     ]
     gc.collect()  # free Phase 2 memory before Phase 3 task
     for text, label, _ in p3_screens:
@@ -1627,7 +1725,7 @@ def main():
 
     # Before grid: 16 shapes, for context
     p3_before_grid = [
-        ("Same rule: 16 objects — reference grid only.", "phase3_before_grid", 0),
+        ("You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize.", "phase3_before_grid", 0),
     ]
     for text, label, _ in p3_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1662,7 +1760,7 @@ def main():
     del grid_inset_ref
 
     p3_instr2_screens = [
-        ("Click to place — Enter locks. Mini-grid bottom-right stays. Help? Ask.", "phase3_instruction2c", 0),
+        ("As before, sort the objects. Click to place — Enter locks.", "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')

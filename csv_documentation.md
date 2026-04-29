@@ -4,6 +4,8 @@ Definitions for **`ttl_log_*`** (columns below; mapping table follows) plus **`p
 
 **Elsewhere:** run sheet (**`script.md`**); stimuli + timings + **`phase2_trial_order.csv`** (**`TASK_DESCRIPTION.md`**); repo bootstrap / example filenames (**`README.md`**).
 
+Instruction-screen **TTL** names that no longer run in current **`main()`** (e.g. **`phase1_instr2`**, **`phase2_instr4`**) remain in the mapping table as **legacy** for older logs — see the **Historical** note below the preamble.
+
 ## TTL Log (ttl_log_{participant}_{datetime}.csv)
 
 Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs. The file is initially created as `ttl_log_{datetime}.csv` (before participant name is known), then renamed to include the participant at task end.
@@ -23,7 +25,7 @@ For **fixed-duration** segments, `*_onset` fires immediately **before** the firs
 
 ---
 
-**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted).
+**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). Older runs may also list **`phase1_instr2_*`**, **`phase1_instr3_*`**, **`phase2_instr4_*`**, **`phase3_instr2_*`**, **`phase3_instr3_*`** (extra instruction screens; **not emitted** in current `context_shape_task.py` `main()`).
 
 ## TTL Trigger Mapping
 
@@ -31,7 +33,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 
 | Trigger code | Phase | Description |
 |--------------|-------|-------------|
-| `participant_name_onset` | — | Name screen: instruction **Enter your name** + centered entry (classic `event.getKeys` + `key_list` in code) |
+| `participant_name_onset` | — | Name screen: **Enter your name** + centered entry; **`event.getKeys()`** unrestricted poll, then in-code filter (**alphanumeric**, **backspace**, **return** / **enter** / numpad Enter, **escape**); see **`_event_key_token`** in code |
 | `participant_name_offset` | — | Participant pressed Enter on name |
 | *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
@@ -55,32 +57,32 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `tutorial_fallback_step4_center_offset` | — | Step 4: center epoch ended |
 | `tutorial_fallback_step4_target_onset` | — | Step 4: green circle at **right** target (`TUTORIAL_FB_CLICK_TARGET_SEC`) — separate **color** from reds |
 | `tutorial_fallback_step4_target_offset` | — | Step 4: target epoch ended |
-| `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn—same rules."** appeared |
+| `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn to group some objects! Remember the same rules."** appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
 | `tutorial_transition_offset` | — | Screen transition |
-| `phase1_questions_onset` | 1 | Phase 1 first instruction: "Questions? Ask now." |
+| `phase1_questions_onset` | 1 | **"Ask the experimenter if you have any questions!"** |
 | `phase1_questions_enter` | 1 | Enter pressed |
 | `phase1_questions_offset` | 1 | Screen transition |
-| `phase1_instr1_onset` | 1 | **"Sort objects—all on screen first."** |
+| `phase1_instr1_onset` | 1 | **"You will now sort some objects."** |
 | `phase1_instr1_enter` | 1 | Enter pressed |
 | `phase1_instr1_offset` | 1 | Screen transition |
-| `phase1_instr2_onset` | 1 | **"Place one at a time (same as demo)."** |
-| `phase1_instr2_enter` | 1 | Enter pressed |
-| `phase1_instr2_offset` | 1 | Screen transition |
-| `phase1_instr3_onset` | 1 | **"Group by proximity—not along a spectrum."** |
-| `phase1_instr3_enter` | 1 | Enter pressed |
-| `phase1_instr3_offset` | 1 | Screen transition |
-| `phase1_instr4_onset` | 1 | **"Use as many groups as you want."** |
+| `phase1_instr2_onset` | 1 | Legacy — **not emitted** (old **"Place one at a time…"** screen removed from `main()`) |
+| `phase1_instr2_enter` | 1 | Legacy — **not emitted** |
+| `phase1_instr2_offset` | 1 | Legacy — **not emitted** |
+| `phase1_instr3_onset` | 1 | Legacy — **not emitted** (old **"Group by proximity…"** screen removed) |
+| `phase1_instr3_enter` | 1 | Legacy — **not emitted** |
+| `phase1_instr3_offset` | 1 | Legacy — **not emitted** |
+| `phase1_instr4_onset` | 1 | **"Use as many groups as you want, and group objects however feels intuitive."** |
 | `phase1_instr4_enter` | 1 | Enter pressed |
 | `phase1_instr4_offset` | 1 | Screen transition |
-| `phase1_before_grid_onset` | 1 | **"16 objects next — reference only; don't memorize."** |
+| `phase1_before_grid_onset` | 1 | **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** |
 | `phase1_before_grid_enter` | 1 | Enter pressed |
 | `phase1_before_grid_offset` | 1 | Screen transition |
 | `phase1_grid_onset` | 1 | Object grid display started |
 | `phase1_grid_offset` | 1 | Object grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2c_onset` | 1 | **"Click to place — Enter locks. Mini-grid bottom-right stays. Help? Ask."** (with miniature grid inset) |
+| `phase1_instruction2c_onset` | 1 | **"Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!"** (with miniature grid inset) |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
 | `phase1_complete` | 1 | Phase 1 drag task finished (all objects placed) |
@@ -88,25 +90,25 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_stimulus_offset` | 1 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
 | `phase1_click_place` | 1 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
-| `phase2_questions_onset` | 2 | Phase 2 first instruction: **"Questions? Ask now."** |
+| `phase2_questions_onset` | 2 | **"Ask the experimenter if you have any questions!"** |
 | `phase2_questions_enter` | 2 | Enter pressed |
 | `phase2_questions_offset` | 2 | Screen transition |
-| `phase2_instr1_onset` | 2 | **"Each object paired with two contexts."** |
+| `phase2_instr1_onset` | 2 | **"For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts."** |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | **"Trial: scene → object → dot."** |
+| `phase2_instr2_onset` | 2 | **"You will see: a context → object → dot."** |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
-| `phase2_instr2b_onset` | 2 | **"On the dot: say a label aloud. ←/→ chooses fit — speak each trial."** |
+| `phase2_instr2b_onset` | 2 | **"When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best."** |
 | `phase2_instr2b_enter` | 2 | Enter pressed |
 | `phase2_instr2b_offset` | 2 | Screen transition |
-| `phase2_instr3_onset` | 2 | **"Recorded — demo runs first."** |
+| `phase2_instr3_onset` | 2 | **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
-| `phase2_instr4_onset` | 2 | **"Reuse OK; vary when possible."** |
-| `phase2_instr4_enter` | 2 | Enter pressed |
-| `phase2_instr4_offset` | 2 | Screen transition |
-| `phase2_instr5_onset` | 2 | **"Watch demo next."** (min display `PHASE2_INSTR5_MIN_SEC`, 5 s) |
+| `phase2_instr4_onset` | 2 | Legacy — **not emitted** (old **"Reuse OK…"** screen removed; content folded into **`phase2_instr3`**) |
+| `phase2_instr4_enter` | 2 | Legacy — **not emitted** |
+| `phase2_instr4_offset` | 2 | Legacy — **not emitted** |
+| `phase2_instr5_onset` | 2 | **"Watch this demo before you start the task!"** (min display `PHASE2_INSTR5_MIN_SEC`, 5 s) |
 | `phase2_instr5_enter` | 2 | Enter pressed |
 | `phase2_instr5_offset` | 2 | Screen transition |
 | `phase2_tutorial_intro_onset` | 2 | Phase 2 tutorial intro: **"Space scene → circle → circus scene. Name the object aloud; then we choose which fits."** |
@@ -170,29 +172,29 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_break_onset` | 2 | **"Take a break!"** + progress bar (trial_info on **onset** only: **after_trial** = 0-based index of next trial, **total_trials** = N; first break at **after_trial=16** for 64 trials) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
-| `phase3_questions_onset` | 3 | **"Questions? Enter when ready."** |
+| `phase3_questions_onset` | 3 | **"Ask the experimenter if you have any questions!"** |
 | `phase3_questions_enter` | 3 | Enter pressed |
 | `phase3_questions_offset` | 3 | Screen transition |
-| `phase3_instr1_onset` | 3 | **"Sort again — like Phase 1. See all objects first."** |
+| `phase3_instr1_onset` | 3 | **"Now you will sort the objects again — like you did right in the beginning. See all the objects first."** |
 | `phase3_instr1_enter` | 3 | Enter pressed |
 | `phase3_instr1_offset` | 3 | Screen transition |
-| `phase3_instr2_onset` | 3 | **"Place one at a time (same as earlier)."** |
-| `phase3_instr2_enter` | 3 | Enter pressed |
-| `phase3_instr2_offset` | 3 | Screen transition |
-| `phase3_instr3_onset` | 3 | **"Groups by proximity — not along a spectrum."** |
-| `phase3_instr3_enter` | 3 | Enter pressed |
-| `phase3_instr3_offset` | 3 | Screen transition |
-| `phase3_instr4_onset` | 3 | **"Any intuitive grouping counts."** |
+| `phase3_instr2_onset` | 3 | Legacy — **not emitted** |
+| `phase3_instr2_enter` | 3 | Legacy — **not emitted** |
+| `phase3_instr2_offset` | 3 | Legacy — **not emitted** |
+| `phase3_instr3_onset` | 3 | Legacy — **not emitted** |
+| `phase3_instr3_enter` | 3 | Legacy — **not emitted** |
+| `phase3_instr3_offset` | 3 | Legacy — **not emitted** |
+| `phase3_instr4_onset` | 3 | **"Use whatever grouping method feels intuitive to you."** |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
-| `phase3_before_grid_onset` | 3 | **"Same rule: 16 objects — reference grid only."** |
+| `phase3_before_grid_onset` | 3 | **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** |
 | `phase3_before_grid_enter` | 3 | Enter pressed |
 | `phase3_before_grid_offset` | 3 | Screen transition |
 | `phase3_grid_onset` | 3 | Object grid display started |
 | `phase3_grid_offset` | 3 | Object grid display ended |
 | `phase3_fixation_onset` | 3 | Fixation cross onset |
 | `phase3_fixation_offset` | 3 | Fixation cross ended |
-| `phase3_instruction2c_onset` | 3 | Same as Phase 1 **phase1_instruction2c**: **"Click to place — Enter locks…"** (mini-grid bottom-right) |
+| `phase3_instruction2c_onset` | 3 | **"As before, sort the objects. Click to place — Enter locks."** (mini-grid bottom-right) |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Isolation preview: centered object (BMP) + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp) |

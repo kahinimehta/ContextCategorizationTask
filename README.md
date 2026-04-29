@@ -25,7 +25,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Task design (summary)
 
 - **Phase 1:** 16 `.bmp` objects (from `STIMULI/shapes/`), random order (alphabetically first task stimulus not first), full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
-- **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials).
+- **Phase 2:** Fixed **`phase2_trial_order.csv`** order; mandatory breaks after every **16** trials (**16**, **32**, **48** for the shipped **64** trials). Context images use a **fixed on-screen frame** with **center cover** crop (same size every trial); constants **`PHASE2_CONTEXT_MAX_EXTENT`**, **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** in **`context_shape_task.py`** / **`TASK_DESCRIPTION.md`**.
 - **Phase 3:** Same 16 objects as Phase 1, new random order (must differ from Phase 1); same **bottom-right miniature grid** behavior as Phase 1.
 
 ### Documentation
@@ -33,8 +33,8 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 | File | Contents |
 |------|----------|
 | **`script.md`** | Verbatim on-screen wording, phase sequence, tutorial + **`tutorial_fallback_*`** TTL names |
-| **`TASK_DESCRIPTION.md`** | Timing constants (`*_SEC`), stimuli paths (including **white-matte strip** for task `.bmp`: **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**), **`phase2_trial_order.csv`** spec, troubleshooting |
-| **`csv_documentation.md`** | Full **`ttl_log_*`** trigger table (**video vs.** **color-sort fallback**) plus **`*.csv`** column definitions |
+| **`TASK_DESCRIPTION.md`** | Timing constants (`*_SEC`), stimuli paths, **Phase 2 context framing**, **`phase2_trial_order.csv`** spec, troubleshooting |
+| **`csv_documentation.md`** | Full **`ttl_log_*`** trigger table (includes **legacy** rows for old instruction screens) plus **`*.csv`** column definitions |
 
 ### Stimuli
 
@@ -78,7 +78,7 @@ Live runs write the same filenames under `../LOG_FILES/`.
 1. PsychoPy (Anaconda) environment
 2. `python context_shape_task.py` from the task folder
 3. Participant name → Enter (**`test`** in name → no CSV/PNG saves; TTL log removed)
-4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (demo groups **red** objects together vs **green**, with subtitle *"We ended up sorting by color (but could have sorted by shape.)"*)
+4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (color-sort demo; subtitles match **`script.md`** / timing **`TASK_DESCRIPTION.md`**)
 
 ## Troubleshooting
 
