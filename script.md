@@ -82,7 +82,7 @@
 
 ### Phase 2 — Context incorporation
 
-Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = first label / **`context_1`**, right = **`context_2`**) · on-screen prompt **"Which context fits best? Use the left/right keys to choose."** · hint strip **"← or → arrow"**.
+Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = first label / **`context_1`**, right = **`context_2`**). On-screen prompt only: **"Which context fits best? Use the left/right keys to choose."** (no separate gray arrow subtitle in the current build).
 
 **Instructions (5 screens)** before the Phase 2 demo:
 1. "Ask the experimenter if you have any questions!" · **`phase2_questions`**
@@ -99,7 +99,7 @@ Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = 
 
 **Before trials:** "Ask the experimenter if you have any questions — Enter to start."
 
-**Task:** Timed context / object / **black** cue epochs, then **same choice screen** (**←**/**→**) + **"← or → arrow"** hint; **break** every **16** trials (**`phase2_break`**). Durations / framing: **`TASK_DESCRIPTION.md`**.
+**Task:** Timed context / object / **black** cue epochs, then **choice screen** with the same main prompt; **←**/**`→`** register the response; **break** every **16** trials (**`phase2_break`**). Durations / framing: **`TASK_DESCRIPTION.md`**.
 
 **TTL (trials):** **`phase2_fixation_*`** … **`phase2_complete`** — **`csv_documentation.md`**.
 
@@ -129,7 +129,9 @@ Experimenter: cue speech on dot; remind **←** / **→** on choice screens.
 2. "Did the contexts you saw change your grouping the second time?"
 3. "Did you see the objects differently the second time grouping them than you did when you first saw them?"
 
-**TTL / CSV:** Phase 3 instructions through debrief — **`csv_documentation.md`**.
+**TTL:** **`phase3_debrief_onset`** → **`phase3_debrief_response`** → **`phase3_debrief_offset`** per question (3×); **`trial_info`** on response includes **`answer=Yes|No`** and **`key=left|right`**. **CSV:** **`debrief_*.csv`** (`response_key`, etc.) — **`csv_documentation.md`**.
+
+**Closing log order (after last debrief offset):** **`summary_saved`** → **`experiment_end`** → **`thanks_onset`** / **`thanks_offset`** — **`csv_documentation.md`**.
 
 ---
 

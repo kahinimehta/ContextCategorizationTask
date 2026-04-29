@@ -679,8 +679,10 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080), max_exten
     `units='height'` and `size=_image_size_height_units(path, max_extent)`, so edges/boundaries match
     the task (`DRAG_SORT_SHAPE_MAX_EXTENT` by default).
 
-    Coordinate mapping mirrors PsychoPy window space (norm + aspect correction); `win_size` must match
-    the actual run (passed from `win.size`).
+    Coordinate mapping matches PsychoPy `units='height'`: `event.Mouse._pix2windowUnits` uses pixels
+    from window centre divided by `win.size[1]`, so **x** is in ``[-(w/h)/2, +(w/h)/2]`` and **y** in
+    ``[-0.5, +0.5]`` (not ±w/h nor ±1). Older code mapped a doubled range and shrunk content to the
+    middle 50 % of the PNG (white borders). `win_size` must match the run (`win.size`).
     """
     try:
         from PIL import Image
@@ -688,8 +690,7 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080), max_exten
         return
     max_extent_height_units = max_extent_height_units if max_extent_height_units is not None else DRAG_SORT_SHAPE_MAX_EXTENT
     w, h = int(win_size[0]), int(win_size[1])
-    aspect = w / float(h)
-    # PsychoPy norm: y from -1 to 1 top→bottom inverted to image coords; x from -aspect to +aspect (see mouse.getPos)
+    # Height units: centred pix offset / win.size[1] → x_px = w/2 + x*h, y_pil = h/2 - y*h (PIL y down).
     img = Image.new('RGB', (w, h), color='white')
     # Longest side of each scaled BMP spans max_extent × window height in pixels — matches ImageStim in height units
     longest_side_px = max(1, int(round(max_extent_height_units * h)))
@@ -699,8 +700,8 @@ def _save_placement_image(results, output_path, win_size=(1920, 1080), max_exten
             y = float(r.get('final_y', 0))
         except (TypeError, ValueError):
             continue
-        x_px = int(round((x / aspect + 1.0) / 2.0 * w))
-        y_px = int(round((1.0 - y) / 2.0 * h))
+        x_px = int(round(w / 2.0 + x * h))
+        y_px = int(round(h / 2.0 - y * h))
         try:
             shape_img = _pil_master_task_shape_white_stripped(r['shape_path'])
             iw, ih = shape_img.size

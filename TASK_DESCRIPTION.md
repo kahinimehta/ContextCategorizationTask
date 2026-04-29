@@ -89,7 +89,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Context 2 | 1 s (`PHASE2_SEGMENT_SEC`); same square as context 1 |
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
 | Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
-| Question | Participant-paced; same prompt and **← / →** mapping as **`script.md`** (Phase 2) |
+| Question | Participant-paced; main prompt **"Which context fits best? Use the left/right keys to choose."** and **← / →** mapping as **`script.md`** / **`csv_documentation.md`** (no separate gray arrow subtitle). |
 | ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
 
 ### Phase 3

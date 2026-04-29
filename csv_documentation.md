@@ -29,7 +29,9 @@ For **fixed-duration** segments, `*_onset` fires immediately **before** the firs
 
 ## TTL Trigger Mapping
 
-Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3: **Click** to move, **Enter** to submit. Each click logged as `click_place` (trial_info: click=N).
+Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3: **Click** to move, **Enter** to submit. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
+
+**Session end (successful run):** after the last **`phase3_debrief_offset`**, events are **`summary_saved`** → **`experiment_end`** → **`thanks_onset`** → **`thanks_offset`** (then the TTL file is closed/renamed with `ttl_log_{participant}_{datetime}.csv`).
 
 | Trigger code | Phase | Description |
 |--------------|-------|-------------|
@@ -37,7 +39,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `participant_name_offset` | — | Participant pressed Enter on name |
 | *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
-| `experiment_end` | — | Experiment ended (trial_info: participant=…) |
+| `experiment_end` | — | Experiment ended (**after** **`summary_saved`**; trial_info: participant=…) |
 | `welcome_onset` | — | Welcome: **"Welcome to your task! — Hit Enter to watch the tutorial video."** |
 | `welcome_enter` | — | Enter pressed |
 | `welcome_offset` | — | Screen transition |
@@ -166,7 +168,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_blank2_offset` | 2 | Legacy — **not emitted** |
 | `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” |
 | `phase2_reddot2_offset` | 2 | Cue dot 2 offset |
-| `phase2_question_onset` | 2 | Question screen — **"Which context fits best? Use the left/right keys to choose."** with left/right category buttons (**`trial_info`**: full line above plus **`cat_a=… cat_b=…`**) |
+| `phase2_question_onset` | 2 | Question screen — **"Which context fits best? Use the left/right keys to choose."** with left/right category buttons (**`trial_info`**: full line above plus **`cat_a=… cat_b=…`**). No separate gray “← or →” subtitle in the current UI (only the main prompt). |
 | `phase2_response` | 2 | Arrow choice (**`trial_info`**: full line plus **`response=…`**) |
 | `phase2_question_offset` | 2 | Question screen ended (same base **`trial_info`** as fixation) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (same base **`trial_info`**) |
@@ -210,10 +212,10 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each object (trial_info: filename trial=N) |
-| `summary_saved` | — | Summary CSV written (trial_info: filename) |
+| `summary_saved` | — | Summary CSV written (**after** last **`phase3_debrief_*`**, **before** **`experiment_end`**; trial_info: filename) |
 | `thanks_onset` | — | Thank-you screen appeared |
 | `thanks_offset` | — | Thank-you screen ended |
-| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`** screens, or fixed strings e.g. **`participant_name`**, **`tutorial_video`**, **`phase2_tutorial_intro`**, **`phase1_instr1`** … **`phase1_instr3`**, **`phase3_instruction2c`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
+| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`**—e.g. **`welcome`**, **`tutorial_transition`**, **`phase1_questions`**, **`phase1_before_grid`**, **`phase1_instr1`** … **`phase1_instr3`**, **`phase2_questions`**, **`phase2_instr1`** … **`phase2_instr4`**, **`phase2_tutorial_intro`**, **`phase2_ready`**, **`phase2_before_trials`**, **`phase2_break`**, **`phase3_questions`**, **`phase3_instr1`** … **`phase3_instr2`**, **`phase3_before_grid`**, **`phase3_instruction2c`**—or fixed strings **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
 
 ---
 
@@ -263,7 +265,7 @@ Same structure as Phase 1 (including click_ttl = last click, all_click_ttl = all
 
 ## Placement Images (phase1_placements_*.png, phase3_placements_*.png)
 
-PNG images of final object placements at the end of Phase 1 and Phase 3. **White** canvas with each object drawn at its final (x, y) position (task objects use the same **white-matte strip** as on-screen; see **`OBJECT_WHITE_BG_STRIP_THRESHOLD`** in **`context_shape_task.py`**). Saved only for non-test participants.
+PNG images of final object placements at the end of Phase 1 and Phase 3. **White** canvas **matching the PsychoPy drawable** (`win.size`); each object drawn at the same **(x, y)** as logged (`units='height'`, consistent with `event.Mouse` / `ImageStim`). Task BMPs use the same **white-matte strip** as on-screen; see **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**. Saved only for non-test participants.
 
 ---
 
