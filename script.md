@@ -10,7 +10,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Participant Login
 
-**Display:** **"Enter your name."** — typed line with cursor underneath; **Enter** submits; **ESC** quits.
+**Display:** Instruction **Enter your name** (upper); centered typed characters + **`_`** cursor (**`id_prompt`** + **`input_display`** in code). **Enter** submits; **ESC** quits — classic **`key_list` + redraw-every-frame** participant loop.
 
 **TTL:** participant_name_onset, participant_name_offset
 
