@@ -1,6 +1,6 @@
 # Context Shape Task — Technical Description
 
-Canonical **`context_shape_task.py`** reference for **`*_SEC` timings**, stimulus paths, **`phase2_trial_order.csv`**, grid mapping, and **troubleshooting**. **On-screen wording** and step-by-step flow: **`script.md`**. **TTL / CSV columns:** **`csv_documentation.md`**.
+Canonical **`context_shape_task.py`** reference: **`*_SEC` timings**, stimulus paths, **`phase2_trial_order.csv`**, grid mapping, **troubleshooting**. **Verbatim screens + run order:** **`script.md`**. **TTL triggers + CSV schemas:** **`csv_documentation.md`**. **What files are written where:** **`README.md`**.
 
 ---
 
@@ -8,7 +8,7 @@ Canonical **`context_shape_task.py`** reference for **`*_SEC` timings**, stimulu
 
 PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Writes:** **`../LOG_FILES/`** — skipped if participant name contains **`test`** (including **`ttl_log_*`**).
+**Output directory / filenames / `test`:** **`README.md`**.
 
 ---
 
@@ -19,7 +19,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 - **Task objects (.bmp):** `STIMULI/shapes/*.bmp` — 16 stimuli are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major). At load, each **task** `.bmp` (not `ShapeGrid*` composites) has **near-white matte pixels** (R, G, B ≥ **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**, default **247**) **set to transparent** in PsychoPy; context PNGs and the grid composite are unchanged.
 - **Contexts:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
 - **Phase 2 context on-screen framing:** Every context image (tutorial + main trials) is drawn in a **fixed square** centered on screen in PsychoPy `units='height'`: side length **`PHASE2_CONTEXT_MAX_EXTENT`** (default **1.0**), with **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** default **1.0** (square). Source PNGs are **uniformly scaled** and **center-cropped** (object-fit **cover**) in Pillow so pixels keep aspect ratio inside that box — see **`_phase2_context_frame_size_height_units`** / **`_phase2_context_image_cropped_pil`** in **`context_shape_task.py`**.
-- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — Phase 1/3: fullscreen preview + bottom-right miniature through fixation, then instruction screens and sorting (**TTL labels:** **`script.md`** / **`csv_documentation.md`**). Rebuild composite: **`scripts/generate_shape_grid.py`** (cell order = sorted `*.bmp` order).
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — Phase 1/3: fullscreen preview + bottom-right miniature through fixation, instructions, and sorting. Regenerate if you change the task `.bmp` set so cell order matches **sorted** `*.bmp` (`ShapeGrid*` excluded); **no grid-builder script in repo**.
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
@@ -28,11 +28,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 - **Columns** (exact header order in the repo template): `trial_number`, `shape`, `shape_path`, `primary_context`, `secondary_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. **`primary_context` / `secondary_context`** design labels may also appear under legacy names `strong_context` / `neutral_context`.
 - **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`. The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`.
 - **What the code reads:** stimulus paths and `context1`/`context2` (A/B); `variant` plus primary/secondary labels are **logged only**. Presentation follows **`context*_image`** paths and button labels—not `variant`-driven branching.
-- **Output alignment:** `phase2_*.csv` rows match template rows in order (trial 1…N). **`fixation_onset_ttl` … `question_onset_ttl`** cells duplicate the **Unix onset times** logged in **`ttl_log_*`** (see **`csv_documentation.md`**).
-
-### TTL
-
-Hardware (**Cedrus** / parallel); **Darwin:** often log-only. **`reddot`** labels = black cue-dot epochs. **Video vs fallback** tutorial streams are mutually exclusive — event list: **`csv_documentation.md`**.
+- **Output alignment:** `phase2_*.csv` rows match template rows in order (trial 1…N). Onset columns mirror **`ttl_log_*`** (see **`csv_documentation.md`**).
 
 ---
 
@@ -89,7 +85,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Context 2 | 1 s (`PHASE2_SEGMENT_SEC`); same square as context 1 |
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
 | Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
-| Question | Participant-paced; main prompt **"Which context fits best? Use the left/right keys to choose."** and **← / →** mapping as **`script.md`** / **`csv_documentation.md`** (no separate gray arrow subtitle). |
+| Question | Participant-paced; prompt and keys — **`script.md`**; **TTL / RT** — **`csv_documentation.md`**. |
 | ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
 
 ### Phase 3
@@ -100,7 +96,6 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC`; cross + miniature bottom-right |
 | Task object display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block |
-| Debrief (3 questions, after Phase 3) | Participant-paced; **←** = Yes, **→** = No; on-screen **`USE THE ARROW KEYS TO ANSWER`**. See **`script.md`** / **`csv_documentation.md`**. |
 
 ### Other
 
@@ -108,7 +103,8 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 |-------|----------|
 | Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
-| Enter-to-continue instruction screens | Participant-paced; copy **`script.md`**, event labels **`csv_documentation.md`** |
+| Enter-to-continue instruction screens | Participant-paced; copy **`script.md`** |
+| Debrief (after Phase 3 sort) | Participant-paced; **`script.md`**; **`phase3_debrief_*`** in **`csv_documentation.md`** |
 
 ---
 
@@ -116,7 +112,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 
 | Phase | Selection | Ground truth / mapping |
 |-------|-----------|------------------------|
-| **1** | `random.shuffle(get_shape_paths())`; if first item is alphabetically first task shape (`ball_slope.bmp` default), rotate it to end | Clicks → `(x,y)`; row/col from index in sorted 4×4 list ( **`ShapeGrid_4x4_bmp.png`** order via `scripts/generate_shape_grid.py`). |
+| **1** | `random.shuffle(get_shape_paths())`; if first item is alphabetically first task shape (`ball_slope.bmp` default), rotate it to end | Clicks → `(x,y)`; row/col from index in sorted 4×4 list (same order as **`ShapeGrid_4x4_bmp.png`**). |
 | **2** | Fixed **`phase2_trial_order.csv`** order (**N** trial rows) | Paths from **`context*_image`**; **`context1`/`context2`** → buttons. **`variant`**: logged only (see **Phase 2 trial template**). |
 | **3** | `random.shuffle` until sequence ≠ Phase 1 order | Same (x,y)→cell mapping as Phase 1; Euclidean distances in **`summary`** CSV |
 

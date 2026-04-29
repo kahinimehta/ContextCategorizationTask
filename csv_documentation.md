@@ -6,20 +6,25 @@ Definitions for **`ttl_log_*`** (columns below; mapping table follows) plus **`p
 
 Instruction-screen **TTL** names that no longer run in current **`main()`** remain in the mapping table as **legacy** for older logs — see the **Historical** note below the preamble (e.g. **`phase1_instruction2b`**, **`phase1_instr4`**, **`phase2_instr2b`**, **`phase2_instr5`**, **`phase3_instr4`**).
 
-## TTL Log (ttl_log_{participant}_{datetime}.csv)
+## TTL Log (ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
-Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs. The file is initially created as `ttl_log_{datetime}.csv` (before participant name is known), then renamed to include the participant at task end.
+Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs. The file is initially created as **`ttl_log_{YYYYMMDD_HHMMSS}.csv`** (before participant name is known), then **renamed** to **`ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv`** at task end (non-test participants only).
 
 | Column | Type | Description |
 |--------|------|-------------|
 | `timestamp` | Float (Unix) | Time when TTL fired |
 | `trigger_code` | String | Event identifier (same as event_label unless overridden) |
 | `event_label` | String | Human-readable event name |
-| `trial_info` | String | Optional trial metadata (e.g., trial=3, shape=Shape_0_1.png) |
+| `trial_info` | String | Optional trial metadata (e.g., `trial=3 shape=ball_slope.bmp`) |
 
-**Event types**: See TTL Trigger Mapping below.
+**Event types:** Trigger mapping table below.
 
-For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 **recorded-trial** questions, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end). **Phase 2 tutorial:** **`phase2_tutorial_response`** fires at highlight onset (after **`phase2_tutorial_demo_select_onset`**), before **`phase2_tutorial_demo_select_offset`** and **`phase2_tutorial_question_offset`**.
+**Timing (summary):**
+- **Fixed-duration:** `*_onset` before the segment’s first `flip()`; `*_offset` after the last frame (`_wait` complete).
+- **`wait_for_continue`:** `{label}_onset` → `{label}_enter` (Enter) → `{label}_offset` (advance)—welcome, tutorial_transition, phase instructions, **`phase2_break`**, etc.
+- **Phase 2 recorded choice:** **`phase2_question_onset`** before the feedback loop; **`phase2_response`** immediately before **`phase2_question_offset`**; **`phase2_*.csv` `rt`** from the **first `flip()`** of the choice screen.
+- **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, `phase2_tutorial_question_preview_offset`) → **`phase2_tutorial_demo_select_*`**; **`phase2_tutorial_response`** at highlight onset (after **`phase2_tutorial_demo_select_onset`**).
+- **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
 **Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**animated color-sort**, **`trial_info: step=…`** on `tutorial_fallback_onset`).
 
@@ -31,7 +36,7 @@ For **fixed-duration** segments, `*_onset` fires immediately **before** the firs
 
 Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3: **Click** to move, **Enter** to submit. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
 
-**Session end (successful run):** after the last **`phase3_debrief_offset`**, events are **`summary_saved`** → **`experiment_end`** → **`thanks_onset`** → **`thanks_offset`** (then the TTL file is closed/renamed with `ttl_log_{participant}_{datetime}.csv`).
+**Session end (successful run):** after the last **`phase3_debrief_offset`**, events are **`summary_saved`** → **`experiment_end`** → **`thanks_onset`** → **`thanks_offset`** (then the TTL file is closed/renamed to **`ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv`**).
 
 | Trigger code | Phase | Description |
 |--------------|-------|-------------|
@@ -137,7 +142,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
 | `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + BALL cue (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended (`trial_info`: **`cue=circle_label_2`**) |
-| `phase2_tutorial_question_onset` | 2 | Tutorial choice screen: same main prompt as recorded trials (**"Which context fits best? Use the left/right keys to choose."**) + **SPACE** \| **CIRCUS** buttons (no gray **← or →** hint during the preview segment) |
+| `phase2_tutorial_question_onset` | 2 | Tutorial choice — preview segment begins: main prompt + **SPACE** \| **CIRCUS** (both light blue); first **`flip()`** follows, then **`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`** |
+| `phase2_tutorial_question_preview_offset` | 2 | End of timed preview (both buttons neutral); next event **`phase2_tutorial_demo_select_onset`** |
 | `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** |
 | `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
 | `phase2_tutorial_question_offset` | 2 | Tutorial question screen ended (after timed preview + highlight + **`phase2_tutorial_response`**) |
@@ -168,8 +174,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_blank2_offset` | 2 | Legacy — **not emitted** |
 | `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” |
 | `phase2_reddot2_offset` | 2 | Cue dot 2 offset |
-| `phase2_question_onset` | 2 | Question screen — **"Which context fits best? Use the left/right keys to choose."** with left/right category buttons (**`trial_info`**: full line above plus **`cat_a=… cat_b=…`**). No separate gray “← or →” subtitle in the current UI (only the main prompt). |
-| `phase2_response` | 2 | Arrow choice (**`trial_info`**: full line plus **`response=…`**) |
+| `phase2_question_onset` | 2 | Choice screen scheduled (**`trial_info`**: full trial line + **`cat_a=… cat_b=…`**). No gray “← or →” subtitle. **RT** in **`phase2_*.csv`** is measured from the **first `flip()`** showing the question (shortly after this log). |
+| `phase2_response` | 2 | Arrow choice (**`trial_info`**: full line + **`response=…`**) |
 | `phase2_question_offset` | 2 | Question screen ended (same base **`trial_info`** as fixation) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (same base **`trial_info`**) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
@@ -207,8 +213,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_click_place` | 3 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all objects placed) |
-| `phase3_debrief_onset` | 3 | Debrief question appeared (trial_info: question=1–3); order each question **onset** → **phase3_debrief_response** (arrow key) → **offset** |
-| `phase3_debrief_response` | 3 | Participant pressed ← (Yes) or → (No) (trial_info: `question=N answer=Yes|No key=left|right`). Logged 3×. |
+| `phase3_debrief_onset` | 3 | Debrief question **scheduled** (`trial_info: question=1–3`). First **`flip()`** (question + Yes/No + **USE THE ARROW KEYS TO ANSWER**) follows; **CSV `rt`** is from that first **`flip()`** to keypress. Order per question: **onset** → **response** → **offset** |
+| `phase3_debrief_response` | 3 | ← (Yes) or → (No) (`trial_info: question=N answer=Yes|No key=left|right`). Logged 3×. |
 | `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each object (trial_info: filename trial=N) |
@@ -219,9 +225,9 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 
 ---
 
-## Phase 1 CSV (phase1_{participant}_{datetime}.csv)
+## Phase 1 CSV (phase1_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
-Per-trial object data from Phase 1 (bottom-up grouping; **`shape`** in filenames / `trial_info` retains technical label).
+Per-trial object data from Phase 1 (bottom-up grouping). In **`ttl_log_*`**, **`phase1_stimulus_*`** / **`phase1_click_place`** / **`phase1_enter_submit`** use **`trial_info`** with **`shape=<filename>`** (the task **`.bmp`** basename).
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -237,7 +243,7 @@ Per-trial object data from Phase 1 (bottom-up grouping; **`shape`** in filenames
 
 ---
 
-## Phase 2 CSV (phase2_{participant}_{datetime}.csv)
+## Phase 2 CSV (phase2_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
 Per-trial (**`trial`** aligns with **`phase2_trial_order.csv`**). Template (**`phase2_trial_order.csv`**, **`PHASE2_CSV_REQUIRED`**) and **`stderr`** row-count banner: **`TASK_DESCRIPTION.md`** only.
 
@@ -251,25 +257,25 @@ Epoch **`_onset_ttl`** columns duplicate the **Unix timestamp** recorded in **`t
 | `context_2_path` | String | Full path to second context stimulus |
 | `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
 | `response` | String | Selected category (**uppercased**); **left arrow** = label on left (**`context_1`**), **right arrow** = label on right (**`context_2`**) |
-| `rt` | Float | Reaction time from question onset to arrow key press (seconds) |
+| `rt` | Float | Time from **first `flip()`** showing the choice screen to arrow key (seconds); aligns with RT **`Clock`** reset on that flip ( **`phase2_question_onset`** TTL may be a few ms earlier) |
 | `fixation_onset_ttl` … `question_onset_ttl` | Float | **Unix timestamp** at the matching **`phase2_*_onset`** in **`ttl_log_*`** (empty if missing) |
 | `response_ttl` | Float | Unix timestamp at **`phase2_response`** |
 
 ---
 
-## Phase 3 CSV (phase3_{participant}_{datetime}.csv)
+## Phase 3 CSV (phase3_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
 Same structure as Phase 1 (including click_ttl = last click, all_click_ttl = all clicks). Post-context re-grouping trials; object order is randomized differently from Phase 1.
 
 ---
 
-## Placement Images (phase1_placements_*.png, phase3_placements_*.png)
+## Placement Images (phase1_placements_{participant}_{YYYYMMDD_HHMMSS}.png, phase3_placements_{participant}_{YYYYMMDD_HHMMSS}.png)
 
 PNG images of final object placements at the end of Phase 1 and Phase 3. **White** canvas **matching the PsychoPy drawable** (`win.size`); each object drawn at the same **(x, y)** as logged (`units='height'`, consistent with `event.Mouse` / `ImageStim`). Task BMPs use the same **white-matte strip** as on-screen; see **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**. Saved only for non-test participants.
 
 ---
 
-## Debrief CSV (debrief_{participant}_{datetime}.csv)
+## Debrief CSV (debrief_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
 Post–Phase 3 questionnaire (3 questions). One row per question.
 
@@ -279,7 +285,7 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 | `question_text` | String | Full question text |
 | `answer` | String | Participant response: "Yes" or "No" |
 | `response_key` | String | Which key: `left` (← = Yes) or `right` (→ = No) |
-| `rt` | Float | Reaction time from question onset to arrow-key response (seconds) |
+| `rt` | Float | Time from **first `flip()`** showing the debrief screen to arrow key (seconds) |
 | `onset_ttl` | Float | TTL timestamp at question screen onset |
 | `response_ttl` | Float | TTL timestamp at arrow-key response |
 
@@ -290,7 +296,7 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 
 ---
 
-## Summary CSV (summary_{participant}_{datetime}.csv)
+## Summary CSV (summary_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
 Overall experiment summary.
 

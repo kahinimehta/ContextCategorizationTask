@@ -1194,6 +1194,7 @@ def run_phase2_tutorial(win, mouse, participant):
     txt_b.draw()
     win.flip()
     _wait(PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC)
+    _log_ttl_event("phase2_tutorial_question_preview_offset")
     # Highlight right button (second context) + subtitle, matching old “second image” demo
     _log_ttl_event("phase2_tutorial_demo_select_onset")
     btn_b_pressed = visual.Rect(win, width=0.26, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
@@ -1356,8 +1357,8 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         except Exception:
             pass
         rt_clock = core.Clock()
-        rt_clock.reset()
         response = None
+        first_question_frame = True
         while response is None:
             try:
                 keys = event.getKeys(timeStamped=False)
@@ -1383,6 +1384,9 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             txt_b.draw()
             #key_hint.draw()
             win.flip()
+            if first_question_frame:
+                rt_clock.reset()
+                first_question_frame = False
             _wait(0.02)
         rt = rt_clock.getTime()
         _log_ttl_event("phase2_response", trial_info=f"{ti_line} response={response}")
@@ -1474,13 +1478,13 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
         _log_ttl_event("phase3_debrief_onset", trial_info=f"question={i+1}")
         onset_ttl = _last_ttl_timestamp[0]
         rt_clock = core.Clock()
-        rt_clock.reset()
         answer = None
         response_key = None
         try:
             event.clearEvents()
         except Exception:
             pass
+        first_debrief_frame = True
         while answer is None:
             try:
                 keys = event.getKeys(timeStamped=False)
@@ -1510,6 +1514,9 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
             txt_no.draw()
             hint.draw()
             win.flip()
+            if first_debrief_frame:
+                rt_clock.reset()
+                first_debrief_frame = False
             _wait(0.016)
 
         rt = rt_clock.getTime()

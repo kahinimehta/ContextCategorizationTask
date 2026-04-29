@@ -30,42 +30,41 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Documentation
 
-| File | Contents |
-|------|----------|
-| **`script.md`** | Verbatim screens, run order, example TTL names |
-| **`TASK_DESCRIPTION.md`** | Timing constants (`*_SEC`), stimuli paths, **Phase 2 context framing**, **`phase2_trial_order.csv`** spec, troubleshooting |
-| **`csv_documentation.md`** | Full **`ttl_log_*`** trigger table (includes **legacy** rows for old instruction screens) plus **`*.csv`** column definitions |
+| File | Role |
+|------|------|
+| **`script.md`** | Verbatim screens, run order |
+| **`TASK_DESCRIPTION.md`** | Timings, stimuli, trial CSV spec, troubleshooting |
+| **`csv_documentation.md`** | **`ttl_log_*`** triggers + behavioral CSV columns |
 
 ### Stimuli
 
-- **`STIMULI/shapes/`** — 16 task `.bmp` files plus `ShapeGrid_4x4_bmp.png` composite (ordering: **`TASK_DESCRIPTION.md`**). Task `.bmp` files are shown with **white matte stripped at load** (see **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**). Rebuild composite: **`python scripts/generate_shape_grid.py`** (needs **Pillow**) if you change which assets are in the grid.
-- **`STIMULI/contexts/`** — Category pairs `{category}1.png` / `{category}.png`. Tutorial practice assets: **`practice1.png`**, **`practice2.png`** (**space** / **circus**) in **`STIMULI/`** or **`contexts/`**.
+- **`STIMULI/shapes/`** — 16 task `.bmp` + **`ShapeGrid_4x4_bmp.png`** (**layout / matte strip:** **`TASK_DESCRIPTION.md`**).
+- **`STIMULI/contexts/`** — **`{category}1.png` / `{category}.png`**. Tutorial: **`practice1.png`**, **`practice2.png`** in **`STIMULI/`** or **`contexts/`**.
 
 
 ## Data Output
 
-All CSV data is written incrementally to `../LOG_FILES/` (relative to the task root). Participant name is appended to all filenames.
+Session outputs (CSV, placement PNGs, TTL log) are written incrementally to **`../LOG_FILES/`** (relative to the task folder). Filenames include **`{participant}`** and **`{YYYYMMDD_HHMMSS}`** (session start timestamp).
 
-| File | Description |
+| File pattern | Description |
 |------|-------------|
-| `phase1_*.csv`, `phase1_placements_*.png` | Per-shape placement + incremental PNG (**columns:** **`csv_documentation.md`**) |
-| `phase2_*.csv` | One row per trial (includes onset TTL copies + **`response_ttl`**) |
-| `phase3_*.csv`, `phase3_placements_*.png` | Same role as Phase 1 |
-| `debrief_*.csv`, `summary_*.csv`, `ttl_log_*.csv` | Debrief, session summary, all TTL events (**schema:** **`csv_documentation.md`**) |
+| `phase1_{participant}_{YYYYMMDD_HHMMSS}.csv`, `phase3_{participant}_{YYYYMMDD_HHMMSS}.csv` | Per-shape placement (**columns:** **`csv_documentation.md`**) |
+| `phase1_placements_{participant}_{YYYYMMDD_HHMMSS}.png`, `phase3_placements_{participant}_{YYYYMMDD_HHMMSS}.png` | Incremental placement PNGs (Phase 1 / 3) |
+| `phase2_{participant}_{YYYYMMDD_HHMMSS}.csv` | One row per Phase 2 trial (+ onset TTL columns + **`response_ttl`**) |
+| `debrief_{participant}_{YYYYMMDD_HHMMSS}.csv`, `summary_{participant}_{YYYYMMDD_HHMMSS}.csv` | Post–Phase 3 questionnaire + session summary |
+| `ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv` | All TTL rows (starts as `ttl_log_{YYYYMMDD_HHMMSS}.csv`, **renamed** at session end—**`csv_documentation.md`**) |
 
-*datetime* = `YYYYMMDD_HHMMSS` in filenames. **No output files** if participant name contains **`test`**.
+**No saves** if participant name contains **`test`** (TTL scratch file is removed).
 
 ### Example output
 
-Example files in the task root show a full non-test run (participant `kini`, timestamp `20260324_140014`):
+Under **`../LOG_FILES/`** (same folder the task writes to), a full non-test session might look like (participant **`kini`**, **`20260324_140014`**):
 
 | Files |
 |-------|
 | `phase1_kini_20260324_140014.csv`, `phase2_kini_20260324_140014.csv`, `phase3_kini_20260324_140014.csv` |
-| `debrief_kini_20260324_140014.csv`, `summary_kini_20260324_140014.csv`, `ttl_log_kini_20260324_140014.csv` |
 | `phase1_placements_kini_20260324_140014.png`, `phase3_placements_kini_20260324_140014.png` |
-
-Live runs write the same filenames under `../LOG_FILES/`.
+| `debrief_kini_20260324_140014.csv`, `summary_kini_20260324_140014.csv`, `ttl_log_kini_20260324_140014.csv` |
 
 ## Quick Start
 
