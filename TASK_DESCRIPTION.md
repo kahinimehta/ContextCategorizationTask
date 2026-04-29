@@ -8,7 +8,7 @@ Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), s
 
 PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or fallback) → **Phase 1** (**`ShapeGrid_4x4_bmp.png`**: full-screen + bottom-right miniature from preview through fixation, pre-sort instruction, then per-trial isolate + placement) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (same grid/inset pattern as Phase 1 → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
+**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or **animated fallback**, **color**-based demo) → **Phase 1** (**`ShapeGrid_4x4_bmp.png`**: full-screen + bottom-right miniature from preview through fixation, pre-sort instruction, then per-trial object isolate + placement) → **Phase 2** (instructions → practice **`practice1`**/**`practice2`** demo → **`phase2_trial_order.csv`**) → **Phase 3** (same grid/inset pattern as Phase 1 → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
 
 **Writes:** **`../LOG_FILES/`** — skipped entirely if **`test`** occurs in participant name (**`ttl_log_*`** likewise removed).
 
@@ -18,8 +18,8 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 ### Stimulus Paths
 
-- **Shapes:** `STIMULI/shapes/*.bmp` — 16 task shapes are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major)
-- **Context images:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
+- **Task objects (.bmp):** `STIMULI/shapes/*.bmp` — 16 stimuli are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major). At load, each **task** `.bmp` (not `ShapeGrid*` composites) has **near-white matte pixels** (R, G, B ≥ **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**, default **247**) **set to transparent** in PsychoPy; context PNGs and the grid composite are unchanged.
+- **Contexts:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
 - **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — in Phase 1/3: **same** **`ShapeGrid_4x4_bmp.png`** appears full-screen (**`PHASE_GRID_PREVIEW_SEC`**), miniature in bottom-right (**same position/size as sorting**), fixation cross (**`PHASE_FIXATION_CROSS_SEC`**) plus miniature again, **`phase*_instruction2c`** with miniature again, then per-trial previews and click-to-place (rebuild composite with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order).
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
@@ -33,25 +33,25 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 ### TTL
 
-Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** timestamps only unless hardware attached). Timing semantics preamble + exhaustive **`ttl_log_*`** event table (**`csv_documentation.md`**).
+Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** timestamps only unless hardware attached). **Phase 2** **`reddot`** event labels denote the **black** cue-dot epoch (`PHASE2_REDDOT_DURATION_SEC`; see **`script.md`**). **Tutorial:** either **`tutorial_video_*`** *or* **`tutorial_fallback_*`** + granular **`tutorial_fallback_step{N}_*_`** — **mutually exclusive** streams (see **`csv_documentation.md`** preamble). Exhaustive **`ttl_log_*`** event table: **`csv_documentation.md`**.
 
 ---
 
 ## Timing (Stimulus Durations)
 
-**Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_REDDOT_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`). The tables below mirror those values.
+**Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_REDDOT_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`, `TRAINING_DEMO_SCREEN_EXTRA_SEC` adds time on scripted training-demo screens only — real Phase 2 trials still use `PHASE2_SEGMENT_SEC` / `PHASE2_REDDOT_DURATION_SEC`). Phase 2 transitions from each **task object** epoch to the following **black cue dot** with **no** intervening blank (`PHASE2_SEGMENT_SEC` still controls context/object display length only). **`PHASE2_REDDOT_*`** names are historical; the on-screen dot is **black**.
 
 ### Tutorial (fallback)
 
 | Step | Duration | Content |
 |------|----------|---------|
-| 1 | 2.5 s | Three shapes overview |
-| 2 | 3 s | Red square: 1 s center, 2 s at target |
-| 3 | 3 s | Red circle: 1 s center, 2 s at target |
-| 4 | 3 s | Green circle: 1 s center, 2 s at target |
-| 5a | 3 s | Groups explained |
-| 5b | 4 s | "Not a line/spectrum" |
-| 6 | 7 s | "Objects in a group can be farther apart..." + "We click to place each shape and press Enter to submit each shape's position." |
+| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three objects overview |
+| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`) |
+| 3 | **6** s total | Red circle: center then beside square (`TUTORIAL_FB_CLICK_*`; same durations as step 2) |
+| 4 | **6** s total | Green circle: center then right target (`TUTORIAL_FB_CLICK_*`; same durations as step 2) |
+| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately) |
+| 5b | **5.5** s | "Not a line/spectrum" |
+| 6 | **8.5** s | Upper: **"A group need not pack tight—spread is OK."** Lower: **"Click to place — Enter submits each placement."** |
 
 ### Phase 1
 
@@ -59,25 +59,23 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 |-------|----------|
 | Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC` (5 s); large centered grid + **miniature** same PNG bottom-right |
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC` (1 s); cross + **miniature** grid bottom-right |
-| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); **miniature** `ShapeGrid_4x4_bmp.png` bottom-right (same as placement) |
+| Task object display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); **miniature** `ShapeGrid_4x4_bmp.png` bottom-right (same as placement) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block (same inset as preview) |
 
 ### Phase 2 Tutorial
 
 | Event | Duration |
 |-------|----------|
-| Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` |
-| Context 1 (**`practice1.png`**, SPACE) | `PHASE2_SEGMENT_SEC` |
-| Shape (blue circle) | `PHASE2_SEGMENT_SEC` |
-| Blank | `PHASE2_SEGMENT_SEC` |
-| Red dot + label (PLANET) | `PHASE2_REDDOT_DURATION_SEC` |
-| Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_SEGMENT_SEC` |
-| Shape 2 | `PHASE2_SEGMENT_SEC` |
-| Blank 2 | `PHASE2_SEGMENT_SEC` |
-| Red dot 2 + label (BALL) | `PHASE2_REDDOT_DURATION_SEC` |
-| Question (SPACE \| CIRCUS static) | 1.5 s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`) |
-| Highlight + "You might select CIRCUS" | 1 s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
-| Post-blank | 3 s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
+| Fixation | `PHASE2_TUTORIAL_FIXATION_SEC` (2 s); main trials remain `PHASE2_FIXATION_PRE_TRIAL_SEC` |
+| Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC` |
+| Task object (blue circle) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
+| Black dot + label (PLANET) | `PHASE2_TUTORIAL_REDDOT_SEC` (3.5 s); main trials: `PHASE2_REDDOT_DURATION_SEC` (**immediately** after circle) |
+| Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
+| Task object 2 | `PHASE2_TUTORIAL_SEGMENT_SEC` |
+| Black dot 2 + label (BALL) | `PHASE2_TUTORIAL_REDDOT_SEC` |
+| Question (SPACE \| CIRCUS static) | **3** s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`) |
+| Highlight + "You might select CIRCUS" | **2.5** s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
+| Post-blank | **4.5** s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
 
 ### Phase 2 Trials (per trial)
 
@@ -85,14 +83,12 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 |-------|----------|
 | Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` (0.5 s) |
 | Context 1 | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Shape | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Blank 1 | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Red dot | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Task object | 1 s (`PHASE2_SEGMENT_SEC`); cue dot follows **without** intervening blank |
+| Cue dot (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
 | Context 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Shape 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Blank 2 | 1 s (`PHASE2_SEGMENT_SEC`) |
-| Red dot 2 | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
-| Question (**Which context fits the object better?**; click A or B) | Participant-paced |
+| Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
+| Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Question (**Better context?** — **LEFT** / **RIGHT** arrow selects **`context_1`** / **`context_2`** label vs left/right) | Participant-paced |
 | ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
 
 ### Phase 3
@@ -101,7 +97,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 |-------|----------|
 | Grid (`ShapeGrid_4x4_bmp.png`) | `PHASE_GRID_PREVIEW_SEC`; large + miniature bottom-right (same as Phase 1) |
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC`; cross + miniature bottom-right |
-| Shape display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
+| Task object display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block |
 
 ### Other
@@ -111,7 +107,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
 | Instruction screens | Participant-paced (Enter to continue); **phase2_instr5** minimum `PHASE2_INSTR5_MIN_SEC` |
-| Phase 2 before trials | "Ask the experimenter now if you have any questions. Press Enter when you're ready to begin." |
+| Phase 2 before trials | "Questions? Enter to start." |
 | **Phase 1/3** pre-sort instruction **`phase*_instruction2c`** | Participant-paced; **miniature** grid bottom-right (same as trials) |
 
 ---
@@ -130,7 +126,7 @@ Phase 2 **tutorial** (not from CSV): `practice1.png`/`practice2.png`, circle dem
 
 ## Troubleshooting
 
-- **Random/accidental quits:** ESC is not a global key (like Social Recognition Task). It only works during interactive screens (instructions, name entry, shape placement, Phase 2 questions, debrief). During timed displays (grid, fixation, stimulus), ESC does nothing—reduces accidental quits from key repeat or stray keypresses. Command + Q will always kill the tasks. 
+- **Random/accidental quits:** ESC is not a global key (like Social Recognition Task). It only works during interactive screens (instructions, name entry, object placement, Phase 2 questions, debrief). During timed displays (grid, fixation, stimulus), ESC does nothing—reduces accidental quits from key repeat or stray keypresses. Command + Q will always kill the tasks. 
 - **`zsh: killed` (OOM, often during Phase 3):** Use windowed mode to reduce memory: `PSYCHOPY_WINDOWED=1` (1280×720). Default is fullscreen. The task also runs periodic garbage collection between phases and trials.
 - **Dummy window:** A small 100×100 window is kept open (like Social Recognition Task) to improve stability. Disable with `PSYCHOPY_DUMMY_WINDOW=0`.
 - **Mac:** Parallel port is not supported; TTL is logged only. Cedrus pyxid2 works if connected.

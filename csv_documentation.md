@@ -1,6 +1,6 @@
 # CSV and TTL Documentation
 
-Definitions for **`ttl_log_*`** (columns here; mapping table § below) plus **`phase*_*.csv`**, **`debrief`**, **`summary`**.
+Definitions for **`ttl_log_*`** (columns below; mapping table follows) plus **`phase*_*.csv`**, **`debrief`**, **`summary`**.
 
 **Elsewhere:** run sheet (**`script.md`**); stimuli + timings + **`phase2_trial_order.csv`** (**`TASK_DESCRIPTION.md`**); repo bootstrap / example filenames (**`README.md`**).
 
@@ -18,6 +18,8 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 **Event types**: See TTL Trigger Mapping below.
 
 For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 question trials, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end).
+
+**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**animated color-sort**, **`trial_info: step=…`** on `tutorial_fallback_onset`).
 
 ---
 
@@ -39,180 +41,184 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `welcome_offset` | — | Screen transition |
 | `tutorial_video_onset` | — | Tutorial video started |
 | `tutorial_video_offset` | — | Tutorial video ended |
-| `tutorial_fallback_onset` | — | Animated fallback started (trial_info: step=1, 2, 3, 4, 5a, 5b, 6) |
-| `tutorial_fallback_offset` | — | Animated fallback step ended |
-| `tutorial_fallback_step2_center_onset` | — | Step 2: shape at center (1 s) |
-| `tutorial_fallback_step2_center_offset` | — | Step 2: center ended |
-| `tutorial_fallback_step2_target_onset` | — | Step 2: shape at target (2 s) |
-| `tutorial_fallback_step2_target_offset` | — | Step 2: target ended |
-| `tutorial_fallback_step3_center_onset/offset` | — | Step 3: center phase |
-| `tutorial_fallback_step3_target_onset/offset` | — | Step 3: target phase |
-| `tutorial_fallback_step4_center_onset/offset` | — | Step 4: center phase |
-| `tutorial_fallback_step4_target_onset/offset` | — | Step 4: target phase |
-| `tutorial_transition_onset` | — | "Now that we've seen a demo... let's get started on your version!" screen appeared |
+| `tutorial_fallback_onset` | — | Fallback **tutorial** step onset (`trial_info: step=1, 2, 3, 4, 5a, 5b, or 6`). Only when **`STIMULI/tutorial_video.mp4`** is absent or playback fails — **color-sort** demo (**`script.md`**); see separate `tutorial_fallback_step{n}_*` timestamps for stimulus epochs inside steps 2–4. |
+| `tutorial_fallback_offset` | — | Fallback step ended (**same `trial_info: step=`** as matching onset). Steps **5a–b** and **6** are single static screens (no `tutorial_fallback_step*_center` / `target` children). |
+| `tutorial_fallback_step2_center_onset` | — | Step 2: red **square** center epoch begins (logged **before** center `flip()`; display lasts **`TUTORIAL_FB_CLICK_CENTER_SEC`**) |
+| `tutorial_fallback_step2_center_offset` | — | Step 2: center hold ended (after **`TUTORIAL_FB_CLICK_CENTER_SEC`**). |
+| `tutorial_fallback_step2_target_onset` | — | Step 2: square at **left-cluster** target (`TUTORIAL_FB_CLICK_TARGET_SEC`). Color-sort layout. |
+| `tutorial_fallback_step2_target_offset` | — | Step 2: target epoch ended |
+| `tutorial_fallback_step3_center_onset` | — | Step 3: red **circle** center epoch (`TUTORIAL_FB_CLICK_CENTER_SEC`) |
+| `tutorial_fallback_step3_center_offset` | — | Step 3: center epoch ended |
+| `tutorial_fallback_step3_target_onset` | — | Step 3: circle beside square (`TUTORIAL_FB_CLICK_TARGET_SEC`) — **red-with-red** placement |
+| `tutorial_fallback_step3_target_offset` | — | Step 3: target epoch ended |
+| `tutorial_fallback_step4_center_onset` | — | Step 4: **green** circle center epoch (`TUTORIAL_FB_CLICK_CENTER_SEC`) |
+| `tutorial_fallback_step4_center_offset` | — | Step 4: center epoch ended |
+| `tutorial_fallback_step4_target_onset` | — | Step 4: green circle at **right** target (`TUTORIAL_FB_CLICK_TARGET_SEC`) — separate **color** from reds |
+| `tutorial_fallback_step4_target_offset` | — | Step 4: target epoch ended |
+| `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn—same rules."** appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
 | `tutorial_transition_offset` | — | Screen transition |
-| `phase1_questions_onset` | 1 | "If you have any questions, ask the experimenter now" appeared |
+| `phase1_questions_onset` | 1 | Phase 1 first instruction: "Questions? Ask now." |
 | `phase1_questions_enter` | 1 | Enter pressed |
 | `phase1_questions_offset` | 1 | Screen transition |
-| `phase1_instr1_onset` | 1 | Phase 1 instruction screen 1 appeared |
+| `phase1_instr1_onset` | 1 | **"Sort objects—all on screen first."** |
 | `phase1_instr1_enter` | 1 | Enter pressed |
 | `phase1_instr1_offset` | 1 | Screen transition |
-| `phase1_instr2_onset` | 1 | Phase 1 instruction screen 2 appeared |
+| `phase1_instr2_onset` | 1 | **"Place one at a time (same as demo)."** |
 | `phase1_instr2_enter` | 1 | Enter pressed |
 | `phase1_instr2_offset` | 1 | Screen transition |
-| `phase1_instr3_onset` | 1 | "Group them into groups—not on a spectrum..." appeared |
+| `phase1_instr3_onset` | 1 | **"Group by proximity—not along a spectrum."** |
 | `phase1_instr3_enter` | 1 | Enter pressed |
 | `phase1_instr3_offset` | 1 | Screen transition |
-| `phase1_instr4_onset` | 1 | "Use as many groups as you need" appeared |
+| `phase1_instr4_onset` | 1 | **"Use as many groups as you want."** |
 | `phase1_instr4_enter` | 1 | Enter pressed |
 | `phase1_instr4_offset` | 1 | Screen transition |
-| `phase1_before_grid_onset` | 1 | "You will now see 16 shapes..." appeared |
+| `phase1_before_grid_onset` | 1 | **"16 objects next — reference only; don't memorize."** |
 | `phase1_before_grid_enter` | 1 | Enter pressed |
 | `phase1_before_grid_offset` | 1 | Screen transition |
-| `phase1_grid_onset` | 1 | Shape grid display started |
-| `phase1_grid_offset` | 1 | Shape grid display ended |
+| `phase1_grid_onset` | 1 | Object grid display started |
+| `phase1_grid_offset` | 1 | Object grid display ended |
 | `phase1_fixation_onset` | 1 | Fixation cross onset |
 | `phase1_fixation_offset` | 1 | Fixation cross ended |
-| `phase1_instruction2c_onset` | 1 | Instruction before sorting: click/Enter, immovable placements, miniature 4×4 grid stays bottom-right (see **`script.md`**) |
+| `phase1_instruction2c_onset` | 1 | **"Click to place — Enter locks. Mini-grid bottom-right stays. Help? Ask."** (with miniature grid inset) |
 | `phase1_instruction2c_enter` | 1 | Enter pressed |
 | `phase1_instruction2c_offset` | 1 | Screen transition |
-| `phase1_complete` | 1 | Phase 1 drag task finished (all shapes placed) |
-| `phase1_stimulus_onset` | 1 | Isolation preview: centered shape + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp filename) |
+| `phase1_complete` | 1 | Phase 1 drag task finished (all objects placed) |
+| `phase1_stimulus_onset` | 1 | Isolation preview: centered object (BMP) + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp filename) |
 | `phase1_stimulus_offset` | 1 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
-| `phase1_click_place` | 1 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
+| `phase1_click_place` | 1 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase1_enter_submit` | 1 | Enter to submit (trial_info: trial=N, shape=…) |
-| `phase2_questions_onset` | 2 | "If you have any questions, ask the experimenter now" appeared |
+| `phase2_questions_onset` | 2 | Phase 2 first instruction: **"Questions? Ask now."** |
 | `phase2_questions_enter` | 2 | Enter pressed |
 | `phase2_questions_offset` | 2 | Screen transition |
-| `phase2_instr1_onset` | 2 | "Now you'll see the shapes again, paired with different pictures or background contexts. Each shape appears with two context pictures." appeared |
+| `phase2_instr1_onset` | 2 | **"Each object paired with two contexts."** |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | Phase 2 instruction: context → shape → red dot (see on-screen `phase2_instr2` in script) |
+| `phase2_instr2_onset` | 2 | **"Trial: scene → object → dot."** |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
-| `phase2_instr2b_onset` | 2 | "When the red dot is on screen, say out loud what the shape could be... Then click which picture fits better. We need to hear you say it every time." appeared |
+| `phase2_instr2b_onset` | 2 | **"On the dot: say a label aloud. ←/→ chooses fit — speak each trial."** |
 | `phase2_instr2b_enter` | 2 | Enter pressed |
 | `phase2_instr2b_offset` | 2 | Screen transition |
-| `phase2_instr3_onset` | 2 | "Do your best since you will be recorded... You will watch a demo before you have to do the task, so don't worry if this makes no sense yet." appeared |
+| `phase2_instr3_onset` | 2 | **"Recorded — demo runs first."** |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
-| `phase2_instr4_onset` | 2 | "You can also re-use answers, but try to be creative if you can." appeared |
+| `phase2_instr4_onset` | 2 | **"Reuse OK; vary when possible."** |
 | `phase2_instr4_enter` | 2 | Enter pressed |
 | `phase2_instr4_offset` | 2 | Screen transition |
-| `phase2_instr5_onset` | 2 | "Now let's watch a quick demo to help you understand how we work on this task" appeared (min 5 s) |
+| `phase2_instr5_onset` | 2 | **"Watch demo next."** (min display `PHASE2_INSTR5_MIN_SEC`, 5 s) |
 | `phase2_instr5_enter` | 2 | Enter pressed |
 | `phase2_instr5_offset` | 2 | Screen transition |
-| `phase2_tutorial_intro_onset` | 2 | Tutorial intro appeared |
+| `phase2_tutorial_intro_onset` | 2 | Phase 2 tutorial intro: **"Space scene → circle → circus scene. Name the object aloud; then we choose which fits."** |
 | `phase2_tutorial_intro_enter` | 2 | Enter pressed |
 | `phase2_tutorial_intro_offset` | 2 | Screen transition |
 | `phase2_tutorial_fixation_onset` | 2 | Tutorial fixation onset |
 | `phase2_tutorial_fixation_offset` | 2 | Tutorial fixation ended |
 | `phase2_tutorial_context1_onset` | 2 | Tutorial context 1 onset |
 | `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended |
-| `phase2_tutorial_shape_onset` | 2 | Tutorial shape onset |
-| `phase2_tutorial_shape_offset` | 2 | Tutorial shape ended |
-| `phase2_tutorial_blank_onset` | 2 | Tutorial blank onset |
-| `phase2_tutorial_blank_offset` | 2 | Tutorial blank ended |
-| `phase2_tutorial_reddot_onset` | 2 | Tutorial red dot + on-screen PLANET cue (`PHASE2_REDDOT_DURATION_SEC`) |
-| `phase2_tutorial_reddot_offset` | 2 | Tutorial red dot ended |
+| `phase2_tutorial_shape_onset` | 2 | Tutorial focal object onset (event label **`shape`** retained) |
+| `phase2_tutorial_shape_offset` | 2 | Tutorial focal object ended |
+| `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** in current code (1 s blank between object epoch and cue dot was removed) |
+| `phase2_tutorial_blank_offset` | 2 | Legacy — **not emitted** |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial cue dot (black circle) + on-screen PLANET cue (`PHASE2_REDDOT_DURATION_SEC`) |
+| `phase2_tutorial_reddot_offset` | 2 | Tutorial cue dot ended |
 | `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset |
 | `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
-| `phase2_tutorial_shape2_onset` | 2 | Tutorial shape 2 onset |
-| `phase2_tutorial_shape2_offset` | 2 | Tutorial shape 2 ended |
-| `phase2_tutorial_blank2_onset` | 2 | Tutorial blank (between shape2 and reddot2) |
-| `phase2_tutorial_blank2_offset` | 2 | Tutorial blank 2 ended |
-| `phase2_tutorial_reddot2_onset` | 2 | Tutorial red dot + on-screen BALL cue |
-| `phase2_tutorial_reddot2_offset` | 2 | Tutorial red dot 2 ended |
+| `phase2_tutorial_shape2_onset` | 2 | Tutorial second object onset |
+| `phase2_tutorial_shape2_offset` | 2 | Tutorial second object ended |
+| `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** in current code (blank before second cue dot removed) |
+| `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
+| `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + on-screen BALL cue |
+| `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended |
 | `phase2_tutorial_question_onset` | 2 | Tutorial question (SPACE \| CIRCUS) |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial "You might select CIRCUS" demo appeared |
-| `phase2_tutorial_demo_select_offset` | 2 | Tutorial demo select ended |
-| `phase2_tutorial_question_offset` | 2 | Tutorial question ended (after demo selection) |
-| `phase2_tutorial_response` | 2 | Scripted demo choice (e.g. trial_info: CIRCUS) |
-| `phase2_tutorial_post_blank_onset` | 2 | Tutorial post-response blank |
-| `phase2_tutorial_post_blank_offset` | 2 | Tutorial post-response blank ended |
-| `phase2_ready_onset` | 2 | "Ready to try this with some actual shapes and images?" screen appeared |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"e.g., CIRCUS"** |
+| `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
+| `phase2_tutorial_question_offset` | 2 | Question screen ended (after demo selection) |
+| `phase2_tutorial_response` | 2 | Scripted demo choice (e.g. **trial_info: CIRCUS**) |
+| `phase2_tutorial_post_blank_onset` | 2 | White full-screen blank after tutorial |
+| `phase2_tutorial_post_blank_offset` | 2 | Post-response blank ended |
+| `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
 | `phase2_ready_enter` | 2 | Enter pressed |
 | `phase2_ready_offset` | 2 | Screen transition |
-| `phase2_before_trials_onset` | 2 | "Ask the experimenter now..." before Phase 2 trials appeared |
+| `phase2_before_trials_onset` | 2 | **"Questions? Enter to start."** |
 | `phase2_before_trials_enter` | 2 | Enter pressed |
 | `phase2_before_trials_offset` | 2 | Screen transition |
 | `phase2_fixation_onset` | 2 | Fixation before trial (trial_info: trial=N) |
 | `phase2_fixation_offset` | 2 | Fixation ended (trial_info: trial=N) |
-| `phase2_context1_onset` | 2 | Context 1 image onset (trial_info: trial=N, shape=*.bmp) |
+| `phase2_context1_onset` | 2 | Context 1 display onset (trial_info: trial=N, shape=*.bmp) |
 | `phase2_context1_offset` | 2 | Context 1 offset (trial_info: trial=N) |
-| `phase2_shape_onset` | 2 | Shape onset (trial_info: trial=N, shape=*.bmp) |
-| `phase2_shape_offset` | 2 | Shape offset (trial_info: trial=N) |
-| `phase2_blank1_onset` | 2 | Blank between shape and red dot (trial_info: trial=N) |
-| `phase2_blank1_offset` | 2 | Blank 1 ended |
-| `phase2_reddot_onset` | 2 | Red dot + "say out loud" (trial_info: trial=N, shape=*.bmp) |
-| `phase2_reddot_offset` | 2 | Red dot offset (trial_info: trial=N) |
-| `phase2_context2_onset` | 2 | Context 2 image onset (trial_info: trial=N, shape=*.bmp) |
+| `phase2_shape_onset` | 2 | Task object (BMP) onset (trial_info: trial=N, shape=*.bmp) |
+| `phase2_shape_offset` | 2 | Task object epoch ended (trial_info: trial=N) |
+| `phase2_blank1_onset` | 2 | Legacy — **not emitted** (object epoch → cue dot is immediate; formerly 1 s blank) |
+| `phase2_blank1_offset` | 2 | Legacy — **not emitted** |
+| `phase2_reddot_onset` | 2 | Black cue dot + “say aloud” epoch (trial_info: trial=N, shape=*.bmp). Event label **`reddot`** is historical |
+| `phase2_reddot_offset` | 2 | Cue dot offset (trial_info: trial=N) |
+| `phase2_context2_onset` | 2 | Context 2 display onset (trial_info: trial=N, shape=*.bmp) |
 | `phase2_context2_offset` | 2 | Context 2 offset (trial_info: trial=N) |
-| `phase2_shape2_onset` | 2 | Shape (2nd) onset (trial_info: trial=N) |
-| `phase2_shape2_offset` | 2 | Shape (2nd) offset (trial_info: trial=N) |
-| `phase2_blank2_onset` | 2 | Blank between shape2 and red dot 2 (trial_info: trial=N) |
-| `phase2_blank2_offset` | 2 | Blank 2 ended |
-| `phase2_reddot2_onset` | 2 | Red dot 2 + "say out loud" (trial_info: trial=N, shape=*.bmp) |
-| `phase2_reddot2_offset` | 2 | Red dot 2 offset (trial_info: trial=N) |
-| `phase2_question_onset` | 2 | Question **"Which context fits the object better?"** (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
-| `phase2_response` | 2 | Participant clicked category A or B (trial_info: trial=N, response=X) |
+| `phase2_shape2_onset` | 2 | Task object (2nd) onset (trial_info: trial=N) |
+| `phase2_shape2_offset` | 2 | Task object (2nd) epoch ended (trial_info: trial=N) |
+| `phase2_blank2_onset` | 2 | Legacy — **not emitted** (2nd object epoch → cue dot 2 is immediate) |
+| `phase2_blank2_offset` | 2 | Legacy — **not emitted** |
+| `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” (trial_info: trial=N, shape=*.bmp) |
+| `phase2_reddot2_offset` | 2 | Cue dot 2 offset (trial_info: trial=N) |
+| `phase2_question_onset` | 2 | **"Better context?"** with category labels (trial_info: trial=N, cat_a=X, cat_b=Y, variant=…) |
+| `phase2_response` | 2 | **Left**/**right** arrow selects **`context_1`** / **`context_2`** (trial_info: trial=N, response=label) |
 | `phase2_question_offset` | 2 | Question screen ended (trial_info: trial=N) |
 | `phase2_trial_iti_onset` | 2 | Inter-trial interval blank (trial_info: trial=N) |
 | `phase2_trial_iti_offset` | 2 | ITI ended |
 | `phase2_complete` | 2 | Phase 2 trials finished |
-| `phase2_break_onset` | 2 | Break screen appeared (trial_info: after_trial=N, total_trials=M; every 16 trials, progress bar) |
+| `phase2_break_onset` | 2 | **"Take a break!"** + progress bar (trial_info on **onset** only: **after_trial** = 0-based index of next trial, **total_trials** = N; first break at **after_trial=16** for 64 trials) |
 | `phase2_break_enter` | 2 | Enter pressed |
 | `phase2_break_offset` | 2 | Screen transition |
-| `phase3_questions_onset` | 3 | "If you have any questions, ask the experimenter now. Press Enter when you're ready." (first Phase 3 screen) |
+| `phase3_questions_onset` | 3 | **"Questions? Enter when ready."** |
 | `phase3_questions_enter` | 3 | Enter pressed |
 | `phase3_questions_offset` | 3 | Screen transition |
-| `phase3_instr1_onset` | 3 | "Now let's sort some shapes again... First you will see all of them." appeared |
+| `phase3_instr1_onset` | 3 | **"Sort again — like Phase 1. See all objects first."** |
 | `phase3_instr1_enter` | 3 | Enter pressed |
 | `phase3_instr1_offset` | 3 | Screen transition |
-| `phase3_instr2_onset` | 3 | "Then place them one at a time by clicking where you want each to go, as in the demo you saw earlier." appeared |
+| `phase3_instr2_onset` | 3 | **"Place one at a time (same as earlier)."** |
 | `phase3_instr2_enter` | 3 | Enter pressed |
 | `phase3_instr2_offset` | 3 | Screen transition |
-| `phase3_instr3_onset` | 3 | "Group them into groups—not on a spectrum or line. Shapes closer together are in the same group." appeared |
+| `phase3_instr3_onset` | 3 | **"Groups by proximity — not along a spectrum."** |
 | `phase3_instr3_enter` | 3 | Enter pressed |
 | `phase3_instr3_offset` | 3 | Screen transition |
-| `phase3_instr4_onset` | 3 | "Use as many groups as you need, and any grouping that is intuitive to you." appeared |
+| `phase3_instr4_onset` | 3 | **"Any intuitive grouping counts."** |
 | `phase3_instr4_enter` | 3 | Enter pressed |
 | `phase3_instr4_offset` | 3 | Screen transition |
-| `phase3_before_grid_onset` | 3 | "As earlier, you will now see 16 shapes..." appeared |
+| `phase3_before_grid_onset` | 3 | **"Same rule: 16 objects — reference grid only."** |
 | `phase3_before_grid_enter` | 3 | Enter pressed |
 | `phase3_before_grid_offset` | 3 | Screen transition |
-| `phase3_grid_onset` | 3 | Shape grid display started |
-| `phase3_grid_offset` | 3 | Shape grid display ended |
+| `phase3_grid_onset` | 3 | Object grid display started |
+| `phase3_grid_offset` | 3 | Object grid display ended |
 | `phase3_fixation_onset` | 3 | Fixation cross onset |
 | `phase3_fixation_offset` | 3 | Fixation cross ended |
-| `phase3_instruction2c_onset` | 3 | Instruction before sorting: click/Enter, immovable placements, miniature 4×4 grid stays bottom-right (see **`script.md`**) |
+| `phase3_instruction2c_onset` | 3 | Same as Phase 1 **phase1_instruction2c**: **"Click to place — Enter locks…"** (mini-grid bottom-right) |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
-| `phase3_stimulus_onset` | 3 | Isolation preview: centered shape + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp) |
+| `phase3_stimulus_onset` | 3 | Isolation preview: centered object (BMP) + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp) |
 | `phase3_stimulus_offset` | 3 | Isolation preview ended, click-to-place (same inset; trial_info: trial=N, shape=*.bmp) |
-| `phase3_click_place` | 3 | Each click to move shape (trial_info: trial=N, shape=…, click=N) |
+| `phase3_click_place` | 3 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
-| `phase3_complete` | 3 | Phase 3 drag task finished (all shapes placed) |
-| `phase3_debrief_onset` | 3 | Debrief question N appeared (trial_info: question=1, 2, or 3). Logged 3×. |
+| `phase3_complete` | 3 | Phase 3 drag task finished (all objects placed) |
+| `phase3_debrief_onset` | 3 | Debrief question appeared (trial_info: question=1–3); order each question **onset** → **phase3_debrief_response** (click) → **offset** |
 | `phase3_debrief_response` | 3 | Participant clicked Yes/No (trial_info: question=N, answer=Yes/No). Logged 3×. |
 | `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
-| `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each shape (trial_info: filename trial=N) |
-| `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each shape (trial_info: filename trial=N) |
+| `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
+| `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `summary_saved` | — | Summary CSV written (trial_info: filename) |
 | `thanks_onset` | — | Thank-you screen appeared |
 | `thanks_offset` | — | Thank-you screen ended |
-| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: screen=…; e.g. participant_name, tutorial_video, phase1_click_place, phase2_question, phase3_debrief) |
+| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`** screens, or fixed strings e.g. **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
 
 ---
 
 ## Phase 1 CSV (phase1_{participant}_{datetime}.csv)
 
-Per-shape data from the bottom-up shape classification phase.
+Per-trial object data from Phase 1 (bottom-up grouping; **`shape`** in filenames / `trial_info` retains technical label).
 
 | Column | Type | Description |
 |--------|------|-------------|
-| `shape_path` | String | Full path to the shape image file |
+| `shape_path` | String | Full path to the BMP stimulus file identifying the object |
 | `final_x` | Float | Final x position in screen coordinates (height units) |
 | `final_y` | Float | Final y position in screen coordinates (height units) |
 | `rt` | Float | Reaction time from clickable onset to last click (seconds). At least one click required before Enter. |
@@ -233,12 +239,12 @@ Placeholder epoch columns (`fixation_onset_ttl` … `question_onset_ttl`): schem
 | Column | Type | Description |
 |--------|------|-------------|
 | `trial` | Integer | Trial number (1…N; same order as rows in `phase2_trial_order.csv`) |
-| `shape_path` | String | Full path to the shape image |
-| `context_1_path` | String | Full path to first context image |
-| `context_2_path` | String | Full path to second context image |
+| `shape_path` | String | Full path to the BMP object stimulus |
+| `context_1_path` | String | Full path to first context stimulus |
+| `context_2_path` | String | Full path to second context stimulus |
 | `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
-| `response` | String | Selected category (**uppercased** button label) |
-| `rt` | Float | Reaction time from question onset to button click (seconds) |
+| `response` | String | Selected category (**uppercased**); **left arrow** = label on left (**`context_1`**), **right arrow** = label on right (**`context_2`**) |
+| `rt` | Float | Reaction time from question onset to arrow key press (seconds) |
 | `fixation_onset_ttl` … `question_onset_ttl` | Float | Unused placeholders (epoch markers live in **`ttl_log_*`** only) |
 | `response_ttl` | Float | Participant choice (**populated**) |
 
@@ -246,13 +252,13 @@ Placeholder epoch columns (`fixation_onset_ttl` … `question_onset_ttl`): schem
 
 ## Phase 3 CSV (phase3_{participant}_{datetime}.csv)
 
-Same structure as Phase 1 (including click_ttl = last click, all_click_ttl = all clicks). Per-shape data from the post-context shape reclassification phase. Shape order is randomized differently from Phase 1.
+Same structure as Phase 1 (including click_ttl = last click, all_click_ttl = all clicks). Post-context re-grouping trials; object order is randomized differently from Phase 1.
 
 ---
 
 ## Placement Images (phase1_placements_*.png, phase3_placements_*.png)
 
-PNG images of final shape placements at the end of Phase 1 and Phase 3. White canvas with each shape drawn at its final (x, y) position. Saved only for non-test participants.
+PNG images of final object placements at the end of Phase 1 and Phase 3. **White** canvas with each object drawn at its final (x, y) position (task objects use the same **white-matte strip** as on-screen; see **`OBJECT_WHITE_BG_STRIP_THRESHOLD`** in **`context_shape_task.py`**). Saved only for non-test participants.
 
 ---
 
@@ -270,9 +276,9 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 | `response_ttl` | Float | TTL timestamp at Yes/No button click |
 
 **Questions:**
-1. "Did you use the same grouping strategy as the first time you sorted these shapes?"
-2. "Did the images associated with each shape you saw influence your grouping the second time around?"
-3. "After thinking about how shapes might fit in different environments, did you find yourself interpreting the shapes differently when you sorted them the second time?"
+1. "Same grouping style as Phase 1?"
+2. "Did contexts sway round-2 groups?"
+3. "See objects differently the second sort?"
 
 ---
 
@@ -289,7 +295,7 @@ Overall experiment summary.
 | `grid_border_coords` | String | Grid border coordinates (if computed) |
 | `per_shape_ground_truth` | String | Per-shape: `name.bmp:row=R,col=C,center_x=X,center_y=Y` (4×4 from sorted order; pipe-separated) |
 | `scaling_factor` | String | Scaling factor used for display |
-| `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = shapes grouped more similarly (closer categorically). |
+| `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = objects grouped more similarly (closer categorically). |
 
 ---
 
