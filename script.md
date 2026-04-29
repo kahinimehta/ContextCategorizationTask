@@ -1,8 +1,8 @@
 # Experimenter Script — run sheet
 
-Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_documentation.md` only**). Timings/constants and **`phase2_trial_order.csv`:** **`TASK_DESCRIPTION.md`** (**`README.md`** → Documentation summarizes file roles).
+**Roles:** **`script.md`** (this file) = verbatim copy + run order + example TTL names. **`TASK_DESCRIPTION.md`** = `*_SEC`, paths, **`phase2_trial_order.csv`**, troubleshooting. **`csv_documentation.md`** = full **`ttl_log_*`** + **`*.csv`** schema (**authoritative** for event spellings).
 
-**Operational:** `python context_shape_task.py` from task folder; **`../LOG_FILES/`**; participant name **`test`** → no saved files; **`PSYCHOPY_WINDOWED=1`** windowed (**1280×720**); **`PSYCHOPY_DUMMY_WINDOW=0`** disables the extra stability window; **`PSYCHOPY_CHECK_TIMING=1`** enables startup frame calibration (macOS rarely). **ESC** only during interactive canvases; macOS timing/keyboard/focus quirks **`TASK_DESCRIPTION.md`**. Instruction prompts end with **Enter to continue**; avoid accidental double Enter when laggy.
+**Operational:** `python context_shape_task.py` from task folder; **`../LOG_FILES/`**; no saves if **`test`** in name. **`PSYCHOPY_WINDOWED=1`** → 1280×720; **`PSYCHOPY_DUMMY_WINDOW=0`**; **`PSYCHOPY_CHECK_TIMING=1`** enables frame calibration (macOS: rarely needed). **ESC** / keyboard quirks: **`TASK_DESCRIPTION.md`**. Gray **Enter to continue** on **`wait_for_continue`** screens.
 
 ---
 
@@ -10,7 +10,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Participant Login
 
-**Display:** Instruction **Enter your name** (upper); centered typed characters + **`_`** cursor. **Enter** submits; **ESC** quits. Keyboard: **`event.getKeys()`** with an unrestricted poll, then local filtering (alphanumeric, backspace, **`return`** / **`enter`** / numpad Enter variants, **`escape`**); Darwin focus quirks **`TASK_DESCRIPTION.md`**.
+**Display:** **Enter your name** (upper); centered entry + **`_`** cursor. **Enter** submits; **ESC** quits. Key handling: **`TASK_DESCRIPTION.md`** (macOS / unrestricted poll).
 
 **TTL:** participant_name_onset, participant_name_offset
 
@@ -18,7 +18,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Welcome
 
-**Display:** "Welcome to your task! — Hit Enter to watch the tutorial video." Gray hint **"Enter to continue."** (all **`wait_for_continue`** screens use this pattern).
+**Display:** "Welcome to your task! — Hit Enter to watch the tutorial video."
 
 **TTL:** welcome_onset, welcome_enter, welcome_offset
 
@@ -48,7 +48,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **Transition:** "Your turn to group some objects! — Remember the same rules."
 
-**TTL:** **`tutorial_video_*`** **or** **`tutorial_fallback_*`** / **`tutorial_fallback_step{2|3|4}_{center|target}_*`** (`step=1`|`2`|`3`|`4`|`5a`|`5b`|`6`); **`tutorial_transition_*`**. Exhaustive **`event_label`** list: **`csv_documentation.md`**.
+**TTL:** **`tutorial_video_*`** or **`tutorial_fallback_*`** (+ **`tutorial_fallback_step{2|3|4}_{center|target}_`** for steps 2–4, plus `step=1`…`6` bundles on **`tutorial_fallback_*`**); **`tutorial_transition_*`**. Full list: **`csv_documentation.md`**.
 
 ---
 
@@ -63,9 +63,9 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **TTL:** phase1_before_grid_*
 
-**Grid / fixation:** `ShapeGrid_4x4_bmp.png`; miniature grid inset bottom-right (timings **`TASK_DESCRIPTION.md`**).
+**Grid / fixation:** `ShapeGrid_4x4_bmp.png` + bottom-right inset (**`TASK_DESCRIPTION.md`**).
 
-**TTL:** phase1_grid_* , phase1_fixation_*
+**TTL:** `phase1_grid_*`, `phase1_fixation_*`
 
 **After fixation:** *(in order)*  
 1. "Now, group these objects like in the demo." · **`phase1_instr1`** (mini-grid)  
@@ -74,9 +74,9 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **TTL:** phase1_instr1_* · phase1_instr2_* · phase1_instr3_*
 
-**Task:** One object per trial (**`STIMULI/shapes`** `.bmp`; near-white matte **stripped at load** — **`TASK_DESCRIPTION.md`**). Mini-grid persists; bottom hint strip: "**Click to place — Enter submits.**"
+**Task:** One `.bmp` per trial (mini-grid; hint **"Click to place — Enter submits."**). Object matte / transparency: **`TASK_DESCRIPTION.md`**.
 
-**TTL / CSV:** **`csv_documentation.md`** (`phase1_stimulus_*`, `phase1_click_place`, **`phase1_complete`**, placements PNGs).
+**TTL / CSV:** **`csv_documentation.md`** (sorting trials + placements).
 
 ---
 
@@ -93,17 +93,17 @@ Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = 
 
 **TTL (instruction block):** **`phase2_questions_*`** … **`phase2_instr4_*`**.
 
-**Tutorial (after instructions):** Intro: **"Watch this demo before you start the task!"** · **`phase2_tutorial_intro`** (minimum **`PHASE2_INSTR5_MIN_SEC`** before Enter) · fixation · two practice **context** images (large **centered square**, center **cover** crop) · blue **circle** · black cue **dots** · **"You might say the circle is a 'PLANET'"** / **"'BALL'"** · **`Better context?`** (SPACE \| CIRCUS) · scripted highlight + **"You might say CIRCUS is a better context"** · blank · **"Ready for recorded trials?"** · Enter to continue ( **`phase2_ready`** ).
+**Tutorial (after instructions):** Intro: **"Watch this demo before you start the task!"** · **`phase2_tutorial_intro`** (minimum **`PHASE2_INSTR5_MIN_SEC`** before Enter) · fixation · two practice **context** images (large **centered square**, center **cover** crop) · blue **circle** · black cue **dots** · **"You might say the circle is a 'PLANET'"** / **"'BALL'"** · choice screen: **"Which context fits best? Use the left/right keys to choose."** + **SPACE** \| **CIRCUS** (timed preview, then scripted highlight + bottom line **"You might say 'CIRCUS' (right key) is the better context"**) · blank · **"Ready for recorded trials?"** · Enter to continue ( **`phase2_ready`** ).
 
-**TTL (Phase 2 tutorial + handoff):** **`phase2_tutorial_intro_*`**; **`phase2_tutorial_fixation_*`** … **`phase2_tutorial_post_blank_*`**; **`phase2_ready_*`**; **`phase2_before_trials_*`** — full list **`csv_documentation.md`**.
+**TTL (tutorial → handoff):** intro → fixation → … → post-blank → **`phase2_ready_*`** → **`phase2_before_trials_*`** — **`csv_documentation.md`**.
 
 **Before trials:** "Ask the experimenter if you have any questions — Enter to start."
 
-**Task:** fixation → contexts/objects/dots (**black** cue) → **"Which context fits best? Use the left/right keys to choose."** (**←**/**→**) → ITI (**`TASK_DESCRIPTION.md`**). Context scenes: same **centered square** (see **`PHASE2_CONTEXT_*`** in code). **Break:** **"Take a break!"** with progress bar and **Enter** (**`phase2_break`**) after each block of **16** completed trials (shipped **64** trials ⇒ before trials **17**, **33**, **49**).
+**Task:** Timed context / object / **black** cue epochs, then **same choice screen** (**←**/**→**) + **"← or → arrow"** hint; **break** every **16** trials (**`phase2_break`**). Durations / framing: **`TASK_DESCRIPTION.md`**.
 
-**TTL (trials + breaks):** **`phase2_fixation_*`** through trial/ITI events (**`csv_documentation.md`**); **`phase2_break_*`** between blocks; **`phase2_complete`**.
+**TTL (trials):** **`phase2_fixation_*`** … **`phase2_complete`** — **`csv_documentation.md`**.
 
-Experimenter: prompt speech plus valid keys when needed.
+Experimenter: cue speech on dot; remind **←** / **→** on choice screens.
 
 ---
 
@@ -129,7 +129,7 @@ Experimenter: prompt speech plus valid keys when needed.
 2. "Did contexts sway round-2 groups?"
 3. "See objects differently the second sort?"
 
-**TTL / CSV:** per **`csv_documentation.md`** (**`phase3_questions_*`** … **`phase3_instr2_*`**; **`phase3_before_grid_*`**; **`phase3_grid_*`** / **`phase3_fixation_*`**; **`phase3_instruction2c_*`**; **`phase3_stimulus_*`**, **`phase3_click_place`**, **`phase3_enter_submit`**, **`phase3_complete`**, **`phase3_placements_saved`**; **`phase3_debrief_*`**).
+**TTL / CSV:** Phase 3 instructions through debrief — **`csv_documentation.md`**.
 
 ---
 

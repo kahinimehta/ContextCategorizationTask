@@ -1,6 +1,6 @@
 # Context Shape Task — Technical Description
 
-Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), stimulus paths, **`phase2_trial_order.csv`**, trials→grid mapping, and troubleshooting. Narrative experiment flow (**Welcome**, instruction strings, TTL **names**) lives in **`script.md`**.
+Canonical **`context_shape_task.py`** reference for **`*_SEC` timings**, stimulus paths, **`phase2_trial_order.csv`**, grid mapping, and **troubleshooting**. **On-screen wording** and step-by-step flow: **`script.md`**. **TTL / CSV columns:** **`csv_documentation.md`**.
 
 ---
 
@@ -8,9 +8,7 @@ Canonical copy for **`context_shape_task.py`** timing constants (**`*_SEC`**), s
 
 PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
-**Sequence:** Participant id → welcome + (**`tutorial_video.mp4`** or **animated fallback**, **color**-based demo) → **Phase 1** (**`ShapeGrid_4x4_bmp.png`**: full-screen + bottom-right miniature from preview through fixation, **`phase1_instr1`–`phase1_instr3`**, then per-trial object isolate + placement) → **Phase 2** (**`phase2_questions` … `phase2_instr4`** → **`phase2_tutorial_intro`** + practice demo + **`phase2_ready`** → **`phase2_before_trials`** → **`phase2_trial_order.csv`** trials) → **Phase 3** (instructions → grid/fixation → **`phase3_instruction2c`** → sort → debrief) → thanks (**`THANKS_SCREEN_SEC`**). Verbatim wording: **`script.md`**.
-
-**Writes:** **`../LOG_FILES/`** — skipped entirely if **`test`** occurs in participant name (**`ttl_log_*`** likewise removed).
+**Writes:** **`../LOG_FILES/`** — skipped if participant name contains **`test`** (including **`ttl_log_*`**).
 
 ---
 
@@ -21,7 +19,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 - **Task objects (.bmp):** `STIMULI/shapes/*.bmp` — 16 stimuli are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major). At load, each **task** `.bmp` (not `ShapeGrid*` composites) has **near-white matte pixels** (R, G, B ≥ **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**, default **247**) **set to transparent** in PsychoPy; context PNGs and the grid composite are unchanged.
 - **Contexts:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
 - **Phase 2 context on-screen framing:** Every context image (tutorial + main trials) is drawn in a **fixed square** centered on screen in PsychoPy `units='height'`: side length **`PHASE2_CONTEXT_MAX_EXTENT`** (default **1.0**), with **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** default **1.0** (square). Source PNGs are **uniformly scaled** and **center-cropped** (object-fit **cover**) in Pillow so pixels keep aspect ratio inside that box — see **`_phase2_context_frame_size_height_units`** / **`_phase2_context_image_cropped_pil`** in **`context_shape_task.py`**.
-- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — in Phase 1/3: **same** **`ShapeGrid_4x4_bmp.png`** appears full-screen (**`PHASE_GRID_PREVIEW_SEC`**), miniature in bottom-right (**same position/size as sorting**), fixation cross (**`PHASE_FIXATION_CROSS_SEC`**) plus miniature again, then Phase 1 post-fixation screens **`phase1_instr1`** (inset) → **`phase1_instr2`** (no inset) → **`phase1_instr3`** (inset), Phase 3 **`phase3_instruction2c`** with miniature, then per-trial previews and click-to-place (rebuild composite with `scripts/generate_shape_grid.py` so cell order matches sorted `*.bmp` order).
+- **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — Phase 1/3: fullscreen preview + bottom-right miniature through fixation, then instruction screens and sorting (**TTL labels:** **`script.md`** / **`csv_documentation.md`**). Rebuild composite: **`scripts/generate_shape_grid.py`** (cell order = sorted `*.bmp` order).
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
@@ -34,7 +32,7 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 ### TTL
 
-Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** timestamps only unless hardware attached). **Phase 2** **`reddot`** event labels denote the **black** cue-dot epoch (`PHASE2_REDDOT_DURATION_SEC`; see **`script.md`**). **Tutorial:** either **`tutorial_video_*`** *or* **`tutorial_fallback_*`** + granular **`tutorial_fallback_step{N}_*_`** — **mutually exclusive** streams (see **`csv_documentation.md`** preamble). Exhaustive **`ttl_log_*`** event table: **`csv_documentation.md`**.
+Hardware (**Cedrus** / parallel); **Darwin:** often log-only. **`reddot`** labels = black cue-dot epochs. **Video vs fallback** tutorial streams are mutually exclusive — event list: **`csv_documentation.md`**.
 
 ---
 
@@ -44,15 +42,17 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 
 ### Tutorial (fallback)
 
-| Step | Duration | Content |
-|------|----------|---------|
-| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three shapes overview + subtitle **"The first part of the task is about sorting shapes. Watch how we sort these shapes!"** |
-| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`); subtitle **"First, let's click to place the red square on the left — Then, we hit Enter."** |
-| 3 | **6** s total | Red circle: same center/target pattern; **"Now, let's group the red circle with the red square on the left."** |
-| 4 | **6** s total | Green circle: same pattern; **"Let's place the green circle to the right (in a different group)."** |
-| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately); subtitle **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"** (**`script.md`**) |
-| 5b | **5.5** s | Subtitle **"We created groups, not a spectrum — nearby objects share a group."** |
-| 6 | **8.5** s | Final arrangement visible; subtitle **"Click to place — Enter submits each placement."** *(An optional second line about large group spread exists commented out in code and is **not** shown.) |
+Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutorial). Steps 2–4 each use center then target epochs (`TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`); **`tutorial_fallback_step{n}_*`** TTLs: **`csv_documentation.md`**.
+
+| Step | Duration | Content (summary) |
+|------|----------|-------------------|
+| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three-shape overview + intro subtitle |
+| 2 | **6** s total | Red square click-to-place |
+| 3 | **6** s total | Red circle joins cluster |
+| 4 | **6** s total | Green circle to right group |
+| 5a | **4.5** s | Color-group summary (circled reds vs green) |
+| 5b | **5.5** s | Spectrum / proximity subtitle |
+| 6 | **8.5** s | Enter-reminder subtitle only *(optional “large spread” line commented out in code)* |
 
 ### Phase 1
 
@@ -67,7 +67,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 
 | Event | Duration |
 |-------|----------|
-| Intro (**"Watch this demo before you start the task!"**, **`phase2_tutorial_intro`**) | Min **`PHASE2_INSTR5_MIN_SEC`** before Enter |
+| Intro (`phase2_tutorial_intro`) | Min **`PHASE2_INSTR5_MIN_SEC`** before Enter; copy **`script.md`** |
 | Fixation | `PHASE2_TUTORIAL_FIXATION_SEC` (2 s); main trials remain `PHASE2_FIXATION_PRE_TRIAL_SEC` |
 | Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC`; **same square framing as trials** (center cover crop) |
 | Task object (blue circle) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
@@ -75,8 +75,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Task object 2 | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Black dot 2 + label (BALL) | `PHASE2_TUTORIAL_REDDOT_SEC` |
-| Question (SPACE \| CIRCUS static) | **3** s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`) |
-| Highlight + subtitle **"You might say CIRCUS is a better context"** | **2.5** s (`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`) |
+| Choice preview + highlight | **3** s + **2.5** s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`, `PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`); UI details **`csv_documentation.md`** (`phase2_tutorial_question_*`, `phase2_tutorial_demo_select_*`) |
 | Post-blank | **4.5** s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
 
 ### Phase 2 Trials (per trial)
@@ -90,7 +89,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Context 2 | 1 s (`PHASE2_SEGMENT_SEC`); same square as context 1 |
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
 | Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
-| Question (**"Which context fits best? Use the left/right keys to choose."** — **LEFT** / **RIGHT** arrow selects **`context_1`** / **`context_2`** label) | Participant-paced |
+| Question | Participant-paced; same prompt and **← / →** mapping as **`script.md`** (Phase 2) |
 | ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
 
 ### Phase 3
@@ -108,9 +107,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 |-------|----------|
 | Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
-| Instruction screens | Participant-paced (Enter to continue). **Phase 1:** **`phase1_questions`** → … → after grid+fixation: **`phase1_instr1`** (+ inset), **`phase1_instr2`**, **`phase1_instr3`** (+ inset). **Phase 2:** **`phase2_questions`** … **`phase2_instr4`**, then **`phase2_tutorial_intro`** (min **`PHASE2_INSTR5_MIN_SEC`**), then practice demo. **Phase 3:** **3** screens — **`phase3_questions`**, **`phase3_instr1`**, **`phase3_instr2`**. Verbatim text: **`script.md`**. Legacy TTL rows for older labels: **`csv_documentation.md`**. |
-| Phase 2 before trials | "Ask the experimenter if you have any questions — Enter to start." |
-| **Phase 1/3** post-grid instructions **`phase1_instr1`** / **`phase1_instr3`** (**phase 3:** **`phase3_instruction2c`** only for final mini-grid line) | Participant-paced; **miniature** grid bottom-right (same as trials) |
+| Enter-to-continue instruction screens | Participant-paced; copy **`script.md`**, event labels **`csv_documentation.md`** |
 
 ---
 
@@ -122,7 +119,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | **2** | Fixed **`phase2_trial_order.csv`** order (**N** trial rows) | Paths from **`context*_image`**; **`context1`/`context2`** → buttons. **`variant`**: logged only (see **Phase 2 trial template**). |
 | **3** | `random.shuffle` until sequence ≠ Phase 1 order | Same (x,y)→cell mapping as Phase 1; Euclidean distances in **`summary`** CSV |
 
-Phase 2 **tutorial** (not from CSV): `practice1.png`/`practice2.png`, circle demo, scripted SPACE \| CIRCUS.
+Phase 2 practice demo uses **`practice1.png`** / **`practice2.png`** (not CSV); **`phase2_ready`** then **`phase2_before_trials`** precede main trials.
 
 ---
 

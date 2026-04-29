@@ -19,7 +19,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 
 **Event types**: See TTL Trigger Mapping below.
 
-For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 question trials, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end).
+For **fixed-duration** segments, `*_onset` fires immediately **before** the first `flip()` of that segment and `*_offset` immediately **after** the last frame (after `_wait(duration)`). Instruction screens additionally log `*_enter` on keypress. On Phase 2 **recorded-trial** questions, **`phase2_response`** is logged immediately before **`phase2_question_offset`** (response TTL, then epoch end). **Phase 2 tutorial:** **`phase2_tutorial_response`** fires at highlight onset (after **`phase2_tutorial_demo_select_onset`**), before **`phase2_tutorial_demo_select_offset`** and **`phase2_tutorial_question_offset`**.
 
 **Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**animated color-sort**, **`trial_info: step=…`** on `tutorial_fallback_onset`).
 
@@ -135,11 +135,11 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
 | `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + BALL cue (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended (`trial_info`: **`cue=circle_label_2`**) |
-| `phase2_tutorial_question_onset` | 2 | Tutorial question (SPACE \| CIRCUS) |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say CIRCUS is a better context"** |
+| `phase2_tutorial_question_onset` | 2 | Tutorial choice screen: same main prompt as recorded trials (**"Which context fits best? Use the left/right keys to choose."**) + **SPACE** \| **CIRCUS** buttons (no gray **← or →** hint during the preview segment) |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** |
 | `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
-| `phase2_tutorial_question_offset` | 2 | Question screen ended (after demo selection) |
-| `phase2_tutorial_response` | 2 | Scripted demo choice (e.g. **trial_info: CIRCUS**) |
+| `phase2_tutorial_question_offset` | 2 | Tutorial question screen ended (after timed preview + highlight + **`phase2_tutorial_response`**) |
+| `phase2_tutorial_response` | 2 | Scripted demo choice logged at **highlight** onset (e.g. **trial_info: CIRCUS**), before **`phase2_tutorial_demo_select_offset`** |
 | `phase2_tutorial_post_blank_onset` | 2 | White full-screen blank after tutorial |
 | `phase2_tutorial_post_blank_offset` | 2 | Post-response blank ended |
 | `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
@@ -280,10 +280,7 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 | `onset_ttl` | Float | TTL timestamp at question screen onset |
 | `response_ttl` | Float | TTL timestamp at Yes/No button click |
 
-**Questions:**
-1. "Same grouping style as Phase 1?"
-2. "Did contexts sway round-2 groups?"
-3. "See objects differently the second sort?"
+**Questions:** same three lines as **`script.md`** (Phase 3 debrief).
 
 ---
 
@@ -306,8 +303,4 @@ Overall experiment summary.
 
 ## File Saving
 
-- **Location**: `../LOG_FILES/`
-- **Filenames**: `{basename}_{participant}_{YYYYMMDD_HHMMSS}.csv` or `.png`
-- **Test participants**: Name contains "test" → no files written (TTL log deleted)
-
-Example filenames: **README.md** → Data output.
+Output directory, `test`-participant behavior, and example filenames: **`README.md`** (Data output).

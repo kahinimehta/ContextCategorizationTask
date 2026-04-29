@@ -1266,14 +1266,14 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         btn_b = visual.Rect(win, width=0.26, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
         txt_a = visual.TextStim(win, text=cat_a, color='black', height=0.03, pos=(-0.2, -0.2), units='height')
         txt_b = visual.TextStim(win, text=cat_b, color='black', height=0.03, pos=(0.2, -0.2), units='height')
-        key_hint = visual.TextStim(
-            win,
-            text="← or → arrow",
-            color='gray',
-            height=0.025,
-            pos=(0, -0.34),
-            units='height',
-        )
+        # key_hint = visual.TextStim(
+        #     win,
+        #     text="← or → arrow",
+        #     color='gray',
+        #     height=0.025,
+        #     pos=(0, -0.34),
+        #     units='height',
+        # )
         q_info = f"{ti_line} cat_a={cat_a} cat_b={cat_b}"
         _log_ttl_event("phase2_question_onset", trial_info=q_info)
         p2_ts['question_onset_ttl'] = _last_ttl_timestamp[0]
@@ -1361,9 +1361,9 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
     """Three Yes/No questions at end of Phase 3. Returns list of dicts or None if ESC."""
     questions = [
-        "Same grouping style as Phase 1?",
-        "Did contexts sway round-2 groups?",
-        "See objects differently the second sort?",
+        "Did you group the objects differently the second time around?",
+        "Did the contexts you saw change your grouping the second time?",
+        "Did you see the objects differently the second time grouping them than you did when you first saw them?",
     ]
     fieldnames = ['question', 'question_text', 'answer', 'rt', 'onset_ttl', 'response_ttl']
     ts = timestamp_str or datetime.now().strftime("%Y%m%d_%H%M%S")
