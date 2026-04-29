@@ -47,11 +47,11 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Step | Duration | Content |
 |------|----------|---------|
 | 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three shapes overview + subtitle **"The first part of the task is about sorting shapes. Watch how we sort these shapes!"** |
-| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`); subtitle **"First, let's click to place the red square on the left. Then, we hit Enter."** |
+| 2 | **6** s total | Red square: **2.5** s center (`TUTORIAL_FB_CLICK_CENTER_SEC`), **3.5** s target (`TUTORIAL_FB_CLICK_TARGET_SEC`); subtitle **"First, let's click to place the red square on the left — Then, we hit Enter."** |
 | 3 | **6** s total | Red circle: same center/target pattern; **"Now, let's group the red circle with the red square on the left."** |
 | 4 | **6** s total | Green circle: same pattern; **"Let's place the green circle to the right (in a different group)."** |
-| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately); subtitle **"See how we ended up sorting by color? We could have sorted by shape too -- there are no wrong answers here!"** (**`script.md`**) |
-| 5b | **5.5** s | Subtitle **"We created groups, not a spectrum - nearby objects share a group."** |
+| 5a | **4.5** s | Color-based groups (fallback: reds circled together, green separately); subtitle **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"** (**`script.md`**) |
+| 5b | **5.5** s | Subtitle **"We created groups, not a spectrum — nearby objects share a group."** |
 | 6 | **8.5** s | Final arrangement visible; subtitle **"Click to place — Enter submits each placement."** *(An optional second line about large group spread exists commented out in code and is **not** shown.) |
 
 ### Phase 1
@@ -109,7 +109,7 @@ Incremental logging (**Cedrus pyxid2** or TTL parallel port — **Darwin:** time
 | Thank-you screen | `THANKS_SCREEN_SEC` (2 s) |
 | Break (every 16 Phase 2 trials) | Participant-paced |
 | Instruction screens | Participant-paced (Enter to continue). **Phase 1:** **`phase1_questions`** → … → after grid+fixation: **`phase1_instr1`** (+ inset), **`phase1_instr2`**, **`phase1_instr3`** (+ inset). **Phase 2:** **`phase2_questions`** … **`phase2_instr4`**, then **`phase2_tutorial_intro`** (min **`PHASE2_INSTR5_MIN_SEC`**), then practice demo. **Phase 3:** **3** screens — **`phase3_questions`**, **`phase3_instr1`**, **`phase3_instr2`**. Verbatim text: **`script.md`**. Legacy TTL rows for older labels: **`csv_documentation.md`**. |
-| Phase 2 before trials | "Ask the experimenter if you have any questions. Enter to start." |
+| Phase 2 before trials | "Ask the experimenter if you have any questions — Enter to start." |
 | **Phase 1/3** post-grid instructions **`phase1_instr1`** / **`phase1_instr3`** (**phase 3:** **`phase3_instruction2c`** only for final mini-grid line) | Participant-paced; **miniature** grid bottom-right (same as trials) |
 
 ---

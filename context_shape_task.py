@@ -882,7 +882,7 @@ def run_tutorial_phase1(win, mouse, participant):
 
         # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        _show_click_place(win, sq, (0, 0), sq_pos, "First, let's click to place the red square on the left. Then, we hit Enter.",
+        _show_click_place(win, sq, (0, 0), sq_pos, "First, let's click to place the red square on the left — Then, we hit Enter.",
                           ttl_label="tutorial_fallback_step2")
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
@@ -914,7 +914,7 @@ def run_tutorial_phase1(win, mouse, participant):
         circ_green.draw()
         group_circle_redshapes.draw()
         group_circle_green.draw()
-        sub_5a = visual.TextStim(win, text="See how we ended up sorting by color? We could have sorted by shape too -- there are no wrong answers here!",
+        sub_5a = visual.TextStim(win, text="See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5a.draw()
         win.flip()
@@ -926,7 +926,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub_5b = visual.TextStim(win, text="We created groups, not a spectrum - nearby objects share a group.",
+        sub_5b = visual.TextStim(win, text="We created groups, not a spectrum — nearby objects share a group.",
                                 color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         sub_5b.draw()
         win.flip()
@@ -938,7 +938,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        # sub_5c = visual.TextStim(win, text="A group does not have to pack tight— a large spread is OK.",
+        # sub_5c = visual.TextStim(win, text="A group does not have to pack tight — a large spread is OK.",
         #                         color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
         sub_enter = visual.TextStim(win, text="Click to place — Enter submits each placement.",
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
@@ -949,7 +949,7 @@ def run_tutorial_phase1(win, mouse, participant):
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
-    trans = visual.TextStim(win, text="Your turn to group some objects! Remember the same rules.", color='black', height=0.04, pos=(0, 0),
+    trans = visual.TextStim(win, text="Your turn to group some objects! — Remember the same rules.", color='black', height=0.04, pos=(0, 0),
                            wrapWidth=1.2, units='height')
     return wait_for_continue(win, trans, "tutorial_transition")
 
@@ -1107,7 +1107,7 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_reddot2_offset", trial_info="cue=circle_label_2")
 
     # Question: SPACE | CIRCUS (left = first practice context, right = second) — demo only
-    q = visual.TextStim(win, text="Better context?", color='black', height=0.04, pos=(0, 0.1))
+    q = visual.TextStim(win, text="Which context fits best? Use the left/right keys to choose.", color='black', height=0.04, pos=(0, 0.1))
     btn_a = visual.Rect(win, width=0.26, height=0.06, fillColor='lightblue', pos=(-0.2, -0.2), units='height')
     btn_b = visual.Rect(win, width=0.26, height=0.06, fillColor='lightblue', pos=(0.2, -0.2), units='height')
     txt_a = visual.TextStim(win, text="SPACE", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
@@ -1123,7 +1123,7 @@ def run_phase2_tutorial(win, mouse, participant):
     # Highlight right button (second context) + subtitle, matching old “second image” demo
     _log_ttl_event("phase2_tutorial_demo_select_onset")
     btn_b_pressed = visual.Rect(win, width=0.26, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
-    sub_select = visual.TextStim(win, text="You might say CIRCUS is a better context", color='black', height=0.028, pos=(0, -0.38), units='height')
+    sub_select = visual.TextStim(win, text="You might say 'CIRCUS' (right key) is the better context", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
     btn_a.draw()
     btn_b_pressed.draw()
@@ -1608,7 +1608,7 @@ def main():
     _log_ttl_event("experiment_start", trial_info=f"participant={participant}")
 
     # Welcome
-    welcome = visual.TextStim(win, text="Welcome to your task! Hit Enter to watch the tutorial video.",
+    welcome = visual.TextStim(win, text="Welcome to your task! — Hit Enter to watch the tutorial video.",
                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
@@ -1733,7 +1733,7 @@ def main():
         _close_dummy()
         return
 
-    ask_screen = visual.TextStim(win, text="Askadd the experimenter if you have any questions. Enter to start.",
+    ask_screen = visual.TextStim(win, text="Ask the experimenter if you have any questions — Enter to start.",
                                  color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, ask_screen, "phase2_before_trials"):
         win.close()

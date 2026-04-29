@@ -18,7 +18,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Welcome
 
-**Display:** "Welcome to your task! Hit Enter to watch the tutorial video." Gray hint **"Enter to continue."** (all **`wait_for_continue`** screens use this pattern).
+**Display:** "Welcome to your task! — Hit Enter to watch the tutorial video." Gray hint **"Enter to continue."** (all **`wait_for_continue`** screens use this pattern).
 
 **TTL:** welcome_onset, welcome_enter, welcome_offset
 
@@ -34,19 +34,19 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 **Step 1** (`trial_info`: `step=1`): "The first part of the task is about sorting shapes. Watch how we sort these shapes!"
 
-**Step 2** (`tutorial_fallback_step2_*`): "First, let's click to place the red square on the left. Then, we hit Enter."
+**Step 2** (`tutorial_fallback_step2_*`): "First, let's click to place the red square on the left — Then, we hit Enter."
 
 **Step 3** (`tutorial_fallback_step3_*`): "Now, let's group the red circle with the red square on the left."
 
 **Step 4** (`tutorial_fallback_step4_*`): "Let's place the green circle to the right (in a different group)."
 
-**Step 5a** (`step=5a`): "See how we ended up sorting by color? We could have sorted by shape too -- there are no wrong answers here!"
+**Step 5a** (`step=5a`): "See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"
 
-**Step 5b** (`step=5b`): "We created groups, not a spectrum - nearby objects share a group."
+**Step 5b** (`step=5b`): "We created groups, not a spectrum — nearby objects share a group."
 
 **Step 6** (`trial_info`: `step=6`): "Click to place — Enter submits each placement." *(Upper “large spread is OK” line exists in code only as a comment; not shown.)*
 
-**Transition:** "Your turn to group some objects! Remember the same rules."
+**Transition:** "Your turn to group some objects! — Remember the same rules."
 
 **TTL:** **`tutorial_video_*`** **or** **`tutorial_fallback_*`** / **`tutorial_fallback_step{2|3|4}_{center|target}_*`** (`step=1`|`2`|`3`|`4`|`5a`|`5b`|`6`); **`tutorial_transition_*`**. Exhaustive **`event_label`** list: **`csv_documentation.md`**.
 
@@ -97,7 +97,7 @@ Cue speech on dot; **`phase2`** recorded trials use **`←`**/**`→`** (left = 
 
 **TTL (Phase 2 tutorial + handoff):** **`phase2_tutorial_intro_*`**; **`phase2_tutorial_fixation_*`** … **`phase2_tutorial_post_blank_*`**; **`phase2_ready_*`**; **`phase2_before_trials_*`** — full list **`csv_documentation.md`**.
 
-**Before trials:** "Ask the experimenter if you have any questions. Enter to start."
+**Before trials:** "Ask the experimenter if you have any questions — Enter to start."
 
 **Task:** fixation → contexts/objects/dots (**black** cue) → **"Which context fits best? Use the left/right keys to choose."** (**←**/**→**) → ITI (**`TASK_DESCRIPTION.md`**). Context scenes: same **centered square** (see **`PHASE2_CONTEXT_*`** in code). **Break:** **"Take a break!"** with progress bar and **Enter** (**`phase2_break`**) after each block of **16** completed trials (shipped **64** trials ⇒ before trials **17**, **33**, **49**).
 

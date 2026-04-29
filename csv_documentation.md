@@ -38,7 +38,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | *(Instruction screens: onset, enter, offset)* | — | All Enter-to-continue screens log onset (appeared), enter (keypress), offset (transition) |
 | `experiment_start` | — | Experiment started (trial_info: participant=…) |
 | `experiment_end` | — | Experiment ended (trial_info: participant=…) |
-| `welcome_onset` | — | Welcome: **"Welcome to your task! Hit Enter to watch the tutorial video."** |
+| `welcome_onset` | — | Welcome: **"Welcome to your task! — Hit Enter to watch the tutorial video."** |
 | `welcome_enter` | — | Enter pressed |
 | `welcome_offset` | — | Screen transition |
 | `tutorial_video_onset` | — | Tutorial video started |
@@ -57,7 +57,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `tutorial_fallback_step4_center_offset` | — | Step 4: center epoch ended |
 | `tutorial_fallback_step4_target_onset` | — | Step 4: green circle at **right** target (`TUTORIAL_FB_CLICK_TARGET_SEC`) — separate **color** from reds |
 | `tutorial_fallback_step4_target_offset` | — | Step 4: target epoch ended |
-| `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn to group some objects! Remember the same rules."** appeared |
+| `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn to group some objects! — Remember the same rules."** appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
 | `tutorial_transition_offset` | — | Screen transition |
 | `phase1_questions_onset` | 1 | **"Ask the experimenter if you have any questions!"** |
@@ -145,7 +145,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
 | `phase2_ready_enter` | 2 | Enter pressed |
 | `phase2_ready_offset` | 2 | Screen transition |
-| `phase2_before_trials_onset` | 2 | **"Ask the experimenter if you have any questions. Enter to start."** |
+| `phase2_before_trials_onset` | 2 | **"Ask the experimenter if you have any questions — Enter to start."** |
 | `phase2_before_trials_enter` | 2 | Enter pressed |
 | `phase2_before_trials_offset` | 2 | Screen transition |
 | `phase2_fixation_onset` | 2 | Fixation before trial (`trial_info`: **`trial=N shape=*.bmp ctx1=*.png ctx2=*.png variant=…`**) |
