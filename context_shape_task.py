@@ -153,6 +153,78 @@ def _wait(secs):
     else:
         core.wait(secs)
 
+
+def _install_pyglet_cocoa_nsevent_unwrap_patch():
+    """macOS: AppKit sometimes returns a single-element NSArray from nextEventMatchingMask
+    where pyglet expects NSEvent (__NSSingleObjectArrayI → no .type()). Unwrap before handling.
+    Disable with PSYCHOPY_COCOA_EVENT_PATCH=0."""
+    if sys.platform != 'darwin':
+        return
+    if os.environ.get('PSYCHOPY_COCOA_EVENT_PATCH', '1').lower() in ('0', 'false', 'no'):
+        return
+    try:
+        from pyglet.window.cocoa import CocoaWindow
+        from pyglet.libs.darwin import cocoapy
+    except Exception:
+        return
+    if getattr(CocoaWindow.dispatch_events, '_nsevent_unwrap_installed', False):
+        return
+    NSAutoreleasePool = cocoapy.ObjCClass('NSAutoreleasePool')
+    NSApplication = cocoapy.ObjCClass('NSApplication')
+
+    def _unwrap_next_event(ev):
+        if not ev:
+            return None
+        cur = ev
+        for _ in range(16):
+            try:
+                cur.type()
+                return cur
+            except AttributeError:
+                pass
+            oai = getattr(cur, 'objectAtIndex_', None)
+            cnt_f = getattr(cur, 'count', None)
+            if not callable(oai) or not callable(cnt_f):
+                return None
+            try:
+                n = int(cnt_f())
+            except Exception:
+                return None
+            if n <= 0:
+                return None
+            try:
+                cur = oai(0)
+            except Exception:
+                return None
+        return None
+
+    def dispatch_events(self):
+        self._allow_dispatch_event = True
+        self.dispatch_pending_events()
+        event = True
+        pool = NSAutoreleasePool.new()
+        NSApp = NSApplication.sharedApplication()
+        while event and self._nswindow and self._context:
+            raw = NSApp.nextEventMatchingMask_untilDate_inMode_dequeue_(
+                cocoapy.NSAnyEventMask, None, cocoapy.NSEventTrackingRunLoopMode, True)
+            event = _unwrap_next_event(raw)
+            if event:
+                event_type = event.type()
+                NSApp.sendEvent_(event)
+                if event_type == cocoapy.NSKeyDown and not event.isARepeat():
+                    NSApp.sendAction_to_from_(cocoapy.get_selector('pygletKeyDown:'), None, event)
+                elif event_type == cocoapy.NSKeyUp:
+                    NSApp.sendAction_to_from_(cocoapy.get_selector('pygletKeyUp:'), None, event)
+                elif event_type == cocoapy.NSFlagsChanged:
+                    NSApp.sendAction_to_from_(cocoapy.get_selector('pygletFlagsChanged:'), None, event)
+                NSApp.updateWindows()
+        pool.drain()
+        self._allow_dispatch_event = False
+
+    dispatch_events._nsevent_unwrap_installed = True
+    CocoaWindow.dispatch_events = dispatch_events
+
+
 # =========================
 #  TTL / Parallel Port
 # =========================
@@ -500,7 +572,8 @@ def _pil_master_task_shape_white_stripped(path_str: str):
     thr = OBJECT_WHITE_BG_STRIP_THRESHOLD
     matte = np.all(a[..., :3] >= thr, axis=-1)
     a[matte, 3] = 0
-    out = Image.fromarray(np.ascontiguousarray(a), 'RGBA')
+    # Omit mode: Pillow 13 deprecates mode= here; (H,W,4) uint8 implies RGBA.
+    out = Image.fromarray(np.ascontiguousarray(a))
     _task_object_strip_pil_master_cache[canon] = out
     return out
 
@@ -1307,7 +1380,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             btn_b.draw()
             txt_a.draw()
             txt_b.draw()
-            key_hint.draw()
+            #key_hint.draw()
             win.flip()
             _wait(0.02)
         rt = rt_clock.getTime()
@@ -1538,6 +1611,7 @@ def write_summary(participant, experiment_start, experiment_end, phase1_results,
 # =========================
 def main():
     global _ttl_file_ref, _ttl_writer_ref
+    _install_pyglet_cocoa_nsevent_unwrap_patch()
     gc.collect()
     # Do NOT use event.globalKeys for escape (like Social Recognition Task).
     # globalKeys can cause random quits from key repeat or during transitions.
