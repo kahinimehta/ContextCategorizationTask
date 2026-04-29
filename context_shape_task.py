@@ -1733,7 +1733,7 @@ def main():
         _close_dummy()
         return
 
-    ask_screen = visual.TextStim(win, text="Ask the experimenter if you have any questions. Enter to start.",
+    ask_screen = visual.TextStim(win, text="Askadd the experimenter if you have any questions. Enter to start.",
                                  color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     if not wait_for_continue(win, ask_screen, "phase2_before_trials"):
         win.close()
