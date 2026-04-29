@@ -25,7 +25,9 @@ PsychoPy (v2025.1.1), Python 3. Main module: **`context_shape_task.py`**.
 
 - **Location:** Task root (next to `context_shape_task.py`).
 - **Size:** Header row plus **N** trial rows (row order = run order for every participant). The shipped template defines **64** trials; replacing the file updates N automatically (`stderr` prints the loaded count at run time).
-- **Columns** (exact header order in the repo template): `trial_number`, `shape`, `shape_path`, `primary_context`, `secondary_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`. **`primary_context` / `secondary_context`** design labels may also appear under legacy names `strong_context` / `neutral_context`.
+- **Required columns** (must be present; header order may vary — enforced by **`PHASE2_CSV_REQUIRED`** in **`context_shape_task.py`**): `shape_path`, `context1_image`, `context2_image`, `context1`, `context2`, `variant`.
+- **Optional columns** (repo template includes these for bookkeeping; loader does not require them): `trial_number`, `shape`, `primary_context`, `secondary_context` — **`primary_context` / `secondary_context`** may also appear under legacy names `strong_context` / `neutral_context`.
+- **Typical header order** in the shipped template: `trial_number`, `shape`, `shape_path`, `primary_context`, `secondary_context`, `context1`, `context1_image`, `context2`, `context2_image`, `variant`.
 - **Paths:** `shape_path`, `context1_image`, and `context2_image` may be absolute or relative to `STIMULI/`. The script normalizes `Shapes`/`Contexts` in absolute paths to on-disk `shapes`/`contexts`.
 - **What the code reads:** stimulus paths and `context1`/`context2` (A/B); `variant` plus primary/secondary labels are **logged only**. Presentation follows **`context*_image`** paths and button labels—not `variant`-driven branching.
 - **Output alignment:** `phase2_*.csv` rows match template rows in order (trial 1…N). Onset columns mirror **`ttl_log_*`** (see **`csv_documentation.md`**).
@@ -42,7 +44,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 
 | Step | Duration | Content (summary) |
 |------|----------|-------------------|
-| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC`) | Three-shape overview + intro subtitle |
+| 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC` = 2.5 s + `TRAINING_DEMO_SCREEN_EXTRA_SEC`) | Three-shape overview + intro subtitle |
 | 2 | **6** s total | Red square click-to-place |
 | 3 | **6** s total | Red circle joins cluster |
 | 4 | **6** s total | Green circle to right group |
@@ -63,7 +65,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 
 | Event | Duration |
 |-------|----------|
-| Intro (`phase2_tutorial_intro`) | Min **`PHASE2_INSTR5_MIN_SEC`** before Enter; copy **`script.md`** |
+| Intro (`phase2_tutorial_intro`) | Min **`PHASE2_INSTR5_MIN_SEC`** (5 s) before Enter; on-screen copy is the single sentence **"Watch this demo before you start the task!"** (also in **`script.md`**) |
 | Fixation | `PHASE2_TUTORIAL_FIXATION_SEC` (2 s); main trials remain `PHASE2_FIXATION_PRE_TRIAL_SEC` |
 | Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC`; **same square framing as trials** (center cover crop) |
 | Task object (blue circle) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
@@ -71,8 +73,8 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Task object 2 | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Black dot 2 + label (BALL) | `PHASE2_TUTORIAL_REDDOT_SEC` |
-| Choice preview + highlight | **3** s + **2.5** s (`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`, `PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`); UI details **`csv_documentation.md`** (`phase2_tutorial_question_*`, `phase2_tutorial_demo_select_*`) |
-| Post-blank | **4.5** s (`PHASE2_TUTORIAL_POST_BLANK_SEC`) |
+| Choice preview then highlight | **`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`** (**3** s = 1.5 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`): prompt **"Which context fits best? Use the left/right keys to choose."** with SPACE (left) / CIRCUS (right) buttons, no selection shown. Then **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** (**2.5** s = 1.0 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`): **right** button (CIRCUS / second practice context) drawn as selected (steel blue), subtitle **"You might say 'CIRCUS' (right key) is the better context"**. TTL labels: **`csv_documentation.md`** (`phase2_tutorial_question_*`, `phase2_tutorial_demo_select_*`). |
+| Post-blank | **`PHASE2_TUTORIAL_POST_BLANK_SEC`** (**4.5** s = 3.0 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`) |
 
 ### Phase 2 Trials (per trial)
 
@@ -86,7 +88,9 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); cue dot 2 follows **without** intervening blank |
 | Cue dot 2 (black) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
 | Question | Participant-paced; prompt and keys — **`script.md`**; **TTL / RT** — **`csv_documentation.md`**. |
-| ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s) |
+| ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s); TTL **`phase2_trial_iti_onset`** / **`phase2_trial_iti_offset`** after **`phase2_question_offset`** (**`csv_documentation.md`**) |
+
+**Fixation → context 1:** The fixation epoch is **`PHASE2_FIXATION_PRE_TRIAL_SEC`** (0.5 s), but the transition to context 1 is **not** immediate after fixation ends: Pillow center-crop work for the context adds a variable **~200–400 ms** before the first frame of context 1. **`phase2_*.csv`** **`context1_onset_ttl`** (and **`phase2_context1_onset`** in **`ttl_log_*`**) reflect the true onset. For neural alignment, use those timestamps directly rather than **fixation onset + 0.5 s** — see **`csv_documentation.md`** (Phase 2 CSV).
 
 ### Phase 3
 

@@ -22,7 +22,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 **Timing (summary):**
 - **Fixed-duration:** `*_onset` before the segment’s first `flip()`; `*_offset` after the last frame (`_wait` complete).
 - **`wait_for_continue`:** `{label}_onset` → `{label}_enter` (Enter) → `{label}_offset` (advance)—welcome, tutorial_transition, phase instructions, **`phase2_break`**, etc.
-- **Phase 2 recorded choice:** **`phase2_question_onset`** before the feedback loop; **`phase2_response`** immediately before **`phase2_question_offset`**; **`phase2_*.csv` `rt`** from the **first `flip()`** of the choice screen.
+- **Phase 2 recorded trial:** **`phase2_question_onset`** before the feedback loop; **`phase2_response`** immediately before **`phase2_question_offset`**; then **`phase2_trial_iti_onset`** / **`phase2_trial_iti_offset`** (**`PHASE2_TRIAL_ITI_SEC`** blank, same **`trial_info`** as fixation)—see trigger mapping table after **`phase2_question_offset`**. **`phase2_*.csv` `rt`** from the **first `flip()`** of the choice screen.
 - **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, `phase2_tutorial_question_preview_offset`) → **`phase2_tutorial_demo_select_*`**; **`phase2_tutorial_response`** at highlight onset (after **`phase2_tutorial_demo_select_onset`**).
 - **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
@@ -261,6 +261,8 @@ Epoch **`_onset_ttl`** columns duplicate the **Unix timestamp** recorded in **`t
 | `fixation_onset_ttl` … `question_onset_ttl` | Float | **Unix timestamp** at the matching **`phase2_*_onset`** in **`ttl_log_*`** (empty if missing) |
 | `response_ttl` | Float | Unix timestamp at **`phase2_response`** |
 
+**Fixation → context 1 (timing):** Fixation lasts **`PHASE2_FIXATION_PRE_TRIAL_SEC`** (0.5 s), but context 1 does **not** appear on the very next frame after **`phase2_fixation_offset`**. Pillow **cover-crop** preparation for the context image introduces a variable gap on the order of **200–400 ms** before the first **`flip()`** showing context 1. **`context1_onset_ttl`** (and **`phase2_context1_onset`** in **`ttl_log_*`**) match that first frame. For neural or eye-tracking alignment, use **`context1_onset_ttl`** (or the TTL log) directly — **do not** approximate context 1 as fixation onset + 0.5 s.
+
 ---
 
 ## Phase 3 CSV (phase3_{participant}_{YYYYMMDD_HHMMSS}.csv)
@@ -307,7 +309,7 @@ Overall experiment summary.
 | `shapegrid_width_px` | Integer | ShapeGrid pixel width (from `ShapeGrid_4x4_bmp.png`) |
 | `shapegrid_height_px` | Integer | ShapeGrid pixel height |
 | `grid_border_coords` | String | Grid border coordinates (if computed) |
-| `per_shape_ground_truth` | String | Per-shape: `name.bmp:row=R,col=C,center_x=X,center_y=Y` (4×4 from sorted order; pipe-separated) |
+| `per_shape_ground_truth` | String | Per-shape: `name.bmp:row=R,col=C,center_x=X,center_y=Y` (4×4 from sorted order; pipe-separated). **`center_x` / `center_y`** are **fixed latent cell coordinates** (**0.10**, **1.70**, **3.30**, **4.90** per row/col — see **`_parse_shape_grid_position`** in **`context_shape_task.py`**), **not** PsychoPy **height** units and **not** pixel positions on **`ShapeGrid_4x4_bmp.png`**. |
 | `scaling_factor` | String | Scaling factor used for display |
 | `phase3_euclidean_distances` | String | Pairwise distances (format: `i-j:dist;...`). Smaller = objects grouped more similarly (closer categorically). |
 

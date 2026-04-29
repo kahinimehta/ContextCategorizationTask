@@ -16,7 +16,7 @@
 
 **Display:** **"Enter your name"** (upper); centered entry line. **Enter** submits; **ESC** quits. Key handling: **`TASK_DESCRIPTION.md`** (macOS / unrestricted poll).
 
-**TTL:** `participant_name_onset`, `participant_name_offset`
+**TTL:** `participant_name_onset`, `participant_name_offset`; then **`experiment_start`** (**`trial_info: participant=…`**) immediately after the name is finalized, **before** **`welcome`** (no separate participant-facing screen).
 
 ---
 
@@ -65,6 +65,8 @@
 
 **TTL:** `phase1_questions_*`
 
+**Code vs older drafts:** After the Phase 1 tutorial, **`main()`** runs **`phase1_questions`** then **`phase1_before_grid`** with **no** screens in between. In **`context_shape_task.py`**, three **`wait_for_continue`** entries (**"You will now sort some objects."**, **"Place one at a time (same as demo)."**, **"Group by proximity—not along a spectrum."**) are **commented out** inside **`p1_screens`** — they **never** appear and **must not** be confused with the **`phase1_instr1`** … **`phase1_instr3`** screens **after** fixation below (different copy, same TTL names would have collided if those lines were uncommented).
+
 **Before grid:** **"You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize."** · `phase1_before_grid`
 
 **TTL:** `phase1_before_grid_*`
@@ -88,24 +90,28 @@
 
 ### Phase 2 — Context incorporation
 
-Cue **speech on the black dot**; recorded trials: **`←`** / **`→`** (**left** = label under **`context_1`** / first context, **right** = **`context_2`**). Main prompt only: **"Which context fits best? Use the left/right keys to choose."** (no separate gray arrow subtitle).
+Each **recorded trial** shows this **timed sequence**: **context 1** → **same task object (BMP)** → **first cue dot** → **context 2** → **same object again** → **second cue dot** → **choice screen** (participant-paced). Participants **say aloud** a label **each time** a cue dot appears (**two** spoken passes per trial). **←** / **→** apply **only** on the final choice screen (**left** = label under **`context_1`**, **right** = **`context_2`**). Main prompt only: **"Which context fits best? Use the left/right keys to choose."** (no separate gray arrow subtitle).
 
-**Instructions (5 screens)** before the Phase 2 demo:  
+**Cue dot appearance:** On screen the dots are **black** PsychoPy **`Circle`** stimuli (**`fillColor='black'`**) in both the Phase 2 tutorial and main trials. TTL labels **`phase2_reddot_*`**, **`phase2_reddot2_*`**, **`phase2_tutorial_reddot*`**, and timing constants such as **`PHASE2_REDDOT_DURATION_SEC`** are **historical names**—not red graphics.
+
+**Instructions (5 screens)** before the Phase 2 demo (verbatim copy):  
 1. **"Ask the experimenter if you have any questions!"** · `phase2_questions`  
 2. **"For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts."** · `phase2_instr1`  
 3. **"You will see: a context → object → dot."** · `phase2_instr2`  
 4. **"When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best."** · `phase2_instr3`  
 5. **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** · `phase2_instr4`
 
+**Experimenter note:** **`phase2_instr2`** compresses the sequence into one **context → object → dot** clause; participants actually see **two** such passes (**two contexts**, **two dots**, **same object twice**) before the choice—mirror of **`TASK_DESCRIPTION.md`** / **`csv_documentation.md`** (**`phase2_context1_*`** … **`phase2_reddot2_*`**).
+
 **TTL:** `phase2_questions_*` … `phase2_instr4_*`
 
-**Tutorial:** **"Watch this demo before you start the task!"** · `phase2_tutorial_intro` (min **`PHASE2_INSTR5_MIN_SEC`** before Enter) · fixation · practice **context** PNGs (large **square**, center **cover** crop per **`TASK_DESCRIPTION.md`**) · blue **circle** · black **cue dots** · **"You might say the circle is a 'PLANET'"** / **"'BALL'"** · choice: same main prompt + **SPACE** \| **CIRCUS** → TTL **`phase2_tutorial_question_onset`**, timed preview, then **`phase2_tutorial_question_preview_offset`**, then highlight + **`phase2_tutorial_demo_select_*`** / **`phase2_tutorial_response`** → post-blank → **"Ready for recorded trials?"** · `phase2_ready` (Enter + **"Enter to continue."**)
+**Tutorial:** **"Watch this demo before you start the task!"** · `phase2_tutorial_intro` (min **`PHASE2_INSTR5_MIN_SEC`** before Enter) · fixation · practice **context** PNGs (large **square**, center **cover** crop per **`TASK_DESCRIPTION.md`**) · blue **circle** · **black** cue dots (same visual style as recorded trials) · **"You might say the circle is a 'PLANET'"** / **"'BALL'"** · choice: same main prompt + **SPACE** \| **CIRCUS** → TTL **`phase2_tutorial_question_onset`**, timed preview, then **`phase2_tutorial_question_preview_offset`**, then timed highlight of **CIRCUS** (**right** button, steel blue) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** (**`phase2_tutorial_demo_select_*`**, **`phase2_tutorial_response`**) → post-blank → **"Ready for recorded trials?"** · `phase2_ready` (Enter + **"Enter to continue."**)
 
 **TTL:** through **`phase2_tutorial_*`**, **`phase2_ready_*`**, **`phase2_before_trials_*`**.
 
 **Before recorded trials:** **"Ask the experimenter if you have any questions — Enter to start."** · `phase2_before_trials`
 
-**Recorded trials:** Timed context / object / black dot epochs; then choice screen; **break** every **16** trials · **`phase2_break`**. Trial list: **`phase2_trial_order.csv`**.
+**Recorded trials:** Timed **context 1 → object → black dot → context 2 → object → black dot → choice**; **break** every **16** trials · **`phase2_break`**. Trial list: **`phase2_trial_order.csv`**.
 
 **TTL / CSV:** `phase2_fixation_*` … `phase2_complete`, **`phase2_{participant}_{YYYYMMDD_HHMMSS}.csv`**.
 
