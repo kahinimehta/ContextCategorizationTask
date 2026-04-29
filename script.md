@@ -125,9 +125,9 @@ Experimenter: cue speech on dot; remind **←** / **→** on choice screens.
 **Instruction mini-grid:** "As before, sort the objects. Click to place — Enter locks." · **`phase3_instruction2c`**
 
 **Debrief Yes/No (3):**
-1. "Same grouping style as Phase 1?"
-2. "Did contexts sway round-2 groups?"
-3. "See objects differently the second sort?"
+1. "Did you group the objects differently the second time around?"
+2. "Did the contexts you saw change your grouping the second time?"
+3. "Did you see the objects differently the second time grouping them than you did when you first saw them?"
 
 **TTL / CSV:** Phase 3 instructions through debrief — **`csv_documentation.md`**.
 

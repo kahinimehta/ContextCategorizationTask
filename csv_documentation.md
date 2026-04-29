@@ -280,7 +280,10 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 | `onset_ttl` | Float | TTL timestamp at question screen onset |
 | `response_ttl` | Float | TTL timestamp at Yes/No button click |
 
-**Questions:** same three lines as **`script.md`** (Phase 3 debrief).
+**Questions (verbatim):**
+1. "Did you group the objects differently the second time around?"
+2. "Did the contexts you saw change your grouping the second time?"
+3. "Did you see the objects differently the second time grouping them than you did when you first saw them?"
 
 ---
 
