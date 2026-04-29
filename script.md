@@ -10,7 +10,7 @@ Purpose: verbatim screen copy plus abbreviated TTL names (full TTL table **`csv_
 
 ### Participant Login
 
-**Display:** Typed id (centered) plus trailing cursor; **Enter** submits; **ESC** quits (see **`csv_documentation.md`**). No on-screen format instructions.
+**Display:** **"Enter your name."** — typed line with cursor underneath; **Enter** submits; **ESC** quits.
 
 **TTL:** participant_name_onset, participant_name_offset
 

@@ -369,7 +369,7 @@ def wait_for_continue(win, text_stim, event_label, log_ttl=True, min_display_sec
 #  Phase 0: Participant Login — SRT-style fullscreen
 # =========================
 def get_participant_name(win):
-    """Centered typed participant id. Enter submits (non-empty), ESC quits."""
+    """Participant id entry: short prompt plus typed input. Enter submits (non-empty), ESC quits."""
     _log_ttl_event("participant_name_onset")
     input_id = ""
     # Do not restrict event.getKeys with keyList — on macOS/Pyglet matched names miss real keys (`enter` vs `return`).
@@ -389,12 +389,21 @@ def get_participant_name(win):
     for _i in range(10):
         symbol_aliases[f'num_{_i}'] = str(_i)
 
+    id_prompt = visual.TextStim(
+        win,
+        text="Enter your name.",
+        color='black',
+        height=0.045,
+        pos=(0, 0.1),
+        wrapWidth=1.6,
+        units='height',
+    )
     input_display = visual.TextStim(
         win,
         text="",
         color='black',
         height=0.06,
-        pos=(0, 0),
+        pos=(0, -0.02),
         wrapWidth=1.6,
         units='height',
     )
@@ -405,6 +414,7 @@ def get_participant_name(win):
     })
 
     def redraw():
+        id_prompt.draw()
         input_display.text = f"{input_id}_"
         input_display.draw()
         win.flip()
