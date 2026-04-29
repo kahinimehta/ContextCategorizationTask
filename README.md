@@ -4,7 +4,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ## Acknowledgments
 
-- **`Current task objects:** `.bmp` files in **`STIMULI/shapes/`** (psycho applies **near-white → transparent:** **`OBJECT_WHITE_BG_STRIP_THRESHOLD`** in **`context_shape_task.py`**).
+- **`Current task objects:** `.bmp` files in **`STIMULI/shapes/`** from the Droodles task (psycho applies **near-white → transparent:** **`OBJECT_WHITE_BG_STRIP_THRESHOLD`** in **`context_shape_task.py`**).
 - **Contexts & tutorial practice stimuli:** OpenAI image generation
 - **Coding**: Cursor & Claude
 
@@ -56,15 +56,6 @@ Session outputs (CSV, placement PNGs, TTL log) are written incrementally to **`.
 
 **No saves** if participant name contains **`test`** (TTL scratch file is removed).
 
-### Example output
-
-Under **`../LOG_FILES/`** (same folder the task writes to), a full non-test session might look like (participant **`kini`**, **`20260324_140014`**):
-
-| Files |
-|-------|
-| `phase1_kini_20260324_140014.csv`, `phase2_kini_20260324_140014.csv`, `phase3_kini_20260324_140014.csv` |
-| `phase1_placements_kini_20260324_140014.png`, `phase3_placements_kini_20260324_140014.png` |
-| `debrief_kini_20260324_140014.csv`, `summary_kini_20260324_140014.csv`, `ttl_log_kini_20260324_140014.csv` |
 
 ## Quick Start
 
