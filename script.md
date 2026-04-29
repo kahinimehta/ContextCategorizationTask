@@ -124,7 +124,7 @@ Experimenter: cue speech on dot; remind **←** / **→** on choice screens.
 
 **Instruction mini-grid:** "As before, sort the objects. Click to place — Enter locks." · **`phase3_instruction2c`**
 
-**Debrief Yes/No (3):**
+**Debrief Yes/No (3):** Response is **← / → arrow keys** (not mouse): **left = Yes**, **right = No**. On-screen hint at the bottom: **`USE THE ARROW KEYS TO ANSWER`**. Yes / No labels remain beside the green / red cues for reference.
 1. "Did you group the objects differently the second time around?"
 2. "Did the contexts you saw change your grouping the second time?"
 3. "Did you see the objects differently the second time grouping them than you did when you first saw them?"

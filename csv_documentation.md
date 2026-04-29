@@ -205,8 +205,8 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_click_place` | 3 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all objects placed) |
-| `phase3_debrief_onset` | 3 | Debrief question appeared (trial_info: question=1–3); order each question **onset** → **phase3_debrief_response** (click) → **offset** |
-| `phase3_debrief_response` | 3 | Participant clicked Yes/No (trial_info: question=N, answer=Yes/No). Logged 3×. |
+| `phase3_debrief_onset` | 3 | Debrief question appeared (trial_info: question=1–3); order each question **onset** → **phase3_debrief_response** (arrow key) → **offset** |
+| `phase3_debrief_response` | 3 | Participant pressed ← (Yes) or → (No) (trial_info: `question=N answer=Yes|No key=left|right`). Logged 3×. |
 | `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each object (trial_info: filename trial=N) |
@@ -276,9 +276,10 @@ Post–Phase 3 questionnaire (3 questions). One row per question.
 | `question` | Integer | Question number (1, 2, or 3) |
 | `question_text` | String | Full question text |
 | `answer` | String | Participant response: "Yes" or "No" |
-| `rt` | Float | Reaction time from question onset to button click (seconds) |
+| `response_key` | String | Which key: `left` (← = Yes) or `right` (→ = No) |
+| `rt` | Float | Reaction time from question onset to arrow-key response (seconds) |
 | `onset_ttl` | Float | TTL timestamp at question screen onset |
-| `response_ttl` | Float | TTL timestamp at Yes/No button click |
+| `response_ttl` | Float | TTL timestamp at arrow-key response |
 
 **Questions (verbatim):**
 1. "Did you group the objects differently the second time around?"

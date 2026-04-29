@@ -1432,13 +1432,15 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 #  Summary CSV
 # =========================
 def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
-    """Three Yes/No questions at end of Phase 3. Returns list of dicts or None if ESC."""
+    """Three Yes/No questions at end of Phase 3. Left arrow = Yes, right arrow = No (not mouse).
+    Returns list of dicts or None if ESC."""
+    _ = mouse  # keyboard-only debrief; keep signature aligned with other run_* entry points
     questions = [
         "Did you group the objects differently the second time around?",
         "Did the contexts you saw change your grouping the second time?",
         "Did you see the objects differently the second time grouping them than you did when you first saw them?",
     ]
-    fieldnames = ['question', 'question_text', 'answer', 'rt', 'onset_ttl', 'response_ttl']
+    fieldnames = ['question', 'question_text', 'answer', 'response_key', 'rt', 'onset_ttl', 'response_ttl']
     ts = timestamp_str or datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_path = LOG_DIR / f"debrief_{participant}_{ts}.csv"
     if not is_test_participant(participant):
@@ -1458,55 +1460,62 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
         btn_no = visual.Rect(win, width=0.18, height=0.06, fillColor='lightcoral', lineColor='black', pos=(0.22, -0.25), units='height')
         txt_yes = visual.TextStim(win, text="Yes", color='black', height=0.03, pos=(-0.22, -0.25), units='height')
         txt_no = visual.TextStim(win, text="No", color='black', height=0.03, pos=(0.22, -0.25), units='height')
+        hint = visual.TextStim(
+            win,
+            text="USE THE ARROW KEYS TO ANSWER",
+            color='gray',
+            height=0.028,
+            pos=(0, -0.4),
+            wrapWidth=1.4,
+            units='height',
+        )
 
         _log_ttl_event("phase3_debrief_onset", trial_info=f"question={i+1}")
         onset_ttl = _last_ttl_timestamp[0]
         rt_clock = core.Clock()
         rt_clock.reset()
         answer = None
-        prev_pressed = False
-        # Wait for mouse release so a held click from previous question doesn't immediately answer this one
-        while mouse.getPressed()[0]:
-            q.draw()
-            btn_yes.draw()
-            btn_no.draw()
-            txt_yes.draw()
-            txt_no.draw()
-            win.flip()
-            _wait(0.05)
-
+        response_key = None
+        try:
+            event.clearEvents()
+        except Exception:
+            pass
         while answer is None:
             try:
-                keys = event.getKeys(keyList=['escape'], timeStamped=False)
+                keys = event.getKeys(timeStamped=False)
             except (AttributeError, RuntimeError):
                 keys = []
-            if keys and 'escape' in keys:
-                _log_ttl_event("escape_pressed", trial_info="phase3_debrief")
-                if f:
-                    f.close()
-                return None
-            mpos = mouse.getPos()
-            mbuttons = mouse.getPressed()
-            pressed = mbuttons[0]
-            # Only register click on press (not hold): prevents one click from answering multiple questions
-            if pressed and not prev_pressed:
-                if -0.31 <= mpos[0] <= -0.13 and -0.28 <= mpos[1] <= -0.22:
+            for raw in keys:
+                k = str(raw).lower()
+                if k == 'escape':
+                    _log_ttl_event("escape_pressed", trial_info="phase3_debrief")
+                    if f:
+                        f.close()
+                    return None
+                if k == 'left':
                     answer = "Yes"
+                    response_key = "left"
                     break
-                if 0.13 <= mpos[0] <= 0.31 and -0.28 <= mpos[1] <= -0.22:
+                if k == 'right':
                     answer = "No"
+                    response_key = "right"
                     break
-            prev_pressed = pressed
+            if answer is not None:
+                break
             q.draw()
             btn_yes.draw()
             btn_no.draw()
             txt_yes.draw()
             txt_no.draw()
+            hint.draw()
             win.flip()
             _wait(0.016)
 
         rt = rt_clock.getTime()
-        _log_ttl_event("phase3_debrief_response", trial_info=f"question={i+1} answer={answer}")
+        _log_ttl_event(
+            "phase3_debrief_response",
+            trial_info=f"question={i+1} answer={answer} key={response_key}",
+        )
         response_ttl = _last_ttl_timestamp[0]
         _log_ttl_event("phase3_debrief_offset", trial_info=f"question={i+1}")
 
@@ -1514,6 +1523,7 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
             'question': i + 1,
             'question_text': qtext,
             'answer': answer,
+            'response_key': response_key or '',
             'rt': f"{rt:.4f}",
             'onset_ttl': f"{onset_ttl:.9f}" if onset_ttl else '',
             'response_ttl': f"{response_ttl:.9f}" if response_ttl else ''

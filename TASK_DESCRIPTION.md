@@ -100,6 +100,7 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Fixation (cross) | `PHASE_FIXATION_CROSS_SEC`; cross + miniature bottom-right |
 | Task object display (before clickable) | `SHAPE_STATIC_PREVIEW_SEC` (1 s); miniature grid bottom-right (same as Phase 1) |
 | Click-to-place | Participant-paced; at least one click required, then Enter to submit. Miniature full grid in bottom-right for entire sorting block |
+| Debrief (3 questions, after Phase 3) | Participant-paced; **←** = Yes, **→** = No; on-screen **`USE THE ARROW KEYS TO ANSWER`**. See **`script.md`** / **`csv_documentation.md`**. |
 
 ### Other
 
