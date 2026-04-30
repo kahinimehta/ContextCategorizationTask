@@ -62,7 +62,7 @@ Session outputs (CSV, placement PNGs, TTL log) are written incrementally to **`.
 1. PsychoPy (Anaconda) environment
 2. `python context_shape_task.py` from the task folder
 3. Participant name → Enter (**`test`** in name → no CSV/PNG saves; TTL log removed)
-4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (color-sort demo; subtitles match **`script.md`** / timing **`TASK_DESCRIPTION.md`**)
+4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (color-sort demo with animated cursor on placement steps; subtitles match **`script.md`** / timing **`TASK_DESCRIPTION.md`**)
 
 ## Troubleshooting
 

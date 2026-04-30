@@ -31,13 +31,13 @@
 
 ### Tutorial (Phase 1 training)
 
-**Training demo (fallback):** Red square + circles; **groups by color** (reds left cluster, green apart). If **`STIMULI/tutorial_video.mp4`** is present and plays, it replaces the fallback TTL stream—video subtitles/overlays **should mirror** the captions below where applicable.
+**Training demo (fallback):** Red square + circles; **groups by color** (reds left cluster, green apart). Steps **2–4** show an **animated cursor** (pointer moves in, brief click ring, shape moves to the target with the cursor, click ring at destination). If **`STIMULI/tutorial_video.mp4`** is present and plays, it replaces the fallback TTL stream—video subtitles/overlays **should mirror** the captions below where applicable.
 
 **Video** (`tutorial_video.mp4`): motion carries meaning; captions need not match the fallback line-for-line but keep **5a–6** gist.
 
 **Fallback** (durations **`TASK_DESCRIPTION.md`**, Tutorial fallback):
 
-**Step 1** (`tutorial_fallback_onset` / `offset`, `trial_info: step=1`): **"The first part of the task is about sorting shapes. Watch how we sort these shapes!"**
+**Step 1** (`tutorial_fallback_onset` / `offset`, `trial_info: step=1`): **"The first part of the task is about sorting objects. Watch how we sort these objects!"**
 
 **Step 2** (`tutorial_fallback_step2_*`): **"First, let's click to place the red square on the left — Then, we hit Enter."**
 

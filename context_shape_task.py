@@ -73,6 +73,11 @@ TUTORIAL_FB_CLICK_TARGET_SEC = 2.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5A_SEC = 3.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5B_SEC = 4.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP6_SEC = 7.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
+# Phase 1 fallback demo: cursor animation (sums with click pulses must fit inside *_CLICK_* totals below)
+TUTORIAL_FB_CURSOR_REST_POS = (-0.52, -0.38)
+TUTORIAL_FB_CURSOR_TO_SHAPE_SEC = 0.72
+TUTORIAL_FB_CURSOR_DRAG_TO_TARGET_SEC = 0.82
+TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC = 0.14
 # Phase 2 demo (`run_phase2_tutorial`); use *_TRIAL_* / `PHASE2_SEGMENT_SEC` for real Phase 2 trials
 PHASE2_TUTORIAL_SEGMENT_SEC = PHASE2_SEGMENT_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_FIXATION_SEC = PHASE2_FIXATION_PRE_TRIAL_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
@@ -873,41 +878,144 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
+def _tutorial_smoothstep(u):
+    u = max(0.0, min(1.0, float(u)))
+    return u * u * (3.0 - 2.0 * u)
+
+
+def _make_tutorial_cursor_arrow(win):
+    """Mouse-style arrow; `pos` is the tip (click point) in height units."""
+    verts = [
+        (0.0, 0.0),
+        (0.065, 0.022),
+        (0.032, 0.022),
+        (0.032, 0.068),
+        (0.014, 0.068),
+        (0.014, 0.022),
+    ]
+    return visual.ShapeStim(
+        win,
+        vertices=verts,
+        units='height',
+        fillColor='#1a1a1a',
+        lineColor='#f0f0f0',
+        lineWidth=1.5,
+        closeShape=True,
+        interpolate=False,
+    )
+
+
 def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None, ttl_label=None):
-    """Show click-to-place: shape at center briefly, then at target (no dragging). Text on screen at least 2 s.
+    """Animated click-to-place: cursor moves in, clicks, drags shape to target, clicks again.
+    Total dwell times match TUTORIAL_FB_CLICK_CENTER_SEC / TUTORIAL_FB_CLICK_TARGET_SEC so TTL spacing is unchanged.
     anchors: optional list of (stim, (x,y)) for previously placed shapes to keep visible.
-    ttl_label: optional prefix for TTL (e.g. tutorial_fallback_step2) — logs center_onset/offset, target_onset/offset."""
+    ttl_label: optional prefix for TTL — logs center_onset/offset, target_onset/offset."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
     anchor_list = anchors or []
+    cursor = _make_tutorial_cursor_arrow(win)
+    click_ring = visual.Circle(
+        win,
+        radius=0.02,
+        fillColor=None,
+        lineColor='steelblue',
+        lineWidth=3,
+        pos=(0, 0),
+        units='height',
+        interpolate=False,
+    )
+    rest = TUTORIAL_FB_CURSOR_REST_POS
+    move_to_shape = float(TUTORIAL_FB_CURSOR_TO_SHAPE_SEC)
+    drag_sec = float(TUTORIAL_FB_CURSOR_DRAG_TO_TARGET_SEC)
+    click_sec = float(TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC)
+    hold_center = max(0.0, float(TUTORIAL_FB_CLICK_CENTER_SEC) - move_to_shape - click_sec)
+    hold_target = max(0.0, float(TUTORIAL_FB_CLICK_TARGET_SEC) - drag_sec - click_sec)
+    frame_dt = max(1.0 / 120.0, float(getattr(win, 'monitorFramePeriod', None) or (1.0 / 60.0)))
 
-    def draw_all():
+    def draw_scene(shape_xy, cursor_xy, ring_radius=None):
         for a_stim, a_pos in anchor_list:
             a_stim.setPos(a_pos)
             a_stim.draw()
+        shape_stim.setPos(shape_xy)
         shape_stim.draw()
+        if ring_radius is not None and ring_radius > 0:
+            click_ring.setPos(shape_xy)
+            click_ring.setRadius(ring_radius)
+            click_ring.draw()
+        if cursor_xy is not None:
+            cursor.setPos(cursor_xy)
+            cursor.draw()
         sub.draw()
+
+    def animate_scalar(duration_sec, fn):
+        """fn(u) draws one frame; u goes 0→1 with smoothstep."""
+        if duration_sec <= 0:
+            fn(1.0)
+            win.flip()
+            return
+        t0 = time.perf_counter()
+        while True:
+            elapsed = time.perf_counter() - t0
+            u = min(1.0, elapsed / duration_sec)
+            fn(_tutorial_smoothstep(u))
+            win.flip()
+            if u >= 1.0:
+                break
+            _wait(frame_dt)
+
+    def click_pulse_at(shape_xy):
+        n = max(3, int(round(click_sec / frame_dt)))
+        for i in range(n + 1):
+            p = i / float(n)
+            r = 0.014 + 0.034 * p
+            draw_scene(shape_xy, shape_xy, ring_radius=r)
+            win.flip()
+            if i < n:
+                _wait(click_sec / n)
 
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_center_onset")
-    shape_stim.setPos(start_pos)
-    draw_all()
+
+    # Cursor → shape at center; shape stays at start_pos
+    def phase_approach(u):
+        cx = rest[0] + (start_pos[0] - rest[0]) * u
+        cy = rest[1] + (start_pos[1] - rest[1]) * u
+        draw_scene(start_pos, (cx, cy))
+
+    animate_scalar(move_to_shape, phase_approach)
+    click_pulse_at(start_pos)
+
+    draw_scene(start_pos, start_pos)
     win.flip()
-    _wait(TUTORIAL_FB_CLICK_CENTER_SEC)
+    _wait(hold_center)
+
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_center_offset")
         _log_ttl_event(f"{ttl_label}_target_onset")
-    shape_stim.setPos(end_pos)
-    draw_all()
+
+    # Drag shape to target; cursor follows tip at shape center
+    def phase_drag(u):
+        sx = start_pos[0] + (end_pos[0] - start_pos[0]) * u
+        sy = start_pos[1] + (end_pos[1] - start_pos[1]) * u
+        draw_scene((sx, sy), (sx, sy))
+
+    animate_scalar(drag_sec, phase_drag)
+    click_pulse_at(end_pos)
+
+    draw_scene(end_pos, end_pos)
     win.flip()
-    _wait(TUTORIAL_FB_CLICK_TARGET_SEC)
+    _wait(hold_target)
+
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_target_offset")
+
+    del cursor, click_ring
 
 
 def run_tutorial_phase1(win, mouse, participant):
     """Tutorial: video with subtitles, or animated fallback showing click-to-place.
-    Fallback demo uses red square, red circle, green circle and groups by COLOR (reds together; green apart)."""
+    Fallback demo uses red square, red circle, green circle and groups by COLOR (reds together; green apart).
+    Fallback animates a cursor that moves to each object, shows a click, and drags it to the target."""
     used_fallback = True
     if TUTORIAL_VIDEO.exists():
         try:
@@ -929,7 +1037,7 @@ def run_tutorial_phase1(win, mouse, participant):
             print(f"Video playback failed, using fallback: {e}", file=sys.stderr)
 
     if used_fallback:
-        # Click-to-place sequence (no dragging): shape appears at center, then at target
+        # Click-to-place sequence with animated cursor (move in, click, drag to target, click)
         sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None)
         circ_red = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None)
         circ_green = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None)
@@ -944,7 +1052,7 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.setPos((-0.35, 0))
         circ_red.setPos((0, 0))
         circ_green.setPos((0.35, 0))
-        sub1 = visual.TextStim(win, text="The first part of the task is about sorting shapes. Watch how we sort these shapes!", color='black', height=0.032, pos=(0, -0.42),
+        sub1 = visual.TextStim(win, text="The first part of the task is about sorting objects. Watch how we sort these objects!", color='black', height=0.032, pos=(0, -0.42),
                               wrapWidth=1.3, units='height', alignText='center')
         sq.draw()
         circ_red.draw()

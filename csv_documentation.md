@@ -26,7 +26,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 - **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, `phase2_tutorial_question_preview_offset`) → **`phase2_tutorial_demo_select_*`**; **`phase2_tutorial_response`** at highlight onset (after **`phase2_tutorial_demo_select_onset`**).
 - **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
-**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**animated color-sort**, **`trial_info: step=…`** on `tutorial_fallback_onset`).
+**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**color-sort** demo with **animated cursor** + drag on steps 2–4, **`trial_info: step=…`** on `tutorial_fallback_onset`).
 
 ---
 
@@ -52,17 +52,17 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `tutorial_video_offset` | — | Tutorial video ended |
 | `tutorial_fallback_onset` | — | Fallback **tutorial** step onset (`trial_info: step=1, 2, 3, 4, 5a, 5b, or 6`). Only when **`STIMULI/tutorial_video.mp4`** is absent or playback fails — **color-sort** demo (**`script.md`**); see separate `tutorial_fallback_step{n}_*` timestamps for stimulus epochs inside steps 2–4. |
 | `tutorial_fallback_offset` | — | Fallback step ended (**same `trial_info: step=`** as matching onset). Steps **5a–b** and **6** are single static screens (no `tutorial_fallback_step*_center` / `target` children). |
-| `tutorial_fallback_step2_center_onset` | — | Step 2: red **square** center epoch begins (logged **before** center `flip()`; display lasts **`TUTORIAL_FB_CLICK_CENTER_SEC`**) |
-| `tutorial_fallback_step2_center_offset` | — | Step 2: center hold ended (after **`TUTORIAL_FB_CLICK_CENTER_SEC`**). |
-| `tutorial_fallback_step2_target_onset` | — | Step 2: square at **left-cluster** target (`TUTORIAL_FB_CLICK_TARGET_SEC`). Color-sort layout. |
+| `tutorial_fallback_step2_center_onset` | — | Step 2: red **square** center epoch begins (logged **before** first `flip()` of that epoch). Epoch spans **`TUTORIAL_FB_CLICK_CENTER_SEC`** total (cursor moves to center shape → click ring → hold at center). |
+| `tutorial_fallback_step2_center_offset` | — | Step 2: center epoch ended (logged immediately **before** animated move toward target begins). |
+| `tutorial_fallback_step2_target_onset` | — | Step 2: target epoch begins — scripted **drag** of square toward **left-cluster** placement (`TUTORIAL_FB_CLICK_TARGET_SEC` total including drag, arrival click ring, hold). Not “already at target” on this timestamp. |
 | `tutorial_fallback_step2_target_offset` | — | Step 2: target epoch ended |
-| `tutorial_fallback_step3_center_onset` | — | Step 3: red **circle** center epoch (`TUTORIAL_FB_CLICK_CENTER_SEC`) |
+| `tutorial_fallback_step3_center_onset` | — | Step 3: red **circle** center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) — same structure as step 2 |
 | `tutorial_fallback_step3_center_offset` | — | Step 3: center epoch ended |
-| `tutorial_fallback_step3_target_onset` | — | Step 3: circle beside square (`TUTORIAL_FB_CLICK_TARGET_SEC`) — **red-with-red** placement |
+| `tutorial_fallback_step3_target_onset` | — | Step 3: target epoch begins — drag toward square (**red-with-red** placement); **`TUTORIAL_FB_CLICK_TARGET_SEC`** total |
 | `tutorial_fallback_step3_target_offset` | — | Step 3: target epoch ended |
-| `tutorial_fallback_step4_center_onset` | — | Step 4: **green** circle center epoch (`TUTORIAL_FB_CLICK_CENTER_SEC`) |
+| `tutorial_fallback_step4_center_onset` | — | Step 4: **green** circle center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) |
 | `tutorial_fallback_step4_center_offset` | — | Step 4: center epoch ended |
-| `tutorial_fallback_step4_target_onset` | — | Step 4: green circle at **right** target (`TUTORIAL_FB_CLICK_TARGET_SEC`) — separate **color** from reds |
+| `tutorial_fallback_step4_target_onset` | — | Step 4: target epoch begins — drag toward **right** group (**color** separate from reds); **`TUTORIAL_FB_CLICK_TARGET_SEC`** total |
 | `tutorial_fallback_step4_target_offset` | — | Step 4: target epoch ended |
 | `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn to group some objects! — Remember the same rules."** appeared |
 | `tutorial_transition_enter` | — | Enter pressed |

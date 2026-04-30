@@ -44,6 +44,8 @@ PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main 
 
 Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutorial). Steps 2–4 each use center then target epochs (`TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`); **`tutorial_fallback_step{n}_*`** TTLs: **`csv_documentation.md`**.
 
+**Presentation (steps 2–4):** A scripted **cursor** moves from a rest position (`TUTORIAL_FB_CURSOR_REST_POS`) to the shape; a short **click** is shown (expanding ring); the shape then **moves** to the placement with the cursor following; another ring marks placement. Segment lengths are controlled by `TUTORIAL_FB_CURSOR_TO_SHAPE_SEC`, `TUTORIAL_FB_CURSOR_DRAG_TO_TARGET_SEC`, and `TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC` inside the fixed center/target totals above.
+
 | Step | Duration | Content (summary) |
 |------|----------|-------------------|
 | 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC` = 2.5 s + `TRAINING_DEMO_SCREEN_EXTRA_SEC`) | Three-shape overview + intro subtitle |
