@@ -7,45 +7,39 @@
 
 ### Participant login
 
-**Display:** **"Enter your name"** (upper); centered entry line. **Enter** submits; **ESC** quits. Key handling: **`TASK_DESCRIPTION.md`** (macOS / unrestricted poll).
-
-**TTL:** `participant_name_onset`, `participant_name_offset`; then **`experiment_start`** (**`trial_info: participant=…`**) immediately after the name is finalized, **before** **`welcome`** (no separate participant-facing screen).
+**Display copy:** **"Enter your name"** (upper); centered entry line. **Enter** submits; **ESC** quits. Key handling: **`TASK_DESCRIPTION.md`** (macOS / unrestricted poll).
 
 ---
 
-### Welcome
+### Welcome copy
 
 **Display:** **"Welcome to your task! — Hit Enter to watch the tutorial video."**  
-(Plus **"Enter to continue."** — see preamble.)
 
-**TTL:** `welcome_onset`, `welcome_enter`, `welcome_offset`
 
 ---
 
 ### Tutorial (Phase 1 training) copy
 
 
-1. (`tutorial_fallback_onset` / `offset`, `trial_info: step=1`): **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout).
+1.  **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout).
 
-2. (`tutorial_fallback_step2_*`): **`PHASE13_CLICK_ENTER_INSTRUCTION`** — **"Click where you want to place each object, then press Enter to confirm."**
+2.  **"Click where you want to place each object, then press Enter to confirm."**
 
-3.  (`tutorial_fallback_step3_*`): **"Now, let's group the red circle with the red square on the left."**
+3.  **"Now, let's group the red circle with the red square on the left."**
 
-4. (`tutorial_fallback_step4_*`): **"Let's place the green circle to the right (in a different group)."**
+4.  **"Let's place the green circle to the right (in a different group)."**
 
-5.(`step=5a`): **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"**
+5. **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"**
 
 6. (`step=5b`): **"We created groups, not a spectrum — nearby objects share a group."**
 
-7. (`step=6`): **`PHASE13_CLICK_ENTER_INSTRUCTION`** — **"Click where you want to place each object, then press Enter to confirm."**  
+7. **"Click where you want to place each object, then press Enter to confirm."**  
 
 **Transition:** **"Your turn to group some objects! Remember the same rules."**
 
-**TTL:** `tutorial_video_*` **or** `tutorial_fallback_*` (+ `tutorial_fallback_step{2|3|4}_{preflash|center|target}_*` — step **2** has **no** `preflash`; steps **3–4** include `preflash`), then `tutorial_transition_*`.
-
 ---
 
-### Phase 1 — Object sorting copy
+### Phase 1 — Object sorting copy (click & enter controls)
 
 **Instructions (before grid):**  
 1. **"Ask the experimenter if you have any questions!"** · `phase1_questions`
@@ -57,7 +51,7 @@
 
 ---
 
-### Phase 2 — Context incorporation copy
+### Phase 2 — Context incorporation copy (left & right keyboard controls)
 
 1. **"Ask the experimenter if you have any questions!"** · `phase2_questions`  
 2. **"For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts."** · `phase2_instr1`  
@@ -78,7 +72,7 @@
 
 ---
 
-### Phase 3 — Re-sort post-context
+### Phase 3 — Re-sort post-context (click & enter controls)
 
 **Instructions:**  
 1. **"Ask the experimenter if you have any questions!"** · `phase3_questions`  
@@ -87,8 +81,9 @@
 
 **Before grid:** **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** · `phase3_before_grid` · **Enter** ignored until **`PHASE13_BEFORE_GRID_MIN_SEC`** (**`TASK_DESCRIPTION.md`** timings).
 
+---
 
-**Debrief (3 questions):
+###  Debrief (3 questions): (left & right keyboard controls)
 
 1. **"Did you group the objects differently the second time around?"**  
 2. **"Did the contexts you saw change your grouping the second time?"**  
