@@ -2,12 +2,6 @@
 
 This repository contains the PsychoPy implementation of the **ContextShape Task**, a multi-phase experiment examining bottom-up object grouping and top-down context incorporation.
 
-## Acknowledgments
-
-- **`Current task objects:** `.bmp` files in **`STIMULI/shapes/`** from the Droodles task (psycho applies **near-white → transparent:** **`OBJECT_WHITE_BG_STRIP_THRESHOLD`** in **`context_shape_task.py`**).
-- **Contexts & tutorial practice stimuli:** OpenAI image generation
-- **Coding**: Cursor & Claude
-
 ## Environment
 
 - **Python**: Anaconda
@@ -20,7 +14,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Core Task
 
 - **`context_shape_task.py`** — Main PsychoPy script for the entire experiment
-- **`phase2_trial_order.csv`** — Defines Phase 2 (**shipped:** **64** rows; **`stderr`** logs **`N`** on load). Columns, **`PHASE2_CSV_REQUIRED`**, path quirks: **`TASK_DESCRIPTION.md`**.
+- **`phase2_trial_order.csv`** — Defines Phase 2 (**shipped:** **64** rows; **`stderr`** logs **`N`** on load)
 
 ### Task design (summary)
 
@@ -38,8 +32,8 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Stimuli
 
-- **`STIMULI/shapes/`** — 16 task `.bmp` + **`ShapeGrid_4x4_bmp.png`** (**layout / matte strip:** **`TASK_DESCRIPTION.md`**).
-- **`STIMULI/contexts/`** — **`{category}1.png` / `{category}.png`**. Tutorial: **`practice1.png`**, **`practice2.png`** in **`STIMULI/`** or **`contexts/`**.
+- **`STIMULI/shapes/`** — 16 task `.bmp` + **`ShapeGrid_4x4_bmp.png`** Source: [Droodles dataset](https://link.springer.com/article/10.3758/BRM.42.3.685#SecESM1)
+- **`STIMULI/contexts/`** — **`{category}1.png` / `{category}.png`**. Tutorial: **`practice1.png`**, **`practice2.png`** in **`STIMULI/`** or **`contexts/`**. Source: OpenAI playground
 
 
 ## Data Output
@@ -61,12 +55,10 @@ Session outputs (CSV, placement PNGs, TTL log) are written incrementally to **`.
 
 1. PsychoPy (Anaconda) environment
 2. `python context_shape_task.py` from the task folder
-3. Participant name → Enter (**`test`** in name → no CSV/PNG saves; TTL log removed)
-4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (spread overview; anchors beat **before** placement halo/click; isolate **without** expanding ring; triangle + **narrow tail**; **`script.md`** / **`TASK_DESCRIPTION.md`**)
 
 ## Troubleshooting
 
-**`TASK_DESCRIPTION.md`** only (ESC timing, **`PSYCHOPY_WINDOWED`**, **`PSYCHOPY_DUMMY_WINDOW`**, **`PSYCHOPY_CHECK_TIMING`**, macOS quirks).
+See **`TASK_DESCRIPTION.md`**
 
 ## Paths
 
