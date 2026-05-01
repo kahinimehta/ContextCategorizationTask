@@ -44,16 +44,18 @@ PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main 
 
 ### Tutorial (fallback)
 
-Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutorial). Steps **2–4:** **`TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`** each; steps **3–4** add **`TUTORIAL_FB_SHAPE_PREFLASH_SEC`** before center. Within **`TUTORIAL_FB_CLICK_TARGET_SEC`**: **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** (anchors-only) + halo + click + reveal + hold. **`tutorial_fallback_step{n}_*`** TTLs: **`csv_documentation.md`**.
+**`TUTORIAL_FB_CLICK_*` definitions (`context_shape_task.py`):** **`TUTORIAL_FB_CLICK_CENTER_SEC`** = **`1.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC`** and **`TUTORIAL_FB_CLICK_TARGET_SEC`** = **`2.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC`**. The literals **1.0** / **2.0** are only the bases—the constants passed to the fallback timeline are the **sums** (with default **`TRAINING_DEMO_SCREEN_EXTRA_SEC`** = **1.5** s → **2.5** s + **3.5** s = **6** s for center + target together). Changing **`TRAINING_DEMO_SCREEN_EXTRA_SEC`** adjusts these together with other tutorial-only pads.
+
+Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutorial). Steps **2–4:** **`TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`** each (definitions — preceding paragraph); steps **3–4** add **`TUTORIAL_FB_SHAPE_PREFLASH_SEC`** before center. Within **`TUTORIAL_FB_CLICK_TARGET_SEC`**: **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** (anchors-only) + halo + click + reveal + hold. **`tutorial_fallback_step{n}_*`** TTLs: **`csv_documentation.md`**.
 
 **Presentation:** **Step 1:** Intro subtitle + **all three** shapes **together** for **`TUTORIAL_FB_OVERVIEW_SEC`** at **spread** overview positions (**`ov_sq`**, **`ov_red`**, **`ov_green`** in code — not overlapping). **Center (steps 2–4):** **only** moving object — **no** expanding steelblue ring. **Target:** anchors (+ subtitle) **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** with moving shape **hidden** and **no cursor**; **then** light-blue halo + steelblue expanding ring + **cursor** at **empty** **`end_pos`** (**moving shape hidden**); **then** shape at **final** coords + hold — totals **`TUTORIAL_FB_CLICK_TARGET_SEC`**. **Steps 3–4:** **`TUTORIAL_FB_SHAPE_PREFLASH_SEC`** on empty canvas; then center isolate (placed objects **not** drawn); then target as above. Demo **final positions** use staggered **y**. Black **cursor**: **triangle** + **narrow tail** along bisector (**`_make_tutorial_cursor`**). **Preflash** + **center** + anchor preview: **no cursor**. **Step 2** subtitle = **`PHASE13_CLICK_ENTER_INSTRUCTION`**; steps **3–4** grouping narrative (**`script.md`**).
 
 | Step | Duration | Content (summary) |
 |------|----------|-------------------|
 | 1 | **4** s (`TUTORIAL_FB_OVERVIEW_SEC` = 2.5 s + `TRAINING_DEMO_SCREEN_EXTRA_SEC`) | Intro subtitle + **all three shapes at once** (spread overview positions) |
-| 2 | **6** s total | Red square; subtitle **`PHASE13_CLICK_ENTER_INSTRUCTION`** |
-| 3 | **≈6.4** s (`TUTORIAL_FB_SHAPE_PREFLASH_SEC` + center + target) | Red circle joins cluster; grouping subtitle (**`script.md`**) |
-| 4 | **≈6.4** s (`TUTORIAL_FB_SHAPE_PREFLASH_SEC` + center + target) | Green circle to right group; grouping subtitle (**`script.md`**) |
+| 2 | **6** s (`TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`; each constant includes **`TRAINING_DEMO_SCREEN_EXTRA_SEC`**) | Red square; subtitle **`PHASE13_CLICK_ENTER_INSTRUCTION`** |
+| 3 | **≈6.4** s (`TUTORIAL_FB_SHAPE_PREFLASH_SEC` + `TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`) | Red circle joins cluster; grouping subtitle (**`script.md`**) |
+| 4 | **≈6.4** s (`TUTORIAL_FB_SHAPE_PREFLASH_SEC` + `TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`) | Green circle to right group; grouping subtitle (**`script.md`**) |
 | 5a | **4.5** s | Color-group summary (outline **circles** around reds vs green; centers follow staggered placements) |
 | 5b | **5.5** s | Spectrum / proximity subtitle |
 | 6 | **8.5** s | **`PHASE13_CLICK_ENTER_INSTRUCTION`** (same as **`phase1_instr3`** / trial hint) *(optional “large spread” line commented out in code)* |
