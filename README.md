@@ -18,8 +18,8 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 
 ### Task design (summary)
 
-- **Phase 1:** 16 `.bmp` objects (from `STIMULI/shapes/`), random order (alphabetically first task stimulus not first), full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
-- **Phase 2:** Trial order from **`phase2_trial_order.csv`**; breaks every **16** trials. Sequence: context → object → **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**, spoken response), twice per trial before the choice screen; TTL **`phase2_object_question_*`** / **`phase2_object_question2_*`**, **`phase2_*.csv`** **`object_question_onset_ttl`** / **`object_question2_onset_ttl`**. Context layout and timings: **`TASK_DESCRIPTION.md`**; verbatim instructions: **`script.md`** (Phase 2).
+- **Phase 1:** 16 `.bmp` objects (from `STIMULI/shapes/`), random order, full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
+- **Phase 2:** Trial order from **`phase2_trial_order.csv`**; breaks every **16** trials. Sequence: context → object → **"What is the object?"**, spoken response, twice per trial before the choice screen. More details in `TASK_DESCRIPTION.MD`. 
 - **Phase 3:** Same 16 objects as Phase 1, new random order (must differ from Phase 1).
 
 ### Documentation
