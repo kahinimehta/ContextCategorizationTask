@@ -23,7 +23,7 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 - **Fixed-duration:** `*_onset` before the segment’s first `flip()`; `*_offset` after the last frame (`_wait` complete).
 - **`wait_for_continue`:** `{label}_onset` → `{label}_enter` (Enter) → `{label}_offset` (advance)—welcome, tutorial_transition, phase instructions, **`phase2_break`**, etc.
 - **Phase 2 recorded trial:** **`phase2_question_onset`** before the feedback loop; **`phase2_response`** immediately before **`phase2_question_offset`**; then **`phase2_trial_iti_onset`** / **`phase2_trial_iti_offset`** (**`PHASE2_TRIAL_ITI_SEC`** blank, same **`trial_info`** as fixation)—see trigger mapping table after **`phase2_question_offset`**. **`phase2_*.csv` `rt`** from the **first `flip()`** of the choice screen.
-- **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, `phase2_tutorial_question_preview_offset`) → **`phase2_tutorial_demo_select_*`**; **`phase2_tutorial_response`** at highlight onset (after **`phase2_tutorial_demo_select_onset`**).
+- **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, **`phase2_tutorial_question_preview_offset`**) → **`phase2_tutorial_demo_select_onset`** (logged **before** the highlight **`flip()`**) → first highlight **`flip()`** → **`phase2_tutorial_response`** (logged **right after** that **`flip()`**; **trial_info** e.g. **`CIRCUS`**) → **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** → **`phase2_tutorial_demo_select_offset`**.
 - **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
 **Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**color-sort**: step **1** = **all three** shapes **spread** together; steps **3–4** add **`preflash`** on empty canvas before isolate; **center** = moving shape **only** (**no** expanding steelblue ring); **target** = **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** anchors-only beat, **then** light-blue halo + steelblue click (**moving shape hidden**), **then** final placement; **no cursor** on preflash/center/anchor preview; staggered **y**; steps **2** & **6** subtitles = **`PHASE13_CLICK_ENTER_INSTRUCTION`**; **`trial_info: step=…`** on `tutorial_fallback_onset`).
@@ -134,7 +134,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended (**same `trial_info`**) |
 | `phase2_tutorial_shape_onset` | 2 | Tutorial focal object onset (`trial_info`: **`demo=blue_circle`**) |
 | `phase2_tutorial_shape_offset` | 2 | Tutorial focal object ended (**`demo=blue_circle`**) |
-| `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** in current code (1 s blank between object epoch and object-question screen was removed) |
+| `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** (tutorial: object epoch → first object-question is immediate; formerly 1 s blank) |
 | `phase2_tutorial_blank_offset` | 2 | Legacy — **not emitted** |
 | `phase2_tutorial_object_question_onset` | 2 | Tutorial **`PHASE2_OBJECT_QUESTION_TEXT`** + PLANET demo line (`trial_info`: **`cue=circle_label_1`**) |
 | `phase2_tutorial_object_question_offset` | 2 | Tutorial object-question segment ended (`trial_info`: **`cue=circle_label_1`**) |
@@ -142,7 +142,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
 | `phase2_tutorial_shape2_onset` | 2 | Tutorial second object onset (`trial_info`: **`demo=blue_circle`**) |
 | `phase2_tutorial_shape2_offset` | 2 | Tutorial second object ended (**`demo=blue_circle`**) |
-| `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** in current code (blank before second object-question screen removed) |
+| `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** (tutorial: 2nd object epoch → second object-question is immediate; formerly blank) |
 | `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
 | `phase2_tutorial_object_question2_onset` | 2 | Tutorial **`PHASE2_OBJECT_QUESTION_TEXT`** + BALL demo line (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_object_question2_offset` | 2 | Second tutorial object-question segment ended (`trial_info`: **`cue=circle_label_2`**) |
@@ -151,7 +151,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** |
 | `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
 | `phase2_tutorial_question_offset` | 2 | Tutorial question screen ended (after timed preview + highlight + **`phase2_tutorial_response`**) |
-| `phase2_tutorial_response` | 2 | Scripted demo choice logged at **highlight** onset (e.g. **trial_info: CIRCUS**), before **`phase2_tutorial_demo_select_offset`** |
+| `phase2_tutorial_response` | 2 | Scripted demo choice (**trial_info:** e.g. **`CIRCUS`**). Logged **immediately after** the highlight **`flip()`**; **`phase2_tutorial_demo_select_onset`** is logged **before** that **`flip()`**. Then **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** elapses before **`phase2_tutorial_demo_select_offset`** |
 | `phase2_tutorial_post_blank_onset` | 2 | White full-screen blank after tutorial |
 | `phase2_tutorial_post_blank_offset` | 2 | Post-response blank ended |
 | `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
@@ -223,7 +223,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `phase3_placements_saved` | 3 | Phase 3 placement image saved incrementally after each object (trial_info: filename trial=N) |
 | `summary_saved` | — | Summary CSV written (**after** last **`phase3_debrief_*`**, **before** **`experiment_end`**; trial_info: filename) |
-| `escape_pressed` | — | Participant pressed Escape to quit (trial_info: `screen=<event_label>` for **`wait_for_continue`**—e.g. **`welcome`**, **`tutorial_transition`**, **`phase1_questions`**, **`phase1_before_grid`**, **`phase1_instr1`** … **`phase1_instr3`**, **`phase2_questions`**, **`phase2_instr1`** … **`phase2_instr4`**, **`phase2_tutorial_intro`**, **`phase2_ready`**, **`phase2_before_trials`**, **`phase2_break`**, **`phase3_questions`**, **`phase3_instr1`** … **`phase3_instr2`**, **`phase3_before_grid`**, **`phase3_instruction2c`**—or fixed strings **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`**, **`phase2_question`**, **`phase3_debrief`**). Not emitted during timed grid/fixation/stimulus epochs. |
+| `escape_pressed` | — | Participant pressed Escape to quit. **`trial_info`** format depends on **where** Escape was handled: **`wait_for_continue`** logs **`screen=<event_label>`** (e.g. **`screen=welcome`**, **`screen=phase1_instr1`**, **`screen=phase2_break`**, **`screen=phase3_instruction2c`** — full **`screen=`** prefix). **Without** **`screen=`**, dedicated loops log the bare string **`participant_name`**, **`tutorial_video`**, **`phase1_click_place`** / **`phase3_click_place`** (from **`run_drag_phase`**), **`phase2_question`**, or **`phase3_debrief`** — see **`context_shape_task.py`**. Not emitted during timed grid/fixation/stimulus epochs. |
 
 ---
 
