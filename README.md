@@ -25,7 +25,7 @@ This repository contains the PsychoPy implementation of the **ContextShape Task*
 ### Task design (summary)
 
 - **Phase 1:** 16 `.bmp` objects (from `STIMULI/shapes/`), random order (alphabetically first task stimulus not first), full-screen grid preview then click-to-sort with a **miniature 4×4 grid** fixed in the **bottom-right** for every trial (1 s isolate + placement).
-- **Phase 2:** Trial order from **`phase2_trial_order.csv`**; breaks every **16** trials. Context layout (**center square**, cover crop): constants in **`context_shape_task.py`** — details **`TASK_DESCRIPTION.md`**.
+- **Phase 2:** Trial order from **`phase2_trial_order.csv`**; breaks every **16** trials. Sequence: context → object → **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**, spoken response), twice per trial before the choice screen; TTL/CSV labels **`phase2_reddot_*`** / **`reddot_onset_ttl`** are **historical**. Context layout and timings: **`TASK_DESCRIPTION.md`**; verbatim instructions: **`script.md`** (Phase 2).
 - **Phase 3:** Same 16 objects as Phase 1, new random order (must differ from Phase 1); same **bottom-right miniature grid** behavior as Phase 1.
 
 ### Documentation
@@ -62,7 +62,7 @@ Session outputs (CSV, placement PNGs, TTL log) are written incrementally to **`.
 1. PsychoPy (Anaconda) environment
 2. `python context_shape_task.py` from the task folder
 3. Participant name → Enter (**`test`** in name → no CSV/PNG saves; TTL log removed)
-4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (color-sort demo with animated cursor on placement steps; subtitles match **`script.md`** / timing **`TASK_DESCRIPTION.md`**)
+4. Optional: **`STIMULI/tutorial_video.mp4`** — else scripted fallback (spread overview; anchors beat **before** placement halo/click; isolate **without** expanding ring; triangle + **narrow tail**; **`script.md`** / **`TASK_DESCRIPTION.md`**)
 
 ## Troubleshooting
 

@@ -26,15 +26,15 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 - **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, `phase2_tutorial_question_preview_offset`) → **`phase2_tutorial_demo_select_*`**; **`phase2_tutorial_response`** at highlight onset (after **`phase2_tutorial_demo_select_onset`**).
 - **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
-**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**color-sort** demo with **animated cursor** + drag on steps 2–4, **`trial_info: step=…`** on `tutorial_fallback_onset`).
+**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**color-sort**: step **1** = **all three** shapes **spread** together; steps **3–4** add **`preflash`** on empty canvas before isolate; **center** = moving shape **only** (**no** expanding steelblue ring); **target** = **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** anchors-only beat, **then** light-blue halo + steelblue click (**moving shape hidden**), **then** final placement; **no cursor** on preflash/center/anchor preview; staggered **y**; steps **2** & **6** subtitles = **`PHASE13_CLICK_ENTER_INSTRUCTION`**; **`trial_info: step=…`** on `tutorial_fallback_onset`).
 
 ---
 
-**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). **Post-fixation Phase 1:** logs may show **`phase1_instruction2b_*`**, **`phase1_instr4_*`**, **`phase1_instruction2c_*`** for the same copy as current **`phase1_instr1_*`** … **`phase1_instr3_*`**. **Phase 2:** **`phase2_instr2b_*`** / **`phase2_instr5_*`** match current **`phase2_instr3_*`** and **`phase2_tutorial_intro_*`** (watch-demo screen moved into the tutorial). **Phase 3:** **`phase3_instr4_*`** matches current **`phase3_instr2_*`**. Forks that enabled pre-grid **`phase1_instr1_*`** as **“You will now sort…”** must not be confused with current **`phase1_instr1_*`** (**“Now, group these…”** after fixation).
+**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). **Post-fixation Phase 1:** logs may show **`phase1_instruction2b_*`**, **`phase1_instr4_*`**, **`phase1_instruction2c_*`** for the same copy as current **`phase1_instr1_*`** … **`phase1_instr3_*`**. **Phase 2:** **`phase2_instr2b_*`** / **`phase2_instr5_*`** match current **`phase2_instr3_*`** and **`phase2_tutorial_intro_*`** (watch-demo screen moved into the tutorial). **`phase2_reddot_*`** / **`reddot_onset_ttl`** still label the **object-question** screen (**`PHASE2_OBJECT_QUESTION_TEXT`**), not a black dot. **Phase 3:** **`phase3_instr4_*`** matches current **`phase3_instr2_*`**. Forks that enabled pre-grid **`phase1_instr1_*`** as **“You will now sort…”** must not be confused with current **`phase1_instr1_*`** (**“Now, group these…”** after fixation).
 
 ## TTL Trigger Mapping
 
-Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3: **Click** to move, **Enter** to submit. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
+Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3 sorting: participants see **"Click where you want to place each object, then press Enter to confirm."** as **`phase1_instr3`** / **`phase3_instruction2c`** and as the gray trial hint (`PHASE13_CLICK_ENTER_INSTRUCTION`); **click** to position, **Enter** to confirm each object. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
 
 **Session end (successful run):** after the last **`phase3_debrief_offset`**, events are **`summary_saved`** → **`experiment_end`** → **`thanks_onset`** → **`thanks_offset`** (then the TTL file is closed/renamed to **`ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv`**).
 
@@ -50,19 +50,23 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `welcome_offset` | — | Screen transition |
 | `tutorial_video_onset` | — | Tutorial video started |
 | `tutorial_video_offset` | — | Tutorial video ended |
-| `tutorial_fallback_onset` | — | Fallback **tutorial** step onset (`trial_info: step=1, 2, 3, 4, 5a, 5b, or 6`). Only when **`STIMULI/tutorial_video.mp4`** is absent or playback fails — **color-sort** demo (**`script.md`**); see separate `tutorial_fallback_step{n}_*` timestamps for stimulus epochs inside steps 2–4. |
-| `tutorial_fallback_offset` | — | Fallback step ended (**same `trial_info: step=`** as matching onset). Steps **5a–b** and **6** are single static screens (no `tutorial_fallback_step*_center` / `target` children). |
-| `tutorial_fallback_step2_center_onset` | — | Step 2: red **square** center epoch begins (logged **before** first `flip()` of that epoch). Epoch spans **`TUTORIAL_FB_CLICK_CENTER_SEC`** total (cursor moves to center shape → click ring → hold at center). |
-| `tutorial_fallback_step2_center_offset` | — | Step 2: center epoch ended (logged immediately **before** animated move toward target begins). |
-| `tutorial_fallback_step2_target_onset` | — | Step 2: target epoch begins — scripted **drag** of square toward **left-cluster** placement (`TUTORIAL_FB_CLICK_TARGET_SEC` total including drag, arrival click ring, hold). Not “already at target” on this timestamp. |
+| `tutorial_fallback_onset` | — | Fallback **tutorial** step onset (`trial_info: step=1, 2, 3, 4, 5a, 5b, or 6`). Only when **`STIMULI/tutorial_video.mp4`** is absent or playback fails — **color-sort** demo (**`script.md`**): step **1** = overview (**all shapes spread**); steps **2–4** — see `tutorial_fallback_step{n}_*` (**preflash** only steps **3–4**). |
+| `tutorial_fallback_offset` | — | Fallback step ended (**same `trial_info: step=`** as matching onset). Steps **5a–b** and **6** are single static screens (no `tutorial_fallback_step*_preflash` / `center` / `target` children). |
+| `tutorial_fallback_step2_center_onset` | — | Step 2: red **square** center epoch begins. **`TUTORIAL_FB_CLICK_CENTER_SEC`** total: **only** moving square — **no** anchors, **no cursor**, **no** expanding steelblue ring (isolate-style). |
+| `tutorial_fallback_step2_center_offset` | — | Step 2: center epoch ended (**before** target epoch: moving square no longer at center). |
+| `tutorial_fallback_step2_target_onset` | — | Step 2: target epoch begins — **`TUTORIAL_FB_CLICK_TARGET_SEC`** total includes **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** (subtitle only — **no** anchors step **2**); **then** halo + steelblue click (**moving square hidden**); square **appears** at **final** coords; hold. |
 | `tutorial_fallback_step2_target_offset` | — | Step 2: target epoch ended |
-| `tutorial_fallback_step3_center_onset` | — | Step 3: red **circle** center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) — same structure as step 2 |
+| `tutorial_fallback_step3_preflash_onset` | — | Step 3: **`TUTORIAL_FB_SHAPE_PREFLASH_SEC`** — red **circle** alone on **empty** canvas (subtitle only; **no** anchors, **no** cursor). |
+| `tutorial_fallback_step3_preflash_offset` | — | Step 3: preflash ended (**before** center isolate). |
+| `tutorial_fallback_step3_center_onset` | — | Step 3: red **circle** center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) — **only** moving circle; red square **hidden** (isolate); **no cursor**, **no** expanding steelblue ring |
 | `tutorial_fallback_step3_center_offset` | — | Step 3: center epoch ended |
-| `tutorial_fallback_step3_target_onset` | — | Step 3: target epoch begins — drag toward square (**red-with-red** placement); **`TUTORIAL_FB_CLICK_TARGET_SEC`** total |
+| `tutorial_fallback_step3_target_onset` | — | Step 3: target — anchors-only preview (**`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`**, moving circle hidden); **then** halo → pulse (**circle hidden**); **then** circle appears (**red-with-red**). **`TUTORIAL_FB_CLICK_TARGET_SEC`** total. |
 | `tutorial_fallback_step3_target_offset` | — | Step 3: target epoch ended |
-| `tutorial_fallback_step4_center_onset` | — | Step 4: **green** circle center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) |
+| `tutorial_fallback_step4_preflash_onset` | — | Step 4: **`TUTORIAL_FB_SHAPE_PREFLASH_SEC`** — **green** circle alone on **empty** canvas (subtitle only). |
+| `tutorial_fallback_step4_preflash_offset` | — | Step 4: preflash ended |
+| `tutorial_fallback_step4_center_onset` | — | Step 4: **green** circle center epoch (**`TUTORIAL_FB_CLICK_CENTER_SEC`**) — **only** moving green circle; prior placements **hidden**; **no cursor**, **no** expanding steelblue ring |
 | `tutorial_fallback_step4_center_offset` | — | Step 4: center epoch ended |
-| `tutorial_fallback_step4_target_onset` | — | Step 4: target epoch begins — drag toward **right** group (**color** separate from reds); **`TUTORIAL_FB_CLICK_TARGET_SEC`** total |
+| `tutorial_fallback_step4_target_onset` | — | Step 4: target — anchors-only preview; **then** halo → pulse (**green hidden**); **then** green circle at **right** group; **`TUTORIAL_FB_CLICK_TARGET_SEC`** total. |
 | `tutorial_fallback_step4_target_offset` | — | Step 4: target epoch ended |
 | `tutorial_transition_onset` | — | End of Phase 1 tutorial: **"Your turn to group some objects! — Remember the same rules."** appeared |
 | `tutorial_transition_enter` | — | Enter pressed |
@@ -76,14 +80,14 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase1_instr2_onset` | 1 | **"Use as many groups as you want, and group objects however feels intuitive."** (full screen, no inset) |
 | `phase1_instr2_enter` | 1 | Enter pressed |
 | `phase1_instr2_offset` | 1 | Screen transition |
-| `phase1_instr3_onset` | 1 | **"Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!"** (miniature grid inset) |
+| `phase1_instr3_onset` | 1 | **"Click where you want to place each object, then press Enter to confirm."** (miniature grid inset) |
 | `phase1_instr3_enter` | 1 | Enter pressed |
 | `phase1_instr3_offset` | 1 | Screen transition |
 | `phase1_instr4_onset` | 1 | Legacy — **same copy as `phase1_instr2_*`** (older TTL label after grid+fixation) |
 | `phase1_instr4_enter` | 1 | Legacy |
 | `phase1_instr4_offset` | 1 | Legacy |
-| `phase1_before_grid_onset` | 1 | **"You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize."** |
-| `phase1_before_grid_enter` | 1 | Enter pressed |
+| `phase1_before_grid_onset` | 1 | **`phase1_before_grid`** appeared; **Enter** disallowed until **`PHASE13_BEFORE_GRID_MIN_SEC`** elapsed (`wait_for_continue`) |
+| `phase1_before_grid_enter` | 1 | Enter pressed (after min display) |
 | `phase1_before_grid_offset` | 1 | Screen transition |
 | `phase1_grid_onset` | 1 | Object grid display started |
 | `phase1_grid_offset` | 1 | Object grid display ended |
@@ -106,13 +110,13 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_instr1_onset` | 2 | **"For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts."** |
 | `phase2_instr1_enter` | 2 | Enter pressed |
 | `phase2_instr1_offset` | 2 | Screen transition |
-| `phase2_instr2_onset` | 2 | **"You will see: a context → object → dot."** |
+| `phase2_instr2_onset` | 2 | **"You will see: a context → object → question asking what the object is."** |
 | `phase2_instr2_enter` | 2 | Enter pressed |
 | `phase2_instr2_offset` | 2 | Screen transition |
 | `phase2_instr2b_onset` | 2 | Legacy — **same copy as `phase2_instr3_*`** |
 | `phase2_instr2b_enter` | 2 | Legacy |
 | `phase2_instr2b_offset` | 2 | Legacy |
-| `phase2_instr3_onset` | 2 | **"When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best."** |
+| `phase2_instr3_onset` | 2 | **"When you see that question, say aloud what the object might be in that context. Then, use the left/right keys to choose which context fits best."** |
 | `phase2_instr3_enter` | 2 | Enter pressed |
 | `phase2_instr3_offset` | 2 | Screen transition |
 | `phase2_instr4_onset` | 2 | **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** |
@@ -130,18 +134,18 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_tutorial_context1_offset` | 2 | Tutorial context 1 ended (**same `trial_info`**) |
 | `phase2_tutorial_shape_onset` | 2 | Tutorial focal object onset (`trial_info`: **`demo=blue_circle`**) |
 | `phase2_tutorial_shape_offset` | 2 | Tutorial focal object ended (**`demo=blue_circle`**) |
-| `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** in current code (1 s blank between object epoch and cue dot was removed) |
+| `phase2_tutorial_blank_onset` | 2 | Legacy — **not emitted** in current code (1 s blank between object epoch and object-question screen was removed) |
 | `phase2_tutorial_blank_offset` | 2 | Legacy — **not emitted** |
-| `phase2_tutorial_reddot_onset` | 2 | Tutorial cue dot (black) + on-screen PLANET cue (`trial_info`: **`cue=circle_label_1`**) |
-| `phase2_tutorial_reddot_offset` | 2 | Tutorial cue dot ended (`trial_info`: **`cue=circle_label_1`**) |
+| `phase2_tutorial_reddot_onset` | 2 | Tutorial **`PHASE2_OBJECT_QUESTION_TEXT`** + PLANET demo line (`trial_info`: **`cue=circle_label_1`**) — TTL **`reddot`** is historical |
+| `phase2_tutorial_reddot_offset` | 2 | Tutorial object-question segment ended (`trial_info`: **`cue=circle_label_1`**) |
 | `phase2_tutorial_context2_onset` | 2 | Tutorial context 2 onset (`trial_info`: **`context=<filename>`**) |
 | `phase2_tutorial_context2_offset` | 2 | Tutorial context 2 ended |
 | `phase2_tutorial_shape2_onset` | 2 | Tutorial second object onset (`trial_info`: **`demo=blue_circle`**) |
 | `phase2_tutorial_shape2_offset` | 2 | Tutorial second object ended (**`demo=blue_circle`**) |
-| `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** in current code (blank before second cue dot removed) |
+| `phase2_tutorial_blank2_onset` | 2 | Legacy — **not emitted** in current code (blank before second object-question screen removed) |
 | `phase2_tutorial_blank2_offset` | 2 | Legacy — **not emitted** |
-| `phase2_tutorial_reddot2_onset` | 2 | Tutorial cue dot 2 (black) + BALL cue (`trial_info`: **`cue=circle_label_2`**) |
-| `phase2_tutorial_reddot2_offset` | 2 | Tutorial cue dot 2 ended (`trial_info`: **`cue=circle_label_2`**) |
+| `phase2_tutorial_reddot2_onset` | 2 | Tutorial **`PHASE2_OBJECT_QUESTION_TEXT`** + BALL demo line (`trial_info`: **`cue=circle_label_2`**) |
+| `phase2_tutorial_reddot2_offset` | 2 | Second tutorial object-question segment ended (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_question_onset` | 2 | Tutorial choice — preview segment begins: main prompt + **SPACE** \| **CIRCUS** (both light blue); first **`flip()`** follows, then **`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`** |
 | `phase2_tutorial_question_preview_offset` | 2 | End of timed preview (both buttons neutral); next event **`phase2_tutorial_demo_select_onset`** |
 | `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** |
@@ -162,18 +166,18 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase2_context1_offset` | 2 | Context 1 offset |
 | `phase2_shape_onset` | 2 | Task object (BMP) onset |
 | `phase2_shape_offset` | 2 | Task object epoch ended |
-| `phase2_blank1_onset` | 2 | Legacy — **not emitted** (object epoch → cue dot is immediate; formerly 1 s blank) |
+| `phase2_blank1_onset` | 2 | Legacy — **not emitted** (object epoch → object question is immediate; formerly 1 s blank) |
 | `phase2_blank1_offset` | 2 | Legacy — **not emitted** |
-| `phase2_reddot_onset` | 2 | Black cue dot + “say aloud” epoch (`trial_info` as above). Event label **`reddot`** is historical |
-| `phase2_reddot_offset` | 2 | Cue dot offset |
+| `phase2_reddot_onset` | 2 | **`PHASE2_OBJECT_QUESTION_TEXT`** only (“say aloud” epoch; `trial_info` as above). Label **`reddot`** is historical |
+| `phase2_reddot_offset` | 2 | First object-question segment offset |
 | `phase2_context2_onset` | 2 | Context 2 display onset |
 | `phase2_context2_offset` | 2 | Context 2 offset |
 | `phase2_shape2_onset` | 2 | Task object (2nd) onset |
 | `phase2_shape2_offset` | 2 | Task object (2nd) epoch ended |
-| `phase2_blank2_onset` | 2 | Legacy — **not emitted** (2nd object epoch → cue dot 2 is immediate) |
+| `phase2_blank2_onset` | 2 | Legacy — **not emitted** (2nd object epoch → 2nd object question is immediate) |
 | `phase2_blank2_offset` | 2 | Legacy — **not emitted** |
-| `phase2_reddot2_onset` | 2 | Second black cue dot + “say aloud” |
-| `phase2_reddot2_offset` | 2 | Cue dot 2 offset |
+| `phase2_reddot2_onset` | 2 | Second **`PHASE2_OBJECT_QUESTION_TEXT`** screen + “say aloud” |
+| `phase2_reddot2_offset` | 2 | Second object-question segment offset |
 | `phase2_question_onset` | 2 | Choice screen scheduled (**`trial_info`**: full trial line + **`cat_a=… cat_b=…`**). No gray “← or →” subtitle. **RT** in **`phase2_*.csv`** is measured from the **first `flip()`** showing the question (shortly after this log). |
 | `phase2_response` | 2 | Arrow choice (**`trial_info`**: full line + **`response=…`**) |
 | `phase2_question_offset` | 2 | Question screen ended (same base **`trial_info`** as fixation) |
@@ -198,14 +202,14 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_instr4_onset` | 3 | Legacy — **same copy as `phase3_instr2_*`** |
 | `phase3_instr4_enter` | 3 | Legacy |
 | `phase3_instr4_offset` | 3 | Legacy |
-| `phase3_before_grid_onset` | 3 | **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** |
-| `phase3_before_grid_enter` | 3 | Enter pressed |
+| `phase3_before_grid_onset` | 3 | **`phase3_before_grid`** appeared; **Enter** disallowed until **`PHASE13_BEFORE_GRID_MIN_SEC`** elapsed |
+| `phase3_before_grid_enter` | 3 | Enter pressed (after min display) |
 | `phase3_before_grid_offset` | 3 | Screen transition |
 | `phase3_grid_onset` | 3 | Object grid display started |
 | `phase3_grid_offset` | 3 | Object grid display ended |
 | `phase3_fixation_onset` | 3 | Fixation cross onset |
 | `phase3_fixation_offset` | 3 | Fixation cross ended |
-| `phase3_instruction2c_onset` | 3 | **"As before, sort the objects. Click to place — Enter locks."** (mini-grid bottom-right) |
+| `phase3_instruction2c_onset` | 3 | **"Click where you want to place each object, then press Enter to confirm."** (mini-grid bottom-right) |
 | `phase3_instruction2c_enter` | 3 | Enter pressed |
 | `phase3_instruction2c_offset` | 3 | Screen transition |
 | `phase3_stimulus_onset` | 3 | Isolation preview: centered object (BMP) + miniature grid bottom-right (trial_info: trial=N, shape=*.bmp) |
@@ -213,7 +217,7 @@ Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Pha
 | `phase3_click_place` | 3 | Each click to move object (trial_info: trial=N, shape=…, click=N) |
 | `phase3_enter_submit` | 3 | Enter to submit (trial_info: trial=N, shape=…) |
 | `phase3_complete` | 3 | Phase 3 drag task finished (all objects placed) |
-| `phase3_debrief_onset` | 3 | Debrief question **scheduled** (`trial_info: question=1–3`). First **`flip()`** (question + Yes/No + **USE THE ARROW KEYS TO ANSWER**) follows; **CSV `rt`** is from that first **`flip()`** to keypress. Order per question: **onset** → **response** → **offset** |
+| `phase3_debrief_onset` | 3 | Debrief question (`trial_info: question=1–3`); first **`flip()`** starts **CSV `rt`** clock. Layout matches Phase 2 choice (**`TASK_DESCRIPTION.md`**). Order: **onset** → **response** → **offset** |
 | `phase3_debrief_response` | 3 | ← (Yes) or → (No) (`trial_info: question=N answer=Yes|No key=left|right`). Logged 3×. |
 | `phase3_debrief_offset` | 3 | Debrief question N ended (trial_info: question=N). Logged 3×. |
 | `phase1_placements_saved` | 1 | Phase 1 placement image saved incrementally after each object (trial_info: filename trial=N) |
@@ -258,7 +262,7 @@ Epoch **`_onset_ttl`** columns duplicate the **Unix timestamp** recorded in **`t
 | `trial_variant` | String | Copy of the template `variant` cell (e.g. `primary_first_img0` or `secondary_first_img1`) |
 | `response` | String | Selected category (**uppercased**); **left arrow** = label on left (**`context_1`**), **right arrow** = label on right (**`context_2`**) |
 | `rt` | Float | Time from **first `flip()`** showing the choice screen to arrow key (seconds); aligns with RT **`Clock`** reset on that flip ( **`phase2_question_onset`** TTL may be a few ms earlier) |
-| `fixation_onset_ttl` … `question_onset_ttl` | Float | **Unix timestamp** at the matching **`phase2_*_onset`** in **`ttl_log_*`** (empty if missing) |
+| `fixation_onset_ttl` … `question_onset_ttl` | Float | **Unix timestamp** at the matching **`phase2_*_onset`** in **`ttl_log_*`** (**`reddot_*`** → **`phase2_reddot_*`**, object-question screens; empty if missing) |
 | `response_ttl` | Float | Unix timestamp at **`phase2_response`** |
 
 **Fixation → context 1 (timing):** Fixation lasts **`PHASE2_FIXATION_PRE_TRIAL_SEC`** (0.5 s), but context 1 does **not** appear on the very next frame after **`phase2_fixation_offset`**. Pillow **cover-crop** preparation for the context image introduces a variable gap on the order of **200–400 ms** before the first **`flip()`** showing context 1. **`context1_onset_ttl`** (and **`phase2_context1_onset`** in **`ttl_log_*`**) match that first frame. For neural or eye-tracking alignment, use **`context1_onset_ttl`** (or the TTL log) directly — **do not** approximate context 1 as fixation onset + 0.5 s.

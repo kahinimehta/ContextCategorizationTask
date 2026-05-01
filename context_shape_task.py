@@ -6,6 +6,7 @@ Fullscreen with DPI scaling. ESC during interactive screens only (not during gri
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
 Task object `.bmp` files (excluding `ShapeGrid*`): near-white matte → transparency at load (`OBJECT_WHITE_BG_STRIP_THRESHOLD`).
 Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_REDDOT_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md (timing section).
+Phase 1/3 sorting hint + `phase1_instr3` / `phase3_instruction2c` + tutorial fallback steps 2 & 6: `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim run sheet: script.md).
 """
 
 import os
@@ -40,6 +41,11 @@ ANCHOR_SORT_SHAPE_MAX_EXTENT = 0.20  # previously placed overlays only (doubled 
 PHASE13_GRID_PREVIEW_MAX_EXTENT = 1.0  # was 0.8; doubling 1.6 would clip — use maximal viewport fill
 GRID_INSET_MAX_EXTENT = 0.40  # miniature bottom-right reference (doubled from 0.20)
 
+# Phase 1 & 3 — sorting UI copy (hint + instruction screens)
+PHASE13_CLICK_ENTER_INSTRUCTION = (
+    "Click where you want to place each object, then press Enter to confirm."
+)
+
 # Phase 2 — contexts: large centered square (same size + cover crop per trial); trial BMP epochs doubled:
 PHASE2_CONTEXT_MAX_EXTENT = 1.0  # square side length in height units (width = height × PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H)
 # All Phase 2 context images share this box (cover crop, center); width = height × ratio (1.0 = square).
@@ -57,11 +63,13 @@ PHASE2_CSV_REQUIRED = (
     "variant",
 )
 # --- Fixed stimulus durations (seconds). TTL aligns with screen boundaries tied to `_log_ttl_event`; see TASK_DESCRIPTION.md (timing section). ---
-PHASE2_REDDOT_DURATION_SEC = 2.0  # Phase 2 cue-dot epoch (black `Circle` in `run_phase2_trials` / tutorial)
+PHASE2_OBJECT_QUESTION_TEXT = "What is the object?"
+PHASE2_REDDOT_DURATION_SEC = 2.0  # Full-screen object-question epoch (same timing as legacy black-dot cue; TTL still `phase2_reddot_*`)
 PHASE_GRID_PREVIEW_SEC = 5.0
 PHASE_FIXATION_CROSS_SEC = 1.0
 SHAPE_STATIC_PREVIEW_SEC = 1.0  # Phase 1/3: isolate shape before placement
-PHASE2_SEGMENT_SEC = 1.0       # Phase 2: context/shape durations (gap before cue dot is 0; see blanks removed below)
+PHASE13_BEFORE_GRID_MIN_SEC = 1.5  # Phase 1 & 3: `phase1_before_grid` / `phase3_before_grid` — min before Enter
+PHASE2_SEGMENT_SEC = 1.0       # Phase 2: context/shape durations (gap before object-question screen is 0)
 PHASE2_FIXATION_PRE_TRIAL_SEC = 0.5
 PHASE2_TRIAL_ITI_SEC = 0.5
 # Scripted training demos only (+ s on each timed screen vs prior defaults). Phase 2 main trials unchanged.
@@ -73,11 +81,14 @@ TUTORIAL_FB_CLICK_TARGET_SEC = 2.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5A_SEC = 3.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5B_SEC = 4.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP6_SEC = 7.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
-# Phase 1 fallback demo: cursor animation (sums with click pulses must fit inside *_CLICK_* totals below)
-TUTORIAL_FB_CURSOR_REST_POS = (-0.52, -0.38)
-TUTORIAL_FB_CURSOR_TO_SHAPE_SEC = 0.72
-TUTORIAL_FB_CURSOR_DRAG_TO_TARGET_SEC = 0.82
 TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC = 0.14
+# Light-blue halo flashes twice at empty placement coords before steelblue click pulse; moving shape hidden until after pulse.
+TUTORIAL_FB_CURSOR_BEFORE_PLACEMENT_REVEAL_SEC = 0.40
+TUTORIAL_FB_PLACEMENT_HALO_RADIUS = 0.026  # height units; ring around placement coords during halo
+# Brief “new object” flash on an empty canvas before isolate+placement (steps 3–4); step 2 skips this.
+TUTORIAL_FB_SHAPE_PREFLASH_SEC = 0.38
+# Target epoch: anchors-only preview (no cursor / no placement halos) before halo + steelblue click at empty coords.
+TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC = 0.38
 # Phase 2 demo (`run_phase2_tutorial`); use *_TRIAL_* / `PHASE2_SEGMENT_SEC` for real Phase 2 trials
 PHASE2_TUTORIAL_SEGMENT_SEC = PHASE2_SEGMENT_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_FIXATION_SEC = PHASE2_FIXATION_PRE_TRIAL_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
@@ -783,7 +794,16 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
             )
             for p, (ax, ay) in anchors.items()
         ]
-        hint = visual.TextStim(win, text="Click to place — Enter submits.", color='gray', height=0.028, pos=(0, -0.38), units='height')
+        hint = visual.TextStim(
+            win,
+            text=PHASE13_CLICK_ENTER_INSTRUCTION,
+            color='gray',
+            height=0.028,
+            pos=(0, -0.38),
+            wrapWidth=1.35,
+            units='height',
+            alignText='center',
+        )
 
         rt_start = time.time()
         submitted = False
@@ -874,46 +894,108 @@ def run_drag_phase(win, mouse, shape_paths, phase_name, phase_num, participant, 
 # =========================
 # Place tutorial video at STIMULI/tutorial_video.mp4. Video should show clicking to place;
 # subtitles describe what's on screen (not instructions read aloud).
-# If missing, plays animated fallback simulating click-to-place with a color-based grouping demo.
+# If missing, plays animated fallback: overview (all shapes spread) → place square → (flash + isolate + place)
+# circle with square anchor → same for green with both reds visible. Triangle + narrow tail cursor;
+# light-blue double halo + steelblue click only on **target** placement (after anchor preview); isolate center has no expanding ring.
 TUTORIAL_VIDEO = STIMULI_DIR / "tutorial_video.mp4"
 
 
-def _tutorial_smoothstep(u):
-    u = max(0.0, min(1.0, float(u)))
-    return u * u * (3.0 - 2.0 * u)
-
-
-def _make_tutorial_cursor_arrow(win):
-    """Mouse-style arrow; `pos` is the tip (click point) in height units."""
-    verts = [
-        (0.0, 0.0),
-        (0.065, 0.022),
-        (0.032, 0.022),
-        (0.032, 0.068),
-        (0.014, 0.068),
-        (0.014, 0.022),
-    ]
-    return visual.ShapeStim(
+def _make_tutorial_cursor(win):
+    """Fallback pointer: apex at `pos` (click tip). Triangle wedge + narrow **tail** along the bisector
+    (90° from the old wide base bar — reads as a short rectangle sticking back from the blunt end).
+    Bisector ~315° (tip down-right). Returns (triangle_stim, tail_quad); both use the same `setPos`."""
+    L = 0.072
+    apex_deg = 52.0
+    tail_len = 0.013
+    tail_half_w = 0.0032
+    half_spread = math.radians(apex_deg) / 2.0
+    bis = 7 * math.pi / 4
+    a1 = bis - half_spread
+    a2 = bis + half_spread
+    v1 = (L * math.cos(a1), L * math.sin(a1))
+    v2 = (L * math.cos(a2), L * math.sin(a2))
+    mx = (v1[0] + v2[0]) / 2.0
+    my = (v1[1] + v2[1]) / 2.0
+    norm = math.hypot(mx, my)
+    if norm < 1e-9:
+        ux, uy = -1.0 / math.sqrt(2), -1.0 / math.sqrt(2)
+    else:
+        ux, uy = mx / norm, my / norm
+    px, py = -uy, ux
+    bm = (mx, my)
+    v_il = (bm[0] + px * tail_half_w, bm[1] + py * tail_half_w)
+    v_ir = (bm[0] - px * tail_half_w, bm[1] - py * tail_half_w)
+    v_ol = (bm[0] + ux * tail_len + px * tail_half_w, bm[1] + uy * tail_len + py * tail_half_w)
+    v_or = (bm[0] + ux * tail_len - px * tail_half_w, bm[1] + uy * tail_len - py * tail_half_w)
+    tri = visual.ShapeStim(
         win,
-        vertices=verts,
+        vertices=[(0.0, 0.0), v1, v2],
         units='height',
-        fillColor='#1a1a1a',
-        lineColor='#f0f0f0',
-        lineWidth=1.5,
+        fillColor='black',
+        lineColor='black',
+        lineWidth=1,
         closeShape=True,
         interpolate=False,
     )
+    tail = visual.ShapeStim(
+        win,
+        vertices=[v_il, v_ir, v_or, v_ol],
+        units='height',
+        fillColor='black',
+        lineColor='black',
+        lineWidth=1,
+        closeShape=True,
+        interpolate=False,
+    )
+    return tri, tail
 
 
-def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None, ttl_label=None):
-    """Animated click-to-place: cursor moves in, clicks, drags shape to target, clicks again.
-    Total dwell times match TUTORIAL_FB_CLICK_CENTER_SEC / TUTORIAL_FB_CLICK_TARGET_SEC so TTL spacing is unchanged.
-    anchors: optional list of (stim, (x,y)) for previously placed shapes to keep visible.
-    ttl_label: optional prefix for TTL — logs center_onset/offset, target_onset/offset."""
+def _tutorial_placement_halo_opacity(x_norm):
+    """Normalized time in [0, 1): two triangular flashes (light-blue placement cue)."""
+    op = 0.0
+    for c in (0.22, 0.58):
+        dist = abs(x_norm - c)
+        w = 0.14
+        if dist < w:
+            op = max(op, 1.0 - dist / w)
+    return op
+
+
+def _tutorial_placement_double_flash(win, draw_under, halo, placement_xy, duration_sec, frame_dt):
+    """Draw `draw_under()` then halo at placement_xy with animated opacity for duration_sec."""
+    if duration_sec <= 0:
+        return
+    halo.opacity = 0.0
+    t0 = time.perf_counter()
+    while True:
+        elapsed = time.perf_counter() - t0
+        if elapsed >= duration_sec:
+            break
+        xn = min(1.0, elapsed / duration_sec)
+        halo.opacity = _tutorial_placement_halo_opacity(xn)
+        halo.setPos(placement_xy)
+        draw_under()
+        if halo.opacity > 0.001:
+            halo.draw()
+        win.flip()
+        _wait(frame_dt)
+    halo.opacity = 0.0
+    draw_under()
+    win.flip()
+
+
+def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=None, ttl_label=None, preflash_sec=0.0):
+    """Placement demo: optional **preflash** (`preflash_sec`): moving shape alone on empty canvas (no anchors).
+    **Center** epoch — isolate preview: **only** the moving shape (**no** expanding steelblue ring — no “click” halo here).
+    **Target** epoch — anchors shown first (**moving shape hidden**, **no cursor**); then light-blue **double halo** +
+    steelblue **click** pulse at empty **`end_pos`** (**cursor**); then moving shape at **`end_pos`** + hold.
+    Total dwell times match `TUTORIAL_FB_CLICK_CENTER_SEC` / `TUTORIAL_FB_CLICK_TARGET_SEC`.
+    anchors: previously placed shapes — visible after anchor preview through placement (moving item excluded until reveal).
+    ttl_label: optional prefix — logs preflash_*, center_*, target_*."""
     sub = visual.TextStim(win, text=subtitle, color='black', height=0.032, pos=(0, -0.42),
                           wrapWidth=1.3, units='height', alignText='center')
     anchor_list = anchors or []
-    cursor = _make_tutorial_cursor_arrow(win)
+    cursor_tri, cursor_tail = _make_tutorial_cursor(win)
     click_ring = visual.Circle(
         win,
         radius=0.02,
@@ -924,68 +1006,78 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
         units='height',
         interpolate=False,
     )
-    rest = TUTORIAL_FB_CURSOR_REST_POS
-    move_to_shape = float(TUTORIAL_FB_CURSOR_TO_SHAPE_SEC)
-    drag_sec = float(TUTORIAL_FB_CURSOR_DRAG_TO_TARGET_SEC)
+    placement_halo = visual.Circle(
+        win,
+        radius=float(TUTORIAL_FB_PLACEMENT_HALO_RADIUS),
+        fillColor='#C8E4FF',
+        lineColor='#7EB8FF',
+        lineWidth=2,
+        pos=(0, 0),
+        units='height',
+        opacity=0.0,
+        interpolate=False,
+    )
     click_sec = float(TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC)
-    hold_center = max(0.0, float(TUTORIAL_FB_CLICK_CENTER_SEC) - move_to_shape - click_sec)
-    hold_target = max(0.0, float(TUTORIAL_FB_CLICK_TARGET_SEC) - drag_sec - click_sec)
+    reveal_sec = float(TUTORIAL_FB_CURSOR_BEFORE_PLACEMENT_REVEAL_SEC)
+    anchor_preview_sec = float(TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC)
+    hold_center = float(TUTORIAL_FB_CLICK_CENTER_SEC)
+    hold_target = max(
+        0.0,
+        float(TUTORIAL_FB_CLICK_TARGET_SEC) - reveal_sec - click_sec - anchor_preview_sec,
+    )
     frame_dt = max(1.0 / 120.0, float(getattr(win, 'monitorFramePeriod', None) or (1.0 / 60.0)))
 
-    def draw_scene(shape_xy, cursor_xy, ring_radius=None):
-        for a_stim, a_pos in anchor_list:
-            a_stim.setPos(a_pos)
-            a_stim.draw()
-        shape_stim.setPos(shape_xy)
-        shape_stim.draw()
+    def draw_cursor_at(xy):
+        if xy is None:
+            return
+        cursor_tri.setPos(xy)
+        cursor_tail.setPos(xy)
+        cursor_tri.draw()
+        cursor_tail.draw()
+
+    def draw_scene(shape_xy, cursor_xy, ring_radius=None, show_active_shape=True, draw_anchors=False):
+        if draw_anchors:
+            for a_stim, a_pos in anchor_list:
+                a_stim.setPos(a_pos)
+                a_stim.draw()
+        if show_active_shape:
+            shape_stim.setPos(shape_xy)
+            shape_stim.draw()
         if ring_radius is not None and ring_radius > 0:
             click_ring.setPos(shape_xy)
             click_ring.setRadius(ring_radius)
             click_ring.draw()
-        if cursor_xy is not None:
-            cursor.setPos(cursor_xy)
-            cursor.draw()
+        draw_cursor_at(cursor_xy)
         sub.draw()
 
-    def animate_scalar(duration_sec, fn):
-        """fn(u) draws one frame; u goes 0→1 with smoothstep."""
-        if duration_sec <= 0:
-            fn(1.0)
-            win.flip()
-            return
-        t0 = time.perf_counter()
-        while True:
-            elapsed = time.perf_counter() - t0
-            u = min(1.0, elapsed / duration_sec)
-            fn(_tutorial_smoothstep(u))
-            win.flip()
-            if u >= 1.0:
-                break
-            _wait(frame_dt)
-
-    def click_pulse_at(shape_xy):
+    def click_pulse_at(shape_xy, *, show_cursor, draw_anchors, show_active_shape=True):
         n = max(3, int(round(click_sec / frame_dt)))
+        cur = shape_xy if show_cursor else None
         for i in range(n + 1):
             p = i / float(n)
             r = 0.014 + 0.034 * p
-            draw_scene(shape_xy, shape_xy, ring_radius=r)
+            draw_scene(shape_xy, cur, ring_radius=r, show_active_shape=show_active_shape, draw_anchors=draw_anchors)
             win.flip()
             if i < n:
                 _wait(click_sec / n)
 
+    pf = float(preflash_sec)
+    if pf > 0.0:
+        if ttl_label:
+            _log_ttl_event(f"{ttl_label}_preflash_onset")
+        n_pf = max(1, int(round(pf / frame_dt)))
+        for _ in range(n_pf):
+            draw_scene(start_pos, None, ring_radius=None, show_active_shape=True, draw_anchors=False)
+            win.flip()
+            _wait(pf / n_pf)
+        if ttl_label:
+            _log_ttl_event(f"{ttl_label}_preflash_offset")
+
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_center_onset")
 
-    # Cursor → shape at center; shape stays at start_pos
-    def phase_approach(u):
-        cx = rest[0] + (start_pos[0] - rest[0]) * u
-        cy = rest[1] + (start_pos[1] - rest[1]) * u
-        draw_scene(start_pos, (cx, cy))
-
-    animate_scalar(move_to_shape, phase_approach)
-    click_pulse_at(start_pos)
-
-    draw_scene(start_pos, start_pos)
+    # Center = isolate only — no steelblue expanding ring (placement halos only on target epoch)
+    draw_scene(start_pos, None, ring_radius=None, show_active_shape=True, draw_anchors=False)
     win.flip()
     _wait(hold_center)
 
@@ -993,29 +1085,37 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
         _log_ttl_event(f"{ttl_label}_center_offset")
         _log_ttl_event(f"{ttl_label}_target_onset")
 
-    # Drag shape to target; cursor follows tip at shape center
-    def phase_drag(u):
-        sx = start_pos[0] + (end_pos[0] - start_pos[0]) * u
-        sy = start_pos[1] + (end_pos[1] - start_pos[1]) * u
-        draw_scene((sx, sy), (sx, sy))
+    # Anchors visible before any placement cue (step 2: empty canvas + subtitle only)
+    if anchor_preview_sec > 0.0:
+        draw_scene(end_pos, None, ring_radius=None, show_active_shape=False, draw_anchors=True)
+        win.flip()
+        _wait(anchor_preview_sec)
 
-    animate_scalar(drag_sec, phase_drag)
-    click_pulse_at(end_pos)
+    # Placement-only: double halo + steelblue click at empty coords (moving shape hidden); then reveal at final position
+    def draw_pre_placement():
+        draw_scene(end_pos, end_pos, ring_radius=None, show_active_shape=False, draw_anchors=True)
 
-    draw_scene(end_pos, end_pos)
+    _tutorial_placement_double_flash(win, draw_pre_placement, placement_halo, end_pos, reveal_sec, frame_dt)
+
+    click_pulse_at(end_pos, show_cursor=True, draw_anchors=True, show_active_shape=False)
+
+    draw_scene(end_pos, end_pos, ring_radius=None, show_active_shape=True, draw_anchors=True)
     win.flip()
     _wait(hold_target)
 
     if ttl_label:
         _log_ttl_event(f"{ttl_label}_target_offset")
 
-    del cursor, click_ring
+    del cursor_tri, cursor_tail, click_ring, placement_halo
 
 
 def run_tutorial_phase1(win, mouse, participant):
     """Tutorial: video with subtitles, or animated fallback showing click-to-place.
     Fallback demo uses red square, red circle, green circle and groups by COLOR (reds together; green apart).
-    Fallback animates a cursor that moves to each object, shows a click, and drags it to the target."""
+    Fallback: step **1** = intro + **all three** shapes on screen at once (spread positions); step **2** = square
+    isolate then place; steps **3–4** = brief flash of the new shape on an **empty** screen, then isolate + place
+    with prior shapes visible as anchors. **No cursor** on center preview; cursor (**triangle + narrow tail** along bisector)
+    only during placement (**anchors-on canvas first**, then light-blue halo + steelblue pulse before moving shape at final coords)."""
     used_fallback = True
     if TUTORIAL_VIDEO.exists():
         try:
@@ -1037,49 +1137,55 @@ def run_tutorial_phase1(win, mouse, participant):
             print(f"Video playback failed, using fallback: {e}", file=sys.stderr)
 
     if used_fallback:
-        # Click-to-place sequence with animated cursor (move in, click, drag to target, click)
+        # Fallback: step 1 = all shapes overview; steps 2–4 = place with cursor only at target
         sq = visual.Rect(win, width=0.16, height=0.16, fillColor='red', lineColor=None)
         circ_red = visual.Circle(win, radius=0.08, fillColor='red', lineColor=None)
         circ_green = visual.Circle(win, radius=0.08, fillColor='green', lineColor=None)
 
-        # Positions: both red shapes clustered on left; green circle on right (sort by color)
-        sq_pos = (-0.38, 0.08)
-        circ_red_pos = (-0.12, 0.08)
-        circ_green_pos = (0.42, 0.08)
+        # Positions: reds clustered left at slightly different heights; green right (not collinear)
+        sq_pos = (-0.38, 0.12)
+        circ_red_pos = (-0.12, 0.055)
+        circ_green_pos = (0.42, 0.095)
+        # Step 1 overview: all three visible at once (not stacked)
+        ov_sq = (-0.44, 0.06)
+        ov_red = (0.0, -0.10)
+        ov_green = (0.44, 0.06)
 
-        # Step 1: Three shapes overview
+        # Step 1: Intro subtitle — square, red circle, green circle together for full overview duration
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=1")
-        sq.setPos((-0.35, 0))
-        circ_red.setPos((0, 0))
-        circ_green.setPos((0.35, 0))
         sub1 = visual.TextStim(win, text="The first part of the task is about sorting objects. Watch how we sort these objects!", color='black', height=0.032, pos=(0, -0.42),
                               wrapWidth=1.3, units='height', alignText='center')
+        sq.setPos(ov_sq)
+        circ_red.setPos(ov_red)
+        circ_green.setPos(ov_green)
+        sub1.draw()
         sq.draw()
         circ_red.draw()
         circ_green.draw()
-        sub1.draw()
         win.flip()
-        _wait(TUTORIAL_FB_OVERVIEW_SEC)
+        _wait(float(TUTORIAL_FB_OVERVIEW_SEC))
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=1")
 
-        # Step 2: Red square appears at center, clicks to place on left (no anchors yet)
+        # Step 2: Empty isolate screen → place square (no preflash)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=2")
-        _show_click_place(win, sq, (0, 0), sq_pos, "First, let's click to place the red square on the left — Then, we hit Enter.",
-                          ttl_label="tutorial_fallback_step2")
+        _show_click_place(win, sq, (0, 0), sq_pos, PHASE13_CLICK_ENTER_INSTRUCTION,
+                          ttl_label="tutorial_fallback_step2", preflash_sec=0.0)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=2")
 
-        # Step 3: Red circle joins red cluster beside square (square stays visible as anchor)
+        # Step 3: Flash red circle on empty canvas → isolate → place beside square
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=3")
         circ_red.setPos((0, 0))
         _show_click_place(win, circ_red, (0, 0), circ_red_pos, "Now, let's group the red circle with the red square on the left.",
-                          anchors=[(sq, sq_pos)], ttl_label="tutorial_fallback_step3")
+                          anchors=[(sq, sq_pos)], ttl_label="tutorial_fallback_step3",
+                          preflash_sec=float(TUTORIAL_FB_SHAPE_PREFLASH_SEC))
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=3")
 
-        # Step 4: Green circle to right, separate color group (previous anchors visible)
+        # Step 4: Flash green on empty → isolate → place with both reds visible
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=4")
         circ_green.setPos((0, 0))
         _show_click_place(win, circ_green, (0, 0), circ_green_pos, "Let's place the green circle to the right (in a different group).",
-                          anchors=[(sq, sq_pos), (circ_red, circ_red_pos)], ttl_label="tutorial_fallback_step4")
+                          anchors=[(sq, sq_pos), (circ_red, circ_red_pos)], ttl_label="tutorial_fallback_step4",
+                          preflash_sec=float(TUTORIAL_FB_SHAPE_PREFLASH_SEC))
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=4")
 
         # Step 5a: Color groups — reds together vs green apart
@@ -1087,8 +1193,10 @@ def run_tutorial_phase1(win, mouse, participant):
         sq.setPos(sq_pos)
         circ_red.setPos(circ_red_pos)
         circ_green.setPos(circ_green_pos)
-        group_circle_redshapes = visual.Circle(win, radius=0.22, fillColor=None, lineColor='black', lineWidth=2,
-                                               pos=(-0.25, 0.08), units='height')
+        _red_cx = (sq_pos[0] + circ_red_pos[0]) / 2.0
+        _red_cy = (sq_pos[1] + circ_red_pos[1]) / 2.0
+        group_circle_redshapes = visual.Circle(win, radius=0.24, fillColor=None, lineColor='black', lineWidth=2,
+                                               pos=(_red_cx, _red_cy), units='height')
         group_circle_green = visual.Circle(win, radius=0.14, fillColor=None, lineColor='black', lineWidth=2,
                                              pos=circ_green_pos, units='height')
         sq.draw()
@@ -1115,14 +1223,14 @@ def run_tutorial_phase1(win, mouse, participant):
         _wait(TUTORIAL_FB_STEP5B_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
 
-        # Step 6: Press Enter subtitle
+        # Step 6: Final placements visible + PHASE13_CLICK_ENTER_INSTRUCTION (same as trial hint)
         _log_ttl_event("tutorial_fallback_onset", trial_info="step=6")
         sq.draw()
         circ_red.draw()
         circ_green.draw()
         # sub_5c = visual.TextStim(win, text="A group does not have to pack tight — a large spread is OK.",
         #                         color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
-        sub_enter = visual.TextStim(win, text="Click to place — Enter submits each placement.",
+        sub_enter = visual.TextStim(win, text=PHASE13_CLICK_ENTER_INSTRUCTION,
                                    color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
         # sub_5c.draw()
         sub_enter.draw()
@@ -1131,7 +1239,7 @@ def run_tutorial_phase1(win, mouse, participant):
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
-    trans = visual.TextStim(win, text="Your turn to group some objects! — Remember the same rules.", color='black', height=0.04, pos=(0, 0),
+    trans = visual.TextStim(win, text="Your turn to group some objects! Remember the same rules.", color='black', height=0.04, pos=(0, 0),
                            wrapWidth=1.2, units='height')
     return wait_for_continue(win, trans, "tutorial_transition")
 
@@ -1224,7 +1332,7 @@ def load_phase2_trials():
 
 
 def run_phase2_tutorial(win, mouse, participant):
-    """Phase 2 tutorial: intro, then two practice contexts (see get_practice_context_paths), circle, demo question."""
+    """Phase 2 tutorial: intro, practice contexts, blue circle, **`PHASE2_OBJECT_QUESTION_TEXT`** + demo labels, choice demo."""
     # Single intro screen (max 2 sentences) — one Enter before demo
     intro = visual.TextStim(win, text="Watch this demo before you start the task!",
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -1235,7 +1343,16 @@ def run_phase2_tutorial(win, mouse, participant):
     circ = visual.Circle(win, radius=0.1, fillColor='blue', lineColor=None)
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
     blank = visual.Rect(win, width=3, height=3, fillColor='white', lineColor=None, pos=(0, 0), units='height')
-    dot = visual.Circle(win, radius=0.003, fillColor='black', lineColor=None, pos=(0, 0))
+    object_q = visual.TextStim(
+        win,
+        text=PHASE2_OBJECT_QUESTION_TEXT,
+        color='black',
+        height=0.045,
+        pos=(0, 0.06),
+        wrapWidth=1.25,
+        units='height',
+        alignText='center',
+    )
     ctx_sz = _phase2_context_frame_size_height_units()
     img1 = visual.ImageStim(win, image=_phase2_context_image_cropped_pil(win, p1), units='height', size=ctx_sz)
     img2 = visual.ImageStim(win, image=_phase2_context_image_cropped_pil(win, p2), units='height', size=ctx_sz)
@@ -1261,8 +1378,8 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_shape_offset", trial_info="demo=blue_circle")
 
     _log_ttl_event("phase2_tutorial_reddot_onset", trial_info="cue=circle_label_1")
-    dot.draw()
-    txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.2))
+    object_q.draw()
+    txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.22))
     txt1.draw()
     win.flip()
     _wait(PHASE2_TUTORIAL_REDDOT_SEC)
@@ -1281,8 +1398,8 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_shape2_offset", trial_info="demo=blue_circle")
 
     _log_ttl_event("phase2_tutorial_reddot2_onset", trial_info="cue=circle_label_2")
-    dot.draw()
-    txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.2))
+    object_q.draw()
+    txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.22))
     txt2.draw()
     win.flip()
     _wait(PHASE2_TUTORIAL_REDDOT_SEC)
@@ -1306,7 +1423,7 @@ def run_phase2_tutorial(win, mouse, participant):
     # Highlight right button (second context) + subtitle, matching old “second image” demo
     _log_ttl_event("phase2_tutorial_demo_select_onset")
     btn_b_pressed = visual.Rect(win, width=0.26, height=0.06, fillColor='steelblue', lineColor='black', pos=(0.2, -0.2), units='height')
-    sub_select = visual.TextStim(win, text="You might say 'CIRCUS' (right key) is the better context", color='black', height=0.028, pos=(0, -0.38), units='height')
+    sub_select = visual.TextStim(win, text="You might think 'CIRCUS' (right key) is the better context", color='black', height=0.028, pos=(0, -0.38), units='height')
     q.draw()
     btn_a.draw()
     btn_b_pressed.draw()
@@ -1325,7 +1442,7 @@ def run_phase2_tutorial(win, mouse, participant):
     _log_ttl_event("phase2_tutorial_post_blank_offset")
 
     # Ready screen
-    ready = visual.TextStim(win, text="Ready for recorded trials?",
+    ready = visual.TextStim(win, text="Ready to start?",
                             color='black', height=0.04, pos=(0, 0), wrapWidth=1.2, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
@@ -1333,7 +1450,8 @@ def run_phase2_tutorial(win, mouse, participant):
 
 
 def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
-    """Run Phase 2 trials from phase2_trial_order.csv with breaks every 16."""
+    """Run Phase 2 trials from phase2_trial_order.csv with breaks every 16.
+    After each object epoch, **`PHASE2_OBJECT_QUESTION_TEXT`** is shown (timed **`PHASE2_REDDOT_DURATION_SEC`**); TTL **`phase2_reddot_*`** is historical."""
     fieldnames = ['trial', 'shape_path', 'context_1_path', 'context_2_path', 'trial_variant', 'response',
                    'rt', 'fixation_onset_ttl', 'context1_onset_ttl', 'shape_onset_ttl', 'reddot_onset_ttl',
                    'context2_onset_ttl', 'shape2_onset_ttl', 'reddot2_onset_ttl', 'question_onset_ttl', 'response_ttl']
@@ -1350,7 +1468,16 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 
     fix = visual.TextStim(win, text='+', color='black', height=0.08, pos=(0, 0))
     blank = visual.Rect(win, width=3, height=3, fillColor='white', lineColor=None, pos=(0, 0), units='height')
-    dot = visual.Circle(win, radius=0.006, fillColor='black', lineColor=None, pos=(0, 0))
+    object_q = visual.TextStim(
+        win,
+        text=PHASE2_OBJECT_QUESTION_TEXT,
+        color='black',
+        height=0.05,
+        pos=(0, 0),
+        wrapWidth=1.3,
+        units='height',
+        alignText='center',
+    )
 
     total_trials = len(trials)
     for t_idx, trial in enumerate(trials):
@@ -1417,7 +1544,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 
         _log_ttl_event("phase2_reddot_onset", trial_info=ti_line)
         p2_ts['reddot_onset_ttl'] = _last_ttl_timestamp[0]
-        dot.draw()
+        object_q.draw()
         win.flip()
         _wait(PHASE2_REDDOT_DURATION_SEC)
         _log_ttl_event("phase2_reddot_offset", trial_info=ti_line)
@@ -1438,7 +1565,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 
         _log_ttl_event("phase2_reddot2_onset", trial_info=ti_line)
         p2_ts['reddot2_onset_ttl'] = _last_ttl_timestamp[0]
-        dot.draw()
+        object_q.draw()
         win.flip()
         _wait(PHASE2_REDDOT_DURATION_SEC)
         _log_ttl_event("phase2_reddot2_offset", trial_info=ti_line)
@@ -1546,6 +1673,7 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
 # =========================
 def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
     """Three Yes/No questions at end of Phase 3. Left arrow = Yes, right arrow = No (not mouse).
+    Layout matches Phase 2 recorded choice screen: prompt **`y≈0.1`**, **`±0.2`** button centers at **`y=-0.2`**, button size **`0.26×0.06`**, hint **`y=-0.34`**.
     Returns list of dicts or None if ESC."""
     _ = mouse  # keyboard-only debrief; keep signature aligned with other run_* entry points
     questions = [
@@ -1567,18 +1695,18 @@ def run_phase3_debrief(win, mouse, participant, timestamp_str=None):
 
     results = []
     for i, qtext in enumerate(questions):
-        q = visual.TextStim(win, text=qtext, color='black', height=0.04, pos=(0, 0.2), wrapWidth=1.5, units='height',
-                           anchorVert='top', alignText='center')
-        btn_yes = visual.Rect(win, width=0.18, height=0.06, fillColor='lightgreen', lineColor='black', pos=(-0.22, -0.25), units='height')
-        btn_no = visual.Rect(win, width=0.18, height=0.06, fillColor='lightcoral', lineColor='black', pos=(0.22, -0.25), units='height')
-        txt_yes = visual.TextStim(win, text="Yes", color='black', height=0.03, pos=(-0.22, -0.25), units='height')
-        txt_no = visual.TextStim(win, text="No", color='black', height=0.03, pos=(0.22, -0.25), units='height')
+        q = visual.TextStim(win, text=qtext, color='black', height=0.04, pos=(0, 0.1), wrapWidth=1.35, units='height',
+                           alignText='center')
+        btn_yes = visual.Rect(win, width=0.26, height=0.06, fillColor='lightgreen', lineColor='black', pos=(-0.2, -0.2), units='height')
+        btn_no = visual.Rect(win, width=0.26, height=0.06, fillColor='lightcoral', lineColor='black', pos=(0.2, -0.2), units='height')
+        txt_yes = visual.TextStim(win, text="Yes", color='black', height=0.03, pos=(-0.2, -0.2), units='height')
+        txt_no = visual.TextStim(win, text="No", color='black', height=0.03, pos=(0.2, -0.2), units='height')
         hint = visual.TextStim(
             win,
             text="USE THE ARROW KEYS TO ANSWER",
             color='gray',
             height=0.028,
-            pos=(0, -0.4),
+            pos=(0, -0.34),
             wrapWidth=1.4,
             units='height',
         )
@@ -1808,7 +1936,7 @@ def main():
     _log_ttl_event("experiment_start", trial_info=f"participant={participant}")
 
     # Welcome
-    welcome = visual.TextStim(win, text="Welcome to your task! — Hit Enter to watch the tutorial video.",
+    welcome = visual.TextStim(win, text="Welcome to your task! Hit Enter to watch the tutorial video.",
                               color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
     cont_btn = visual.Rect(win, width=0.2, height=0.06, fillColor='lightblue', lineColor='black', pos=(0, -0.3), units='height')
     cont_txt = visual.TextStim(win, text="CONTINUE", color='black', height=0.03, pos=(0, -0.3), units='height')
@@ -1839,11 +1967,11 @@ def main():
 
     # Before grid: 16 shapes, no need to memorize
     p1_before_grid = [
-        ("You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize.", "phase1_before_grid", 0), 
+        ("You will now see all 16 objects you will be sorting at the same time — for reference only; just watch & don't memorize.", "phase1_before_grid", PHASE13_BEFORE_GRID_MIN_SEC),
     ]
-    for text, label, _ in p1_before_grid:
+    for text, label, min_sec in p1_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-        if not wait_for_continue(win, stim, label):
+        if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
             win.close()
             _close_dummy()
             return
@@ -1881,7 +2009,7 @@ def main():
             False,
         ),
         (
-            "Click to place each object — Enter locks. You can't change previous answers after submitting. Hit Enter to start!",
+            PHASE13_CLICK_ENTER_INSTRUCTION,
             "phase1_instr3",
             True,
         ),
@@ -1917,8 +2045,8 @@ def main():
     p2_screens = [
         ("Ask the experimenter if you have any questions!", "phase2_questions", 0),
         ("For the next part of the task, we will show you a demo first. For this part, you will see each object paired with two contexts.", "phase2_instr1", 0),
-        ("You will see: a context → object → dot.", "phase2_instr2", 0),
-        ("When you see the dot, say what the object might be in that context aloud. Then, use the left/right keys to choose which context fits best.", "phase2_instr3", 0),
+        ("You will see: a context → object → question asking what the object is.", "phase2_instr2", 0),
+        ("When you see that question, say aloud what the object might be in that context. Then, use the left/right keys to choose which context fits best.", "phase2_instr3", 0),
         ("The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers.", "phase2_instr4", 0),
     ]
     for text, label, min_sec in p2_screens:
@@ -1966,11 +2094,11 @@ def main():
 
     # Before grid: 16 shapes, for context
     p3_before_grid = [
-        ("You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize.", "phase3_before_grid", 0),
+        ("You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize.", "phase3_before_grid", PHASE13_BEFORE_GRID_MIN_SEC),
     ]
-    for text, label, _ in p3_before_grid:
+    for text, label, min_sec in p3_before_grid:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
-        if not wait_for_continue(win, stim, label):
+        if not wait_for_continue(win, stim, label, min_display_sec=min_sec):
             win.close()
             _close_dummy()
             return
@@ -2001,7 +2129,7 @@ def main():
     del grid_inset_ref
 
     p3_instr2_screens = [
-        ("As before, sort the objects. Click to place — Enter locks.", "phase3_instruction2c", 0),
+        (PHASE13_CLICK_ENTER_INSTRUCTION, "phase3_instruction2c", 0),
     ]
     for text, label, _ in p3_instr2_screens:
         stim = visual.TextStim(win, text=text, color='black', height=0.04, pos=(0, 0), wrapWidth=1.4, units='height')
@@ -2052,7 +2180,7 @@ def main():
             except Exception:
                 pass
 
-    thanks = visual.TextStim(win, text="Done. Thank you!", color='black', height=0.05, pos=(0, 0))
+    thanks = visual.TextStim(win, text="You did an amazing job with these objects. Thank you!", color='black', height=0.05, pos=(0, 0))
     _log_ttl_event("thanks_onset")
     thanks.draw()
     win.flip()
