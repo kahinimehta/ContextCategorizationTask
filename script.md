@@ -13,7 +13,7 @@
 
 ### Welcome copy
 
-**Display:** **"Welcome to your task! — Hit Enter to watch the tutorial video."**  
+**Display:** **"Welcome to your task! Hit Enter to watch the tutorial video."**  
 
 
 ---
