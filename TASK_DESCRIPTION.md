@@ -19,7 +19,7 @@ PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main 
 - **Task objects (.bmp):** `STIMULI/shapes/*.bmp` — 16 stimuli are the first 16 files by sorted name (excludes `ShapeGrid*`); each maps to a 4×4 cell by that order (row-major). At load, each **task** `.bmp` (not `ShapeGrid*` composites) has **near-white matte pixels** (R, G, B ≥ **`OBJECT_WHITE_BG_STRIP_THRESHOLD`**, default **247**) **set to transparent** in PsychoPy; context PNGs and the grid composite are unchanged.
 - **Contexts:** `STIMULI/contexts/{category}1.png` and `STIMULI/contexts/{category}.png` (two variants per category; e.g. `sky1` / `sky`). **Phase 2 tutorial only:** dedicated `practice1.png` / `practice2.png` (**space** / **circus**) in `STIMULI/` or `contexts/`.
 - **Phase 2 context on-screen framing:** Every context image (tutorial + main trials) is drawn in a **fixed square** centered on screen in PsychoPy `units='height'`: side length **`PHASE2_CONTEXT_MAX_EXTENT`** (default **1.0**), with **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** default **1.0** (square). Source PNGs are **uniformly scaled** and **center-cropped** (object-fit **cover**) in Pillow so pixels keep aspect ratio inside that box — see **`_phase2_context_frame_size_height_units`** / **`_phase2_context_image_cropped_pil`** in **`context_shape_task.py`**.
-- **Phase 2 spoken prompt:** **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**) — full-screen **`TextStim`** after each object epoch (tutorial adds demo lines below). TTL/CSV names **`phase2_reddot_*`** / **`reddot_onset_ttl`** are **historical** (legacy black dot).
+- **Phase 2 spoken prompt:** **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**) — full-screen **`TextStim`** after each object epoch (tutorial adds demo lines below). TTL **`phase2_object_question_*`** / **`phase2_object_question2_*`**; **`phase2_*.csv`** columns **`object_question_onset_ttl`** / **`object_question2_onset_ttl`**.
 - **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — Phase 1/3: fullscreen preview + bottom-right miniature through fixation, instructions, and sorting. Regenerate if you change the task `.bmp` set so cell order matches **sorted** `*.bmp` (`ShapeGrid*` excluded); **no grid-builder script in repo**.
 - **Phase 1 & 3 sorting instructions:** Single canonical sentence **`PHASE13_CLICK_ENTER_INSTRUCTION`** in **`context_shape_task.py`** — gray trial hint plus **`phase1_instr3`** / **`phase3_instruction2c`**; tutorial fallback steps **2** and **6** use the same text.
 
@@ -38,9 +38,9 @@ PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main 
 
 ## Timing (Stimulus Durations)
 
-**Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_REDDOT_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`, `PHASE13_BEFORE_GRID_MIN_SEC`, `TRAINING_DEMO_SCREEN_EXTRA_SEC` adds time on scripted training-demo screens only — real Phase 2 trials still use `PHASE2_SEGMENT_SEC` / `PHASE2_REDDOT_DURATION_SEC`). Phase 2 transitions from each **task object** epoch to **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**) with **no** intervening blank (`PHASE2_SEGMENT_SEC` still controls context/object display length only). TTL **`phase2_reddot_*`** / CSV **`reddot_onset_ttl`** are **historical** labels for this screen. **Tutorial fallback:** `TUTORIAL_FB_SHAPE_PREFLASH_SEC` — steps **3–4** only (brief new-shape flash on empty canvas before isolate). `TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC` — previously placed shapes visible on target epoch **before** halo/click (moving item still hidden). `TUTORIAL_FB_CURSOR_BEFORE_PLACEMENT_REVEAL_SEC` — light-blue **double halo** at empty placement before steelblue click + reveal on steps **2–4** fallback (isolate **center** epoch has **no** expanding steelblue ring).
+**Source of truth:** `context_shape_task.py` module constants (names ending in `_SEC`; e.g. `PHASE2_OBJECT_QUESTION_DURATION_SEC`, `PHASE_GRID_PREVIEW_SEC`, `PHASE13_BEFORE_GRID_MIN_SEC`, `TRAINING_DEMO_SCREEN_EXTRA_SEC` adds time on scripted training-demo screens only — real Phase 2 trials still use `PHASE2_SEGMENT_SEC` / `PHASE2_OBJECT_QUESTION_DURATION_SEC`). Phase 2 transitions from each **task object** epoch to **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**) with **no** intervening blank (`PHASE2_SEGMENT_SEC` still controls context/object display length only). **Tutorial fallback:** `TUTORIAL_FB_SHAPE_PREFLASH_SEC` — steps **3–4** only (brief new-shape flash on empty canvas before isolate). `TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC` — previously placed shapes visible on target epoch **before** halo/click (moving item still hidden). `TUTORIAL_FB_CURSOR_BEFORE_PLACEMENT_REVEAL_SEC` — light-blue **double halo** at empty placement before steelblue click + reveal on steps **2–4** fallback (isolate **center** epoch has **no** expanding steelblue ring).
 
-**Phase 2 object-question screen:** Centered **`TextStim`** with **`PHASE2_OBJECT_QUESTION_TEXT`** (tutorial adds demo subtitles underneath). Durations **`PHASE2_REDDOT_DURATION_SEC`** (trials) and **`PHASE2_TUTORIAL_REDDOT_SEC`** (tutorial).
+**Phase 2 object-question screen:** Centered **`TextStim`** with **`PHASE2_OBJECT_QUESTION_TEXT`** (tutorial adds demo subtitles underneath). Durations **`PHASE2_OBJECT_QUESTION_DURATION_SEC`** (trials) and **`PHASE2_TUTORIAL_OBJECT_QUESTION_SEC`** (tutorial).
 
 ### Tutorial (fallback)
 
@@ -78,10 +78,10 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Fixation | `PHASE2_TUTORIAL_FIXATION_SEC` (2 s); main trials remain `PHASE2_FIXATION_PRE_TRIAL_SEC` |
 | Context 1 (**`practice1.png`**, SPACE) | `PHASE2_TUTORIAL_SEGMENT_SEC` (2.5 s); main trials: `PHASE2_SEGMENT_SEC`; **same square framing as trials** (center cover crop) |
 | Task object (blue circle) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
-| Object question (**`PHASE2_OBJECT_QUESTION_TEXT`**) + demo hint (PLANET) | `PHASE2_TUTORIAL_REDDOT_SEC` (3.5 s); main trials: `PHASE2_REDDOT_DURATION_SEC` (**immediately** after object) |
+| Object question (**`PHASE2_OBJECT_QUESTION_TEXT`**) + demo hint (PLANET) | `PHASE2_TUTORIAL_OBJECT_QUESTION_SEC` (3.5 s); main trials: `PHASE2_OBJECT_QUESTION_DURATION_SEC` (**immediately** after object) |
 | Context 2 (**`practice2.png`**, CIRCUS) | `PHASE2_TUTORIAL_SEGMENT_SEC` |
 | Task object 2 | `PHASE2_TUTORIAL_SEGMENT_SEC` |
-| Object question + demo hint (BALL) | `PHASE2_TUTORIAL_REDDOT_SEC` |
+| Object question + demo hint (BALL) | `PHASE2_TUTORIAL_OBJECT_QUESTION_SEC` |
 | Choice preview then highlight | **`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`** (**3** s = 1.5 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`): prompt **"Which context fits best? Use the left/right keys to choose."** with SPACE (left) / CIRCUS (right) buttons, no selection shown. Then **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** (**2.5** s = 1.0 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`): **right** button (CIRCUS / second practice context) drawn as selected (steel blue), subtitle **"You might say 'CIRCUS' (right key) is the better context"**. TTL labels: **`csv_documentation.md`** (`phase2_tutorial_question_*`, `phase2_tutorial_demo_select_*`). |
 | Post-blank | **`PHASE2_TUTORIAL_POST_BLANK_SEC`** (**4.5** s = 3.0 + `TRAINING_DEMO_SCREEN_EXTRA_SEC`) |
 
@@ -92,10 +92,10 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | Fixation | `PHASE2_FIXATION_PRE_TRIAL_SEC` (0.5 s) |
 | Context 1 | 1 s (`PHASE2_SEGMENT_SEC`); **centered square**, center **cover** crop (same size all trials) |
 | Task object | 1 s (`PHASE2_SEGMENT_SEC`); object-question screen follows **without** intervening blank |
-| Object question (`PHASE2_OBJECT_QUESTION_TEXT`) | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Object question (`PHASE2_OBJECT_QUESTION_TEXT`) | `PHASE2_OBJECT_QUESTION_DURATION_SEC` (2 s) |
 | Context 2 | 1 s (`PHASE2_SEGMENT_SEC`); same square as context 1 |
 | Task object 2 | 1 s (`PHASE2_SEGMENT_SEC`); second object-question follows **without** intervening blank |
-| Object question 2 | `PHASE2_REDDOT_DURATION_SEC` (2 s) |
+| Object question 2 | `PHASE2_OBJECT_QUESTION_DURATION_SEC` (2 s) |
 | Question | Participant-paced; prompt and keys — **`script.md`**; **TTL / RT** — **`csv_documentation.md`**. |
 | ITI (blank) | `PHASE2_TRIAL_ITI_SEC` (0.5 s); TTL **`phase2_trial_iti_onset`** / **`phase2_trial_iti_offset`** after **`phase2_question_offset`** (**`csv_documentation.md`**) |
 

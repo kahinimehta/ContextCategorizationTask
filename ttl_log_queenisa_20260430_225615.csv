@@ -162,14 +162,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604393.064771175,phase2_tutorial_context1_offset,phase2_tutorial_context1_offset,context=practice1.png
 1777604393.065722227,phase2_tutorial_shape_onset,phase2_tutorial_shape_onset,demo=blue_circle
 1777604395.580383062,phase2_tutorial_shape_offset,phase2_tutorial_shape_offset,demo=blue_circle
-1777604395.581398010,phase2_tutorial_reddot_onset,phase2_tutorial_reddot_onset,cue=circle_label_1
-1777604399.107810020,phase2_tutorial_reddot_offset,phase2_tutorial_reddot_offset,cue=circle_label_1
+1777604395.581398010,phase2_tutorial_object_question_onset,phase2_tutorial_object_question_onset,cue=circle_label_1
+1777604399.107810020,phase2_tutorial_object_question_offset,phase2_tutorial_object_question_offset,cue=circle_label_1
 1777604399.108613014,phase2_tutorial_context2_onset,phase2_tutorial_context2_onset,context=practice2.png
 1777604401.633524895,phase2_tutorial_context2_offset,phase2_tutorial_context2_offset,context=practice2.png
 1777604401.635641098,phase2_tutorial_shape2_onset,phase2_tutorial_shape2_onset,demo=blue_circle
 1777604404.171504974,phase2_tutorial_shape2_offset,phase2_tutorial_shape2_offset,demo=blue_circle
-1777604404.171770811,phase2_tutorial_reddot2_onset,phase2_tutorial_reddot2_onset,cue=circle_label_2
-1777604407.696730137,phase2_tutorial_reddot2_offset,phase2_tutorial_reddot2_offset,cue=circle_label_2
+1777604404.171770811,phase2_tutorial_object_question2_onset,phase2_tutorial_object_question2_onset,cue=circle_label_2
+1777604407.696730137,phase2_tutorial_object_question2_offset,phase2_tutorial_object_question2_offset,cue=circle_label_2
 1777604407.721594810,phase2_tutorial_question_onset,phase2_tutorial_question_onset,
 1777604410.733193874,phase2_tutorial_question_preview_offset,phase2_tutorial_question_preview_offset,
 1777604410.734421968,phase2_tutorial_demo_select_onset,phase2_tutorial_demo_select_onset,
@@ -190,14 +190,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604423.335693121,phase2_context1_offset,phase2_context1_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604423.336111069,phase2_shape_onset,phase2_shape_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604424.349818945,phase2_shape_offset,phase2_shape_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604424.350914955,phase2_reddot_onset,phase2_reddot_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604426.368818998,phase2_reddot_offset,phase2_reddot_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604424.350914955,phase2_object_question_onset,phase2_object_question_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604426.368818998,phase2_object_question_offset,phase2_object_question_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604426.369421005,phase2_context2_onset,phase2_context2_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604427.392054081,phase2_context2_offset,phase2_context2_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604427.392221928,phase2_shape2_onset,phase2_shape2_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604428.398504972,phase2_shape2_offset,phase2_shape2_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604428.398772955,phase2_reddot2_onset,phase2_reddot2_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604430.411628962,phase2_reddot2_offset,phase2_reddot2_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604428.398772955,phase2_object_question2_onset,phase2_object_question2_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604430.411628962,phase2_object_question2_offset,phase2_object_question2_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604430.469978094,phase2_question_onset,phase2_question_onset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1 cat_a=MOUNTAIN cat_b=SPORTSFIELD
 1777604431.647407055,phase2_response,phase2_response,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1 response=SPORTSFIELD
 1777604431.647527933,phase2_question_offset,phase2_question_offset,trial=1 shape=ball_slope.bmp ctx1=mountain1.png ctx2=sportsfield1.png variant=secondary_first_img1
@@ -209,14 +209,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604434.043109179,phase2_context1_offset,phase2_context1_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604434.043599844,phase2_shape_onset,phase2_shape_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604435.053765059,phase2_shape_offset,phase2_shape_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
-1777604435.054135084,phase2_reddot_onset,phase2_reddot_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
-1777604437.060818911,phase2_reddot_offset,phase2_reddot_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
+1777604435.054135084,phase2_object_question_onset,phase2_object_question_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
+1777604437.060818911,phase2_object_question_offset,phase2_object_question_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604437.061720133,phase2_context2_onset,phase2_context2_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604438.073157787,phase2_context2_offset,phase2_context2_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604438.074149847,phase2_shape2_onset,phase2_shape2_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604439.079843044,phase2_shape2_offset,phase2_shape2_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
-1777604439.080565929,phase2_reddot2_onset,phase2_reddot2_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
-1777604441.088520050,phase2_reddot2_offset,phase2_reddot2_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
+1777604439.080565929,phase2_object_question2_onset,phase2_object_question2_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
+1777604441.088520050,phase2_object_question2_offset,phase2_object_question2_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
 1777604441.110198975,phase2_question_onset,phase2_question_onset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0 cat_a=BATHROOM cat_b=GARDEN
 1777604443.780478001,phase2_response,phase2_response,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0 response=BATHROOM
 1777604443.780991077,phase2_question_offset,phase2_question_offset,trial=2 shape=toothbrush.bmp ctx1=bathroom.png ctx2=garden.png variant=primary_first_img0
@@ -228,14 +228,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604446.009559155,phase2_context1_offset,phase2_context1_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604446.010310888,phase2_shape_onset,phase2_shape_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604447.029848099,phase2_shape_offset,phase2_shape_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604447.030371189,phase2_reddot_onset,phase2_reddot_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604449.042425156,phase2_reddot_offset,phase2_reddot_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604447.030371189,phase2_object_question_onset,phase2_object_question_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604449.042425156,phase2_object_question_offset,phase2_object_question_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604449.043378830,phase2_context2_onset,phase2_context2_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604450.055599213,phase2_context2_offset,phase2_context2_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604450.056679964,phase2_shape2_onset,phase2_shape2_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604451.063053131,phase2_shape2_offset,phase2_shape2_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604451.063727140,phase2_reddot2_onset,phase2_reddot2_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604453.073646069,phase2_reddot2_offset,phase2_reddot2_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604451.063727140,phase2_object_question2_onset,phase2_object_question2_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604453.073646069,phase2_object_question2_offset,phase2_object_question2_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604453.093760014,phase2_question_onset,phase2_question_onset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777604454.947807074,phase2_response,phase2_response,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1 response=KITCHEN
 1777604454.948228121,phase2_question_offset,phase2_question_offset,trial=3 shape=basketball.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
@@ -247,14 +247,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604457.298839092,phase2_context1_offset,phase2_context1_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604457.299551010,phase2_shape_onset,phase2_shape_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604458.309019804,phase2_shape_offset,phase2_shape_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604458.309878111,phase2_reddot_onset,phase2_reddot_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604460.318448067,phase2_reddot_offset,phase2_reddot_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604458.309878111,phase2_object_question_onset,phase2_object_question_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604460.318448067,phase2_object_question_offset,phase2_object_question_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604460.319065094,phase2_context2_onset,phase2_context2_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604461.331279755,phase2_context2_offset,phase2_context2_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604461.332038879,phase2_shape2_onset,phase2_shape2_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604462.340198994,phase2_shape2_offset,phase2_shape2_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604462.341280937,phase2_reddot2_onset,phase2_reddot2_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604464.349946022,phase2_reddot2_offset,phase2_reddot2_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604462.341280937,phase2_object_question2_onset,phase2_object_question2_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604464.349946022,phase2_object_question2_offset,phase2_object_question2_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604464.367287159,phase2_question_onset,phase2_question_onset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1 cat_a=OFFICE cat_b=BATHROOM
 1777604466.508111954,phase2_response,phase2_response,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1 response=OFFICE
 1777604466.508970976,phase2_question_offset,phase2_question_offset,trial=4 shape=nail_cutters.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
@@ -266,14 +266,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604468.763961077,phase2_context1_offset,phase2_context1_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604468.764860868,phase2_shape_onset,phase2_shape_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604469.774430990,phase2_shape_offset,phase2_shape_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604469.775055885,phase2_reddot_onset,phase2_reddot_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604471.787384987,phase2_reddot_offset,phase2_reddot_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604469.775055885,phase2_object_question_onset,phase2_object_question_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604471.787384987,phase2_object_question_offset,phase2_object_question_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604471.788177967,phase2_context2_onset,phase2_context2_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604472.815038919,phase2_context2_offset,phase2_context2_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604472.815968990,phase2_shape2_onset,phase2_shape2_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604473.826490879,phase2_shape2_offset,phase2_shape2_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604473.829133034,phase2_reddot2_onset,phase2_reddot2_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604475.844408035,phase2_reddot2_offset,phase2_reddot2_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604473.829133034,phase2_object_question2_onset,phase2_object_question2_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604475.844408035,phase2_object_question2_offset,phase2_object_question2_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604475.874710083,phase2_question_onset,phase2_question_onset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1 cat_a=KITCHEN cat_b=PETSHOP
 1777604476.830695868,phase2_response,phase2_response,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1 response=PETSHOP
 1777604476.830935001,phase2_question_offset,phase2_question_offset,trial=5 shape=bird'sfoot.bmp ctx1=kitchen1.png ctx2=petshop1.png variant=secondary_first_img1
@@ -285,14 +285,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604479.002649069,phase2_context1_offset,phase2_context1_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604479.003463984,phase2_shape_onset,phase2_shape_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604480.014855862,phase2_shape_offset,phase2_shape_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
-1777604480.015725136,phase2_reddot_onset,phase2_reddot_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
-1777604482.025273085,phase2_reddot_offset,phase2_reddot_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
+1777604480.015725136,phase2_object_question_onset,phase2_object_question_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
+1777604482.025273085,phase2_object_question_offset,phase2_object_question_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604482.025593042,phase2_context2_onset,phase2_context2_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604483.044078112,phase2_context2_offset,phase2_context2_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604483.044506788,phase2_shape2_onset,phase2_shape2_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604484.052230835,phase2_shape2_offset,phase2_shape2_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
-1777604484.052788973,phase2_reddot2_onset,phase2_reddot2_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
-1777604486.062070131,phase2_reddot2_offset,phase2_reddot2_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
+1777604484.052788973,phase2_object_question2_onset,phase2_object_question2_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
+1777604486.062070131,phase2_object_question2_offset,phase2_object_question2_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
 1777604486.076656103,phase2_question_onset,phase2_question_onset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1 cat_a=SPORTSFIELD cat_b=OFFICE
 1777604487.915941954,phase2_response,phase2_response,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1 response=OFFICE
 1777604487.916367054,phase2_question_offset,phase2_question_offset,trial=6 shape=tape.bmp ctx1=sportsfield1.png ctx2=office1.png variant=secondary_first_img1
@@ -304,14 +304,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604490.136218071,phase2_context1_offset,phase2_context1_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604490.136783838,phase2_shape_onset,phase2_shape_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604491.148916960,phase2_shape_offset,phase2_shape_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604491.149458885,phase2_reddot_onset,phase2_reddot_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604493.161493063,phase2_reddot_offset,phase2_reddot_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604491.149458885,phase2_object_question_onset,phase2_object_question_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604493.161493063,phase2_object_question_offset,phase2_object_question_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604493.162739038,phase2_context2_onset,phase2_context2_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604494.195238829,phase2_context2_offset,phase2_context2_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604494.195387840,phase2_shape2_onset,phase2_shape2_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604495.200122118,phase2_shape2_offset,phase2_shape2_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604495.200933218,phase2_reddot2_onset,phase2_reddot2_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604497.214365959,phase2_reddot2_offset,phase2_reddot2_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604495.200933218,phase2_object_question2_onset,phase2_object_question2_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604497.214365959,phase2_object_question2_offset,phase2_object_question2_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604497.238768101,phase2_question_onset,phase2_question_onset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1 cat_a=SKY cat_b=KITCHEN
 1777604498.249001026,phase2_response,phase2_response,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1 response=KITCHEN
 1777604498.249453068,phase2_question_offset,phase2_question_offset,trial=7 shape=umbrella.bmp ctx1=sky1.png ctx2=kitchen1.png variant=primary_first_img1
@@ -323,14 +323,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604500.548126936,phase2_context1_offset,phase2_context1_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604500.548627853,phase2_shape_onset,phase2_shape_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604501.557364941,phase2_shape_offset,phase2_shape_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
-1777604501.557968855,phase2_reddot_onset,phase2_reddot_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
-1777604503.569767952,phase2_reddot_offset,phase2_reddot_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
+1777604501.557968855,phase2_object_question_onset,phase2_object_question_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
+1777604503.569767952,phase2_object_question_offset,phase2_object_question_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604503.570625067,phase2_context2_onset,phase2_context2_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604504.587469101,phase2_context2_offset,phase2_context2_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604504.588417053,phase2_shape2_onset,phase2_shape2_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604505.596488953,phase2_shape2_offset,phase2_shape2_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
-1777604505.597578049,phase2_reddot2_onset,phase2_reddot2_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
-1777604507.608424902,phase2_reddot2_offset,phase2_reddot2_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
+1777604505.597578049,phase2_object_question2_onset,phase2_object_question2_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
+1777604507.608424902,phase2_object_question2_offset,phase2_object_question2_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
 1777604507.638244152,phase2_question_onset,phase2_question_onset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1 cat_a=SPORTSFIELD cat_b=GARDEN
 1777604508.930402040,phase2_response,phase2_response,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1 response=GARDEN
 1777604508.931237221,phase2_question_offset,phase2_question_offset,trial=8 shape=tunnelentrance.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=secondary_first_img1
@@ -342,14 +342,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604511.062000990,phase2_context1_offset,phase2_context1_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604511.062964916,phase2_shape_onset,phase2_shape_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604512.071049929,phase2_shape_offset,phase2_shape_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604512.072079182,phase2_reddot_onset,phase2_reddot_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604514.081487894,phase2_reddot_offset,phase2_reddot_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604512.072079182,phase2_object_question_onset,phase2_object_question_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604514.081487894,phase2_object_question_offset,phase2_object_question_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604514.082231998,phase2_context2_onset,phase2_context2_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604515.092888117,phase2_context2_offset,phase2_context2_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604515.093580961,phase2_shape2_onset,phase2_shape2_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604516.098702192,phase2_shape2_offset,phase2_shape2_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604516.099693060,phase2_reddot2_onset,phase2_reddot2_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604518.108699799,phase2_reddot2_offset,phase2_reddot2_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604516.099693060,phase2_object_question2_onset,phase2_object_question2_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604518.108699799,phase2_object_question2_offset,phase2_object_question2_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604518.125965118,phase2_question_onset,phase2_question_onset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1 cat_a=BATHROOM cat_b=OFFICE
 1777604519.180553913,phase2_response,phase2_response,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1 response=BATHROOM
 1777604519.181369066,phase2_question_offset,phase2_question_offset,trial=9 shape=toiletpaper.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
@@ -361,14 +361,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604521.294687033,phase2_context1_offset,phase2_context1_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604521.295452833,phase2_shape_onset,phase2_shape_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604522.303853989,phase2_shape_offset,phase2_shape_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604522.304690838,phase2_reddot_onset,phase2_reddot_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604524.313105822,phase2_reddot_offset,phase2_reddot_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604522.304690838,phase2_object_question_onset,phase2_object_question_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604524.313105822,phase2_object_question_offset,phase2_object_question_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604524.314073086,phase2_context2_onset,phase2_context2_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604525.326269865,phase2_context2_offset,phase2_context2_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604525.326979160,phase2_shape2_onset,phase2_shape2_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604526.334801912,phase2_shape2_offset,phase2_shape2_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604526.335500956,phase2_reddot2_onset,phase2_reddot2_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604528.343754053,phase2_reddot2_offset,phase2_reddot2_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604526.335500956,phase2_object_question2_onset,phase2_object_question2_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604528.343754053,phase2_object_question2_offset,phase2_object_question2_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604528.362405062,phase2_question_onset,phase2_question_onset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777604529.396815777,phase2_response,phase2_response,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1 response=KITCHEN
 1777604529.397403955,phase2_question_offset,phase2_question_offset,trial=10 shape=bikewheel.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=secondary_first_img1
@@ -380,14 +380,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604531.507002831,phase2_context1_offset,phase2_context1_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604531.507714987,phase2_shape_onset,phase2_shape_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604532.514415026,phase2_shape_offset,phase2_shape_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
-1777604532.515301228,phase2_reddot_onset,phase2_reddot_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
-1777604534.526031971,phase2_reddot_offset,phase2_reddot_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
+1777604532.515301228,phase2_object_question_onset,phase2_object_question_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
+1777604534.526031971,phase2_object_question_offset,phase2_object_question_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604534.527450085,phase2_context2_onset,phase2_context2_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604535.555686951,phase2_context2_offset,phase2_context2_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604535.557315111,phase2_shape2_onset,phase2_shape2_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604536.568861961,phase2_shape2_offset,phase2_shape2_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
-1777604536.569434166,phase2_reddot2_onset,phase2_reddot2_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
-1777604538.580484152,phase2_reddot2_offset,phase2_reddot2_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
+1777604536.569434166,phase2_object_question2_onset,phase2_object_question2_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
+1777604538.580484152,phase2_object_question2_offset,phase2_object_question2_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
 1777604538.688596964,phase2_question_onset,phase2_question_onset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1 cat_a=GARDEN cat_b=SKY
 1777604539.715959072,phase2_response,phase2_response,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1 response=GARDEN
 1777604539.716768026,phase2_question_offset,phase2_question_offset,trial=11 shape=bug.bmp ctx1=garden1.png ctx2=sky1.png variant=primary_first_img1
@@ -399,14 +399,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604542.080276966,phase2_context1_offset,phase2_context1_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604542.081100941,phase2_shape_onset,phase2_shape_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604543.089673042,phase2_shape_offset,phase2_shape_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
-1777604543.090121031,phase2_reddot_onset,phase2_reddot_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
-1777604545.136019945,phase2_reddot_offset,phase2_reddot_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
+1777604543.090121031,phase2_object_question_onset,phase2_object_question_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
+1777604545.136019945,phase2_object_question_offset,phase2_object_question_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604545.136881828,phase2_context2_onset,phase2_context2_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604546.145642996,phase2_context2_offset,phase2_context2_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604546.146486998,phase2_shape2_onset,phase2_shape2_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604547.152552843,phase2_shape2_offset,phase2_shape2_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
-1777604547.153563976,phase2_reddot2_onset,phase2_reddot2_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
-1777604549.162838936,phase2_reddot2_offset,phase2_reddot2_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
+1777604547.153563976,phase2_object_question2_onset,phase2_object_question2_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
+1777604549.162838936,phase2_object_question2_offset,phase2_object_question2_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
 1777604549.182636023,phase2_question_onset,phase2_question_onset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777604550.252448082,phase2_response,phase2_response,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0 response=KITCHEN
 1777604550.253221989,phase2_question_offset,phase2_question_offset,trial=12 shape=pan.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=primary_first_img0
@@ -418,14 +418,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604552.500581026,phase2_context1_offset,phase2_context1_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604552.501290083,phase2_shape_onset,phase2_shape_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604553.510682106,phase2_shape_offset,phase2_shape_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
-1777604553.511039972,phase2_reddot_onset,phase2_reddot_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
-1777604555.518388033,phase2_reddot_offset,phase2_reddot_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
+1777604553.511039972,phase2_object_question_onset,phase2_object_question_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
+1777604555.518388033,phase2_object_question_offset,phase2_object_question_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604555.519607067,phase2_context2_onset,phase2_context2_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604556.560085058,phase2_context2_offset,phase2_context2_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604556.560274839,phase2_shape2_onset,phase2_shape2_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604557.565104246,phase2_shape2_offset,phase2_shape2_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
-1777604557.566051006,phase2_reddot2_onset,phase2_reddot2_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
-1777604559.583115101,phase2_reddot2_offset,phase2_reddot2_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
+1777604557.566051006,phase2_object_question2_onset,phase2_object_question2_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
+1777604559.583115101,phase2_object_question2_offset,phase2_object_question2_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
 1777604559.604413033,phase2_question_onset,phase2_question_onset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0 cat_a=OFFICE cat_b=GARDEN
 1777604560.701143026,phase2_response,phase2_response,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0 response=GARDEN
 1777604560.701967001,phase2_question_offset,phase2_question_offset,trial=13 shape=mosquito.bmp ctx1=office.png ctx2=garden.png variant=secondary_first_img0
@@ -437,14 +437,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604562.946110010,phase2_context1_offset,phase2_context1_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604562.946681023,phase2_shape_onset,phase2_shape_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604563.956757069,phase2_shape_offset,phase2_shape_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
-1777604563.957761049,phase2_reddot_onset,phase2_reddot_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
-1777604565.968363047,phase2_reddot_offset,phase2_reddot_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
+1777604563.957761049,phase2_object_question_onset,phase2_object_question_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
+1777604565.968363047,phase2_object_question_offset,phase2_object_question_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604565.968828917,phase2_context2_onset,phase2_context2_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604566.998631954,phase2_context2_offset,phase2_context2_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604567.000830889,phase2_shape2_onset,phase2_shape2_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604568.010633945,phase2_shape2_offset,phase2_shape2_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
-1777604568.011188030,phase2_reddot2_onset,phase2_reddot2_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
-1777604570.031866789,phase2_reddot2_offset,phase2_reddot2_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
+1777604568.011188030,phase2_object_question2_onset,phase2_object_question2_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
+1777604570.031866789,phase2_object_question2_offset,phase2_object_question2_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
 1777604570.071360111,phase2_question_onset,phase2_question_onset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0 cat_a=SPORTSFIELD cat_b=PETSHOP
 1777604572.337733984,phase2_response,phase2_response,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0 response=SPORTSFIELD
 1777604572.338437796,phase2_question_offset,phase2_question_offset,trial=14 shape=birdcage.bmp ctx1=sportsfield.png ctx2=petshop.png variant=secondary_first_img0
@@ -456,14 +456,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604574.478889942,phase2_context1_offset,phase2_context1_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604574.479593039,phase2_shape_onset,phase2_shape_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604575.490731955,phase2_shape_offset,phase2_shape_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
-1777604575.491346836,phase2_reddot_onset,phase2_reddot_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
-1777604577.502344847,phase2_reddot_offset,phase2_reddot_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
+1777604575.491346836,phase2_object_question_onset,phase2_object_question_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
+1777604577.502344847,phase2_object_question_offset,phase2_object_question_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604577.503345966,phase2_context2_onset,phase2_context2_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604578.520117044,phase2_context2_offset,phase2_context2_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604578.521160841,phase2_shape2_onset,phase2_shape2_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604579.530575037,phase2_shape2_offset,phase2_shape2_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
-1777604579.531573057,phase2_reddot2_onset,phase2_reddot2_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
-1777604581.542531013,phase2_reddot2_offset,phase2_reddot2_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
+1777604579.531573057,phase2_object_question2_onset,phase2_object_question2_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
+1777604581.542531013,phase2_object_question2_offset,phase2_object_question2_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
 1777604581.563268185,phase2_question_onset,phase2_question_onset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0 cat_a=KITCHEN cat_b=OFFICE
 1777604582.522272110,phase2_response,phase2_response,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0 response=KITCHEN
 1777604582.522766113,phase2_question_offset,phase2_question_offset,trial=15 shape=teacup.bmp ctx1=kitchen.png ctx2=office.png variant=primary_first_img0
@@ -475,14 +475,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604584.677186012,phase2_context1_offset,phase2_context1_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604584.678814888,phase2_shape_onset,phase2_shape_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604585.688110113,phase2_shape_offset,phase2_shape_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604585.689059019,phase2_reddot_onset,phase2_reddot_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604587.698368073,phase2_reddot_offset,phase2_reddot_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604585.689059019,phase2_object_question_onset,phase2_object_question_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604587.698368073,phase2_object_question_offset,phase2_object_question_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604587.699213028,phase2_context2_onset,phase2_context2_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604588.711133003,phase2_context2_offset,phase2_context2_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604588.712058783,phase2_shape2_onset,phase2_shape2_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604589.720204115,phase2_shape2_offset,phase2_shape2_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604589.721270084,phase2_reddot2_onset,phase2_reddot2_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604591.731577158,phase2_reddot2_offset,phase2_reddot2_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604589.721270084,phase2_object_question2_onset,phase2_object_question2_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604591.731577158,phase2_object_question2_offset,phase2_object_question2_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604591.749838114,phase2_question_onset,phase2_question_onset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0 cat_a=GARDEN cat_b=SPORTSFIELD
 1777604592.654998064,phase2_response,phase2_response,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0 response=SPORTSFIELD
 1777604592.656101942,phase2_question_offset,phase2_question_offset,trial=16 shape=rugby.bmp ctx1=garden.png ctx2=sportsfield.png variant=secondary_first_img0
@@ -497,14 +497,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604596.865432024,phase2_context1_offset,phase2_context1_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604596.866126060,phase2_shape_onset,phase2_shape_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604597.881764174,phase2_shape_offset,phase2_shape_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
-1777604597.882642031,phase2_reddot_onset,phase2_reddot_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
-1777604599.894010782,phase2_reddot_offset,phase2_reddot_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
+1777604597.882642031,phase2_object_question_onset,phase2_object_question_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
+1777604599.894010782,phase2_object_question_offset,phase2_object_question_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604599.894588947,phase2_context2_onset,phase2_context2_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604600.907635927,phase2_context2_offset,phase2_context2_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604600.908545971,phase2_shape2_onset,phase2_shape2_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604601.916948080,phase2_shape2_offset,phase2_shape2_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
-1777604601.917819977,phase2_reddot2_onset,phase2_reddot2_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
-1777604603.927058935,phase2_reddot2_offset,phase2_reddot2_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
+1777604601.917819977,phase2_object_question2_onset,phase2_object_question2_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
+1777604603.927058935,phase2_object_question2_offset,phase2_object_question2_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
 1777604603.945847034,phase2_question_onset,phase2_question_onset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0 cat_a=SPORTSFIELD cat_b=MOUNTAIN
 1777604604.906915188,phase2_response,phase2_response,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0 response=SPORTSFIELD
 1777604604.907415152,phase2_question_offset,phase2_question_offset,trial=17 shape=ball_slope.bmp ctx1=sportsfield.png ctx2=mountain.png variant=primary_first_img0
@@ -516,14 +516,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604607.044605017,phase2_context1_offset,phase2_context1_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604607.045136929,phase2_shape_onset,phase2_shape_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604608.054497004,phase2_shape_offset,phase2_shape_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
-1777604608.055429220,phase2_reddot_onset,phase2_reddot_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
-1777604610.063933849,phase2_reddot_offset,phase2_reddot_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
+1777604608.055429220,phase2_object_question_onset,phase2_object_question_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
+1777604610.063933849,phase2_object_question_offset,phase2_object_question_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604610.064596891,phase2_context2_onset,phase2_context2_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604611.074212074,phase2_context2_offset,phase2_context2_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604611.075237989,phase2_shape2_onset,phase2_shape2_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604612.081765890,phase2_shape2_offset,phase2_shape2_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
-1777604612.082799196,phase2_reddot2_onset,phase2_reddot2_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
-1777604614.090810776,phase2_reddot2_offset,phase2_reddot2_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
+1777604612.082799196,phase2_object_question2_onset,phase2_object_question2_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
+1777604614.090810776,phase2_object_question2_offset,phase2_object_question2_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
 1777604614.115627050,phase2_question_onset,phase2_question_onset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0 cat_a=SPORTSFIELD cat_b=OFFICE
 1777604614.769845963,phase2_response,phase2_response,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0 response=SPORTSFIELD
 1777604614.770532131,phase2_question_offset,phase2_question_offset,trial=18 shape=tape.bmp ctx1=sportsfield.png ctx2=office.png variant=secondary_first_img0
@@ -535,14 +535,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604616.946373940,phase2_context1_offset,phase2_context1_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604616.946891069,phase2_shape_onset,phase2_shape_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604617.954861164,phase2_shape_offset,phase2_shape_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
-1777604617.955770969,phase2_reddot_onset,phase2_reddot_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
-1777604619.966250896,phase2_reddot_offset,phase2_reddot_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
+1777604617.955770969,phase2_object_question_onset,phase2_object_question_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
+1777604619.966250896,phase2_object_question_offset,phase2_object_question_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604619.966925144,phase2_context2_onset,phase2_context2_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604620.985332012,phase2_context2_offset,phase2_context2_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604620.985955000,phase2_shape2_onset,phase2_shape2_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604621.995712996,phase2_shape2_offset,phase2_shape2_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
-1777604621.997048140,phase2_reddot2_onset,phase2_reddot2_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
-1777604624.005769968,phase2_reddot2_offset,phase2_reddot2_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
+1777604621.997048140,phase2_object_question2_onset,phase2_object_question2_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
+1777604624.005769968,phase2_object_question2_offset,phase2_object_question2_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
 1777604624.027594090,phase2_question_onset,phase2_question_onset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0 cat_a=KITCHEN cat_b=PETSHOP
 1777604624.758245230,phase2_response,phase2_response,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0 response=PETSHOP
 1777604624.758630991,phase2_question_offset,phase2_question_offset,trial=19 shape=bird'sfoot.bmp ctx1=kitchen.png ctx2=petshop.png variant=secondary_first_img0
@@ -554,14 +554,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604626.924937963,phase2_context1_offset,phase2_context1_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604626.925360918,phase2_shape_onset,phase2_shape_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604627.935200930,phase2_shape_offset,phase2_shape_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
-1777604627.935967922,phase2_reddot_onset,phase2_reddot_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
-1777604629.946315050,phase2_reddot_offset,phase2_reddot_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
+1777604627.935967922,phase2_object_question_onset,phase2_object_question_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
+1777604629.946315050,phase2_object_question_offset,phase2_object_question_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604629.946889877,phase2_context2_onset,phase2_context2_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604630.962858915,phase2_context2_offset,phase2_context2_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604630.963500977,phase2_shape2_onset,phase2_shape2_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604631.973162889,phase2_shape2_offset,phase2_shape2_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
-1777604631.974238873,phase2_reddot2_onset,phase2_reddot2_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
-1777604633.983420849,phase2_reddot2_offset,phase2_reddot2_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
+1777604631.974238873,phase2_object_question2_onset,phase2_object_question2_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
+1777604633.983420849,phase2_object_question2_offset,phase2_object_question2_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
 1777604634.010373831,phase2_question_onset,phase2_question_onset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0 cat_a=GARDEN cat_b=SPORTSFIELD
 1777604634.912709236,phase2_response,phase2_response,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0 response=GARDEN
 1777604634.913110971,phase2_question_offset,phase2_question_offset,trial=20 shape=tunnelentrance.bmp ctx1=garden.png ctx2=sportsfield.png variant=primary_first_img0
@@ -573,14 +573,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604637.051404953,phase2_context1_offset,phase2_context1_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604637.051819086,phase2_shape_onset,phase2_shape_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604638.060298920,phase2_shape_offset,phase2_shape_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
-1777604638.061265945,phase2_reddot_onset,phase2_reddot_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
-1777604640.069999218,phase2_reddot_offset,phase2_reddot_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
+1777604638.061265945,phase2_object_question_onset,phase2_object_question_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
+1777604640.069999218,phase2_object_question_offset,phase2_object_question_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604640.070786953,phase2_context2_onset,phase2_context2_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604641.080256939,phase2_context2_offset,phase2_context2_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604641.080734015,phase2_shape2_onset,phase2_shape2_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604642.092780113,phase2_shape2_offset,phase2_shape2_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
-1777604642.093617916,phase2_reddot2_onset,phase2_reddot2_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
-1777604644.102758884,phase2_reddot2_offset,phase2_reddot2_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
+1777604642.093617916,phase2_object_question2_onset,phase2_object_question2_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
+1777604644.102758884,phase2_object_question2_offset,phase2_object_question2_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
 1777604644.122106075,phase2_question_onset,phase2_question_onset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1 cat_a=KITCHEN cat_b=SKY
 1777604645.303408861,phase2_response,phase2_response,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1 response=KITCHEN
 1777604645.303725004,phase2_question_offset,phase2_question_offset,trial=21 shape=umbrella.bmp ctx1=kitchen1.png ctx2=sky1.png variant=secondary_first_img1
@@ -592,14 +592,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604647.439482927,phase2_context1_offset,phase2_context1_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604647.440344095,phase2_shape_onset,phase2_shape_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604648.450749874,phase2_shape_offset,phase2_shape_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604648.451596975,phase2_reddot_onset,phase2_reddot_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604650.459409952,phase2_reddot_offset,phase2_reddot_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604648.451596975,phase2_object_question_onset,phase2_object_question_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604650.459409952,phase2_object_question_offset,phase2_object_question_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604650.460340977,phase2_context2_onset,phase2_context2_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604651.488748074,phase2_context2_offset,phase2_context2_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604651.489401102,phase2_shape2_onset,phase2_shape2_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604652.495199919,phase2_shape2_offset,phase2_shape2_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604652.496035099,phase2_reddot2_onset,phase2_reddot2_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604654.508380890,phase2_reddot2_offset,phase2_reddot2_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604652.496035099,phase2_object_question2_onset,phase2_object_question2_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604654.508380890,phase2_object_question2_offset,phase2_object_question2_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604654.545743942,phase2_question_onset,phase2_question_onset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604655.525058985,phase2_response,phase2_response,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1 response=SPORTSFIELD
 1777604655.525357962,phase2_question_offset,phase2_question_offset,trial=22 shape=bikewheel.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
@@ -611,14 +611,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604657.665240049,phase2_context1_offset,phase2_context1_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604657.665791035,phase2_shape_onset,phase2_shape_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604658.674992085,phase2_shape_offset,phase2_shape_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777604658.675575972,phase2_reddot_onset,phase2_reddot_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777604660.684645176,phase2_reddot_offset,phase2_reddot_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777604658.675575972,phase2_object_question_onset,phase2_object_question_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777604660.684645176,phase2_object_question_offset,phase2_object_question_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604660.685112000,phase2_context2_onset,phase2_context2_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604661.700508833,phase2_context2_offset,phase2_context2_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604661.700801134,phase2_shape2_onset,phase2_shape2_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604662.750384808,phase2_shape2_offset,phase2_shape2_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777604662.751049995,phase2_reddot2_onset,phase2_reddot2_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777604664.761318922,phase2_reddot2_offset,phase2_reddot2_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777604662.751049995,phase2_object_question2_onset,phase2_object_question2_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777604664.761318922,phase2_object_question2_offset,phase2_object_question2_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777604664.780143023,phase2_question_onset,phase2_question_onset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0 cat_a=BATHROOM cat_b=OFFICE
 1777604666.188869238,phase2_response,phase2_response,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0 response=BATHROOM
 1777604666.189328909,phase2_question_offset,phase2_question_offset,trial=23 shape=toiletpaper.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
@@ -630,14 +630,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604668.342400074,phase2_context1_offset,phase2_context1_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604668.343273878,phase2_shape_onset,phase2_shape_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604669.353219986,phase2_shape_offset,phase2_shape_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604669.353822947,phase2_reddot_onset,phase2_reddot_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604671.364181995,phase2_reddot_offset,phase2_reddot_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604669.353822947,phase2_object_question_onset,phase2_object_question_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604671.364181995,phase2_object_question_offset,phase2_object_question_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604671.364673138,phase2_context2_onset,phase2_context2_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604672.380158901,phase2_context2_offset,phase2_context2_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604672.380807877,phase2_shape2_onset,phase2_shape2_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604673.389231205,phase2_shape2_offset,phase2_shape2_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604673.390156031,phase2_reddot2_onset,phase2_reddot2_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604675.399769068,phase2_reddot2_offset,phase2_reddot2_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604673.390156031,phase2_object_question2_onset,phase2_object_question2_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604675.399769068,phase2_object_question2_offset,phase2_object_question2_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604675.423717976,phase2_question_onset,phase2_question_onset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604676.566508055,phase2_response,phase2_response,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1 response=KITCHEN
 1777604676.566866875,phase2_question_offset,phase2_question_offset,trial=24 shape=basketball.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=primary_first_img1
@@ -649,14 +649,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604678.704541922,phase2_context1_offset,phase2_context1_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604678.705450058,phase2_shape_onset,phase2_shape_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604679.714304924,phase2_shape_offset,phase2_shape_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604679.715332031,phase2_reddot_onset,phase2_reddot_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604681.724549770,phase2_reddot_offset,phase2_reddot_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604679.715332031,phase2_object_question_onset,phase2_object_question_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604681.724549770,phase2_object_question_offset,phase2_object_question_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604681.725555897,phase2_context2_onset,phase2_context2_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604682.739792824,phase2_context2_offset,phase2_context2_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604682.740818024,phase2_shape2_onset,phase2_shape2_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604683.749176979,phase2_shape2_offset,phase2_shape2_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604683.750231028,phase2_reddot2_onset,phase2_reddot2_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604685.761301041,phase2_reddot2_offset,phase2_reddot2_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604683.750231028,phase2_object_question2_onset,phase2_object_question2_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604685.761301041,phase2_object_question2_offset,phase2_object_question2_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604685.779344797,phase2_question_onset,phase2_question_onset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1 cat_a=GARDEN cat_b=BATHROOM
 1777604686.863504887,phase2_response,phase2_response,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1 response=BATHROOM
 1777604686.863919020,phase2_question_offset,phase2_question_offset,trial=25 shape=toothbrush.bmp ctx1=garden1.png ctx2=bathroom1.png variant=secondary_first_img1
@@ -668,14 +668,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604689.034091949,phase2_context1_offset,phase2_context1_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604689.034744024,phase2_shape_onset,phase2_shape_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604690.040977001,phase2_shape_offset,phase2_shape_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
-1777604690.042012930,phase2_reddot_onset,phase2_reddot_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
-1777604692.053490877,phase2_reddot_offset,phase2_reddot_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
+1777604690.042012930,phase2_object_question_onset,phase2_object_question_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
+1777604692.053490877,phase2_object_question_offset,phase2_object_question_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604692.054201126,phase2_context2_onset,phase2_context2_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604693.064773083,phase2_context2_offset,phase2_context2_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604693.065761089,phase2_shape2_onset,phase2_shape2_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604694.071834803,phase2_shape2_offset,phase2_shape2_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
-1777604694.072799921,phase2_reddot2_onset,phase2_reddot2_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
-1777604696.083204031,phase2_reddot2_offset,phase2_reddot2_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
+1777604694.072799921,phase2_object_question2_onset,phase2_object_question2_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
+1777604696.083204031,phase2_object_question2_offset,phase2_object_question2_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
 1777604696.100643158,phase2_question_onset,phase2_question_onset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0 cat_a=OFFICE cat_b=KITCHEN
 1777604697.163141966,phase2_response,phase2_response,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0 response=KITCHEN
 1777604697.163652182,phase2_question_offset,phase2_question_offset,trial=26 shape=teacup.bmp ctx1=office.png ctx2=kitchen.png variant=secondary_first_img0
@@ -687,14 +687,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604699.291237116,phase2_context1_offset,phase2_context1_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604699.292119026,phase2_shape_onset,phase2_shape_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604700.301054001,phase2_shape_offset,phase2_shape_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
-1777604700.301908016,phase2_reddot_onset,phase2_reddot_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
-1777604702.310116053,phase2_reddot_offset,phase2_reddot_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
+1777604700.301908016,phase2_object_question_onset,phase2_object_question_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
+1777604702.310116053,phase2_object_question_offset,phase2_object_question_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604702.311197042,phase2_context2_onset,phase2_context2_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604703.338069916,phase2_context2_offset,phase2_context2_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604703.338734150,phase2_shape2_onset,phase2_shape2_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604704.351188898,phase2_shape2_offset,phase2_shape2_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
-1777604704.351768017,phase2_reddot2_onset,phase2_reddot2_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
-1777604706.362973928,phase2_reddot2_offset,phase2_reddot2_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
+1777604704.351768017,phase2_object_question2_onset,phase2_object_question2_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
+1777604706.362973928,phase2_object_question2_offset,phase2_object_question2_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
 1777604706.389937878,phase2_question_onset,phase2_question_onset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0 cat_a=SPORTSFIELD cat_b=GARDEN
 1777604707.764133930,phase2_response,phase2_response,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0 response=GARDEN
 1777604707.764668941,phase2_question_offset,phase2_question_offset,trial=27 shape=rugby.bmp ctx1=sportsfield.png ctx2=garden.png variant=primary_first_img0
@@ -706,14 +706,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604710.020037174,phase2_context1_offset,phase2_context1_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604710.020763874,phase2_shape_onset,phase2_shape_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604711.029012918,phase2_shape_offset,phase2_shape_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
-1777604711.029605150,phase2_reddot_onset,phase2_reddot_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
-1777604713.038998127,phase2_reddot_offset,phase2_reddot_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
+1777604711.029605150,phase2_object_question_onset,phase2_object_question_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
+1777604713.038998127,phase2_object_question_offset,phase2_object_question_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604713.039625883,phase2_context2_onset,phase2_context2_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604714.053014040,phase2_context2_offset,phase2_context2_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604714.054367065,phase2_shape2_onset,phase2_shape2_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604715.077104807,phase2_shape2_offset,phase2_shape2_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
-1777604715.078272104,phase2_reddot2_onset,phase2_reddot2_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
-1777604717.097270966,phase2_reddot2_offset,phase2_reddot2_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
+1777604715.078272104,phase2_object_question2_onset,phase2_object_question2_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
+1777604717.097270966,phase2_object_question2_offset,phase2_object_question2_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
 1777604717.119727135,phase2_question_onset,phase2_question_onset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0 cat_a=GARDEN cat_b=SKY
 1777604718.477327108,phase2_response,phase2_response,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0 response=GARDEN
 1777604718.477486134,phase2_question_offset,phase2_question_offset,trial=28 shape=bug.bmp ctx1=garden.png ctx2=sky.png variant=primary_first_img0
@@ -725,14 +725,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604720.634683847,phase2_context1_offset,phase2_context1_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604720.635061979,phase2_shape_onset,phase2_shape_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604721.644385099,phase2_shape_offset,phase2_shape_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
-1777604721.644778013,phase2_reddot_onset,phase2_reddot_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
-1777604723.657032967,phase2_reddot_offset,phase2_reddot_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
+1777604721.644778013,phase2_object_question_onset,phase2_object_question_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
+1777604723.657032967,phase2_object_question_offset,phase2_object_question_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604723.657627821,phase2_context2_onset,phase2_context2_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604724.671576023,phase2_context2_offset,phase2_context2_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604724.672213078,phase2_shape2_onset,phase2_shape2_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604725.680123806,phase2_shape2_offset,phase2_shape2_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
-1777604725.681146145,phase2_reddot2_onset,phase2_reddot2_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
-1777604727.689869165,phase2_reddot2_offset,phase2_reddot2_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
+1777604725.681146145,phase2_object_question2_onset,phase2_object_question2_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
+1777604727.689869165,phase2_object_question2_offset,phase2_object_question2_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
 1777604727.707813025,phase2_question_onset,phase2_question_onset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604728.423183203,phase2_response,phase2_response,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0 response=KITCHEN
 1777604728.423591852,phase2_question_offset,phase2_question_offset,trial=29 shape=pan.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=secondary_first_img0
@@ -744,14 +744,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604730.577092171,phase2_context1_offset,phase2_context1_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604730.577620983,phase2_shape_onset,phase2_shape_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604731.584370852,phase2_shape_offset,phase2_shape_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
-1777604731.585221052,phase2_reddot_onset,phase2_reddot_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
-1777604733.594871998,phase2_reddot_offset,phase2_reddot_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
+1777604731.585221052,phase2_object_question_onset,phase2_object_question_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
+1777604733.594871998,phase2_object_question_offset,phase2_object_question_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604733.595411062,phase2_context2_onset,phase2_context2_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604734.613441944,phase2_context2_offset,phase2_context2_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604734.613936901,phase2_shape2_onset,phase2_shape2_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604735.622477055,phase2_shape2_offset,phase2_shape2_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
-1777604735.623162985,phase2_reddot2_onset,phase2_reddot2_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
-1777604737.632159948,phase2_reddot2_offset,phase2_reddot2_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
+1777604735.623162985,phase2_object_question2_onset,phase2_object_question2_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
+1777604737.632159948,phase2_object_question2_offset,phase2_object_question2_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
 1777604737.658550024,phase2_question_onset,phase2_question_onset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0 cat_a=GARDEN cat_b=OFFICE
 1777604738.765961885,phase2_response,phase2_response,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0 response=GARDEN
 1777604738.766498089,phase2_question_offset,phase2_question_offset,trial=30 shape=mosquito.bmp ctx1=garden.png ctx2=office.png variant=primary_first_img0
@@ -763,14 +763,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604740.963717222,phase2_context1_offset,phase2_context1_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604740.964332104,phase2_shape_onset,phase2_shape_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604741.972477913,phase2_shape_offset,phase2_shape_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604741.973082781,phase2_reddot_onset,phase2_reddot_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604743.980431795,phase2_reddot_offset,phase2_reddot_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604741.973082781,phase2_object_question_onset,phase2_object_question_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604743.980431795,phase2_object_question_offset,phase2_object_question_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604743.981392860,phase2_context2_onset,phase2_context2_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604744.996591091,phase2_context2_offset,phase2_context2_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604744.997209072,phase2_shape2_onset,phase2_shape2_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604746.004082918,phase2_shape2_offset,phase2_shape2_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604746.004936934,phase2_reddot2_onset,phase2_reddot2_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604748.012695074,phase2_reddot2_offset,phase2_reddot2_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604746.004936934,phase2_object_question2_onset,phase2_object_question2_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604748.012695074,phase2_object_question2_offset,phase2_object_question2_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604748.031428099,phase2_question_onset,phase2_question_onset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1 cat_a=PETSHOP cat_b=SPORTSFIELD
 1777604749.144783974,phase2_response,phase2_response,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1 response=PETSHOP
 1777604749.145229101,phase2_question_offset,phase2_question_offset,trial=31 shape=birdcage.bmp ctx1=petshop1.png ctx2=sportsfield1.png variant=primary_first_img1
@@ -782,14 +782,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604751.336104870,phase2_context1_offset,phase2_context1_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604751.337015152,phase2_shape_onset,phase2_shape_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604752.344635963,phase2_shape_offset,phase2_shape_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604752.345045090,phase2_reddot_onset,phase2_reddot_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604754.354106188,phase2_reddot_offset,phase2_reddot_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604752.345045090,phase2_object_question_onset,phase2_object_question_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604754.354106188,phase2_object_question_offset,phase2_object_question_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604754.354628086,phase2_context2_onset,phase2_context2_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604755.369754076,phase2_context2_offset,phase2_context2_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604755.370392084,phase2_shape2_onset,phase2_shape2_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604756.378313065,phase2_shape2_offset,phase2_shape2_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604756.379317999,phase2_reddot2_onset,phase2_reddot2_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604758.387933969,phase2_reddot2_offset,phase2_reddot2_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604756.379317999,phase2_object_question2_onset,phase2_object_question2_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604758.387933969,phase2_object_question2_offset,phase2_object_question2_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604758.405042887,phase2_question_onset,phase2_question_onset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1 cat_a=OFFICE cat_b=SPORTSFIELD
 1777604759.389520884,phase2_response,phase2_response,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1 response=OFFICE
 1777604759.390064955,phase2_question_offset,phase2_question_offset,trial=32 shape=tape.bmp ctx1=office1.png ctx2=sportsfield1.png variant=primary_first_img1
@@ -804,14 +804,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604763.004704952,phase2_context1_offset,phase2_context1_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604763.005557060,phase2_shape_onset,phase2_shape_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604764.013137817,phase2_shape_offset,phase2_shape_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
-1777604764.013549089,phase2_reddot_onset,phase2_reddot_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
-1777604766.021430969,phase2_reddot_offset,phase2_reddot_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
+1777604764.013549089,phase2_object_question_onset,phase2_object_question_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
+1777604766.021430969,phase2_object_question_offset,phase2_object_question_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604766.022305012,phase2_context2_onset,phase2_context2_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604767.035826921,phase2_context2_offset,phase2_context2_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604767.036847115,phase2_shape2_onset,phase2_shape2_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604768.044766903,phase2_shape2_offset,phase2_shape2_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
-1777604768.045650005,phase2_reddot2_onset,phase2_reddot2_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
-1777604770.053287029,phase2_reddot2_offset,phase2_reddot2_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
+1777604768.045650005,phase2_object_question2_onset,phase2_object_question2_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
+1777604770.053287029,phase2_object_question2_offset,phase2_object_question2_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
 1777604770.069032907,phase2_question_onset,phase2_question_onset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0 cat_a=PETSHOP cat_b=KITCHEN
 1777604770.936408997,phase2_response,phase2_response,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0 response=PETSHOP
 1777604770.937222958,phase2_question_offset,phase2_question_offset,trial=33 shape=bird'sfoot.bmp ctx1=petshop.png ctx2=kitchen.png variant=primary_first_img0
@@ -823,14 +823,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604773.041867971,phase2_context1_offset,phase2_context1_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604773.042874813,phase2_shape_onset,phase2_shape_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604774.052420139,phase2_shape_offset,phase2_shape_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
-1777604774.057139874,phase2_reddot_onset,phase2_reddot_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
-1777604776.095705032,phase2_reddot_offset,phase2_reddot_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
+1777604774.057139874,phase2_object_question_onset,phase2_object_question_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
+1777604776.095705032,phase2_object_question_offset,phase2_object_question_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604776.097352982,phase2_context2_onset,phase2_context2_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604777.144157887,phase2_context2_offset,phase2_context2_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604777.145128012,phase2_shape2_onset,phase2_shape2_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604778.154402971,phase2_shape2_offset,phase2_shape2_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
-1777604778.155322075,phase2_reddot2_onset,phase2_reddot2_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
-1777604780.166613102,phase2_reddot2_offset,phase2_reddot2_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
+1777604778.155322075,phase2_object_question2_onset,phase2_object_question2_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
+1777604780.166613102,phase2_object_question2_offset,phase2_object_question2_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
 1777604780.202399969,phase2_question_onset,phase2_question_onset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0 cat_a=SPORTSFIELD cat_b=GARDEN
 1777604781.162128925,phase2_response,phase2_response,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0 response=GARDEN
 1777604781.162820101,phase2_question_offset,phase2_question_offset,trial=34 shape=tunnelentrance.bmp ctx1=sportsfield.png ctx2=garden.png variant=secondary_first_img0
@@ -842,14 +842,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604783.302633047,phase2_context1_offset,phase2_context1_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604783.303421974,phase2_shape_onset,phase2_shape_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604784.311372042,phase2_shape_offset,phase2_shape_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777604784.312178850,phase2_reddot_onset,phase2_reddot_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777604786.322547913,phase2_reddot_offset,phase2_reddot_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777604784.312178850,phase2_object_question_onset,phase2_object_question_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777604786.322547913,phase2_object_question_offset,phase2_object_question_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604786.323268175,phase2_context2_onset,phase2_context2_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604787.338970900,phase2_context2_offset,phase2_context2_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604787.339428186,phase2_shape2_onset,phase2_shape2_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604788.347362041,phase2_shape2_offset,phase2_shape2_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777604788.347563982,phase2_reddot2_onset,phase2_reddot2_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777604790.353586912,phase2_reddot2_offset,phase2_reddot2_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777604788.347563982,phase2_object_question2_onset,phase2_object_question2_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777604790.353586912,phase2_object_question2_offset,phase2_object_question2_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777604790.371436119,phase2_question_onset,phase2_question_onset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0 cat_a=OFFICE cat_b=BATHROOM
 1777604791.381720066,phase2_response,phase2_response,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0 response=OFFICE
 1777604791.382142067,phase2_question_offset,phase2_question_offset,trial=35 shape=nail_cutters.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
@@ -861,14 +861,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604793.529233932,phase2_context1_offset,phase2_context1_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604793.530083179,phase2_shape_onset,phase2_shape_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604794.539340019,phase2_shape_offset,phase2_shape_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604794.539853096,phase2_reddot_onset,phase2_reddot_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604796.548212051,phase2_reddot_offset,phase2_reddot_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604794.539853096,phase2_object_question_onset,phase2_object_question_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604796.548212051,phase2_object_question_offset,phase2_object_question_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604796.549253941,phase2_context2_onset,phase2_context2_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604797.562501907,phase2_context2_offset,phase2_context2_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604797.563519001,phase2_shape2_onset,phase2_shape2_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604798.571440220,phase2_shape2_offset,phase2_shape2_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604798.572072983,phase2_reddot2_onset,phase2_reddot2_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604800.582251072,phase2_reddot2_offset,phase2_reddot2_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604798.572072983,phase2_object_question2_onset,phase2_object_question2_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604800.582251072,phase2_object_question2_offset,phase2_object_question2_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604800.598925114,phase2_question_onset,phase2_question_onset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604801.342745066,phase2_response,phase2_response,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0 response=KITCHEN
 1777604801.343623877,phase2_question_offset,phase2_question_offset,trial=36 shape=bikewheel.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
@@ -880,14 +880,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604803.500931978,phase2_context1_offset,phase2_context1_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604803.501770020,phase2_shape_onset,phase2_shape_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604804.509990931,phase2_shape_offset,phase2_shape_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
-1777604804.510654926,phase2_reddot_onset,phase2_reddot_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
-1777604806.520256042,phase2_reddot_offset,phase2_reddot_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
+1777604804.510654926,phase2_object_question_onset,phase2_object_question_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
+1777604806.520256042,phase2_object_question_offset,phase2_object_question_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604806.521464109,phase2_context2_onset,phase2_context2_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604807.536038876,phase2_context2_offset,phase2_context2_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604807.537222862,phase2_shape2_onset,phase2_shape2_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604808.546417952,phase2_shape2_offset,phase2_shape2_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
-1777604808.547456026,phase2_reddot2_onset,phase2_reddot2_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
-1777604810.556548119,phase2_reddot2_offset,phase2_reddot2_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
+1777604808.547456026,phase2_object_question2_onset,phase2_object_question2_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
+1777604810.556548119,phase2_object_question2_offset,phase2_object_question2_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
 1777604810.574120998,phase2_question_onset,phase2_question_onset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1 cat_a=BATHROOM cat_b=GARDEN
 1777604811.222516060,phase2_response,phase2_response,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1 response=BATHROOM
 1777604811.222896814,phase2_question_offset,phase2_question_offset,trial=37 shape=toothbrush.bmp ctx1=bathroom1.png ctx2=garden1.png variant=primary_first_img1
@@ -899,14 +899,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604813.353121996,phase2_context1_offset,phase2_context1_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604813.353617907,phase2_shape_onset,phase2_shape_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604814.362863064,phase2_shape_offset,phase2_shape_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604814.363386154,phase2_reddot_onset,phase2_reddot_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604816.371835947,phase2_reddot_offset,phase2_reddot_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604814.363386154,phase2_object_question_onset,phase2_object_question_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604816.371835947,phase2_object_question_offset,phase2_object_question_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604816.372488976,phase2_context2_onset,phase2_context2_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604817.381726980,phase2_context2_offset,phase2_context2_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604817.382556915,phase2_shape2_onset,phase2_shape2_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604818.390198946,phase2_shape2_offset,phase2_shape2_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604818.391250849,phase2_reddot2_onset,phase2_reddot2_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
-1777604820.401057005,phase2_reddot2_offset,phase2_reddot2_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604818.391250849,phase2_object_question2_onset,phase2_object_question2_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
+1777604820.401057005,phase2_object_question2_offset,phase2_object_question2_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
 1777604820.419283867,phase2_question_onset,phase2_question_onset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604821.033497095,phase2_response,phase2_response,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0 response=KITCHEN
 1777604821.033733845,phase2_question_offset,phase2_question_offset,trial=38 shape=basketball.bmp ctx1=sportsfield.png ctx2=kitchen.png variant=primary_first_img0
@@ -918,14 +918,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604823.159440994,phase2_context1_offset,phase2_context1_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604823.160049915,phase2_shape_onset,phase2_shape_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604824.169867992,phase2_shape_offset,phase2_shape_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604824.170391083,phase2_reddot_onset,phase2_reddot_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604826.180588007,phase2_reddot_offset,phase2_reddot_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604824.170391083,phase2_object_question_onset,phase2_object_question_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604826.180588007,phase2_object_question_offset,phase2_object_question_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604826.182219982,phase2_context2_onset,phase2_context2_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604827.203867912,phase2_context2_offset,phase2_context2_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604827.204832077,phase2_shape2_onset,phase2_shape2_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604828.210957050,phase2_shape2_offset,phase2_shape2_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604828.212143183,phase2_reddot2_onset,phase2_reddot2_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
-1777604830.222954988,phase2_reddot2_offset,phase2_reddot2_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604828.212143183,phase2_object_question2_onset,phase2_object_question2_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
+1777604830.222954988,phase2_object_question2_offset,phase2_object_question2_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
 1777604830.242732048,phase2_question_onset,phase2_question_onset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1 cat_a=GARDEN cat_b=SPORTSFIELD
 1777604831.071441889,phase2_response,phase2_response,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1 response=SPORTSFIELD
 1777604831.071919203,phase2_question_offset,phase2_question_offset,trial=39 shape=rugby.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=secondary_first_img1
@@ -937,14 +937,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604833.297870159,phase2_context1_offset,phase2_context1_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604833.298434019,phase2_shape_onset,phase2_shape_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604834.305691957,phase2_shape_offset,phase2_shape_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
-1777604834.307133913,phase2_reddot_onset,phase2_reddot_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
-1777604836.327688932,phase2_reddot_offset,phase2_reddot_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
+1777604834.307133913,phase2_object_question_onset,phase2_object_question_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
+1777604836.327688932,phase2_object_question_offset,phase2_object_question_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604836.328261852,phase2_context2_onset,phase2_context2_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604837.357300997,phase2_context2_offset,phase2_context2_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604837.358576059,phase2_shape2_onset,phase2_shape2_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604838.368304968,phase2_shape2_offset,phase2_shape2_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
-1777604838.369159937,phase2_reddot2_onset,phase2_reddot2_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
-1777604840.381170988,phase2_reddot2_offset,phase2_reddot2_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
+1777604838.369159937,phase2_object_question2_onset,phase2_object_question2_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
+1777604840.381170988,phase2_object_question2_offset,phase2_object_question2_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
 1777604840.421274185,phase2_question_onset,phase2_question_onset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1 cat_a=SPORTSFIELD cat_b=MOUNTAIN
 1777604841.145812988,phase2_response,phase2_response,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1 response=MOUNTAIN
 1777604841.146339178,phase2_question_offset,phase2_question_offset,trial=40 shape=ball_slope.bmp ctx1=sportsfield1.png ctx2=mountain1.png variant=primary_first_img1
@@ -956,14 +956,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604843.269414902,phase2_context1_offset,phase2_context1_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604843.270338058,phase2_shape_onset,phase2_shape_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604844.280297995,phase2_shape_offset,phase2_shape_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
-1777604844.280741215,phase2_reddot_onset,phase2_reddot_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
-1777604846.303244114,phase2_reddot_offset,phase2_reddot_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
+1777604844.280741215,phase2_object_question_onset,phase2_object_question_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
+1777604846.303244114,phase2_object_question_offset,phase2_object_question_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604846.305849075,phase2_context2_onset,phase2_context2_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604847.350192785,phase2_context2_offset,phase2_context2_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604847.350475073,phase2_shape2_onset,phase2_shape2_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604848.355668068,phase2_shape2_offset,phase2_shape2_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
-1777604848.356317997,phase2_reddot2_onset,phase2_reddot2_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
-1777604850.370565891,phase2_reddot2_offset,phase2_reddot2_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
+1777604848.356317997,phase2_object_question2_onset,phase2_object_question2_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
+1777604850.370565891,phase2_object_question2_offset,phase2_object_question2_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
 1777604850.393730164,phase2_question_onset,phase2_question_onset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1 cat_a=GARDEN cat_b=OFFICE
 1777604855.329739094,phase2_response,phase2_response,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1 response=GARDEN
 1777604855.330288172,phase2_question_offset,phase2_question_offset,trial=41 shape=mosquito.bmp ctx1=garden1.png ctx2=office1.png variant=primary_first_img1
@@ -975,14 +975,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604857.520082951,phase2_context1_offset,phase2_context1_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604857.520889044,phase2_shape_onset,phase2_shape_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604858.530722141,phase2_shape_offset,phase2_shape_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
-1777604858.531369925,phase2_reddot_onset,phase2_reddot_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
-1777604860.541494131,phase2_reddot_offset,phase2_reddot_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
+1777604858.531369925,phase2_object_question_onset,phase2_object_question_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
+1777604860.541494131,phase2_object_question_offset,phase2_object_question_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604860.542112112,phase2_context2_onset,phase2_context2_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604861.566869020,phase2_context2_offset,phase2_context2_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604861.567775011,phase2_shape2_onset,phase2_shape2_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604862.575593948,phase2_shape2_offset,phase2_shape2_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
-1777604862.576527834,phase2_reddot2_onset,phase2_reddot2_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
-1777604864.584858179,phase2_reddot2_offset,phase2_reddot2_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
+1777604862.576527834,phase2_object_question2_onset,phase2_object_question2_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
+1777604864.584858179,phase2_object_question2_offset,phase2_object_question2_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
 1777604864.603050947,phase2_question_onset,phase2_question_onset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0 cat_a=SKY cat_b=KITCHEN
 1777604865.760805845,phase2_response,phase2_response,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0 response=SKY
 1777604865.761288881,phase2_question_offset,phase2_question_offset,trial=42 shape=umbrella.bmp ctx1=sky.png ctx2=kitchen.png variant=primary_first_img0
@@ -994,14 +994,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604867.918237925,phase2_context1_offset,phase2_context1_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604867.919085026,phase2_shape_onset,phase2_shape_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604868.934565783,phase2_shape_offset,phase2_shape_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604868.935522079,phase2_reddot_onset,phase2_reddot_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604870.947898865,phase2_reddot_offset,phase2_reddot_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604868.935522079,phase2_object_question_onset,phase2_object_question_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604870.947898865,phase2_object_question_offset,phase2_object_question_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604870.948906898,phase2_context2_onset,phase2_context2_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604871.968346834,phase2_context2_offset,phase2_context2_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604871.968850851,phase2_shape2_onset,phase2_shape2_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604872.976114988,phase2_shape2_offset,phase2_shape2_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604872.977107048,phase2_reddot2_onset,phase2_reddot2_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
-1777604874.987294912,phase2_reddot2_offset,phase2_reddot2_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604872.977107048,phase2_object_question2_onset,phase2_object_question2_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
+1777604874.987294912,phase2_object_question2_offset,phase2_object_question2_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
 1777604875.006022930,phase2_question_onset,phase2_question_onset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1 cat_a=SPORTSFIELD cat_b=PETSHOP
 1777604877.348989010,phase2_response,phase2_response,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1 response=SPORTSFIELD
 1777604877.349736929,phase2_question_offset,phase2_question_offset,trial=43 shape=birdcage.bmp ctx1=sportsfield1.png ctx2=petshop1.png variant=secondary_first_img1
@@ -1013,14 +1013,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604879.482502937,phase2_context1_offset,phase2_context1_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604879.483031034,phase2_shape_onset,phase2_shape_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604880.492994070,phase2_shape_offset,phase2_shape_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604880.493883848,phase2_reddot_onset,phase2_reddot_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604882.503845930,phase2_reddot_offset,phase2_reddot_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604880.493883848,phase2_object_question_onset,phase2_object_question_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604882.503845930,phase2_object_question_offset,phase2_object_question_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604882.504853964,phase2_context2_onset,phase2_context2_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604883.519301176,phase2_context2_offset,phase2_context2_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604883.519644022,phase2_shape2_onset,phase2_shape2_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604884.527369022,phase2_shape2_offset,phase2_shape2_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604884.528353930,phase2_reddot2_onset,phase2_reddot2_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
-1777604886.538152933,phase2_reddot2_offset,phase2_reddot2_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604884.528353930,phase2_object_question2_onset,phase2_object_question2_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
+1777604886.538152933,phase2_object_question2_offset,phase2_object_question2_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
 1777604886.556113958,phase2_question_onset,phase2_question_onset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1 cat_a=OFFICE cat_b=BATHROOM
 1777604887.197658777,phase2_response,phase2_response,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1 response=BATHROOM
 1777604887.198060989,phase2_question_offset,phase2_question_offset,trial=44 shape=toiletpaper.bmp ctx1=office1.png ctx2=bathroom1.png variant=secondary_first_img1
@@ -1032,14 +1032,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604889.320975065,phase2_context1_offset,phase2_context1_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604889.321924210,phase2_shape_onset,phase2_shape_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604890.331440210,phase2_shape_offset,phase2_shape_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604890.332520008,phase2_reddot_onset,phase2_reddot_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604892.341394901,phase2_reddot_offset,phase2_reddot_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604890.332520008,phase2_object_question_onset,phase2_object_question_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604892.341394901,phase2_object_question_offset,phase2_object_question_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604892.342054844,phase2_context2_onset,phase2_context2_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604893.361056089,phase2_context2_offset,phase2_context2_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604893.362376928,phase2_shape2_onset,phase2_shape2_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604894.370597839,phase2_shape2_offset,phase2_shape2_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604894.371542931,phase2_reddot2_onset,phase2_reddot2_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604896.386006117,phase2_reddot2_offset,phase2_reddot2_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604894.371542931,phase2_object_question2_onset,phase2_object_question2_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604896.386006117,phase2_object_question2_offset,phase2_object_question2_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604896.425797224,phase2_question_onset,phase2_question_onset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1 cat_a=SPORTSFIELD cat_b=KITCHEN
 1777604897.396238089,phase2_response,phase2_response,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1 response=SPORTSFIELD
 1777604898.230669022,phase2_question_offset,phase2_question_offset,trial=45 shape=pan.bmp ctx1=sportsfield1.png ctx2=kitchen1.png variant=secondary_first_img1
@@ -1051,14 +1051,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604900.673285007,phase2_context1_offset,phase2_context1_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604900.673786163,phase2_shape_onset,phase2_shape_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604901.680932045,phase2_shape_offset,phase2_shape_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
-1777604901.681442022,phase2_reddot_onset,phase2_reddot_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
-1777604903.693099022,phase2_reddot_offset,phase2_reddot_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
+1777604901.681442022,phase2_object_question_onset,phase2_object_question_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
+1777604903.693099022,phase2_object_question_offset,phase2_object_question_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604903.693917990,phase2_context2_onset,phase2_context2_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604904.726529121,phase2_context2_offset,phase2_context2_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604904.727113962,phase2_shape2_onset,phase2_shape2_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604905.736920118,phase2_shape2_offset,phase2_shape2_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
-1777604905.737299919,phase2_reddot2_onset,phase2_reddot2_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
-1777604907.744176149,phase2_reddot2_offset,phase2_reddot2_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
+1777604905.737299919,phase2_object_question2_onset,phase2_object_question2_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
+1777604907.744176149,phase2_object_question2_offset,phase2_object_question2_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
 1777604907.786508083,phase2_question_onset,phase2_question_onset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0 cat_a=SKY cat_b=GARDEN
 1777604908.843667030,phase2_response,phase2_response,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0 response=GARDEN
 1777604908.844307899,phase2_question_offset,phase2_question_offset,trial=46 shape=bug.bmp ctx1=sky.png ctx2=garden.png variant=secondary_first_img0
@@ -1070,14 +1070,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604910.993840933,phase2_context1_offset,phase2_context1_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604910.994180202,phase2_shape_onset,phase2_shape_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604912.003613949,phase2_shape_offset,phase2_shape_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604912.004696131,phase2_reddot_onset,phase2_reddot_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604914.013404846,phase2_reddot_offset,phase2_reddot_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604912.004696131,phase2_object_question_onset,phase2_object_question_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604914.013404846,phase2_object_question_offset,phase2_object_question_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604914.013765812,phase2_context2_onset,phase2_context2_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604915.036079168,phase2_context2_offset,phase2_context2_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604915.036617994,phase2_shape2_onset,phase2_shape2_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604916.046366930,phase2_shape2_offset,phase2_shape2_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604916.046915054,phase2_reddot2_onset,phase2_reddot2_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
-1777604918.056076050,phase2_reddot2_offset,phase2_reddot2_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604916.046915054,phase2_object_question2_onset,phase2_object_question2_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
+1777604918.056076050,phase2_object_question2_offset,phase2_object_question2_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
 1777604918.155345917,phase2_question_onset,phase2_question_onset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1 cat_a=BATHROOM cat_b=OFFICE
 1777604919.293467999,phase2_response,phase2_response,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1 response=OFFICE
 1777604919.293629885,phase2_question_offset,phase2_question_offset,trial=47 shape=nail_cutters.bmp ctx1=bathroom1.png ctx2=office1.png variant=primary_first_img1
@@ -1089,14 +1089,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604921.418972969,phase2_context1_offset,phase2_context1_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604921.419560909,phase2_shape_onset,phase2_shape_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604922.428797960,phase2_shape_offset,phase2_shape_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604922.429389000,phase2_reddot_onset,phase2_reddot_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604924.438640833,phase2_reddot_offset,phase2_reddot_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604922.429389000,phase2_object_question_onset,phase2_object_question_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604924.438640833,phase2_object_question_offset,phase2_object_question_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604924.439008951,phase2_context2_onset,phase2_context2_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604925.449390173,phase2_context2_offset,phase2_context2_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604925.449867964,phase2_shape2_onset,phase2_shape2_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604926.457268000,phase2_shape2_offset,phase2_shape2_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604926.457935810,phase2_reddot2_onset,phase2_reddot2_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
-1777604928.468967915,phase2_reddot2_offset,phase2_reddot2_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604926.457935810,phase2_object_question2_onset,phase2_object_question2_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
+1777604928.468967915,phase2_object_question2_offset,phase2_object_question2_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
 1777604928.485897064,phase2_question_onset,phase2_question_onset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1 cat_a=OFFICE cat_b=KITCHEN
 1777604929.255959034,phase2_response,phase2_response,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1 response=OFFICE
 1777604929.256375074,phase2_question_offset,phase2_question_offset,trial=48 shape=teacup.bmp ctx1=office1.png ctx2=kitchen1.png variant=secondary_first_img1
@@ -1111,14 +1111,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604933.382730007,phase2_context1_offset,phase2_context1_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604933.383237123,phase2_shape_onset,phase2_shape_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604934.393458843,phase2_shape_offset,phase2_shape_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604934.394407988,phase2_reddot_onset,phase2_reddot_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604936.406240940,phase2_reddot_offset,phase2_reddot_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604934.394407988,phase2_object_question_onset,phase2_object_question_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604936.406240940,phase2_object_question_offset,phase2_object_question_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604936.407226086,phase2_context2_onset,phase2_context2_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604937.427906036,phase2_context2_offset,phase2_context2_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604937.428776026,phase2_shape2_onset,phase2_shape2_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604938.436873913,phase2_shape2_offset,phase2_shape2_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604938.437446833,phase2_reddot2_onset,phase2_reddot2_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777604940.445868969,phase2_reddot2_offset,phase2_reddot2_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604938.437446833,phase2_object_question2_onset,phase2_object_question2_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777604940.445868969,phase2_object_question2_offset,phase2_object_question2_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777604940.464519978,phase2_question_onset,phase2_question_onset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1 cat_a=GARDEN cat_b=SPORTSFIELD
 1777604941.337795019,phase2_response,phase2_response,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1 response=GARDEN
 1777604941.338319063,phase2_question_offset,phase2_question_offset,trial=49 shape=tunnelentrance.bmp ctx1=garden1.png ctx2=sportsfield1.png variant=primary_first_img1
@@ -1130,14 +1130,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604943.592863083,phase2_context1_offset,phase2_context1_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604943.593392849,phase2_shape_onset,phase2_shape_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604944.602858067,phase2_shape_offset,phase2_shape_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604944.603729010,phase2_reddot_onset,phase2_reddot_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604946.613878012,phase2_reddot_offset,phase2_reddot_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604944.603729010,phase2_object_question_onset,phase2_object_question_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604946.613878012,phase2_object_question_offset,phase2_object_question_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604946.614714146,phase2_context2_onset,phase2_context2_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604947.635192156,phase2_context2_offset,phase2_context2_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604947.635775089,phase2_shape2_onset,phase2_shape2_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604948.644143105,phase2_shape2_offset,phase2_shape2_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604948.645035982,phase2_reddot2_onset,phase2_reddot2_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777604950.653551102,phase2_reddot2_offset,phase2_reddot2_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604948.645035982,phase2_object_question2_onset,phase2_object_question2_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777604950.653551102,phase2_object_question2_offset,phase2_object_question2_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777604950.677896976,phase2_question_onset,phase2_question_onset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777604951.651355982,phase2_response,phase2_response,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0 response=KITCHEN
 1777604951.651631117,phase2_question_offset,phase2_question_offset,trial=50 shape=basketball.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
@@ -1149,14 +1149,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604953.817256927,phase2_context1_offset,phase2_context1_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604953.817710161,phase2_shape_onset,phase2_shape_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604954.830181837,phase2_shape_offset,phase2_shape_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
-1777604954.830725908,phase2_reddot_onset,phase2_reddot_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
-1777604956.853818178,phase2_reddot_offset,phase2_reddot_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
+1777604954.830725908,phase2_object_question_onset,phase2_object_question_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
+1777604956.853818178,phase2_object_question_offset,phase2_object_question_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604956.854234934,phase2_context2_onset,phase2_context2_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604957.888120174,phase2_context2_offset,phase2_context2_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604957.889225006,phase2_shape2_onset,phase2_shape2_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604958.908493042,phase2_shape2_offset,phase2_shape2_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
-1777604958.909371853,phase2_reddot2_onset,phase2_reddot2_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
-1777604960.922168016,phase2_reddot2_offset,phase2_reddot2_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
+1777604958.909371853,phase2_object_question2_onset,phase2_object_question2_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
+1777604960.922168016,phase2_object_question2_offset,phase2_object_question2_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
 1777604960.956797838,phase2_question_onset,phase2_question_onset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0 cat_a=GARDEN cat_b=BATHROOM
 1777604961.760549784,phase2_response,phase2_response,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0 response=BATHROOM
 1777604961.760898113,phase2_question_offset,phase2_question_offset,trial=51 shape=toothbrush.bmp ctx1=garden.png ctx2=bathroom.png variant=secondary_first_img0
@@ -1168,14 +1168,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604963.923810005,phase2_context1_offset,phase2_context1_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604963.924165010,phase2_shape_onset,phase2_shape_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604964.936698914,phase2_shape_offset,phase2_shape_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
-1777604964.937328815,phase2_reddot_onset,phase2_reddot_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
-1777604966.945070028,phase2_reddot_offset,phase2_reddot_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
+1777604964.937328815,phase2_object_question_onset,phase2_object_question_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
+1777604966.945070028,phase2_object_question_offset,phase2_object_question_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604966.945979834,phase2_context2_onset,phase2_context2_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604967.965262175,phase2_context2_offset,phase2_context2_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604967.966300964,phase2_shape2_onset,phase2_shape2_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604968.976150036,phase2_shape2_offset,phase2_shape2_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
-1777604968.976534128,phase2_reddot2_onset,phase2_reddot2_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
-1777604970.985051870,phase2_reddot2_offset,phase2_reddot2_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
+1777604968.976534128,phase2_object_question2_onset,phase2_object_question2_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
+1777604970.985051870,phase2_object_question2_offset,phase2_object_question2_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
 1777604971.003263950,phase2_question_onset,phase2_question_onset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1 cat_a=SPORTSFIELD cat_b=GARDEN
 1777604972.043761969,phase2_response,phase2_response,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1 response=SPORTSFIELD
 1777604972.044005156,phase2_question_offset,phase2_question_offset,trial=52 shape=rugby.bmp ctx1=sportsfield1.png ctx2=garden1.png variant=primary_first_img1
@@ -1187,14 +1187,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604974.196521044,phase2_context1_offset,phase2_context1_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604974.197345972,phase2_shape_onset,phase2_shape_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604975.206526041,phase2_shape_offset,phase2_shape_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
-1777604975.206993818,phase2_reddot_onset,phase2_reddot_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
-1777604977.217025042,phase2_reddot_offset,phase2_reddot_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
+1777604975.206993818,phase2_object_question_onset,phase2_object_question_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
+1777604977.217025042,phase2_object_question_offset,phase2_object_question_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604977.217421055,phase2_context2_onset,phase2_context2_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604978.227205992,phase2_context2_offset,phase2_context2_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604978.227980137,phase2_shape2_onset,phase2_shape2_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604979.235296965,phase2_shape2_offset,phase2_shape2_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
-1777604979.236254930,phase2_reddot2_onset,phase2_reddot2_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
-1777604981.244060993,phase2_reddot2_offset,phase2_reddot2_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
+1777604979.236254930,phase2_object_question2_onset,phase2_object_question2_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
+1777604981.244060993,phase2_object_question2_offset,phase2_object_question2_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
 1777604981.259499073,phase2_question_onset,phase2_question_onset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0 cat_a=KITCHEN cat_b=SKY
 1777604982.048538208,phase2_response,phase2_response,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0 response=KITCHEN
 1777604982.049350977,phase2_question_offset,phase2_question_offset,trial=53 shape=umbrella.bmp ctx1=kitchen.png ctx2=sky.png variant=secondary_first_img0
@@ -1206,14 +1206,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604984.203593969,phase2_context1_offset,phase2_context1_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604984.204461098,phase2_shape_onset,phase2_shape_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604985.213726044,phase2_shape_offset,phase2_shape_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
-1777604985.214678049,phase2_reddot_onset,phase2_reddot_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
-1777604987.223145008,phase2_reddot_offset,phase2_reddot_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
+1777604985.214678049,phase2_object_question_onset,phase2_object_question_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
+1777604987.223145008,phase2_object_question_offset,phase2_object_question_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604987.223686934,phase2_context2_onset,phase2_context2_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604988.244982958,phase2_context2_offset,phase2_context2_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604988.246453047,phase2_shape2_onset,phase2_shape2_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604989.253491879,phase2_shape2_offset,phase2_shape2_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
-1777604989.254333019,phase2_reddot2_onset,phase2_reddot2_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
-1777604991.264553070,phase2_reddot2_offset,phase2_reddot2_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
+1777604989.254333019,phase2_object_question2_onset,phase2_object_question2_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
+1777604991.264553070,phase2_object_question2_offset,phase2_object_question2_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
 1777604991.294394016,phase2_question_onset,phase2_question_onset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0 cat_a=OFFICE cat_b=SPORTSFIELD
 1777604991.788967848,phase2_response,phase2_response,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0 response=OFFICE
 1777604991.789299011,phase2_question_offset,phase2_question_offset,trial=54 shape=tape.bmp ctx1=office.png ctx2=sportsfield.png variant=primary_first_img0
@@ -1225,14 +1225,14 @@ timestamp,trigger_code,event_label,trial_info
 1777604993.934047937,phase2_context1_offset,phase2_context1_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604993.934458971,phase2_shape_onset,phase2_shape_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604994.943075180,phase2_shape_offset,phase2_shape_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604994.943576097,phase2_reddot_onset,phase2_reddot_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604996.953786850,phase2_reddot_offset,phase2_reddot_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604994.943576097,phase2_object_question_onset,phase2_object_question_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604996.953786850,phase2_object_question_offset,phase2_object_question_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604996.954734087,phase2_context2_onset,phase2_context2_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604997.970245123,phase2_context2_offset,phase2_context2_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604997.971297979,phase2_shape2_onset,phase2_shape2_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777604998.979281902,phase2_shape2_offset,phase2_shape2_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
-1777604998.979723930,phase2_reddot2_onset,phase2_reddot2_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
-1777605000.992459059,phase2_reddot2_offset,phase2_reddot2_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
+1777604998.979723930,phase2_object_question2_onset,phase2_object_question2_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
+1777605000.992459059,phase2_object_question2_offset,phase2_object_question2_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
 1777605001.009807110,phase2_question_onset,phase2_question_onset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1 cat_a=PETSHOP cat_b=KITCHEN
 1777605001.838185072,phase2_response,phase2_response,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1 response=PETSHOP
 1777605001.838373899,phase2_question_offset,phase2_question_offset,trial=55 shape=bird'sfoot.bmp ctx1=petshop1.png ctx2=kitchen1.png variant=primary_first_img1
@@ -1244,14 +1244,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605003.985981941,phase2_context1_offset,phase2_context1_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605003.986610889,phase2_shape_onset,phase2_shape_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605004.997407913,phase2_shape_offset,phase2_shape_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777605004.998018980,phase2_reddot_onset,phase2_reddot_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777605007.009132147,phase2_reddot_offset,phase2_reddot_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777605004.998018980,phase2_object_question_onset,phase2_object_question_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777605007.009132147,phase2_object_question_offset,phase2_object_question_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605007.009696007,phase2_context2_onset,phase2_context2_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605008.027647972,phase2_context2_offset,phase2_context2_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605008.028160095,phase2_shape2_onset,phase2_shape2_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605009.042290926,phase2_shape2_offset,phase2_shape2_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777605009.043269873,phase2_reddot2_onset,phase2_reddot2_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
-1777605011.049999952,phase2_reddot2_offset,phase2_reddot2_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777605009.043269873,phase2_object_question2_onset,phase2_object_question2_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
+1777605011.049999952,phase2_object_question2_offset,phase2_object_question2_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
 1777605011.079886198,phase2_question_onset,phase2_question_onset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0 cat_a=OFFICE cat_b=BATHROOM
 1777605011.905459881,phase2_response,phase2_response,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0 response=BATHROOM
 1777605011.905795097,phase2_question_offset,phase2_question_offset,trial=56 shape=toiletpaper.bmp ctx1=office.png ctx2=bathroom.png variant=secondary_first_img0
@@ -1263,14 +1263,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605014.071528912,phase2_context1_offset,phase2_context1_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605014.071961164,phase2_shape_onset,phase2_shape_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605015.082415104,phase2_shape_offset,phase2_shape_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605015.082873106,phase2_reddot_onset,phase2_reddot_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605017.095546961,phase2_reddot_offset,phase2_reddot_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605015.082873106,phase2_object_question_onset,phase2_object_question_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605017.095546961,phase2_object_question_offset,phase2_object_question_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605017.096325874,phase2_context2_onset,phase2_context2_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605018.118808985,phase2_context2_offset,phase2_context2_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605018.119667053,phase2_shape2_onset,phase2_shape2_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605019.128044128,phase2_shape2_offset,phase2_shape2_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605019.128987789,phase2_reddot2_onset,phase2_reddot2_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605021.140476942,phase2_reddot2_offset,phase2_reddot2_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605019.128987789,phase2_object_question2_onset,phase2_object_question2_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605021.140476942,phase2_object_question2_offset,phase2_object_question2_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605021.171008110,phase2_question_onset,phase2_question_onset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777605022.112478971,phase2_response,phase2_response,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0 response=KITCHEN
 1777605022.112698078,phase2_question_offset,phase2_question_offset,trial=57 shape=bikewheel.bmp ctx1=kitchen.png ctx2=sportsfield.png variant=secondary_first_img0
@@ -1282,14 +1282,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605024.386374950,phase2_context1_offset,phase2_context1_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605024.387248039,phase2_shape_onset,phase2_shape_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605025.396738052,phase2_shape_offset,phase2_shape_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
-1777605025.397279978,phase2_reddot_onset,phase2_reddot_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
-1777605027.407840014,phase2_reddot_offset,phase2_reddot_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
+1777605025.397279978,phase2_object_question_onset,phase2_object_question_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
+1777605027.407840014,phase2_object_question_offset,phase2_object_question_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605027.408700943,phase2_context2_onset,phase2_context2_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605028.424354076,phase2_context2_offset,phase2_context2_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605028.425230026,phase2_shape2_onset,phase2_shape2_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605029.433919907,phase2_shape2_offset,phase2_shape2_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
-1777605029.434612989,phase2_reddot2_onset,phase2_reddot2_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
-1777605031.445087910,phase2_reddot2_offset,phase2_reddot2_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
+1777605029.434612989,phase2_object_question2_onset,phase2_object_question2_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
+1777605031.445087910,phase2_object_question2_offset,phase2_object_question2_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
 1777605031.463981152,phase2_question_onset,phase2_question_onset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1 cat_a=SKY cat_b=GARDEN
 1777605032.577605963,phase2_response,phase2_response,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1 response=GARDEN
 1777605032.578005075,phase2_question_offset,phase2_question_offset,trial=58 shape=bug.bmp ctx1=sky1.png ctx2=garden1.png variant=secondary_first_img1
@@ -1301,14 +1301,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605034.889141083,phase2_context1_offset,phase2_context1_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605034.890000820,phase2_shape_onset,phase2_shape_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605035.901105881,phase2_shape_offset,phase2_shape_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605035.902076960,phase2_reddot_onset,phase2_reddot_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605037.910789967,phase2_reddot_offset,phase2_reddot_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605035.902076960,phase2_object_question_onset,phase2_object_question_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605037.910789967,phase2_object_question_offset,phase2_object_question_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605037.911127090,phase2_context2_onset,phase2_context2_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605038.963136911,phase2_context2_offset,phase2_context2_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605038.963654995,phase2_shape2_onset,phase2_shape2_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605039.973021030,phase2_shape2_offset,phase2_shape2_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605039.973974943,phase2_reddot2_onset,phase2_reddot2_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
-1777605041.983472824,phase2_reddot2_offset,phase2_reddot2_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605039.973974943,phase2_object_question2_onset,phase2_object_question2_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
+1777605041.983472824,phase2_object_question2_offset,phase2_object_question2_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
 1777605041.998913050,phase2_question_onset,phase2_question_onset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0 cat_a=MOUNTAIN cat_b=SPORTSFIELD
 1777605042.983027935,phase2_response,phase2_response,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0 response=SPORTSFIELD
 1777605042.983698845,phase2_question_offset,phase2_question_offset,trial=59 shape=ball_slope.bmp ctx1=mountain.png ctx2=sportsfield.png variant=secondary_first_img0
@@ -1320,14 +1320,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605045.129722118,phase2_context1_offset,phase2_context1_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605045.130503893,phase2_shape_onset,phase2_shape_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605046.138988972,phase2_shape_offset,phase2_shape_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777605046.139492035,phase2_reddot_onset,phase2_reddot_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777605048.148906946,phase2_reddot_offset,phase2_reddot_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777605046.139492035,phase2_object_question_onset,phase2_object_question_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777605048.148906946,phase2_object_question_offset,phase2_object_question_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605048.149410009,phase2_context2_onset,phase2_context2_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605049.159856796,phase2_context2_offset,phase2_context2_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605049.160488844,phase2_shape2_onset,phase2_shape2_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605050.167327881,phase2_shape2_offset,phase2_shape2_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777605050.168141127,phase2_reddot2_onset,phase2_reddot2_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
-1777605052.179486990,phase2_reddot2_offset,phase2_reddot2_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777605050.168141127,phase2_object_question2_onset,phase2_object_question2_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
+1777605052.179486990,phase2_object_question2_offset,phase2_object_question2_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
 1777605052.202416182,phase2_question_onset,phase2_question_onset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0 cat_a=BATHROOM cat_b=OFFICE
 1777605053.438930035,phase2_response,phase2_response,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0 response=BATHROOM
 1777605053.439088821,phase2_question_offset,phase2_question_offset,trial=60 shape=nail_cutters.bmp ctx1=bathroom.png ctx2=office.png variant=primary_first_img0
@@ -1339,14 +1339,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605055.577505112,phase2_context1_offset,phase2_context1_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605055.578019142,phase2_shape_onset,phase2_shape_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605056.587684155,phase2_shape_offset,phase2_shape_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777605056.588291168,phase2_reddot_onset,phase2_reddot_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777605058.598448038,phase2_reddot_offset,phase2_reddot_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777605056.588291168,phase2_object_question_onset,phase2_object_question_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777605058.598448038,phase2_object_question_offset,phase2_object_question_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605058.599560976,phase2_context2_onset,phase2_context2_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605059.610983849,phase2_context2_offset,phase2_context2_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605059.611878872,phase2_shape2_onset,phase2_shape2_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605060.618534803,phase2_shape2_offset,phase2_shape2_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777605060.619523048,phase2_reddot2_onset,phase2_reddot2_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
-1777605062.627365112,phase2_reddot2_offset,phase2_reddot2_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777605060.619523048,phase2_object_question2_onset,phase2_object_question2_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
+1777605062.627365112,phase2_object_question2_offset,phase2_object_question2_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
 1777605062.644661903,phase2_question_onset,phase2_question_onset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1 cat_a=KITCHEN cat_b=SPORTSFIELD
 1777605063.543869019,phase2_response,phase2_response,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1 response=SPORTSFIELD
 1777605063.544315815,phase2_question_offset,phase2_question_offset,trial=61 shape=pan.bmp ctx1=kitchen1.png ctx2=sportsfield1.png variant=primary_first_img1
@@ -1358,14 +1358,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605065.699607134,phase2_context1_offset,phase2_context1_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605065.699944973,phase2_shape_onset,phase2_shape_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605066.708901167,phase2_shape_offset,phase2_shape_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
-1777605066.709460020,phase2_reddot_onset,phase2_reddot_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
-1777605068.720343113,phase2_reddot_offset,phase2_reddot_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
+1777605066.709460020,phase2_object_question_onset,phase2_object_question_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
+1777605068.720343113,phase2_object_question_offset,phase2_object_question_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605068.721388102,phase2_context2_onset,phase2_context2_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605069.735900879,phase2_context2_offset,phase2_context2_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605069.736550808,phase2_shape2_onset,phase2_shape2_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605070.743950129,phase2_shape2_offset,phase2_shape2_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
-1777605070.744870901,phase2_reddot2_onset,phase2_reddot2_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
-1777605072.753098011,phase2_reddot2_offset,phase2_reddot2_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
+1777605070.744870901,phase2_object_question2_onset,phase2_object_question2_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
+1777605072.753098011,phase2_object_question2_offset,phase2_object_question2_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
 1777605072.772132158,phase2_question_onset,phase2_question_onset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1 cat_a=OFFICE cat_b=GARDEN
 1777605073.448176861,phase2_response,phase2_response,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1 response=OFFICE
 1777605073.448322058,phase2_question_offset,phase2_question_offset,trial=62 shape=mosquito.bmp ctx1=office1.png ctx2=garden1.png variant=secondary_first_img1
@@ -1377,14 +1377,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605075.799530983,phase2_context1_offset,phase2_context1_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605075.800304890,phase2_shape_onset,phase2_shape_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605076.806679010,phase2_shape_offset,phase2_shape_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
-1777605076.807401896,phase2_reddot_onset,phase2_reddot_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
-1777605078.824030876,phase2_reddot_offset,phase2_reddot_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
+1777605076.807401896,phase2_object_question_onset,phase2_object_question_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
+1777605078.824030876,phase2_object_question_offset,phase2_object_question_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605078.825049162,phase2_context2_onset,phase2_context2_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605079.850224972,phase2_context2_offset,phase2_context2_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605079.850841999,phase2_shape2_onset,phase2_shape2_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605080.859513998,phase2_shape2_offset,phase2_shape2_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
-1777605080.860359907,phase2_reddot2_onset,phase2_reddot2_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
-1777605082.870281935,phase2_reddot2_offset,phase2_reddot2_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
+1777605080.860359907,phase2_object_question2_onset,phase2_object_question2_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
+1777605082.870281935,phase2_object_question2_offset,phase2_object_question2_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
 1777605082.897807837,phase2_question_onset,phase2_question_onset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0 cat_a=PETSHOP cat_b=SPORTSFIELD
 1777605083.799453974,phase2_response,phase2_response,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0 response=SPORTSFIELD
 1777605083.800315857,phase2_question_offset,phase2_question_offset,trial=63 shape=birdcage.bmp ctx1=petshop.png ctx2=sportsfield.png variant=primary_first_img0
@@ -1396,14 +1396,14 @@ timestamp,trigger_code,event_label,trial_info
 1777605085.996128082,phase2_context1_offset,phase2_context1_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605085.996389151,phase2_shape_onset,phase2_shape_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605087.005718946,phase2_shape_offset,phase2_shape_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
-1777605087.006605148,phase2_reddot_onset,phase2_reddot_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
-1777605089.016407013,phase2_reddot_offset,phase2_reddot_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
+1777605087.006605148,phase2_object_question_onset,phase2_object_question_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
+1777605089.016407013,phase2_object_question_offset,phase2_object_question_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605089.017328024,phase2_context2_onset,phase2_context2_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605090.036101103,phase2_context2_offset,phase2_context2_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605090.036962986,phase2_shape2_onset,phase2_shape2_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605091.045498133,phase2_shape2_offset,phase2_shape2_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
-1777605091.045991898,phase2_reddot2_onset,phase2_reddot2_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
-1777605093.055965900,phase2_reddot2_offset,phase2_reddot2_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
+1777605091.045991898,phase2_object_question2_onset,phase2_object_question2_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
+1777605093.055965900,phase2_object_question2_offset,phase2_object_question2_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1
 1777605093.076523066,phase2_question_onset,phase2_question_onset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1 cat_a=KITCHEN cat_b=OFFICE
 1777605093.818746090,phase2_response,phase2_response,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1 response=OFFICE
 1777605093.819110870,phase2_question_offset,phase2_question_offset,trial=64 shape=teacup.bmp ctx1=kitchen1.png ctx2=office1.png variant=primary_first_img1

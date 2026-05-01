@@ -5,7 +5,7 @@ Environment: Python (Anaconda); PsychoPy per requirements.txt (psychopy>=2025.2,
 Fullscreen with DPI scaling. ESC during interactive screens only (not during grid, fixation, stimulus).
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
 Task object `.bmp` files (excluding `ShapeGrid*`): near-white matte → transparency at load (`OBJECT_WHITE_BG_STRIP_THRESHOLD`).
-Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_REDDOT_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md (timing section).
+Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_OBJECT_QUESTION_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md (timing section).
 Phase 1/3 sorting hint + `phase1_instr3` / `phase3_instruction2c` + tutorial fallback steps 2 & 6: `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim run sheet: script.md).
 """
 
@@ -64,7 +64,7 @@ PHASE2_CSV_REQUIRED = (
 )
 # --- Fixed stimulus durations (seconds). TTL aligns with screen boundaries tied to `_log_ttl_event`; see TASK_DESCRIPTION.md (timing section). ---
 PHASE2_OBJECT_QUESTION_TEXT = "What is the object?"
-PHASE2_REDDOT_DURATION_SEC = 2.0  # Full-screen object-question epoch (same timing as legacy black-dot cue; TTL still `phase2_reddot_*`)
+PHASE2_OBJECT_QUESTION_DURATION_SEC = 2.0  # Full-screen **`PHASE2_OBJECT_QUESTION_TEXT`** epoch (trials)
 PHASE_GRID_PREVIEW_SEC = 5.0
 PHASE_FIXATION_CROSS_SEC = 1.0
 SHAPE_STATIC_PREVIEW_SEC = 1.0  # Phase 1/3: isolate shape before placement
@@ -92,7 +92,7 @@ TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC = 0.38
 # Phase 2 demo (`run_phase2_tutorial`); use *_TRIAL_* / `PHASE2_SEGMENT_SEC` for real Phase 2 trials
 PHASE2_TUTORIAL_SEGMENT_SEC = PHASE2_SEGMENT_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_FIXATION_SEC = PHASE2_FIXATION_PRE_TRIAL_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
-PHASE2_TUTORIAL_REDDOT_SEC = PHASE2_REDDOT_DURATION_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
+PHASE2_TUTORIAL_OBJECT_QUESTION_SEC = PHASE2_OBJECT_QUESTION_DURATION_SEC + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC = 1.5 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC = 1.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 PHASE2_TUTORIAL_POST_BLANK_SEC = 3.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
@@ -1377,13 +1377,13 @@ def run_phase2_tutorial(win, mouse, participant):
     _wait(PHASE2_TUTORIAL_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_shape_offset", trial_info="demo=blue_circle")
 
-    _log_ttl_event("phase2_tutorial_reddot_onset", trial_info="cue=circle_label_1")
+    _log_ttl_event("phase2_tutorial_object_question_onset", trial_info="cue=circle_label_1")
     object_q.draw()
     txt1 = visual.TextStim(win, text="You might say the circle is a 'PLANET'", color='black', height=0.04, pos=(0, -0.22))
     txt1.draw()
     win.flip()
-    _wait(PHASE2_TUTORIAL_REDDOT_SEC)
-    _log_ttl_event("phase2_tutorial_reddot_offset", trial_info="cue=circle_label_1")
+    _wait(PHASE2_TUTORIAL_OBJECT_QUESTION_SEC)
+    _log_ttl_event("phase2_tutorial_object_question_offset", trial_info="cue=circle_label_1")
 
     _log_ttl_event("phase2_tutorial_context2_onset", trial_info=f"context={p2_bn}")
     img2.draw()
@@ -1397,13 +1397,13 @@ def run_phase2_tutorial(win, mouse, participant):
     _wait(PHASE2_TUTORIAL_SEGMENT_SEC)
     _log_ttl_event("phase2_tutorial_shape2_offset", trial_info="demo=blue_circle")
 
-    _log_ttl_event("phase2_tutorial_reddot2_onset", trial_info="cue=circle_label_2")
+    _log_ttl_event("phase2_tutorial_object_question2_onset", trial_info="cue=circle_label_2")
     object_q.draw()
     txt2 = visual.TextStim(win, text="You might say the circle is a 'BALL'", color='black', height=0.04, pos=(0, -0.22))
     txt2.draw()
     win.flip()
-    _wait(PHASE2_TUTORIAL_REDDOT_SEC)
-    _log_ttl_event("phase2_tutorial_reddot2_offset", trial_info="cue=circle_label_2")
+    _wait(PHASE2_TUTORIAL_OBJECT_QUESTION_SEC)
+    _log_ttl_event("phase2_tutorial_object_question2_offset", trial_info="cue=circle_label_2")
 
     # Question: SPACE | CIRCUS (left = first practice context, right = second) — demo only
     q = visual.TextStim(win, text="Which context fits best? Use the left/right keys to choose.", color='black', height=0.04, pos=(0, 0.1))
@@ -1451,10 +1451,10 @@ def run_phase2_tutorial(win, mouse, participant):
 
 def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
     """Run Phase 2 trials from phase2_trial_order.csv with breaks every 16.
-    After each object epoch, **`PHASE2_OBJECT_QUESTION_TEXT`** is shown (timed **`PHASE2_REDDOT_DURATION_SEC`**); TTL **`phase2_reddot_*`** is historical."""
+    After each object epoch, **`PHASE2_OBJECT_QUESTION_TEXT`** is shown for **`PHASE2_OBJECT_QUESTION_DURATION_SEC`**; TTL **`phase2_object_question_*`** / **`phase2_object_question2_*`**."""
     fieldnames = ['trial', 'shape_path', 'context_1_path', 'context_2_path', 'trial_variant', 'response',
-                   'rt', 'fixation_onset_ttl', 'context1_onset_ttl', 'shape_onset_ttl', 'reddot_onset_ttl',
-                   'context2_onset_ttl', 'shape2_onset_ttl', 'reddot2_onset_ttl', 'question_onset_ttl', 'response_ttl']
+                   'rt', 'fixation_onset_ttl', 'context1_onset_ttl', 'shape_onset_ttl', 'object_question_onset_ttl',
+                   'context2_onset_ttl', 'shape2_onset_ttl', 'object_question2_onset_ttl', 'question_onset_ttl', 'response_ttl']
     ts = timestamp_str or datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_path = LOG_DIR / f"phase2_{participant}_{ts}.csv"
     if not is_test_participant(participant):
@@ -1542,12 +1542,12 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_shape_offset", trial_info=ti_line)
 
-        _log_ttl_event("phase2_reddot_onset", trial_info=ti_line)
-        p2_ts['reddot_onset_ttl'] = _last_ttl_timestamp[0]
+        _log_ttl_event("phase2_object_question_onset", trial_info=ti_line)
+        p2_ts['object_question_onset_ttl'] = _last_ttl_timestamp[0]
         object_q.draw()
         win.flip()
-        _wait(PHASE2_REDDOT_DURATION_SEC)
-        _log_ttl_event("phase2_reddot_offset", trial_info=ti_line)
+        _wait(PHASE2_OBJECT_QUESTION_DURATION_SEC)
+        _log_ttl_event("phase2_object_question_offset", trial_info=ti_line)
 
         _log_ttl_event("phase2_context2_onset", trial_info=ti_line)
         p2_ts['context2_onset_ttl'] = _last_ttl_timestamp[0]
@@ -1563,12 +1563,12 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
         _wait(PHASE2_SEGMENT_SEC)
         _log_ttl_event("phase2_shape2_offset", trial_info=ti_line)
 
-        _log_ttl_event("phase2_reddot2_onset", trial_info=ti_line)
-        p2_ts['reddot2_onset_ttl'] = _last_ttl_timestamp[0]
+        _log_ttl_event("phase2_object_question2_onset", trial_info=ti_line)
+        p2_ts['object_question2_onset_ttl'] = _last_ttl_timestamp[0]
         object_q.draw()
         win.flip()
-        _wait(PHASE2_REDDOT_DURATION_SEC)
-        _log_ttl_event("phase2_reddot2_offset", trial_info=ti_line)
+        _wait(PHASE2_OBJECT_QUESTION_DURATION_SEC)
+        _log_ttl_event("phase2_object_question2_offset", trial_info=ti_line)
 
         # Question (left/right arrow = context1 / context2 labels shown left/right)
         q = visual.TextStim(win, text="Which context fits best? Use the left/right keys to choose.", color='black', height=0.04, pos=(0, 0.1))
@@ -1639,10 +1639,10 @@ def run_phase2_trials(win, mouse, trials, participant, timestamp_str=None):
             'fixation_onset_ttl': _fmt_unix_csv(p2_ts.get('fixation_onset_ttl')),
             'context1_onset_ttl': _fmt_unix_csv(p2_ts.get('context1_onset_ttl')),
             'shape_onset_ttl': _fmt_unix_csv(p2_ts.get('shape_onset_ttl')),
-            'reddot_onset_ttl': _fmt_unix_csv(p2_ts.get('reddot_onset_ttl')),
+            'object_question_onset_ttl': _fmt_unix_csv(p2_ts.get('object_question_onset_ttl')),
             'context2_onset_ttl': _fmt_unix_csv(p2_ts.get('context2_onset_ttl')),
             'shape2_onset_ttl': _fmt_unix_csv(p2_ts.get('shape2_onset_ttl')),
-            'reddot2_onset_ttl': _fmt_unix_csv(p2_ts.get('reddot2_onset_ttl')),
+            'object_question2_onset_ttl': _fmt_unix_csv(p2_ts.get('object_question2_onset_ttl')),
             'question_onset_ttl': _fmt_unix_csv(p2_ts.get('question_onset_ttl')),
             'response_ttl': f"{response_ts:.9f}" if response_ts else ''
         }

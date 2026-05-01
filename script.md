@@ -92,7 +92,7 @@
 
 Each **recorded trial** shows this **timed sequence**: **context 1** → **same task object (BMP)** → **first object question** (**`PHASE2_OBJECT_QUESTION_TEXT`**, e.g. **"What is the object?"**) → **context 2** → **same object again** → **second object question** → **choice screen** (participant-paced). Participants **say aloud** what the object might be **each time** that question appears (**two** spoken passes per trial). **←** / **→** apply **only** on the final choice screen (**left** = label under **`context_1`**, **right** = **`context_2`**). Main prompt only: **"Which context fits best? Use the left/right keys to choose."** (no separate gray arrow subtitle).
 
-**Object-question screen:** Text-only (**`TextStim`**), not a fixation dot — same **`PHASE2_OBJECT_QUESTION_TEXT`** in the Phase 2 tutorial (with extra demo lines below) and in recorded trials. TTL labels **`phase2_reddot_*`**, **`phase2_reddot2_*`**, **`phase2_tutorial_reddot*`**, and **`PHASE2_REDDOT_DURATION_SEC`** are **historical names** (legacy **black dot** cue).
+**Object-question screen:** Text-only (**`TextStim`**); same **`PHASE2_OBJECT_QUESTION_TEXT`** in the Phase 2 tutorial (with extra demo lines below) and in recorded trials. TTL **`phase2_object_question_*`**, **`phase2_object_question2_*`**, **`phase2_tutorial_object_question*`**; duration constant **`PHASE2_OBJECT_QUESTION_DURATION_SEC`** (trials) / **`PHASE2_TUTORIAL_OBJECT_QUESTION_SEC`** (tutorial).
 
 **Experimenter:** To change the question wording on screen, edit **`PHASE2_OBJECT_QUESTION_TEXT`** in **`context_shape_task.py`** (keep **`phase2_instr2`** / **`phase2_instr3`** in sync if you change how you describe the task).
 
@@ -103,7 +103,7 @@ Each **recorded trial** shows this **timed sequence**: **context 1** → **same 
 4. **"When you see that question, say aloud what the object might be in that context. Then, use the left/right keys to choose which context fits best."** · `phase2_instr3`  
 5. **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** · `phase2_instr4`
 
-**Experimenter note:** **`phase2_instr2`** compresses the sequence into one **context → object → question** clause; participants actually see **two** such passes (**two contexts**, **two question screens**, **same object twice**) before the choice—mirror of **`TASK_DESCRIPTION.md`** / **`csv_documentation.md`** (**`phase2_context1_*`** … **`phase2_reddot2_*`**).
+**Experimenter note:** **`phase2_instr2`** compresses the sequence into one **context → object → question** clause; participants actually see **two** such passes (**two contexts**, **two question screens**, **same object twice**) before the choice—mirror of **`TASK_DESCRIPTION.md`** / **`csv_documentation.md`** (**`phase2_context1_*`** … **`phase2_object_question2_*`**).
 
 **TTL:** `phase2_questions_*` … `phase2_instr4_*`
 
@@ -154,7 +154,7 @@ Each **recorded trial** shows this **timed sequence**: **context 1** → **same 
 **TTL:** per question: `phase3_debrief_onset` → `phase3_debrief_response` (`trial_info`: `answer=Yes|No`, `key=left|right`) → `phase3_debrief_offset`  
 **CSV:** **`debrief_{participant}_{YYYYMMDD_HHMMSS}.csv`**
 
-**After debrief (log order):** `summary_saved` → `experiment_end` → `thanks_onset` / `thanks_offset`
+**After debrief (`ttl_log_*` order):** `summary_saved` → `experiment_end` (log file closes here). Thank-you screen follows but is **not** written to **`ttl_log_*`**.
 
 ---
 
@@ -162,7 +162,7 @@ Each **recorded trial** shows this **timed sequence**: **context 1** → **same 
 
 **Display:** **"You did an amazing job with these objects. Thank you!"** (**`THANKS_SCREEN_SEC`** s)
 
-**TTL:** `summary_saved` · `experiment_end` · `thanks_onset` · `thanks_offset`
+**TTL (`ttl_log_*`):** `summary_saved` · `experiment_end`
 
 ---
 
