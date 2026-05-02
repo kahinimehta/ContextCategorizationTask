@@ -6,7 +6,8 @@ Fullscreen with DPI scaling. ESC during interactive screens only (not during gri
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
 Task object `.bmp` files (excluding `ShapeGrid*`): near-white matte → transparency at load (`OBJECT_WHITE_BG_STRIP_THRESHOLD`).
 Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_OBJECT_QUESTION_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md (timing section).
-Phase 1/3 sorting hint + `phase1_instr3` / `phase3_instruction2c` + tutorial fallback step 2: `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim run sheet: script.md).
+Phase 1 & 3 sorting: gray trial hint + `phase1_instr3` / `phase3_instruction2c` → `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim **`script.md`**).
+Animated fallback demo only (no video): same sentence **once**, as subtitle on fallback **`step=2`** — Phase 1/3 blocks unchanged.
 """
 
 import os
@@ -1110,12 +1111,17 @@ def _show_click_place(win, shape_stim, start_pos, end_pos, subtitle, anchors=Non
 
 def run_tutorial_phase1(win, mouse, participant):
     """Tutorial: video with subtitles, or animated fallback showing click-to-place.
-    Fallback demo uses red square, red circle, green circle and groups by COLOR (reds together; green apart).
-    Fallback: step **1** = intro + **all three** shapes on screen at once (spread positions); step **2** = square
-    isolate then place; steps **3–4** = brief flash of the new shape on an **empty** screen, then isolate + place
-    with prior shapes visible as anchors; steps **5a–b** = static summaries (color groups, then proximity); **no** duplicate
-    click-and-enter recap after **5b**. **No cursor** on center preview; cursor (**triangle + narrow tail** along bisector)
-    only during placement (**anchors-on canvas first**, then light-blue halo + steelblue pulse before moving shape at final coords)."""
+
+    Does **not** replace Phase 1/3 instruction screens — those still show `PHASE13_CLICK_ENTER_INSTRUCTION`
+    (`phase1_instr3`, `phase3_instruction2c`, gray hint) during sorting.
+
+    Fallback demo (video missing/failed): red square, red circle, green circle; COLOR grouping.
+    **`PHASE13_CLICK_ENTER_INSTRUCTION`** appears **only** as the subtitle during **step 2** (square placement).
+    Steps **3–4** use grouping narrative subtitles. Steps **5a–b** static summaries — **no** second full-screen
+    recap of the click-and-enter line after **5b**.
+
+    Step **1** = intro + three shapes spread; **2** = isolate + place square; **3–4** = preflash on empty canvas,
+    isolate, place with anchors; **5a–b** summaries. **No cursor** on center/preflash/anchor preview; cursor during target placement."""
     used_fallback = True
     if TUTORIAL_VIDEO.exists():
         try:
