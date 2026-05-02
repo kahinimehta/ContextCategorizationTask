@@ -21,19 +21,17 @@
 ### Tutorial (Phase 1 training) copy
 
 
-1.  **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout).
+1. (`step=1`) **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout).
 
-2.  **"Click where you want to place each object, then press Enter to confirm."**
+2. (`step=2`) **"Click where you want to place each object, then press Enter to confirm."**
 
-3.  **"Now, let's group the red circle with the red square on the left."**
+3. (`step=3`) **"Now, let's group the red circle with the red square on the left."**
 
-4.  **"Let's place the green circle to the right (in a different group)."**
+4. (`step=4`) **"Let's place the green circle to the right (in a different group)."**
 
-5. **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"**
+5. (`step=5a`) **"See how we ended up sorting by color? We could have sorted by shape too — there are no wrong answers here!"**
 
-6. (`step=5b`): **"We created groups, not a spectrum — nearby objects share a group."**
-
-7. **"Click where you want to place each object, then press Enter to confirm."**  
+6. (`step=5b`) **"We created groups, not a spectrum — nearby objects share a group."**
 
 **Transition:** **"Your turn to group some objects! Remember the same rules."**
 

@@ -6,7 +6,7 @@ Fullscreen with DPI scaling. ESC during interactive screens only (not during gri
 TTL via Blackrock parallel port or Cedrus pyxid2. Every screen change and response logged; see csv_documentation.md.
 Task object `.bmp` files (excluding `ShapeGrid*`): near-white matte → transparency at load (`OBJECT_WHITE_BG_STRIP_THRESHOLD`).
 Fixed-duration waits use module-level `*_SEC` constants (see `PHASE2_OBJECT_QUESTION_DURATION_SEC` and following); keep in sync with TASK_DESCRIPTION.md (timing section).
-Phase 1/3 sorting hint + `phase1_instr3` / `phase3_instruction2c` + tutorial fallback steps 2 & 6: `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim run sheet: script.md).
+Phase 1/3 sorting hint + `phase1_instr3` / `phase3_instruction2c` + tutorial fallback step 2: `PHASE13_CLICK_ENTER_INSTRUCTION` (verbatim run sheet: script.md).
 """
 
 import os
@@ -80,7 +80,6 @@ TUTORIAL_FB_CLICK_CENTER_SEC = 1.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_CLICK_TARGET_SEC = 2.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5A_SEC = 3.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_STEP5B_SEC = 4.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
-TUTORIAL_FB_STEP6_SEC = 7.0 + TRAINING_DEMO_SCREEN_EXTRA_SEC
 TUTORIAL_FB_CURSOR_CLICK_FEEDBACK_SEC = 0.14
 # Light-blue halo flashes twice at empty placement coords before steelblue click pulse; moving shape hidden until after pulse.
 TUTORIAL_FB_CURSOR_BEFORE_PLACEMENT_REVEAL_SEC = 0.40
@@ -1114,7 +1113,8 @@ def run_tutorial_phase1(win, mouse, participant):
     Fallback demo uses red square, red circle, green circle and groups by COLOR (reds together; green apart).
     Fallback: step **1** = intro + **all three** shapes on screen at once (spread positions); step **2** = square
     isolate then place; steps **3–4** = brief flash of the new shape on an **empty** screen, then isolate + place
-    with prior shapes visible as anchors. **No cursor** on center preview; cursor (**triangle + narrow tail** along bisector)
+    with prior shapes visible as anchors; steps **5a–b** = static summaries (color groups, then proximity); **no** duplicate
+    click-and-enter recap after **5b**. **No cursor** on center preview; cursor (**triangle + narrow tail** along bisector)
     only during placement (**anchors-on canvas first**, then light-blue halo + steelblue pulse before moving shape at final coords)."""
     used_fallback = True
     if TUTORIAL_VIDEO.exists():
@@ -1222,21 +1222,6 @@ def run_tutorial_phase1(win, mouse, participant):
         win.flip()
         _wait(TUTORIAL_FB_STEP5B_SEC)
         _log_ttl_event("tutorial_fallback_offset", trial_info="step=5b")
-
-        # Step 6: Final placements visible + PHASE13_CLICK_ENTER_INSTRUCTION (same as trial hint)
-        _log_ttl_event("tutorial_fallback_onset", trial_info="step=6")
-        sq.draw()
-        circ_red.draw()
-        circ_green.draw()
-        # sub_5c = visual.TextStim(win, text="A group does not have to pack tight — a large spread is OK.",
-        #                         color='black', height=0.028, pos=(0, -0.35), wrapWidth=1.3, units='height', alignText='center')
-        sub_enter = visual.TextStim(win, text=PHASE13_CLICK_ENTER_INSTRUCTION,
-                                   color='black', height=0.032, pos=(0, -0.42), wrapWidth=1.3, units='height', alignText='center')
-        # sub_5c.draw()
-        sub_enter.draw()
-        win.flip()
-        _wait(TUTORIAL_FB_STEP6_SEC)
-        _log_ttl_event("tutorial_fallback_offset", trial_info="step=6")
 
     # Transition
     trans = visual.TextStim(win, text="Your turn to group some objects! Remember the same rules.", color='black', height=0.04, pos=(0, 0),

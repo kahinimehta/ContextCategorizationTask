@@ -21,7 +21,7 @@ PsychoPy (**`requirements.txt`**: **`psychopy>=2025.2,<2027`**), Python 3. Main 
 - **Phase 2 context on-screen framing:** Every context image (tutorial + main trials) is drawn in a **fixed rectangle** centered on screen in PsychoPy `units='height'`: side length **`PHASE2_CONTEXT_MAX_EXTENT`** (default **1.0**), with **`PHASE2_CONTEXT_FRAME_ASPECT_W_OVER_H`** default **1.0** (square). Source PNGs are **uniformly scaled** and **center-cropped** (object-fit **cover**) in Pillow so pixels keep aspect ratio inside that box — see **`_phase2_context_frame_size_height_units`** / **`_phase2_context_image_cropped_pil`** in **`context_shape_task.py`**.
 - **Phase 2 spoken prompt:** **`PHASE2_OBJECT_QUESTION_TEXT`** (default **"What is the object?"**) — full-screen **`TextStim`** after each object epoch (tutorial adds demo lines below). TTL **`phase2_object_question_*`** / **`phase2_object_question2_*`**; **`phase2_*.csv`** columns **`object_question_onset_ttl`** / **`object_question2_onset_ttl`**.
 - **Grid:** `STIMULI/shapes/ShapeGrid_4x4_bmp.png` — Phase 1/3: fullscreen preview + bottom-right miniature through fixation, instructions, and sorting. Regenerate if you change the task `.bmp` set so cell order matches **sorted** `*.bmp` (`ShapeGrid*` excluded); **no grid-builder script in repo**.
-- **Phase 1 & 3 sorting instructions:** Single canonical sentence **`PHASE13_CLICK_ENTER_INSTRUCTION`** in **`context_shape_task.py`** — gray trial hint plus **`phase1_instr3`** / **`phase3_instruction2c`**; tutorial fallback steps **2** and **6** use the same text.
+- **Phase 1 & 3 sorting instructions:** Single canonical sentence **`PHASE13_CLICK_ENTER_INSTRUCTION`** in **`context_shape_task.py`** — gray trial hint plus **`phase1_instr3`** / **`phase3_instruction2c`**; in the animated tutorial fallback only, **`PHASE13_CLICK_ENTER_INSTRUCTION`** appears as the step **2** subtitle during the square placement demo (steps **3–4** use grouping narrative subtitles instead).
 
 ### Phase 2 trial template (`phase2_trial_order.csv`)
 
@@ -58,7 +58,6 @@ Durations below; **verbatim subtitles and transition:** **`script.md`** (Tutoria
 | 4 | **≈6.4** s (`TUTORIAL_FB_SHAPE_PREFLASH_SEC` + `TUTORIAL_FB_CLICK_CENTER_SEC` + `TUTORIAL_FB_CLICK_TARGET_SEC`) | Green circle to right group; grouping subtitle (**`script.md`**) |
 | 5a | **4.5** s | Color-group summary (outline **circles** around reds vs green; centers follow staggered placements) |
 | 5b | **5.5** s | Spectrum / proximity subtitle |
-| 6 | **8.5** s | **`PHASE13_CLICK_ENTER_INSTRUCTION`** (same as **`phase1_instr3`** / trial hint) *(optional “large spread” line commented out in code)* |
 
 ### Phase 1
 
