@@ -75,7 +75,7 @@
 2. **"Now you will sort the objects again — like you did right in the beginning. See all the objects first."** · `phase3_instr1`  
 3. **"Use whatever grouping method feels intuitive to you."** · `phase3_instr2`
 
-**Before grid:** **"You will now see all 16 objects to be grouped at the same time — for reference only; just watch & don't memorize."** · `phase3_before_grid` · **Enter** ignored until **`PHASE13_BEFORE_GRID_MIN_SEC`** (**`TASK_DESCRIPTION.md`** timings).
+**Before grid:** **""You will now see all 16 objects **you will be sorting** at the same time — for reference only; just watch & don't memorize.""** · `phase3_before_grid` · **Enter** ignored until **`PHASE13_BEFORE_GRID_MIN_SEC`** (**`TASK_DESCRIPTION.md`** timings).
 
 ---
 
