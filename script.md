@@ -20,10 +20,6 @@
 
 ### Tutorial (Phase 1 training) copy
 
-**Paths:** **`STIMULI/tutorial_video.mp4`** when playback succeeds — **no** `tutorial_fallback_*` TTL steps inside the tutorial. **Animated fallback** when the file is absent or playback fails: paired **`tutorial_fallback_onset`** / **`tutorial_fallback_offset`** with **`trial_info: step=`** **`1`**, **`2`**, **`3`**, **`4`**, **`5a`**, **`5b`** (see **`csv_documentation.md`**).
-
-**Demo-only wording:** **`PHASE13_CLICK_ENTER_INSTRUCTION`** (*click to place, Enter to confirm*) appears **once** in the fallback, as the subtitle during **`step=2`** (simulated square placement). **Phase 1 & Phase 3** still show that sentence on **`phase1_instr3`** / **`phase3_instruction2c`** and as the gray sorting hint — unchanged.
-
 1.  **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout). 
 
 2.  **"Click where you want to place each object, then press Enter to confirm."** 
