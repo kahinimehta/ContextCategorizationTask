@@ -1,4 +1,0 @@
-question,question_text,answer,response_key,rt,onset_ttl,response_ttl
-1,Did you group the objects differently the second time around?,Yes,left,2.9990,1777662610.410130978,1777662613.421997070
-2,Did the contexts you saw change your grouping the second time?,Yes,left,0.6423,1777662613.497555971,1777662614.159636974
-3,Did you see the objects differently the second time grouping them than you did when you first saw them?,Yes,left,0.5272,1777662614.192584991,1777662614.735764027
