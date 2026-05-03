@@ -138,13 +138,13 @@ Trigger codes equal event labels (strings). Use these for analysis. Phase 1 & 3 
 | `phase2_tutorial_object_question2_offset` | 2 | Second tutorial object-question segment ended (`trial_info`: **`cue=circle_label_2`**) |
 | `phase2_tutorial_question_onset` | 2 | Tutorial choice — preview segment begins: main prompt + **SPACE** \| **CIRCUS** (both light blue); first **`flip()`** follows, then **`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`** |
 | `phase2_tutorial_question_preview_offset` | 2 | End of timed preview (both buttons neutral); next event **`phase2_tutorial_demo_select_onset`** |
-| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might say 'CIRCUS' (right key) is the better context"** |
+| `phase2_tutorial_demo_select_onset` | 2 | Tutorial highlight: right button (CIRCUS) + subtitle **"You might think 'CIRCUS' (right key) is the better context"** |
 | `phase2_tutorial_demo_select_offset` | 2 | Highlight / subtitle phase ended |
 | `phase2_tutorial_question_offset` | 2 | Tutorial question screen ended (after timed preview + highlight + **`phase2_tutorial_response`**) |
 | `phase2_tutorial_response` | 2 | Scripted demo choice (**trial_info:** e.g. **`CIRCUS`**). Logged **immediately after** the highlight **`flip()`**; **`phase2_tutorial_demo_select_onset`** is logged **before** that **`flip()`**. Then **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** elapses before **`phase2_tutorial_demo_select_offset`** |
 | `phase2_tutorial_post_blank_onset` | 2 | White full-screen blank after tutorial |
 | `phase2_tutorial_post_blank_offset` | 2 | Post-response blank ended |
-| `phase2_ready_onset` | 2 | **"Ready for recorded trials?"** (Enter + **"Enter to continue."** hint) |
+| `phase2_ready_onset` | 2 | **"Ready to start?"** (Enter + **"Enter to continue."** hint) |
 | `phase2_ready_enter` | 2 | Enter pressed |
 | `phase2_ready_offset` | 2 | Screen transition |
 | `phase2_before_trials_onset` | 2 | **"Ask the experimenter if you have any questions — Enter to start."** |
