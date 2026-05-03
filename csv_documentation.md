@@ -1,11 +1,5 @@
 # CSV and TTL Documentation
 
-Definitions for **`ttl_log_*`** (columns below; mapping table follows) plus **`phase*_*.csv`**, **`debrief`**, **`summary`**.
-
-**Elsewhere:** run sheet (**`script.md`**); stimuli + timings + **`phase2_trial_order.csv`** (**`TASK_DESCRIPTION.md`**); repo bootstrap / example filenames (**`README.md`**).
-
-Instruction-screen **TTL** names that no longer run in current **`main()`** remain in the mapping table as **legacy** for older logs — see the **Historical** note below the preamble (e.g. **`phase1_instruction2b`**, **`phase1_instr4`**, **`phase2_instr2b`**, **`phase2_instr5`**, **`phase3_instr4`**).
-
 ## TTL Log (ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv)
 
 Every TTL trigger is logged with timestamp, trigger code, event label, and trial info. Written incrementally as each event occurs. The file is initially created as **`ttl_log_{YYYYMMDD_HHMMSS}.csv`** (before participant name is known), then **renamed** to **`ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv`** at task end (non-test participants only).
@@ -26,13 +20,11 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 - **Phase 2 tutorial choice:** **`phase2_tutorial_question_onset`** → preview (**`PHASE2_TUTORIAL_QUESTION_PREVIEW_SEC`**, **`phase2_tutorial_question_preview_offset`**) → **`phase2_tutorial_demo_select_onset`** (logged **before** the highlight **`flip()`**) → first highlight **`flip()`** → **`phase2_tutorial_response`** (logged **right after** that **`flip()`**; **trial_info** e.g. **`CIRCUS`**) → **`PHASE2_TUTORIAL_HIGHLIGHT_FEEDBACK_SEC`** → **`phase2_tutorial_demo_select_offset`**.
 - **Phase 3 debrief:** **`phase3_debrief_onset`** before the loop; debrief **`rt`** from the **first `flip()`** showing the question.
 
-**Tutorial path:** Exactly one training stream runs — either **`tutorial_video_onset`** / **`tutorial_video_offset`** (successful **`STIMULI/tutorial_video.mp4`** playback **without** fallback TTLs inside the tutorial), **or** the **`tutorial_fallback_*`** / **`tutorial_fallback_step{2–4}_*_`** sequence (**color-sort** demo): **`trial_info: step=`** **`1`**, **`2`**, **`3`**, **`4`**, **`5a`**, **`5b`** on paired **`tutorial_fallback_onset`** / **`tutorial_fallback_offset`**. Step **1** = three shapes **spread**; steps **3–4** add **`preflash`** on empty canvas before isolate; **center** = moving shape **only** (**no** expanding steelblue ring); **target** = **`TUTORIAL_FB_TARGET_ANCHORS_PREVIEW_SEC`** anchors-only beat, **then** halo + steelblue click (**moving shape hidden**), **then** final placement; **no cursor** on preflash/center/anchor preview. **`step=2`** subtitle = **`PHASE13_CLICK_ENTER_INSTRUCTION`** (**once** in demo); **`step=3`**–**`4`** grouping narratives only. **Phase 1 & Phase 3** still log **`phase1_instr3`** / **`phase3_instruction2c`** + gray hint — unchanged by tutorial path.
-
 ---
 
 ## TTL Trigger Mapping
 
-Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3 sorting: participants see **"Click where you want to place each object, then press Enter to confirm."** as **`phase1_instr3`** / **`phase3_instruction2c`** and as the gray trial hint (`PHASE13_CLICK_ENTER_INSTRUCTION`); **click** to position, **Enter** to confirm each object. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
+Trigger codes equal event labels (strings). Use these for analysis. Phase 1 & 3 sorting: participants see **"Click where you want to place each object, then press Enter to confirm."** as **`phase1_instr3`** / **`phase3_instruction2c`** and as the gray trial hint (`PHASE13_CLICK_ENTER_INSTRUCTION`); **click** to position, **Enter** to confirm each object. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
 
 **Session end (successful run):** after the last **`phase3_debrief_offset`**, **`ttl_log_*`** records **`summary_saved`** → **`experiment_end`**, then the TTL file is closed and renamed to **`ttl_log_{participant}_{YYYYMMDD_HHMMSS}.csv`**. A thank-you screen still runs afterward; **`thanks_onset`** / **`thanks_offset`** are emitted in code **after** the file is closed, so they **do not appear** in **`ttl_log_*`** (hardware TTL pulses may still occur).
 
