@@ -30,8 +30,6 @@ Every TTL trigger is logged with timestamp, trigger code, event label, and trial
 
 ---
 
-**Historical:** Older `ttl_log` files may still list `phase1_instruction2a_*` / `phase3_instruction2a_*` (participant-paced “expect to see” prompts; no longer emitted). **Post-fixation Phase 1:** logs may show **`phase1_instruction2b_*`**, **`phase1_instr4_*`**, **`phase1_instruction2c_*`** for the same copy as current **`phase1_instr1_*`** … **`phase1_instr3_*`**. **Phase 2:** **`phase2_instr2b_*`** / **`phase2_instr5_*`** match current **`phase2_instr3_*`** and **`phase2_tutorial_intro_*`** (watch-demo screen moved into the tutorial). **Phase 3:** **`phase3_instr4_*`** matches current **`phase3_instr2_*`**. Forks that enabled pre-grid **`phase1_instr1_*`** as **“You will now sort…”** must not be confused with current **`phase1_instr1_*`** (**“Now, group these…”** after fixation). **Tutorial fallback:** older builds emitted **`tutorial_fallback_onset`** / **`tutorial_fallback_offset`** with **`trial_info: step=6`** (duplicate static **`PHASE13_CLICK_ENTER_INSTRUCTION`**); current code omits **`step=6`** — **`phase1_instr3`** / **`phase3_instruction2c`** unchanged.
-
 ## TTL Trigger Mapping
 
 Trigger codes equal event labels (strings). Use these for EEG/fMRI analysis. Phase 1 & 3 sorting: participants see **"Click where you want to place each object, then press Enter to confirm."** as **`phase1_instr3`** / **`phase3_instruction2c`** and as the gray trial hint (`PHASE13_CLICK_ENTER_INSTRUCTION`); **click** to position, **Enter** to confirm each object. Each click logged as **`phase1_click_place`** / **`phase3_click_place`** (`trial_info`: trial=N, shape=…, click=N).
