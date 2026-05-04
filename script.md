@@ -79,6 +79,7 @@ This document notes all the text that will appear on the screens in order. For i
 
 **"Ready to start?"**
 
+**Experimenter note:** remind them that 1. the trials will move very fast so they should also try and prioritize speed/ not overthink but they should 2. say their choices out loud and 3. clearly so recordings can be transcribed. They should 4. only speak when prompted by the screen, and 5. try to make sure their answers as as succinct as possible/ don't flow into the next screen. Also 6. make sure they know they can re-use answers, but should try to be creative -- and 7. "I don't know" is also an acceptable answer. ***They have breaks every 16 trials where you can check in with them and reiterate these instructions.***
 
 **Before trials:** **"Ask the experimenter if you have any questions — Enter to start."** · `phase2_before_trials`
 
@@ -87,8 +88,6 @@ This document notes all the text that will appear on the screens in order. For i
 **During trials — choice screen:** **"Which context fits best? Use the left/right keys to choose."** + **[CONTEXT A LABEL] | [CONTEXT B LABEL]**
 
 **Break screen (every 16 trials):** **"Take a break!"** + progress bar + percentage
-
-**Experimenter note:** remind them to 1. say their choices out loud and 2. clearly so recordings can be transcribed. They should 3. only speak when prompted by the screen. Also 4. make sure they know they can re-use answers, but should try to be creative. They have breaks every 16 trials where you can check in with them and reiterate these 4 things. 
 
 ---
 
