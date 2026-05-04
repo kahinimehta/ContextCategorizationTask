@@ -74,9 +74,11 @@ This document notes all the text that will appear on the screens in order. For i
 2. **"What is the object?" / "You might say the circle is a 'BALL'"**
 3. **"Which context fits best? Use the left/right keys to choose." + SPACE | CIRCUS**
 4. **"You might think 'CIRCUS' (right key) is the better context"**
-5. **"Ready to start?"**
 
 **Experimenter note**: This phase also takes a few seconds to start. 
+
+**"Ready to start?"**
+
 
 **Before trials:** **"Ask the experimenter if you have any questions — Enter to start."** · `phase2_before_trials`
 
