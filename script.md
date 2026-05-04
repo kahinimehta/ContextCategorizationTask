@@ -86,7 +86,7 @@ This document notes all the text that will appear on the screens in order. For i
 
 **Break screen (every 16 trials):** **"Take a break!"** + progress bar + percentage
 
-**Experimenter note:** remind them to 1. say their choices out loud and 2. clearly so recordings can be transcribed. They should 3. only speak when prompted by the screen. Also 4. encourage them to re-use answers on breaks. They have breaks every 16 trials where you can check in with them and reiterate these 4 things. 
+**Experimenter note:** remind them to 1. say their choices out loud and 2. clearly so recordings can be transcribed. They should 3. only speak when prompted by the screen. Also 4. make sure they know they can re-use answers, but should try to be creative. They have breaks every 16 trials where you can check in with them and reiterate these 4 things. 
 
 ---
 
