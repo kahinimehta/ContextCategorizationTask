@@ -108,11 +108,14 @@
 
 **Hint on each debrief screen:** **"USE THE ARROW KEYS TO ANSWER"** (gray)
 
+
 ---
 
 ### End
 
 **Display:** **"You did an amazing job with these objects. Thank you!"** (**`THANKS_SCREEN_SEC`** s)
+
+**Experimenter note:** For an additional debrief, ask how they sorted in phase 1 and how this changed in phase 3 -- note this briefly for QC purposes. 
 
 ---
 
