@@ -1,5 +1,7 @@
 # Experimenter Script — run sheet
+### Usage
 
+This document notes all the text that will appear on the screens in order. For information on what to say, use the experimenter note. Please follow these notes to maintain consistency across all participants. 
 ---
 
 ## Full Experiment Script
@@ -115,7 +117,7 @@
 
 **Display:** **"You did an amazing job with these objects. Thank you!"** (**`THANKS_SCREEN_SEC`** s)
 
-**Experimenter note:** For an additional debrief, ask how they sorted in phase 1 and how this changed in phase 3 -- note this briefly for QC purposes. 
+**Experimenter note:** For an additional debrief, ask how they sorted in phase 1 and how this changed in phase 3. Note this briefly for QC purposes. 
 
 ---
 
