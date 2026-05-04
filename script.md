@@ -1,8 +1,12 @@
 # Experimenter Script — run sheet
+ 
+---
+
 ### Usage
 
-This document notes all the text that will appear on the screens in order. For information on what to say, use the experimenter note. Please follow these notes to maintain consistency across all participants. 
----
+This document notes all the text that will appear on the screens in order. For information on what to say, use the experimenter note. Please follow these notes to maintain consistency across all participants.
+
+--- 
 
 ## Full Experiment Script
 
