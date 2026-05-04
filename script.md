@@ -18,6 +18,8 @@
 
 ### Tutorial (Phase 1 training) copy
 
+**Experimenter note**: Make sure they know they're just watching, not clicking/doing anything.
+
 1. **"The first part of the task is about sorting objects. Watch how we sort these objects!"** — **square**, **red circle**, and **green circle** visible **at once** for **`TUTORIAL_FB_OVERVIEW_SEC`** (spread layout).
 
 2. **"Click where you want to place each object, then press Enter to confirm."**
@@ -59,6 +61,7 @@
 4. **"When you see that question, say aloud what the object might be in that context. Then, use the left/right keys to choose which context fits best."** · `phase2_instr3`
 5. **"The experimenter will record your responses, but don't panic. Just do your best and feel free to re-use answers."** · `phase2_instr4`
 
+**Experimenter note**: Make sure they know they're just watching, not clicking/doing anything. This tutorial also takes a few seconds to start. 
 **Tutorial:** **"Watch this demo before you start the task!"**
 
 1. **"What is the object?" / "You might say the circle is a 'PLANET'"**
@@ -66,6 +69,8 @@
 3. **"Which context fits best? Use the left/right keys to choose." + SPACE | CIRCUS**
 4. **"You might think 'CIRCUS' (right key) is the better context"**
 5. **"Ready to start?"**
+
+**Experimenter note**: This phase also takes a few seconds to start. 
 
 **Before trials:** **"Ask the experimenter if you have any questions — Enter to start."** · `phase2_before_trials`
 
@@ -75,7 +80,7 @@
 
 **Break screen (every 16 trials):** **"Take a break!"** + progress bar + percentage
 
-**Experimenter:** remind them to say their choices out loud and clearly so recordings can be transcribed. They should only speak when prompted by the screen. They have breaks every 16 trials where you can check in with them.
+**Experimenter note:** remind them to 1. say their choices out loud and 2. clearly so recordings can be transcribed. They should 3. only speak when prompted by the screen. Also 4. encourage them to re-use answers on breaks. They have breaks every 16 trials where you can check in with them and reiterate these 4 things. 
 
 ---
 
